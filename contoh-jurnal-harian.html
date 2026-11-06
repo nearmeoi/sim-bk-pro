@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jurnal Harian BK – Contoh Tampilan</title>
+<style>
+:root { --primary:#3949AB;--border:#E8EBF3;--text:#1B2236;--muted:#667085;--bg:#F5F7FC;--surface:#fff; }
+*{box-sizing:border-box;}
+body{margin:0;font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;font-size:14px;color:var(--text);background:var(--bg);-webkit-font-smoothing:antialiased;}
+.app{max-width:1100px;margin:0 auto;padding:24px 16px 48px;}
+.toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:24px;padding:12px 16px;background:var(--surface);border:1px solid var(--border);border-radius:12px;}
+.toolbar h1{margin:0;font-size:16px;font-weight:600;}
+.toolbar .sub{font-size:12px;color:var(--muted);margin-top:2px;}
+.btn-group{display:flex;gap:8px;flex-shrink:0;}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:0 14px;height:34px;border-radius:8px;border:1px solid var(--border);background:var(--surface);font-size:13px;font-weight:500;color:var(--text);cursor:pointer;transition:background .15s;}
+.btn:hover{background:var(--bg);}
+.btn.primary{background:var(--primary);color:#fff;border-color:var(--primary);}
+.btn.primary:hover{opacity:.9;}
+.btn.green{background:#059669;color:#fff;border-color:#059669;}
+.btn.green:hover{opacity:.9;}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:16px;}
+.card-header{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--border);background:#F9FAFD;}
+.card-header h3{margin:0;font-size:13px;font-weight:600;}
+.card-body{padding:16px;}
+.meta-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;}
+.meta-field label{display:block;font-size:11px;font-weight:600;color:var(--muted);margin-bottom:3px;}
+.meta-field input,.meta-field select{width:100%;height:32px;padding:0 10px;border:1px solid var(--border);border-radius:7px;font-size:13px;color:var(--text);font-family:inherit;background:var(--surface);}
+.meta-field input:focus,.meta-field select:focus{outline:none;border-color:var(--primary);}
+
+/* Table */
+.tbl-wrap{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;min-width:800px;font-size:13px;}
+thead th{padding:9px 10px;text-align:left;font-size:11px;font-weight:600;color:var(--muted);background:#F9FAFD;border-bottom:1px solid var(--border);white-space:nowrap;}
+tbody td{padding:0;border-bottom:1px solid var(--border);vertical-align:middle;}
+tbody tr:last-child td{border-bottom:none;}
+tbody tr:hover td{background:#F9FAFD;}
+.cell-input{width:100%;height:38px;padding:0 10px;border:none;background:transparent;font-size:13px;font-family:inherit;color:var(--text);}
+.cell-input:focus{outline:none;background:#F0F4FF;}
+.cell-num{text-align:center;width:36px;color:var(--muted);font-size:12px;padding:0 8px;}
+select.cell-input{cursor:pointer;}
+
+/* TTD */
+.ttd-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;max-width:460px;margin:0 auto;text-align:center;font-size:13px;}
+.ttd-item p{margin:0;color:var(--muted);}
+.ttd-nama{margin-top:52px;font-weight:600;border-top:1px solid var(--text);padding-top:4px;}
+.ttd-nip{font-size:12px;color:var(--muted);margin-top:2px;}
+
+@media print{body{background:#fff;}.app{max-width:100%;padding:0;}.toolbar{display:none;}.card{border:1px solid #ccc;border-radius:0;}}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="toolbar">
+    <div>
+      <h1>Jurnal Harian Bimbingan dan Konseling</h1>
+      <p class="sub">Kamis, 5 November 2026 &nbsp;·&nbsp; SMP Negeri 1 Bintang</p>
+    </div>
+    <div class="btn-group">
+      <button class="btn" onclick="addRow()">+ Tambah baris</button>
+      <button class="btn" onclick="window.print()">🖨 Cetak</button>
+      <button class="btn primary" onclick="alert('Export PDF tersedia setelah integrasi backend')">↓ PDF</button>
+      <button class="btn green" onclick="alert('Export Excel tersedia setelah integrasi backend')">↓ Excel</button>
+    </div>
+  </div>
+
+  <!-- Identitas -->
+  <div class="card">
+    <div class="card-header"><h3>Identitas</h3></div>
+    <div class="card-body">
+      <div class="meta-grid">
+        <div class="meta-field"><label>Tanggal</label><input type="date" value="2026-11-05"></div>
+        <div class="meta-field"><label>Nama Sekolah</label><input value="SMP Negeri 1 Bintang"></div>
+        <div class="meta-field"><label>Guru BK</label><input value="Nama Guru BK"></div>
+        <div class="meta-field"><label>Tahun Ajaran</label><input value="2026/2027"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Jurnal Table -->
+  <div class="card">
+    <div class="card-header">
+      <h3>Catatan Kegiatan Layanan</h3>
+    </div>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:36px">No</th>
+            <th style="width:120px">Hari/Tanggal</th>
+            <th style="width:70px">Waktu</th>
+            <th style="width:170px">Nama Siswa / Kelompok</th>
+            <th style="width:70px">Kelas</th>
+            <th style="width:160px">Jenis Layanan</th>
+            <th>Masalah / Topik</th>
+            <th style="width:110px">Status</th>
+          </tr>
+        </thead>
+        <tbody id="tbody">
+          <tr>
+            <td class="cell-num">1</td>
+            <td><input class="cell-input" value="Kamis, 5 Nov 2026"></td>
+            <td><input class="cell-input" type="time" value="08:00"></td>
+            <td><input class="cell-input" value="Dina Amelia"></td>
+            <td><input class="cell-input" value="8A"></td>
+            <td>
+              <select class="cell-input">
+                <option>Konseling Individual</option>
+                <option>Konseling Kelompok</option>
+                <option>Bimbingan Klasikal</option>
+                <option>Kunjungan Rumah</option>
+                <option>Rapat/Koordinasi</option>
+                <option>Administrasi</option>
+              </select>
+            </td>
+            <td><input class="cell-input" value="Kesulitan belajar matematika, motivasi rendah"></td>
+            <td>
+              <select class="cell-input">
+                <option selected>Selesai</option>
+                <option>Dalam proses</option>
+                <option>Perlu tindak lanjut</option>
+                <option>Dialihkan</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td class="cell-num">2</td>
+            <td><input class="cell-input" value="Kamis, 5 Nov 2026"></td>
+            <td><input class="cell-input" type="time" value="09:30"></td>
+            <td><input class="cell-input" value="Raka Pratama"></td>
+            <td><input class="cell-input" value="8A"></td>
+            <td>
+              <select class="cell-input">
+                <option>Konseling Individual</option>
+                <option>Konseling Kelompok</option>
+                <option>Bimbingan Klasikal</option>
+                <option selected>Kunjungan Rumah</option>
+                <option>Rapat/Koordinasi</option>
+                <option>Administrasi</option>
+              </select>
+            </td>
+            <td><input class="cell-input" value="Absensi berlebihan, verifikasi kondisi keluarga"></td>
+            <td>
+              <select class="cell-input">
+                <option>Selesai</option>
+                <option selected>Dalam proses</option>
+                <option>Perlu tindak lanjut</option>
+                <option>Dialihkan</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td class="cell-num">3</td>
+            <td><input class="cell-input" value="Kamis, 5 Nov 2026"></td>
+            <td><input class="cell-input" type="time" value="11:00"></td>
+            <td><input class="cell-input" value="Rapat Orang Tua Kelas 8"></td>
+            <td><input class="cell-input" value="8A/8B/8C"></td>
+            <td>
+              <select class="cell-input">
+                <option>Konseling Individual</option>
+                <option>Konseling Kelompok</option>
+                <option>Bimbingan Klasikal</option>
+                <option>Kunjungan Rumah</option>
+                <option selected>Rapat/Koordinasi</option>
+                <option>Administrasi</option>
+              </select>
+            </td>
+            <td><input class="cell-input" value="Perkembangan akademik dan perilaku siswa kelas 8"></td>
+            <td>
+              <select class="cell-input">
+                <option>Selesai</option>
+                <option>Dalam proses</option>
+                <option selected>Perlu tindak lanjut</option>
+                <option>Dialihkan</option>
+              </select>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Rekapitulasi -->
+  <div class="card">
+    <div class="card-header"><h3>Rekapitulasi Hari Ini</h3></div>
+    <div class="card-body">
+      <div class="meta-grid">
+        <div class="meta-field"><label>Total Kegiatan</label><input type="number" value="3" id="totalKegiatan"></div>
+        <div class="meta-field"><label>Siswa Dilayani</label><input type="number" value="2"></div>
+        <div class="meta-field"><label>Kasus Selesai</label><input type="number" value="1"></div>
+        <div class="meta-field"><label>Perlu Tindak Lanjut</label><input type="number" value="2"></div>
+      </div>
+      <div style="margin-top:12px;">
+        <label style="display:block;font-size:11px;font-weight:600;color:var(--muted);margin-bottom:4px;">Catatan Harian</label>
+        <textarea rows="3" style="width:100%;border:1px solid var(--border);border-radius:8px;padding:8px 10px;font-size:13px;font-family:inherit;color:var(--text);resize:vertical;">Hari ini berjalan lancar. Kunjungan rumah Raka Pratama perlu ditindaklanjuti dengan orang tua. Rapat orang tua menghasilkan kesepakatan monitoring intensif untuk siswa kelas 8 yang absen berlebihan.</textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tanda Tangan -->
+  <div class="card">
+    <div class="card-header"><h3>Pengesahan</h3></div>
+    <div class="card-body">
+      <p style="font-size:12px;color:var(--muted);text-align:center;margin:0 0 20px;">Kota Bintang, 5 November 2026</p>
+      <div class="ttd-grid">
+        <div class="ttd-item">
+          <p>Mengetahui,<br><strong>Kepala Sekolah</strong></p>
+          <div class="ttd-nama">Nama Kepala Sekolah</div>
+          <div class="ttd-nip">NIP. 19xxxxxxxxxxxxxxxx</div>
+        </div>
+        <div class="ttd-item">
+          <p>Guru BK / Konselor<br>&nbsp;</p>
+          <div class="ttd-nama">Nama Guru BK</div>
+          <div class="ttd-nip">NIP. 19xxxxxxxxxxxxxxxx</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+var rowIdx = 4;
+function addRow() {
+  var i = rowIdx++;
+  var selJenis = '<select class="cell-input"><option>Konseling Individual</option><option>Konseling Kelompok</option><option>Bimbingan Klasikal</option><option>Kunjungan Rumah</option><option>Rapat/Koordinasi</option><option>Administrasi</option></select>';
+  var selStatus = '<select class="cell-input"><option>Selesai</option><option>Dalam proses</option><option>Perlu tindak lanjut</option><option>Dialihkan</option></select>';
+  document.getElementById('tbody').insertAdjacentHTML('beforeend',
+    '<tr><td class="cell-num">'+i+'</td><td><input class="cell-input" placeholder="Hari, tanggal..."></td><td><input class="cell-input" type="time"></td><td><input class="cell-input" placeholder="Nama siswa..."></td><td><input class="cell-input" placeholder="Kelas..."></td><td>'+selJenis+'</td><td><input class="cell-input" placeholder="Topik / masalah..."></td><td>'+selStatus+'</td></tr>'
+  );
+  document.getElementById('totalKegiatan').value = i;
+}
+</script>
+</body>
+</html>

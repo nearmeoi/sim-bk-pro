@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Program Tahunan BK – Contoh Tampilan Editable</title>
+<style>
+:root {
+  --primary: #3949AB;
+  --border: #E8EBF3;
+  --text: #1B2236;
+  --muted: #667085;
+  --bg: #F5F7FC;
+  --surface: #fff;
+  --alert: #B91C1C;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  font-size: 14px;
+  color: var(--text);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+.app { max-width: 1160px; margin: 0 auto; padding: 24px 16px 48px; }
+.toolbar {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  margin-bottom: 24px; padding: 12px 16px;
+  background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+}
+.toolbar h1 { margin: 0; font-size: 16px; font-weight: 600; }
+.toolbar .sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+.btn-group { display: flex; gap: 8px; flex-shrink: 0; }
+.btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 0 14px; height: 34px; border-radius: 8px;
+  border: 1px solid var(--border); background: var(--surface);
+  font-size: 13px; font-weight: 500; color: var(--text); cursor: pointer;
+  transition: all 0.15s;
+}
+.btn:hover { background: var(--bg); }
+.btn.primary { background: var(--primary); color: #fff; border-color: var(--primary); }
+.btn.primary:hover { opacity: 0.9; }
+.btn.green { background: #059669; color: #fff; border-color: #059669; }
+.btn.green:hover { opacity: 0.9; }
+.btn.accent { background: #0F766E; color: #fff; border-color: #0F766E; }
+.btn.accent:hover { opacity: 0.9; }
+
+.section { margin-bottom: 20px; }
+.card {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden;
+}
+.card-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 16px; border-bottom: 1px solid var(--border); background: #F9FAFD;
+}
+.card-header h3 { margin: 0; font-size: 13px; font-weight: 600; }
+.card-header p { margin: 2px 0 0; font-size: 12px; color: var(--muted); }
+.card-body { padding: 16px; }
+
+/* Meta grid */
+.meta-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
+.meta-field label { display: block; font-size: 11px; font-weight: 600; color: var(--muted); margin-bottom: 4px; }
+.meta-field input, .meta-field select {
+  width: 100%; height: 34px; padding: 0 10px;
+  border: 1px solid var(--border); border-radius: 8px;
+  font-size: 13px; color: var(--text); font-family: inherit; background: var(--surface);
+}
+.meta-field input:focus, .meta-field select:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(57,73,171,.1); }
+
+/* Table */
+.tbl-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; min-width: 960px; font-size: 13px; }
+thead th {
+  padding: 10px 10px; text-align: left;
+  font-size: 11px; font-weight: 600; color: var(--muted);
+  background: #F9FAFD; border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+thead th.ctr { text-align: center; }
+tbody td { padding: 8px 10px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+tbody tr:last-child td { border-bottom: none; }
+tbody tr:hover td { background: #F5F7FC; }
+
+.tbl-input {
+  width: 100%; border: none; background: transparent; font-size: 13px; font-family: inherit; color: var(--text);
+  border-bottom: 1px dashed transparent; padding: 2px 0;
+}
+.tbl-input:focus { outline: none; border-bottom-color: var(--primary); background: #EEF0FA; }
+.tbl-select {
+  border: 1px solid var(--border); border-radius: 6px; padding: 3px 6px; font-size: 12px; font-family: inherit;
+  background: var(--surface); color: var(--text);
+}
+
+td input[type=checkbox] { width: 15px; height: 15px; cursor: pointer; accent-color: var(--primary); display: block; margin: 0 auto; }
+td input[type=number] { width: 52px; height: 28px; text-align: center; border: 1px solid var(--border); border-radius: 6px; font-size: 13px; font-family: inherit; }
+td input[type=number]:focus { outline: none; border-color: var(--primary); }
+
+.action-btn {
+  border: none; background: transparent; padding: 4px 6px; cursor: pointer; border-radius: 4px;
+  font-size: 12px; color: var(--muted); transition: all 0.15s;
+}
+.action-btn:hover { background: #EEF0FA; color: var(--primary); }
+.action-btn.del:hover { background: #FCE9E9; color: var(--alert); }
+
+/* Prioritas textarea */
+.prioritas-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.prioritas-item label { display: block; font-size: 11px; font-weight: 600; color: var(--muted); margin-bottom: 4px; }
+.prioritas-item textarea {
+  width: 100%; border: 1px solid var(--border); border-radius: 8px;
+  padding: 8px 10px; font-size: 13px; font-family: inherit; color: var(--text);
+  resize: vertical; min-height: 72px;
+}
+.prioritas-item textarea:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(57,73,171,.1); }
+
+/* Tanda tangan */
+.ttd-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; max-width: 500px; margin: 0 auto; }
+.ttd-item { text-align: center; font-size: 13px; }
+.ttd-item p { margin: 0; color: var(--muted); line-height: 1.6; }
+.ttd-item .nama { margin-top: 56px; font-weight: 600; border-top: 1px solid var(--text); padding-top: 4px; }
+.ttd-item .nip { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+/* Toast */
+#toast {
+  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+  background: var(--text); color: #fff; padding: 10px 20px; border-radius: 10px;
+  font-size: 13px; font-weight: 500; display: none; z-index: 100; box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+@media print {
+  body { background: #fff; }
+  .app { max-width: 100%; padding: 0; }
+  .toolbar, .no-print { display: none !important; }
+  .card { border: 1px solid #ccc; border-radius: 0; }
+  .card-header { background: #f5f5f5; }
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <!-- Toolbar -->
+  <div class="toolbar">
+    <div>
+      <h1>Program Tahunan BK</h1>
+      <p class="sub">Tahun Ajaran 2026/2027 &nbsp;·&nbsp; SMP Negeri 1 Bintang (Mode Editable)</p>
+    </div>
+    <div class="btn-group">
+      <button class="btn accent" onclick="addNewProgram()">+ Tambah Program</button>
+      <button class="btn" onclick="saveAll()">💾 Simpan</button>
+      <button class="btn" onclick="window.print()">🖨 Cetak</button>
+      <button class="btn primary" onclick="showToast('Export PDF Kemendikbud...')">↓ PDF</button>
+      <button class="btn green" onclick="showToast('Export Excel .xlsx...')">↓ Excel</button>
+    </div>
+  </div>
+
+  <!-- Identitas Dokumen -->
+  <div class="section card">
+    <div class="card-header">
+      <div>
+        <h3>Identitas Dokumen</h3>
+        <p>Data pengesahan program tahunan bimbingan dan konseling</p>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="meta-grid">
+        <div class="meta-field"><label>Nama Sekolah</label><input id="sekolah" value="SMP Negeri 1 Bintang"></div>
+        <div class="meta-field"><label>NPSN</label><input id="npsn" value="20123456"></div>
+        <div class="meta-field"><label>Kepala Sekolah</label><input id="kepsek" value="Nama Kepala Sekolah"></div>
+        <div class="meta-field"><label>Guru BK / Konselor</label><input id="gurubk" value="Nama Guru BK"></div>
+        <div class="meta-field"><label>Tahun Ajaran</label><input id="ta" value="2026/2027"></div>
+        <div class="meta-field">
+          <label>Semester</label>
+          <select>
+            <option>Tahunan (Juli 2026 – Juni 2027)</option>
+            <option>Gasal (Juli – Desember 2026)</option>
+            <option>Genap (Januari – Juni 2027)</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Rencana Program -->
+  <div class="section card">
+    <div class="card-header">
+      <div>
+        <h3>Rencana Program Layanan Bimbingan dan Konseling</h3>
+        <p>Ibu dapat langsung mengedit teks, mencentang bulan, mengubah volume, atau menghapus baris</p>
+      </div>
+      <button class="btn accent no-print" onclick="addNewProgram()">+ Tambah Baris</button>
+    </div>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:32px" class="ctr">No</th>
+            <th style="width:160px">Komponen Layanan</th>
+            <th style="width:220px">Jenis Layanan / Kegiatan</th>
+            <th style="width:140px">Bidang</th>
+            <th class="ctr">Jul</th><th class="ctr">Agu</th><th class="ctr">Sep</th>
+            <th class="ctr">Okt</th><th class="ctr">Nov</th><th class="ctr">Des</th>
+            <th class="ctr">Jan</th><th class="ctr">Feb</th><th class="ctr">Mar</th>
+            <th class="ctr">Apr</th><th class="ctr">Mei</th><th class="ctr">Jun</th>
+            <th style="width:64px" class="ctr">Vol</th>
+            <th style="width:140px">Sasaran</th>
+            <th style="width:70px" class="ctr no-print">Aksi</th>
+          </tr>
+        </thead>
+        <tbody id="tblBody">
+          <!-- Default Row 1 -->
+          <tr>
+            <td class="ctr row-no">1</td>
+            <td>
+              <select class="tbl-select">
+                <option selected>Layanan Dasar</option>
+                <option>Layanan Responsif</option>
+                <option>Peminatan & Perencanaan</option>
+                <option>Dukungan Sistem</option>
+              </select>
+            </td>
+            <td><input class="tbl-input" value="Bimbingan Klasikal Etika & Karakter" placeholder="Nama layanan..."></td>
+            <td>
+              <select class="tbl-select">
+                <option selected>Pribadi & Sosial</option>
+                <option>Belajar & Karir</option>
+                <option>Pribadi</option>
+                <option>Sosial</option>
+                <option>Belajar</option>
+                <option>Karir</option>
+                <option>Semua Bidang</option>
+              </select>
+            </td>
+            <td><input type="checkbox" checked></td><td><input type="checkbox" checked></td><td><input type="checkbox" checked></td>
+            <td><input type="checkbox" checked></td><td><input type="checkbox" checked></td><td><input type="checkbox" checked></td>
+            <td><input type="checkbox" checked></td><td><input type="checkbox" checked></td><td><input type="checkbox" checked></td>
+            <td><input type="checkbox" checked></td><td><input type="checkbox" checked></td><td><input type="checkbox" checked></td>
+            <td class="ctr"><input type="number" value="24"></td>
+            <td><input class="tbl-input" value="Semua kelas 7, 8, 9"></td>
+            <td class="ctr no-print">
+              <button class="action-btn del" onclick="deleteRow(this)" title="Hapus program">🗑 Hapus</button>
+            </td>
+          </tr>
+
+          <!-- Default Row 2 -->
+          <tr>
+            <td class="ctr row-no">2</td>
+            <td>
+              <select class="tbl-select">
+                <option selected>Layanan Dasar</option>
+                <option>Layanan Responsif</option>
+                <option>Peminatan & Perencanaan</option>
+                <option>Dukungan Sistem</option>
+              </select>
+            </td>
+            <td><input class="tbl-input" value="Bimbingan Kelompok Belajar Efektif" placeholder="Nama layanan..."></td>
+            <td>
+              <select class="tbl-select">
+                <option>Pribadi & Sosial</option>
+                <option selected>Belajar & Karir</option>
+                <option>Pribadi</option>
+                <option>Sosial</option>
+                <option>Belajar</option>
+                <option>Karir</option>
+                <option>Semua Bidang</option>
+              </select>
+            </td>
+            <td><input type="checkbox"></td><td><input type="checkbox" checked></td><td><input type="checkbox"></td>
+            <td><input type="checkbox" checked></td><td><input type="checkbox"></td><td><input type="checkbox" checked></td>
+            <td><input type="checkbox"></td><td><input type="checkbox" checked></td><td><input type="checkbox"></td>
+            <td><input type="checkbox" checked></td><td><input type="checkbox"></td><td><input type="checkbox" checked></td>
+            <td class="ctr"><input type="number" value="12"></td>
+            <td><input class="tbl-input" value="Kelas 7 & 8"></td>
+            <td class="ctr no-print">
+              <button class="action-btn del" onclick="deleteRow(this)" title="Hapus program">🗑 Hapus</button>
+            </td>
+          </tr>
+
+          <!-- Default Row 3 -->
+          <tr>
+            <td class="ctr row-no">3</td>
+            <td>
+              <select class="tbl-select">
+                <option>Layanan Dasar</option>
+                <option selected>Layanan Responsif</option>
+                <option>Peminatan & Perencanaan</option>
+                <option>Dukungan Sistem</option>
+              </select>
+            </td>
+            <td><input class="tbl-input" value="Konseling Individual" placeholder="Nama layanan..."></td>
+            <td>
+              <select class="tbl-select">
+                <option>Pribadi & Sosial</option>
+                <option>Belajar & Karir</option>
+                <option>Pribadi</option>
+                <option>Sosial</option>
+                <option>Belajar</option>
+                <option>Karir</option>
+                <option selected>Semua Bidang</option>
+              </select>
+            </td>
+            <td><input type="checkbox" checked></td><td><input type="checkbox" checked></td><td><input type="checkbox" checked></td>
+            <td><input type="checkbox" checked></td><td><input type="checkbox" checked></td><td><input type="checkbox" checked></td>
+            <td><input type="checkbox" checked></td><td><input type="checkbox" checked></td><td><input type="checkbox" checked></td>
+            <td><input type="checkbox" checked></td><td><input type="checkbox" checked></td><td><input type="checkbox" checked></td>
+            <td class="ctr"><input type="number" value="48"></td>
+            <td><input class="tbl-input" value="Siswa yang membutuhkan"></td>
+            <td class="ctr no-print">
+              <button class="action-btn del" onclick="deleteRow(this)" title="Hapus program">🗑 Hapus</button>
+            </td>
+          </tr>
+
+          <!-- Default Row 4 -->
+          <tr>
+            <td class="ctr row-no">4</td>
+            <td>
+              <select class="tbl-select">
+                <option>Layanan Dasar</option>
+                <option>Layanan Responsif</option>
+                <option selected>Peminatan & Perencanaan</option>
+                <option>Dukungan Sistem</option>
+              </select>
+            </td>
+            <td><input class="tbl-input" value="Konsultasi Karir & Penjurusan SMA/SMK" placeholder="Nama layanan..."></td>
+            <td>
+              <select class="tbl-select">
+                <option>Pribadi & Sosial</option>
+                <option>Belajar & Karir</option>
+                <option>Pribadi</option>
+                <option>Sosial</option>
+                <option>Belajar</option>
+                <option selected>Karir</option>
+                <option>Semua Bidang</option>
+              </select>
+            </td>
+            <td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox" checked></td>
+            <td><input type="checkbox"></td><td><input type="checkbox" checked></td><td><input type="checkbox" checked></td>
+            <td><input type="checkbox"></td><td><input type="checkbox" checked></td><td><input type="checkbox" checked></td>
+            <td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td>
+            <td class="ctr"><input type="number" value="8"></td>
+            <td><input class="tbl-input" value="Kelas 9"></td>
+            <td class="ctr no-print">
+              <button class="action-btn del" onclick="deleteRow(this)" title="Hapus program">🗑 Hapus</button>
+            </td>
+          </tr>
+
+          <!-- Default Row 5 -->
+          <tr>
+            <td class="ctr row-no">5</td>
+            <td>
+              <select class="tbl-select">
+                <option>Layanan Dasar</option>
+                <option>Layanan Responsif</option>
+                <option>Peminatan & Perencanaan</option>
+                <option selected>Dukungan Sistem</option>
+              </select>
+            </td>
+            <td><input class="tbl-input" value="Kunjungan Rumah (Home Visit)" placeholder="Nama layanan..."></td>
+            <td>
+              <select class="tbl-select">
+                <option selected>Pribadi & Sosial</option>
+                <option>Belajar & Karir</option>
+                <option>Pribadi</option>
+                <option>Sosial</option>
+                <option>Belajar</option>
+                <option>Karir</option>
+                <option>Semua Bidang</option>
+              </select>
+            </td>
+            <td><input type="checkbox" checked></td><td><input type="checkbox" checked></td><td><input type="checkbox" checked></td>
+            <td><input type="checkbox" checked></td><td><input type="checkbox" checked></td><td><input type="checkbox" checked></td>
+            <td><input type="checkbox" checked></td><td><input type="checkbox" checked></td><td><input type="checkbox" checked></td>
+            <td><input type="checkbox" checked></td><td><input type="checkbox" checked></td><td><input type="checkbox" checked></td>
+            <td class="ctr"><input type="number" value="18"></td>
+            <td><input class="tbl-input" value="Wali murid & siswa kasus"></td>
+            <td class="ctr no-print">
+              <button class="action-btn del" onclick="deleteRow(this)" title="Hapus program">🗑 Hapus</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Prioritas per Bidang -->
+  <div class="section card">
+    <div class="card-header"><h3>Prioritas Layanan per Bidang</h3></div>
+    <div class="card-body">
+      <div class="prioritas-grid">
+        <div class="prioritas-item">
+          <label>Bidang Pribadi</label>
+          <textarea>Meningkatkan kesadaran diri, pengelolaan emosi, dan pengembangan karakter siswa melalui bimbingan klasikal dan konseling individual.</textarea>
+        </div>
+        <div class="prioritas-item">
+          <label>Bidang Sosial</label>
+          <textarea>Membangun kemampuan komunikasi interpersonal, resolusi konflik, dan kerja sama antar siswa dalam lingkungan sekolah.</textarea>
+        </div>
+        <div class="prioritas-item">
+          <label>Bidang Belajar</label>
+          <textarea>Mendampingi siswa dengan kesulitan belajar, meningkatkan motivasi akademik, dan menyiapkan strategi belajar efektif menjelang ujian.</textarea>
+        </div>
+        <div class="prioritas-item">
+          <label>Bidang Karir</label>
+          <textarea>Memberikan orientasi karir kepada siswa kelas 9, termasuk informasi jenjang SMA/SMK dan eksplorasi minat bakat melalui asesmen.</textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tanda Tangan -->
+  <div class="section card">
+    <div class="card-header"><h3>Pengesahan</h3></div>
+    <div class="card-body">
+      <p style="font-size:12px;color:var(--muted);margin:0 0 24px;text-align:center">
+        Ditetapkan di: Kota Bintang &nbsp;·&nbsp; Pada tanggal: 5 November 2026
+      </p>
+      <div class="ttd-grid">
+        <div class="ttd-item">
+          <p>Mengetahui,<br><strong>Kepala Sekolah</strong></p>
+          <div class="nama" id="ttdKepsek">Nama Kepala Sekolah</div>
+          <div class="nip">NIP. 19xxxxxxxxxxxxxxxx</div>
+        </div>
+        <div class="ttd-item">
+          <p>Guru BK / Konselor<br>&nbsp;</p>
+          <div class="nama" id="ttdGuru">Nama Guru BK</div>
+          <div class="nip">NIP. 19xxxxxxxxxxxxxxxx</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="toast">Notifikasi</div>
+
+<script>
+function showToast(msg) {
+  var t = document.getElementById('toast');
+  t.innerText = msg;
+  t.style.display = 'block';
+  setTimeout(function() { t.style.display = 'none'; }, 2500);
+}
+
+function updateRowNumbers() {
+  var rows = document.querySelectorAll('#tblBody tr');
+  rows.forEach(function(r, idx) {
+    var noCell = r.querySelector('.row-no');
+    if (noCell) noCell.innerText = idx + 1;
+  });
+}
+
+function deleteRow(btn) {
+  var row = btn.closest('tr');
+  var name = row.querySelector('.tbl-input').value || 'program';
+  if (confirm('Hapus program kerja "' + name + '"?')) {
+    row.remove();
+    updateRowNumbers();
+    showToast('Program kerja berhasil dihapus');
+  }
+}
+
+function addNewProgram() {
+  var months = Array(12).fill('<td><input type="checkbox" checked></td>').join('');
+  var tr = document.createElement('tr');
+  tr.innerHTML = '<td class="ctr row-no"></td>' +
+    '<td><select class="tbl-select"><option selected>Layanan Dasar</option><option>Layanan Responsif</option><option>Peminatan & Perencanaan</option><option>Dukungan Sistem</option></select></td>' +
+    '<td><input class="tbl-input" placeholder="Nama program kerja baru..." autofocus></td>' +
+    '<td><select class="tbl-select"><option selected>Pribadi</option><option>Sosial</option><option>Belajar</option><option>Karir</option><option>Pribadi & Sosial</option><option>Belajar & Karir</option><option>Semua Bidang</option></select></td>' +
+    months +
+    '<td class="ctr"><input type="number" value="12"></td>' +
+    '<td><input class="tbl-input" placeholder="Sasaran (misal: Kelas 7)"></td>' +
+    '<td class="ctr no-print"><button class="action-btn del" onclick="deleteRow(this)" title="Hapus program">🗑 Hapus</button></td>';
+  
+  document.getElementById('tblBody').appendChild(tr);
+  updateRowNumbers();
+  showToast('Baris program baru ditambahkan. Silakan isi detailnya.');
+}
+
+function saveAll() {
+  var total = document.querySelectorAll('#tblBody tr').length;
+  showToast('Semua perubahan (' + total + ' program kerja) berhasil disimpan!');
+}
+
+document.getElementById('kepsek').addEventListener('input', function(e) {
+  document.getElementById('ttdKepsek').innerText = e.target.value || 'Nama Kepala Sekolah';
+});
+document.getElementById('gurubk').addEventListener('input', function(e) {
+  document.getElementById('ttdGuru').innerText = e.target.value || 'Nama Guru BK';
+});
+</script>
+</body>
+</html>

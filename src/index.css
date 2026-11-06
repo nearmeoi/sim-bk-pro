@@ -1,0 +1,372 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary: #3949AB;
+  --primary-2: #5262C9;
+  --accent: #0F766E;
+  --alert: #B91C1C;
+  --primary-tint: #EEF0FA;
+  --accent-tint: #E3F4F1;
+  --alert-tint: #FCE9E9;
+  --bg: #FFFFFF;
+  --surface: #FFFFFF;
+  --border: #E8EBF3;
+  --text: #1B2236;
+  --muted: #667085;
+  --shadow: 0 1px 2px rgb(25 32 80 / 0.05), 0 8px 24px rgb(57 73 171 / 0.07);
+  --shadow-hero: 0 12px 28px rgb(57 73 171 / 0.28);
+  --shadow-fab: 0 6px 16px rgb(15 118 110 / 0.35), 0 0 0 5px #FFFFFF;
+  --shadow-bnav: 0 -6px 20px rgb(57 73 171 / 0.06);
+  --rc: 20px;
+  --rx: 14px;
+  --tap: 48px;
+}
+
+html {
+  height: 100%;
+  scroll-padding-top: env(safe-area-inset-top, 0px);
+}
+
+body {
+  margin: 0;
+  min-height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Poppins', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Animations */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-up {
+  animation: fadeUp 0.25s ease-out;
+}
+
+@keyframes slideUpSheet {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+.slide-up {
+  animation: slideUpSheet 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Cards & Elevation */
+.bk-card {
+  background: var(--surface);
+  border-radius: var(--rc);
+  padding: 18px 20px;
+  box-shadow: var(--shadow);
+  border: 1px solid rgb(232 235 243 / 0.6);
+}
+
+.bk-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 68px;
+  background: var(--surface);
+  border-radius: var(--rc);
+  padding: 12px 18px;
+  width: 100%;
+  text-align: left;
+  box-shadow: var(--shadow);
+  border: 1px solid rgb(232 235 243 / 0.5);
+  transition: transform 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.bk-row:hover {
+  box-shadow: 0 4px 12px rgb(25 32 80 / 0.06), 0 12px 28px rgb(57 73 171 / 0.09);
+}
+
+.bk-row:active {
+  background: var(--primary-tint);
+  transform: scale(0.99);
+}
+
+/* Hero Banner */
+.bk-hero {
+  position: relative;
+  overflow: hidden;
+  border-radius: 24px;
+  padding: 24px;
+  color: #fff;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-2) 100%);
+  box-shadow: var(--shadow-hero);
+}
+
+.bk-hero::before,
+.bk-hero::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  background: rgb(255 255 255 / 0.09);
+  pointer-events: none;
+}
+
+.bk-hero::before {
+  width: 200px;
+  height: 200px;
+  right: -50px;
+  top: -70px;
+}
+
+.bk-hero::after {
+  width: 130px;
+  height: 130px;
+  right: 60px;
+  bottom: -60px;
+}
+
+/* Tiles & Badges */
+.bk-tile {
+  width: 56px;
+  height: 56px;
+  border-radius: 18px;
+  background: var(--surface);
+  color: var(--primary);
+  display: grid;
+  place-items: center;
+  box-shadow: var(--shadow);
+  border: 1px solid rgb(232 235 243 / 0.5);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.bk-tile.s {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: var(--primary-tint);
+  color: var(--primary);
+  box-shadow: none;
+  border: none;
+}
+
+.bk-act:active .bk-tile {
+  transform: scale(0.92);
+}
+
+.bk-ini {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  flex: none;
+  font-size: 14px;
+  font-weight: 700;
+  background: var(--primary-tint);
+  color: var(--primary);
+}
+
+.bk-ini.a {
+  background: var(--accent-tint);
+  color: var(--accent);
+}
+
+.bk-ini.r {
+  background: var(--alert-tint);
+  color: var(--alert);
+}
+
+.bk-pill {
+  font-size: 13px;
+  font-weight: 700;
+  padding: 2px 10px;
+  border-radius: 9999px;
+  background: var(--alert-tint);
+  color: var(--alert);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bk-chip {
+  flex: none;
+  min-height: 44px;
+  padding: 0 20px;
+  border-radius: 9999px;
+  background: var(--surface);
+  color: var(--muted);
+  font-weight: 600;
+  box-shadow: var(--shadow);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 14px;
+  border: 1px solid rgb(232 235 243 / 0.5);
+  transition: all 0.15s ease;
+}
+
+.bk-chip:hover {
+  color: var(--text);
+  box-shadow: 0 2px 8px rgb(25 32 80 / 0.08);
+}
+
+.bk-chip.on {
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary);
+}
+
+/* User avatar */
+.bk-me {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  font-size: 15px;
+  box-shadow: var(--shadow);
+  flex: none;
+}
+
+/* Utility to hide scrollbar */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* ======================================================== */
+/* SISTEM CETAK BEBAS BUG & TERPOTONG (PRINT ENGINE A4)     */
+/* ======================================================== */
+@media print {
+  @page {
+    size: A4 portrait; /* Standar baku seluruh dokumen adalah Portrait (Tegak) */
+    margin: 0 !important; /* Menghilangkan tanggal, jam, dan judul bawaan browser di header/footer */
+  }
+
+  html, body {
+    background: #ffffff !important;
+    color: #000000 !important;
+    font-size: 10.5pt !important;
+    line-height: 1.35 !important;
+    width: 100% !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 10mm 18mm 12mm 15mm !important; /* Margin fisik kertas resmi tanpa header/footer browser */
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  /* KETIKA MODAL CETAK TERBUKA: HILANGKAN SELURUH HALAMAN DI BELAKANG DENGAN DISPLAY: NONE */
+  body.hvs-modal-open > #root,
+  body.surat-modal-open > #root {
+    display: none !important;
+  }
+
+  /* Lembar cetak langsung mulai di paling atas kertas tanpa jeda putih */
+  .hvs-sheet-print,
+  .surat-print-sheet {
+    display: block !important;
+    position: static !important;
+    top: 0 !important;
+    left: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    padding-right: 3mm !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    background: #ffffff !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  /* Hilangkan seluruh elemen navigasi dan tombol */
+  aside,
+  nav,
+  button,
+  .print\:hidden,
+  [role="navigation"] {
+    display: none !important;
+  }
+
+  /* Hilangkan offset padding desktop dari sidebar */
+  main {
+    padding: 0 !important;
+    margin: 0 !important;
+    padding-left: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  /* Bebaskan overflow scrollbar layar agar tidak terpotong atau penyok */
+  .overflow-x-auto,
+  .overflow-y-auto,
+  [class*="overflow-"] {
+    overflow: visible !important;
+    max-height: none !important;
+  }
+
+  /* Tabel 100% pas selebar kertas A4 tanpa overflow horizontal */
+  table {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    border-collapse: collapse !important;
+    page-break-inside: auto !important;
+    table-layout: auto !important;
+  }
+
+  /* Cegah baris tabel terpotong di tengah halaman */
+  tr {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  thead {
+    display: table-header-group !important;
+  }
+
+  tfoot {
+    display: table-footer-group !important;
+  }
+
+  /* Cegah blok tanda tangan terpisah atau terpotong */
+  .break-inside-avoid,
+  .print-avoid-break,
+  .signature-block,
+  .kop-surat {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  /* Hilangkan bayangan kartu layar */
+  .bk-card,
+  .shadow-sm,
+  .shadow-md,
+  .shadow-lg,
+  .shadow-xl,
+  .shadow-2xl {
+    box-shadow: none !important;
+    border-color: #000 !important;
+  }
+
+  /* Hilangkan fixed positioning yang memotong halaman pada modal di Chrome/Edge */
+  .fixed {
+    position: static !important;
+    inset: auto !important;
+  }
+}
