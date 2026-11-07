@@ -323,7 +323,7 @@ export const BerandaView: React.FC<BerandaViewProps> = ({ onNav, onCatat }) => {
                       ? 'Kelas 9'
                       : doc.status}
                   </span>
-                  <ChevronRight size={16} className="text-muted/60 group-hover:text-primary group-hover:translate-x-0.5 transition-all flex-none" />
+                  <ChevronRight size={16} className="text-muted/60 group-hover:text-muted/80 group-hover:translate-x-0.5 transition-all flex-none" />
                 </button>
               );
             })}
