@@ -641,8 +641,8 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
               </div>
 
               {selectedStudent.catatanKhusus && (
-                <div className="pt-1 text-amber-950 border-t border-black/10">
-                  <span className="font-bold text-amber-900">Catatan Khusus : </span>
+                <div className="pt-1 text-text border-t border-black/10">
+                  <span className="font-bold text-primary">Catatan Khusus : </span>
                   <span>{selectedStudent.catatanKhusus}</span>
                 </div>
               )}

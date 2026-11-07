@@ -533,7 +533,7 @@ export const BimbinganKarirView: React.FC<BimbinganKarirViewProps> = ({ onToast 
                             ? 'text-accent-800'
                             : item.statusDiskusiOrtu === 'Orang Tua Beda Pilihan'
                             ? 'text-red-700 font-extrabold underline'
-                            : 'text-amber-800'
+                            : 'text-primary-2'
                         }`}
                       >
                         <option value="Setuju Penuh">Setuju</option>

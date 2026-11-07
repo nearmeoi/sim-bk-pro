@@ -280,9 +280,9 @@ export default function CatatModal({ open, onClose, onSelect }: CatatModalProps)
                     className={`px-4 py-2 rounded-full text-xs font-bold transition-all border ${
                       status === st
                         ? st === 'Selesai'
-                          ? 'bg-accent-600 text-white border-accent-600 shadow-sm'
+                          ? 'bg-accent-700 text-white border-accent-700 shadow-sm'
                           : st === 'Menunggu'
-                            ? 'bg-amber-600 text-white border-amber-600 shadow-sm'
+                            ? 'bg-orange-600 text-white border-orange-600 shadow-sm'
                             : 'bg-primary text-white border-primary shadow-sm'
                         : 'bg-surface text-muted border-border hover:bg-bg'
                     }`}

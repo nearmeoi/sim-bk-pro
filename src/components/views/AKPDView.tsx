@@ -441,7 +441,7 @@ export default function AKPDView({ onNav, onToast }: AKPDViewProps) {
                             percent >= 70
                               ? 'bg-red-100 text-red-800'
                               : percent >= 50
-                                ? 'bg-amber-100 text-amber-800'
+                                ? 'bg-primary-tint text-primary-2'
                                 : 'bg-accent-100 text-accent-800'
                           }`}
                         >
@@ -652,7 +652,7 @@ export default function AKPDView({ onNav, onToast }: AKPDViewProps) {
                               row.pct >= 60
                                 ? 'bg-red-100 text-red-800'
                                 : row.pct >= 40
-                                ? 'bg-amber-100 text-amber-800'
+                                ? 'bg-primary-tint text-primary-2'
                                 : 'bg-accent-100 text-accent-800'
                             }`}
                           >
