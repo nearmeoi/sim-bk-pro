@@ -124,6 +124,8 @@ export interface AKPDStatement {
   pernyataan: string;
   jumlahPemilih: number;
   jawaban: 'ya' | 'tidak' | null;
+  bidang: 'Pribadi' | 'Sosial' | 'Belajar' | 'Karir';
+  topikRPL: string;
 }
 
 export interface IndividualKarirAngket {
@@ -166,4 +168,59 @@ export interface QuickCatatPayload {
   uraianMasalah: string;
   tindakLanjut: string;
   status: 'Proses' | 'Selesai' | 'Menunggu';
+}
+
+export interface ProsemItem {
+  id: string;
+  no: number;
+  kegiatan: string;
+  semester: '1' | '2';
+  bulan: {
+    jul: boolean;
+    agu: boolean;
+    sep: boolean;
+    okt: boolean;
+    nov: boolean;
+    des: boolean;
+    jan: boolean;
+    feb: boolean;
+    mar: boolean;
+    apr: boolean;
+    mei: boolean;
+    jun: boolean;
+  };
+  keterangan: string;
+}
+
+export interface LaporanBulananItem {
+  id: string;
+  bulan: string;
+  tahun: string;
+  layananKlasikalCount: number;
+  layananKelompokCount: number;
+  konselingIndividualCount: number;
+  kunjunganRumahCount: number;
+  konferesiKasusCount: number;
+  siswaAktif: number;
+  siswaProses: number;
+  siswaSelesai: number;
+  catatanKhusus: string;
+}
+
+export interface LaporanSemesterData {
+  id: string;
+  semester: '1' | '2';
+  tahunAjaran: string;
+  totalLayananKlasikal: number;
+  totalLayananKelompok: number;
+  totalKonselingIndividual: number;
+  totalKunjunganRumah: number;
+  totalKonferensiKasus: number;
+  totalSiswaLayanan: number;
+  kasusProses: number;
+  kasusSelesai: number;
+  evaluasiProgram: string;
+  kendalaHambatan: string;
+  rencanaBerikutnya: string;
+  rekomendasi: string;
 }

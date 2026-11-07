@@ -43,7 +43,7 @@ const TEMPLATE_RPL_POPULER: TemplateRPL[] = [
 ];
 
 export const RplForm: React.FC<RplFormProps> = ({ onBack, onToast }) => {
-  const { settings } = useBK();
+  const { settings, akpdRecommendations, setAkpdRecommendations } = useBK();
   const [previewHvsOpen, setPreviewHvsOpen] = useState(false);
   // Form State RPL 1 Lembar Kurikulum Merdeka
   const [komponenLayanan, setKomponenLayanan] = useState('Layanan Dasar');
@@ -77,6 +77,13 @@ export const RplForm: React.FC<RplFormProps> = ({ onBack, onToast }) => {
     setTujuanLayanan(tmpl.tujuan);
     setTahapInti(tmpl.langkahInti);
     onToast(`Topik "${tmpl.topik}" dipilih.`);
+  };
+
+  const handleApplyAkpd = (rec: { no: number; pernyataan: string; topikRPL: string; bidang: 'Pribadi' | 'Sosial' | 'Belajar' | 'Karir' }) => {
+    setTopik(rec.topikRPL);
+    setBidangBimbingan(rec.bidang);
+    setTujuanLayanan(`Berdasarkan hasil AKPD, peserta didik memerlukan layanan bimbingan pada bidang ${rec.bidang} terkait: "${rec.pernyataan}" Peserta didik mampu memahami dan mengatasi kebutuhan tersebut.`);
+    onToast(`Rekomendasi AKPD No.${rec.no}: "${rec.topikRPL}" dipilih.`);
   };
 
   const handleSave = () => {
@@ -138,6 +145,38 @@ export const RplForm: React.FC<RplFormProps> = ({ onBack, onToast }) => {
           </button>
         </div>
       </div>
+
+      {/* Rekomendasi dari AKPD - Hidden on Print */}
+      {akpdRecommendations.length > 0 && (
+        <div className="print:hidden p-4 rounded-[16px] bg-gradient-to-r from-blue-50 to-blue-100 border border-blue-300 space-y-2.5">
+          <span className="text-xs font-bold text-blue-700 flex items-center gap-1.5">
+            <Sparkles size={15} /> Rekomendasi Topik RPL dari Hasil AKPD:
+          </span>
+          <div className="flex flex-wrap gap-2">
+            {akpdRecommendations.map((rec) => (
+              <button
+                key={`rec-${rec.no}`}
+                type="button"
+                onClick={() => handleApplyAkpd(rec)}
+                className="px-3 py-1.5 rounded-[10px] bg-white border border-blue-300 hover:border-blue-600 text-xs font-bold text-text hover:text-blue-700 transition-all shadow-xs text-left"
+              >
+                <span className="text-[10px] font-extrabold uppercase px-1.5 py-0.5 rounded bg-blue-100 text-blue-700 mr-1.5">
+                  {rec.bidang} (#{rec.no})
+                </span>
+                {rec.topikRPL}
+              </button>
+            ))}
+            <button
+              type="button"
+              onClick={() => setAkpdRecommendations([])}
+              className="px-2 py-1.5 rounded-[10px] bg-white border border-blue-300 text-xs font-bold text-blue-600 hover:bg-blue-50 transition-all shadow-xs"
+              title="Tutup rekomendasi dan gunakan template populer"
+            >
+              ✕ Tutup
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Template Cepat Populer - Hidden on Print */}
       <div className="print:hidden p-4 rounded-[16px] bg-gradient-to-r from-primary-tint/50 to-accent-tint/40 border border-primary/20 space-y-2.5">

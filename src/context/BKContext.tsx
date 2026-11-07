@@ -21,6 +21,7 @@ import {
   DEFAULT_AKPD_STATEMENTS,
   SAMPLE_AKPD_TALLY,
   INITIAL_STUDENT_KARIR,
+  AKPD_RPL_TOPICS,
 } from '../data/dummy';
 
 function useLocalStorage<T>(key: string, initialValue: T): [T, React.Dispatch<React.SetStateAction<T>>] {
@@ -106,6 +107,10 @@ interface BKContextType {
   activeDocTab: string | null;
   setActiveDocTab: (docId: string | null) => void;
 
+  // AKPD -> RPL bridge: store top 5 priorities as recommendation
+  akpdRecommendations: Array<{ no: number; pernyataan: string; topikRPL: string; bidang: 'Pribadi' | 'Sosial' | 'Belajar' | 'Karir' }>;
+  setAkpdRecommendations: React.Dispatch<React.SetStateAction<Array<{ no: number; pernyataan: string; topikRPL: string; bidang: 'Pribadi' | 'Sosial' | 'Belajar' | 'Karir' }>>>;
+
   // Authentication
   isAuthenticated: boolean;
   isBackendConnected: boolean;
@@ -124,13 +129,30 @@ const DEFAULT_AKPD_INIT: AKPDStatement[] = DEFAULT_AKPD_STATEMENTS.map((text, id
   pernyataan: text,
   jumlahPemilih: SAMPLE_AKPD_TALLY[idx] || 15,
   jawaban: null,
+  bidang: idx < 15 ? 'Pribadi' : idx < 30 ? 'Sosial' : idx < 45 ? 'Belajar' : 'Karir',
+  topikRPL: AKPD_RPL_TOPICS[idx],
 }));
+
+function normalizeAkpdItems(items: AKPDStatement[]): AKPDStatement[] {
+  if (!Array.isArray(items) || items.length === 0) return DEFAULT_AKPD_INIT;
+  return items.map((it, idx) => ({
+    ...it,
+    bidang: it.bidang ?? (idx < 15 ? 'Pribadi' : idx < 30 ? 'Sosial' : idx < 45 ? 'Belajar' : 'Karir'),
+    topikRPL: it.topikRPL ?? AKPD_RPL_TOPICS[idx] ?? '',
+  }));
+}
 
 export const BKProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [students, setStudents] = useLocalStorage<Student[]>('sim_bk_students', STUDENTS);
   const [records, setRecords] = useLocalStorage<CounselingRecord[]>('sim_bk_records', INITIAL_COUNSELING_RECORDS);
   const [cases, setCases] = useLocalStorage<CaseItem[]>('sim_bk_cases', CASES);
   const [akpdItems, setAkpdItems] = useLocalStorage<AKPDStatement[]>('sim_bk_akpd', DEFAULT_AKPD_INIT);
+  // Migrate old stored items missing bidang/topikRPL
+  useEffect(() => {
+    const needsFix = akpdItems.some((it) => !it.bidang || !it.topikRPL);
+    if (needsFix) setAkpdItems(normalizeAkpdItems(akpdItems));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   const [totalRespondenAKPD, setTotalRespondenAKPD] = useLocalStorage<number>('sim_bk_akpd_resp', 32);
   const [kelasAKPD, setKelasAKPD] = useLocalStorage<string>('sim_bk_akpd_kelas', 'KELAS 8');
   const [karirList, setKarirList] = useLocalStorage<IndividualKarirAngket[]>('sim_bk_karir', INITIAL_STUDENT_KARIR);
@@ -138,6 +160,7 @@ export const BKProvider: React.FC<{ children: React.ReactNode }> = ({ children }
   const [jurnalRows, setJurnalRows] = useLocalStorage<JurnalRow[]>('sim_bk_jurnal', INITIAL_JURNAL_ROWS);
   const [settings, setSettings] = useLocalStorage<SchoolSettings>('sim_bk_settings', DEFAULT_SETTINGS);
   const [activeDocTab, setActiveDocTab] = useState<string | null>(null);
+  const [akpdRecommendations, setAkpdRecommendations] = useState<Array<{ no: number; pernyataan: string; topikRPL: string; bidang: 'Pribadi' | 'Sosial' | 'Belajar' | 'Karir' }>>([]);
   const [isAuthenticated, setIsAuthenticated] = useLocalStorage<boolean>('sim_bk_auth', true);
   const isBackendConnected = isSupabaseConfigured();
 
@@ -491,6 +514,10 @@ export const BKProvider: React.FC<{ children: React.ReactNode }> = ({ children }
         // Active document tab
         activeDocTab,
         setActiveDocTab,
+
+        // AKPD -> RPL recommendations
+        akpdRecommendations,
+        setAkpdRecommendations,
 
         // Auth
         isAuthenticated,

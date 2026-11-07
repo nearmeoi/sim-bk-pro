@@ -11,6 +11,7 @@ import {
   ArrowRight,
   TrendingUp,
   Eye,
+  Sparkles,
 } from "lucide-react";
 import PetunjukIbu from '../ui/PetunjukIbu';
 import KopSurat from '../ui/KopSurat';
@@ -39,6 +40,8 @@ export default function AKPDView({ onNav, onToast }: AKPDViewProps) {
     kelasAKPD: kelas,
     setKelasAKPD: setKelas,
     settings,
+    setAkpdRecommendations,
+    setActiveDocTab,
   } = useBK();
 
   const [previewHvsOpen, setPreviewHvsOpen] = useState(false);
@@ -675,10 +678,20 @@ export default function AKPDView({ onNav, onToast }: AKPDViewProps) {
                 {onNav && (
                   <button
                     type="button"
-                    onClick={() => onNav('dokumen')}
-                    className="text-xs font-bold text-blue-600 hover:underline flex items-center gap-1 cursor-pointer print:hidden"
+                    onClick={() => {
+                      const recs = top5Items.map(item => ({
+                        no: item.no,
+                        pernyataan: item.pernyataan,
+                        topikRPL: item.topikRPL,
+                        bidang: item.bidang,
+                      }));
+                      setAkpdRecommendations(recs);
+                      setActiveDocTab('rpl');
+                      onNav('dokumen');
+                    }}
+                    className="min-h-[32px] px-3.5 rounded-[8px] bg-accent text-white text-xs font-bold hover:brightness-105 active:scale-[0.98] transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
                   >
-                    Buka Penyusunan RPL <ArrowRight size={13} />
+                    <Sparkles size={13} /> Lihat Rekomendasi RPL
                   </button>
                 )}
               </div>

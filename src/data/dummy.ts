@@ -699,6 +699,60 @@ export const DEFAULT_AKPD_STATEMENTS: string[] = [
   'Saya belum banyak tahu tentang jenis-jenis profesi di masyarakat dan Prospeknya',
 ];
 
+// Mapping 50 butir AKPD → Topik RPL untuk rekomendasi otomatis
+export const AKPD_RPL_TOPICS: string[] = [
+  'Membangun Spiritualitas & Syukur dalam Kehidupan Sehari-hari', // 1 Pribadi
+  'Etika Pergaulan & Sopan Santun Remaja', // 2 Pribadi
+  'Norma dan Etika Pergaulan Teman Sebaya', // 3 Pribadi
+  'Mematuhi Tata Tertib & Disiplin Sekolah', // 4 Pribadi
+  'Integritas Akademik & Mengatasi Perilaku Menyontek', // 5 Pribadi
+  'Disiplin Kehadiran & Mengatasi Kebiasaan Membolos', // 6 Pribadi
+  'Mengelola Emosi & Memaafkan dalam Relasi Interpersonal', // 7 Pribadi
+  'Kepercayaan Diri & Mengatasi Kecemasan Sosial', // 8 Pribadi
+  'Kesehatan Fisik & Kebersihan Diri Remaja', // 9 Pribadi
+  'Eksplorasi Bakat & Minat Diri', // 10 Pribadi
+  'Mengenali Gejala Kesehatan & Manajemen Kondisi Tubuh', // 11 Pribadi
+  'Memahami Dinamika Keluarga & Komunikasi Keluarga Sehat', // 12 Pribadi
+  'Resolusi Konflik Keluarga', // 13 Pribadi
+  'Membangun Kemandirian & Tanggung Jawab Pribadi', // 14 Pribadi
+  'Cerdas dan Bijak Menggunakan Gawai & Media Sosial', // 15 Pribadi
+  'Mengatasi Ketergantungan Smartphone & Digital Detox', // 16 Sosial
+  'Membangun Rasa Nyaman & Komunikasi di Rumah', // 17 Sosial
+  'Mengatasi Perasaan Tidak Diperhatikan Orang Tua', // 18 Sosial
+  'Komunikasi Efektif: Kata Maaf, Tolong, dan Terima Kasih', // 19 Sosial
+  'Mengenal Kenakalan Remaja & Strategi Pencegahan', // 20 Sosial
+  'Resolusi Konflik & Manajemen Perbedaan Pendapat', // 21 Sosial
+  'Mengatasi Konflik dengan Teman Sebaya', // 22 Sosial
+  'Membangun & Menjaga Persahabatan yang Sehat', // 23 Sosial
+  'Stop Bullying: Menjadi Upstander di Sekolah', // 24 Sosial
+  'Meningkatkan Keterampilan Sosial & Pergaulan Sehat', // 25 Sosial
+  'Kesehatan Reproduksi Remaja & Edukasi Seksual', // 26 Sosial
+  'Memahami Dampak Pacaran di Usia Remaja', // 27 Sosial
+  'Komunikasi Terbuka Orang Tua-Anak tentang Seksualitas', // 28 Sosial
+  'Pergaulan Sehat Lintas Gender', // 29 Sosial
+  'Mengatasi Rasa Takut Bertanya & Berpartisipasi di Kelas', // 30 Sosial
+  'Kepedulian Lingkungan & Aksi Nyata Pemanasan Global', // 31 Belajar
+  'Bahaya Narkoba & Pencegahan Penyalahgunaan Zat', // 32 Belajar
+  'Memilih Bimbingan Belajar yang Tepat', // 33 Belajar
+  'Membangun Motivasi & Semangat Belajar', // 34 Belajar
+  'Strategi Meraih Prestasi Akademik', // 35 Belajar
+  'Mengenal Gaya Belajar & Strategi Belajar Efektif', // 36 Belajar
+  'Teknik Memahami & Menguasai Materi Pelajaran', // 37 Belajar
+  'Manfaat Belajar Kelompok & Kolaborasi', // 38 Belajar
+  'Menemukan Metode Belajar yang Efektif untuk Diri Sendiri', // 39 Belajar
+  'Mengatasi Kemalasan & Prokrastinasi Belajar', // 40 Belajar
+  'Manajemen Waktu Belajar & Persiapan Ujian', // 41 Belajar
+  'Keterlibatan Orang Tua dalam Pendampingan Belajar', // 42 Belajar
+  'Mind Mapping & Teknik Belajar Visual', // 43 Belajar
+  'Multiple Intelligence: Mengenal Kecerdasan Majemuk', // 44 Belajar
+  'Cara Kerja Otak & Optimalisasi Fungsi Kognitif', // 45 Belajar
+  'Literasi Keuangan Remaja: Mengelola Uang Saku', // 46 Karir
+  'Membangun Kebiasaan Menabung Sejak Dini', // 47 Karir
+  'Eksplorasi Bakat, Minat, dan Potensi Karir', // 48 Karir
+  'Prospek Karir dari Setiap Mata Pelajaran', // 49 Karir
+  'Eksplorasi Profesi & Orientasi Pilihan SMA/SMK', // 50 Karir
+];
+
 export const SAMPLE_AKPD_TALLY = [
   18, 14, 22, 19, 21, 8, 15, 17, 12, 24,
   9, 7, 11, 20, 29, 28, 6, 8, 16, 23,
