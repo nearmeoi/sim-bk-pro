@@ -1,9 +1,20 @@
 ﻿import { useState, useMemo, useEffect, useRef } from 'react';
 import {
-  Search, Plus, Upload, Download, X, ArrowUpDown, UserCheck,
-  Printer, MessageSquare, Phone, Home, Calendar, Clock, Check,
-  AlertTriangle, Shield, BookOpen, ChevronRight, Save, FileText, Mail, Eye, Edit2
-} from 'lucide-react';
+  Search,
+  Plus,
+  Upload,
+  Download,
+  X,
+  ArrowUpDown,
+  UserCheck,
+  Printer,
+  Home,
+  Check,
+  Save,
+  Mail,
+  Eye,
+  Edit2,
+} from "lucide-react";
 import PetunjukIbu from '../ui/PetunjukIbu';
 import KopSurat from '../ui/KopSurat';
 import HvsPreviewModal from '../ui/HvsPreviewModal';
@@ -291,7 +302,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
           <button
             type="button"
             onClick={() => setAddOpen(true)}
-            className="min-h-[40px] px-4 rounded-[12px] bg-accent text-white font-bold text-xs hover:brightness-105 active:scale-[0.98] transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
+            className="min-h-[40px] px-4 rounded-[12px] bg-green-600 text-white font-bold text-xs hover:brightness-105 active:scale-[0.98] transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
           >
             <Plus size={16} strokeWidth={2.5} />
             <span>Tambah Siswa</span>
@@ -318,7 +329,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
           onChange={(e) => setQ(e.target.value)}
           type="search"
           placeholder="Cari nama siswa, NIS, atau kelas... (Klik nama siswa untuk membuka catatan)"
-          className="w-full min-h-[50px] pl-11 pr-4 rounded-[16px] bg-surface text-text text-[15px] shadow-[0_1px_2px_rgb(25_32_80/0.05),0_8px_24px_rgb(57_73_171/0.07)] border border-border/80 placeholder:text-muted/70 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+          className="w-full min-h-[50px] pl-11 pr-4 rounded-[16px] bg-surface text-text text-[15px] shadow-[0_1px_2px_rgb(0_0_0/0.03),0_4px_12px_rgb(0_0_0/0.06)] border border-border/80 placeholder:text-muted/70 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
         />
       </div>
 
@@ -437,7 +448,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                 >
                   <div className="flex items-center gap-1.5">
                     <span>NAMA SISWA</span>
-                    <ArrowUpDown size={12} className={sortKey === 'nama' ? 'text-primary font-black' : 'opacity-40'} />
+                    <ArrowUpDown size={12} className={sortKey === 'nama' ? 'text-gray-900 font-black' : 'opacity-40'} />
                   </div>
                 </th>
                 <th
@@ -446,7 +457,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                 >
                   <div className="flex items-center justify-center gap-1">
                     <span>NIS</span>
-                    <ArrowUpDown size={12} className={sortKey === 'nis' ? 'text-primary font-black' : 'opacity-40'} />
+                    <ArrowUpDown size={12} className={sortKey === 'nis' ? 'text-gray-900 font-black' : 'opacity-40'} />
                   </div>
                 </th>
                 <th className="border border-black px-2 py-2 text-center w-28">NISN</th>
@@ -457,7 +468,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                 >
                   <div className="flex items-center justify-center gap-1">
                     <span>KELAS</span>
-                    <ArrowUpDown size={12} className={sortKey === 'kelas' ? 'text-primary font-black' : 'opacity-40'} />
+                    <ArrowUpDown size={12} className={sortKey === 'kelas' ? 'text-gray-900 font-black' : 'opacity-40'} />
                   </div>
                 </th>
                 <th className="border border-black px-2 py-2 text-center w-28">RIWAYAT KASUS</th>
@@ -467,7 +478,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                 >
                   <div className="flex items-center justify-center gap-1">
                     <span>STATUS</span>
-                    <ArrowUpDown size={12} className={sortKey === 'status' ? 'text-primary font-black' : 'opacity-40'} />
+                    <ArrowUpDown size={12} className={sortKey === 'status' ? 'text-gray-900 font-black' : 'opacity-40'} />
                   </div>
                 </th>
                 <th className="border border-black px-2 py-2 text-center w-20">AKSI</th>
@@ -496,7 +507,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                     <tr
                       key={s.id}
                       onClick={() => setSelectedStudent(s)}
-                      className="hover:bg-blue-50/30 cursor-pointer transition-colors group"
+                      className="hover:bg-orange-50/30 cursor-pointer transition-colors group"
                       title="Klik untuk membuka catatan konseling siswa"
                     >
                       <td className="border border-black px-2 py-2 text-center font-bold">
@@ -504,7 +515,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                       </td>
                       <td className="border border-black px-3 py-2 font-bold text-black whitespace-nowrap">
                         <div className="flex items-center gap-2">
-                          <span className="group-hover:text-primary transition-colors">{s.nama}</span>
+                          <span className="group-hover:text-text transition-colors">{s.nama}</span>
                           {hasActiveCase && (
                             <span className="w-2 h-2 rounded-full bg-alert flex-none animate-pulse" title="Ada kasus berjalan" />
                           )}
@@ -519,7 +530,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                       <td className="border border-black px-1.5 py-2 text-center font-bold whitespace-nowrap">
                         {s.jk}
                       </td>
-                      <td className="border border-black px-2 py-2 text-center font-bold text-primary whitespace-nowrap">
+                      <td className="border border-black px-2 py-2 text-center font-bold text-gray-700 whitespace-nowrap">
                         {s.kelas}
                       </td>
                       <td className="border border-black px-2 py-2 text-center whitespace-nowrap">
@@ -528,7 +539,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                             className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-bold ${
                               hasActiveCase
                                 ? 'bg-alert-tint text-alert'
-                                : 'bg-primary-tint text-primary'
+                                : 'bg-blue-100 text-blue-700'
                             }`}
                           >
                             {sRecords.length} Catatan
@@ -541,7 +552,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                         <span
                           className={`inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-bold ${
                             s.status === 'Aktif'
-                              ? 'bg-emerald-50 text-emerald-800'
+                              ? 'bg-blue-50 text-blue-700'
                               : 'bg-gray-100 text-gray-600'
                           }`}
                         >
@@ -556,7 +567,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                               e.stopPropagation();
                               setSelectedStudent(s);
                             }}
-                            className="px-2.5 py-1 rounded-[8px] bg-primary text-white text-xs font-bold hover:brightness-105 active:scale-95 transition-all shadow-xs"
+                            className="px-2.5 py-1 rounded-[8px] bg-blue-600 text-white text-xs font-bold hover:brightness-105 active:scale-95 transition-all shadow-xs"
                             title="Buka Catatan Siswa"
                           >
                             Buka
@@ -567,7 +578,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                               e.stopPropagation();
                               handleOpenEdit(s);
                             }}
-                            className="p-1 rounded-[8px] text-muted hover:text-primary hover:bg-primary-tint transition-colors"
+                            className="p-1 rounded-[8px] text-muted hover:text-text hover:bg-gray-100 transition-colors"
                             title="Ubah Data Siswa & Nama Orang Tua"
                           >
                             <Edit2 size={14} />
@@ -627,13 +638,13 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
             {/* Header Profil Siswa */}
             <div className="flex items-start justify-between border-b border-border pb-4">
               <div className="flex items-center gap-3.5">
-                <div className="w-14 h-14 rounded-full bg-primary text-white flex items-center justify-center font-extrabold text-xl shadow-md flex-none">
+                <div className="w-14 h-14 rounded-full bg-blue-600 text-white flex items-center justify-center font-extrabold text-xl shadow-md flex-none">
                   {selectedStudent.nama.split(' ').map((w) => w[0]).join('').substring(0, 2).toUpperCase()}
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
                     <h3 className="font-extrabold text-[20px] text-text">{selectedStudent.nama}</h3>
-                    <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-primary-tint text-primary">
+                    <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-100 text-blue-700">
                       Kelas {selectedStudent.kelas}
                     </span>
                   </div>
@@ -673,9 +684,18 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                   )}
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded text-[11px] border border-emerald-200">
+                  <span className="font-bold text-yellow-700 bg-yellow-50 px-2 py-0.5 rounded text-[11px] border border-yellow-200">
                     {selectedStudent.status}
                   </span>
+                  <button
+                    type="button"
+                    onClick={() => handleOpenEdit(selectedStudent)}
+                    className="px-2.5 py-1 rounded-[8px] bg-white border border-black/30 hover:border-gray-600 text-xs font-bold text-gray-700 hover:bg-gray-50 transition-all flex items-center gap-1 cursor-pointer shadow-xs"
+                    title="Ubah data master siswa dan nama orang tua"
+                  >
+                    <Edit2 size={13} />
+                    <span>Ubah Data Siswa / Orang Tua</span>
+                  </button>
                 </div>
               </div>
 
@@ -685,8 +705,8 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
               </div>
 
               {selectedStudent.catatanKhusus && (
-                <div className="pt-1 text-amber-950 border-t border-black/10">
-                  <span className="font-bold text-amber-900">Catatan Khusus : </span>
+                <div className="pt-1 text-text border-t border-black/10">
+                  <span className="font-bold text-text">Catatan Khusus : </span>
                   <span>{selectedStudent.catatanKhusus}</span>
                 </div>
               )}
@@ -734,14 +754,14 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                       setSuratType('home_visit');
                       setSuratModalOpen(true);
                     }}
-                    className="bk-chip !min-h-[38px] text-xs font-bold text-accent hover:bg-accent-tint"
+                    className="bk-chip !min-h-[38px] text-xs font-bold text-gray-600 hover:bg-gray-100"
                     title="Cetak Surat Kunjungan Rumah (Home Visit)"
                   >
                     <Home size={14} /> Home Visit
                   </button>
                   <button
                     onClick={() => setShowAddRecord(!showAddRecord)}
-                    className="min-h-[38px] px-3.5 rounded-[12px] bg-accent text-white font-bold text-xs hover:brightness-105 flex items-center gap-1.5 shadow-sm"
+                    className="min-h-[38px] px-3.5 rounded-[12px] bg-blue-600 text-white font-bold text-xs hover:brightness-105 flex items-center gap-1.5 shadow-sm"
                   >
                     <Plus size={15} /> Tambah Sesi
                   </button>
@@ -752,10 +772,10 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
               {showAddRecord && (
                 <form
                   onSubmit={handleSaveStudentRecord}
-                  className="p-5 rounded-[18px] bg-primary-tint/30 border border-primary/20 space-y-4 fade-up"
+                  className="p-5 rounded-[18px] bg-blue-50 border border-blue-200 space-y-4 fade-up"
                 >
-                  <div className="flex items-center justify-between border-b border-primary/10 pb-2">
-                    <h5 className="font-bold text-sm text-primary">Tambah Catatan Konseling untuk {selectedStudent.nama}</h5>
+                  <div className="flex items-center justify-between border-b border-blue-200 pb-2">
+                    <h5 className="font-bold text-sm text-blue-700">Tambah Catatan Konseling untuk {selectedStudent.nama}</h5>
                     <button
                       type="button"
                       onClick={() => setShowAddRecord(false)}
@@ -848,7 +868,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                     </button>
                     <button
                       type="submit"
-                      className="bk-btn primary flex-1 !min-h-[40px] !text-xs"
+                      className="px-5 py-2 rounded-[10px] bg-blue-600 text-white font-bold text-xs hover:brightness-105 shadow-sm"
                     >
                       Simpan Catatan
                     </button>
@@ -878,14 +898,14 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                       </tr>
                     ) : (
                       studentRecords.map((rec, idx) => (
-                        <tr key={rec.id} className="hover:bg-blue-50/30 transition-colors">
+                        <tr key={rec.id} className="hover:bg-orange-50/30 transition-colors">
                           <td className="border border-black px-2 py-2 text-center font-bold">
                             {idx + 1}
                           </td>
                           <td className="border border-black px-3 py-2 text-xs font-semibold whitespace-nowrap">
                             {rec.tanggal} ({rec.waktu})
                           </td>
-                          <td className="border border-black px-3 py-2 text-xs font-bold text-primary whitespace-nowrap">
+                          <td className="border border-black px-3 py-2 text-xs font-bold text-gray-700 whitespace-nowrap">
                             {rec.jenis}
                           </td>
                           <td className="border border-black px-3 py-2 text-xs text-black leading-snug">
@@ -898,7 +918,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                             <span
                               className={`px-2 py-0.5 rounded-full text-[11px] font-bold ${
                                 rec.status === 'Selesai'
-                                  ? 'bg-emerald-50 text-emerald-800'
+                                  ? 'bg-blue-50 text-blue-700'
                                   : 'bg-alert-tint text-alert'
                               }`}
                             >
@@ -1012,7 +1032,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                 <div>
                   <div className="flex items-center justify-between mb-1.5">
                     <label className="block text-xs font-bold text-text">Nama Orang Tua / Wali</label>
-                    <span className="text-[10.5px] text-primary font-bold">Untuk TTD Surat</span>
+                    <span className="text-[10.5px] text-blue-600 font-bold">Untuk TTD Surat</span>
                   </div>
                   <input
                     value={form.namaWali}
@@ -1065,7 +1085,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                 </button>
                 <button
                   type="submit"
-                  className="bk-btn primary flex-1"
+                  className="flex-1 min-h-[48px] rounded-[14px] bg-green-600 text-white text-sm font-bold hover:brightness-105 transition-colors shadow-sm"
                 >
                   Simpan Siswa
                 </button>
@@ -1168,13 +1188,13 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
               </div>
 
               {/* NAMA ORANG TUA / WALI MURID (PENTING UNTUK TTD) */}
-              <div className="bg-primary-tint/30 border border-primary/20 p-3.5 rounded-[14px] space-y-3">
+              <div className="bg-blue-50 border border-blue-200 p-3.5 rounded-[14px] space-y-3">
                 <div>
                   <div className="flex items-center justify-between mb-1">
-                    <label className="block text-xs font-bold text-primary">
+                    <label className="block text-xs font-bold text-blue-700">
                       Nama Lengkap Orang Tua / Wali Murid
                     </label>
-                    <span className="text-[10.5px] bg-primary text-white font-bold px-2 py-0.5 rounded-full">
+                    <span className="text-[10.5px] bg-blue-600 text-white font-bold px-2 py-0.5 rounded-full">
                       Penting untuk Kolom TTD
                     </span>
                   </div>
@@ -1182,9 +1202,9 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                     value={editForm.namaWali}
                     onChange={(e) => setEditForm((f) => ({ ...f, namaWali: e.target.value }))}
                     placeholder="Contoh: Bpk. Hendra Rahman / Ibu Sri Wahyuni"
-                    className="w-full min-h-[46px] px-3.5 rounded-[10px] border border-primary/30 bg-white text-sm font-semibold text-text focus:outline-none focus:border-primary shadow-xs"
+                    className="w-full min-h-[46px] px-3.5 rounded-[10px] border border-blue-300 bg-white text-sm font-semibold text-text focus:outline-none focus:border-blue-500 shadow-xs"
                   />
-                  <p className="text-[11px] text-primary/80 mt-1 leading-snug">
+                  <p className="text-[11px] text-blue-600 mt-1 leading-snug">
                     Nama ini akan otomatis tercetak di bawah kolom tanda tangan orang tua pada <b>Surat Panggilan</b>, <b>Surat Kunjungan Rumah</b>, dan <b>Formulir Pemetaan Karir</b>.
                   </p>
                 </div>
@@ -1231,7 +1251,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                 </button>
                 <button
                   type="submit"
-                  className="bk-btn primary flex-1"
+                  className="flex-1 min-h-[46px] rounded-[12px] bg-blue-600 text-white text-sm font-bold hover:brightness-105 transition-all shadow-sm"
                 >
                   Simpan Perubahan
                 </button>

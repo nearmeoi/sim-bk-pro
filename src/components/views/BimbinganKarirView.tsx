@@ -1,8 +1,15 @@
 ﻿import React, { useState } from 'react';
 import {
-  Printer, Plus, Save, Trash2, Check,
-  Table, FileText, ClipboardPaste, Compass, Download, Eye
-} from 'lucide-react';
+  Printer,
+  Plus,
+  Save,
+  Trash2,
+  Table,
+  FileText,
+  ClipboardPaste,
+  Download,
+  Eye,
+} from "lucide-react";
 import PetunjukIbu from '../ui/PetunjukIbu';
 import HvsPreviewModal from '../ui/HvsPreviewModal';
 import { useBK } from '../../context/BKContext';
@@ -258,7 +265,7 @@ export const BimbinganKarirView: React.FC<BimbinganKarirViewProps> = ({ onToast 
           <button
             type="button"
             onClick={handleSave}
-            className="min-h-[40px] px-4 rounded-[12px] bg-primary text-white text-xs font-bold hover:brightness-105 active:scale-[0.98] transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
+            className="min-h-[40px] px-4 rounded-[12px] bg-blue-600 text-white text-xs font-bold hover:brightness-105 active:scale-[0.98] transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
           >
             <Save size={15} />
             <span>Simpan</span>
@@ -298,7 +305,7 @@ export const BimbinganKarirView: React.FC<BimbinganKarirViewProps> = ({ onToast 
           >
             <Table size={16} />
             <span>2. Rekap Kelas</span>
-            <span className="ml-1 text-[11px] px-2 py-0.5 rounded-full bg-primary/10 text-primary font-bold">
+            <span className="ml-1 text-[11px] px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 font-bold">
               {displayedStudents.length} Siswa
             </span>
           </button>
@@ -318,7 +325,7 @@ export const BimbinganKarirView: React.FC<BimbinganKarirViewProps> = ({ onToast 
                     onClick={() => setKelasFilter(k)}
                     className={`px-3 py-1.5 rounded-[10px] text-xs font-bold transition-all ${
                       kelasFilter === k
-                        ? 'bg-primary text-white shadow-sm'
+                        ? 'bg-blue-600 text-white shadow-sm'
                         : 'bg-bg text-muted hover:text-text hover:bg-gray-200'
                     }`}
                   >
@@ -337,7 +344,7 @@ export const BimbinganKarirView: React.FC<BimbinganKarirViewProps> = ({ onToast 
               </button>
               <button
                 onClick={handleAddBatchRow}
-                className="px-4 py-2 rounded-[12px] bg-accent text-white text-xs font-bold hover:brightness-105 active:scale-[0.98] transition-all flex items-center gap-1.5 shadow-sm"
+                className="px-4 py-2 rounded-[12px] bg-green-600 text-white text-xs font-bold hover:brightness-105 active:scale-[0.98] transition-all flex items-center gap-1.5 shadow-sm"
               >
                 <Plus size={15} /> Tambah Baris
               </button>
@@ -369,9 +376,9 @@ export const BimbinganKarirView: React.FC<BimbinganKarirViewProps> = ({ onToast 
 
       {/* QUICK PASTE BOX */}
       {showPasteBox && viewMode === 'batch' && (
-        <div className="p-4 bg-primary-tint/40 border border-primary/20 rounded-[16px] space-y-3 fade-up">
+        <div className="p-4 bg-blue-50 border border-blue-200 rounded-[16px] space-y-3 fade-up">
           <div className="flex items-center justify-between">
-            <h4 className="text-xs font-bold text-primary flex items-center gap-1.5">
+            <h4 className="text-xs font-bold text-blue-700 flex items-center gap-1.5">
               <ClipboardPaste size={16} /> Paste Kolom dari Microsoft Excel / Google Sheets
             </h4>
             <span className="text-[11px] text-muted">Format: Nama [Tab] Sekolah1 [Tab] Jurusan1 [Tab] Cita-cita</span>
@@ -392,7 +399,7 @@ export const BimbinganKarirView: React.FC<BimbinganKarirViewProps> = ({ onToast 
             </button>
             <button
               onClick={handleProcessPaste}
-              className="px-4 py-1.5 rounded-[8px] bg-primary text-white text-xs font-bold hover:brightness-105"
+              className="px-4 py-1.5 rounded-[8px] bg-blue-600 text-white text-xs font-bold hover:brightness-105"
             >
               Proses Impor Teks
             </button>
@@ -430,7 +437,7 @@ export const BimbinganKarirView: React.FC<BimbinganKarirViewProps> = ({ onToast 
               </thead>
               <tbody>
                 {displayedStudents.map((item, idx) => (
-                  <tr key={item.id} className="hover:bg-blue-50/30 transition-colors">
+                  <tr key={item.id} className="hover:bg-orange-50/30 transition-colors">
                     <td className="border border-black px-2 py-1 text-center font-bold">
                       {idx + 1}
                     </td>
@@ -524,10 +531,10 @@ export const BimbinganKarirView: React.FC<BimbinganKarirViewProps> = ({ onToast 
                         }
                         className={`w-full text-xs font-bold py-1 bg-transparent border-none focus:outline-none focus:ring-1 focus:ring-primary text-center ${
                           item.statusDiskusiOrtu === 'Setuju Penuh'
-                            ? 'text-emerald-800'
+                            ? 'text-accent-800'
                             : item.statusDiskusiOrtu === 'Orang Tua Beda Pilihan'
                             ? 'text-red-700 font-extrabold underline'
-                            : 'text-amber-800'
+                            : 'text-primary-2'
                         }`}
                       >
                         <option value="Setuju Penuh">Setuju</option>

@@ -1,5 +1,5 @@
-﻿import React, { useState } from 'react';
-import { Plus, Trash2, Edit2, X, Save, ArrowLeft, Download, Printer, Eye } from 'lucide-react';
+import React, { useState } from 'react';
+import { Plus, Trash2, Edit2, X, Save, ArrowLeft, Download, Printer, Eye, TrendingUp } from 'lucide-react';
 import KopSurat from '../../ui/KopSurat';
 import HvsPreviewModal from '../../ui/HvsPreviewModal';
 import { useBK } from '../../../context/BKContext';
@@ -32,10 +32,11 @@ const BIDANG_OPTIONS = [
 ];
 
 export const ProtaForm: React.FC<ProtaFormProps> = ({ onBack, onToast }) => {
-  const { protaList, addProtaItem, updateProtaItem, deleteProtaItem, settings } = useBK();
+  const { protaList, addProtaItem, updateProtaItem, deleteProtaItem, settings, akpdProtaTargets, setAkpdProtaTargets } = useBK();
   const [modalOpen, setModalOpen] = useState(false);
   const [previewHvsOpen, setPreviewHvsOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<ProtaItem | null>(null);
+  const [selectedAkpdTargets, setSelectedAkpdTargets] = useState<Set<string>>(new Set());
   const [formData, setFormData] = useState<ProtaItem>({
     id: '',
     komponen: 'Layanan Dasar',
@@ -225,6 +226,96 @@ export const ProtaForm: React.FC<ProtaFormProps> = ({ onBack, onToast }) => {
         </div>
       </div>
 
+      {/* AKPD -> Prota Bridge: Target dari Hasil AKPD */}
+      {akpdProtaTargets.length > 0 && (
+        <div className="bg-blue-50 border-2 border-blue-200 rounded-xl p-4 sm:p-5 shadow-sm">
+          <div className="flex items-start justify-between gap-3 mb-3">
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 rounded-lg bg-blue-500 text-white flex items-center justify-center flex-shrink-0">
+                <TrendingUp size={16} />
+              </div>
+              <div>
+                <h3 className="text-sm font-bold text-blue-900">Target Prota dari Hasil AKPD</h3>
+                <p className="text-xs text-blue-700">Pilih program yang ingin ditambahkan ke Prota</p>
+              </div>
+            </div>
+            <button
+              type="button"
+              onClick={() => setAkpdProtaTargets([])}
+              className="text-blue-400 hover:text-blue-600 transition-colors cursor-pointer"
+              title="Tutup"
+            >
+              <X size={18} />
+            </button>
+          </div>
+          <div className="space-y-2">
+            {akpdProtaTargets.map((target) => (
+              <label
+                key={target.id}
+                className="flex items-start gap-3 bg-white border border-blue-200 rounded-lg p-3 cursor-pointer hover:bg-blue-50 transition-colors"
+              >
+                <input
+                  type="checkbox"
+                  checked={selectedAkpdTargets.has(target.id)}
+                  onChange={(e) => {
+                    const newSet = new Set(selectedAkpdTargets);
+                    if (e.target.checked) {
+                      newSet.add(target.id);
+                    } else {
+                      newSet.delete(target.id);
+                    }
+                    setSelectedAkpdTargets(newSet);
+                  }}
+                  className="mt-0.5 w-4 h-4 rounded border-blue-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
+                />
+                <div className="flex-1 min-w-0">
+                  <div className="text-xs font-bold text-gray-900">{target.jenis}</div>
+                  <div className="flex flex-wrap gap-2 mt-1">
+                    <span className="inline-block text-[10px] font-medium text-blue-700 bg-blue-100 px-2 py-0.5 rounded">
+                      {target.bidang}
+                    </span>
+                    <span className="text-[10px] text-gray-500">{target.sasaran}</span>
+                  </div>
+                </div>
+              </label>
+            ))}
+          </div>
+          <div className="flex gap-2 mt-3">
+            <button
+              type="button"
+              onClick={() => {
+                // Select all
+                const allIds = new Set(akpdProtaTargets.map(t => t.id));
+                setSelectedAkpdTargets(allIds);
+              }}
+              className="px-3 py-1.5 rounded-lg text-xs font-bold text-blue-700 bg-white border border-blue-300 hover:bg-blue-100 transition-colors cursor-pointer"
+            >
+              Pilih Semua
+            </button>
+            <button
+              type="button"
+              disabled={selectedAkpdTargets.size === 0}
+              onClick={() => {
+                // Add selected targets to protaList
+                akpdProtaTargets
+                  .filter(t => selectedAkpdTargets.has(t.id))
+                  .forEach(t => {
+                    const { id: _ignored, ...rest } = t;
+                    addProtaItem(rest);
+                  });
+                onToast(`${selectedAkpdTargets.size} program dari AKPD berhasil ditambahkan.`);
+                setAkpdProtaTargets([]);
+                setSelectedAkpdTargets(new Set());
+              }}
+              className="px-4 py-1.5 rounded-lg text-xs font-bold text-white bg-accent hover:brightness-105 disabled:opacity-40 disabled:cursor-not-allowed transition-all cursor-pointer"
+            >
+              <Plus size={14} className="inline mr-1" />
+              Tambahkan ({selectedAkpdTargets.size})
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Program Table - Desain Seragam Angket */}
       <div className="bg-white border border-black rounded-none p-4 sm:p-5 shadow-sm text-black">
         <div className="hidden print:block mb-3">
@@ -258,7 +349,7 @@ export const ProtaForm: React.FC<ProtaFormProps> = ({ onBack, onToast }) => {
             </thead>
             <tbody>
               {protaList.map((row, i) => (
-                <tr key={row.id} className="hover:bg-blue-50/30 transition-colors">
+                <tr key={row.id} className="hover:bg-orange-50/30 transition-colors">
                   <td className="border border-black px-2 py-2 text-center font-bold align-top">
                     {i + 1}
                   </td>

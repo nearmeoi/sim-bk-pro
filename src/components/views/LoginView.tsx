@@ -87,7 +87,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onSuccess, onToast }) => {
         </div>
 
         {errorMessage && (
-          <div className="p-3 rounded-[12px] bg-alert-tint text-alert text-xs font-semibold border border-alert/20 leading-relaxed fade-up">
+          <div className="p-3 rounded-rx bg-alert-tint text-alert text-sm font-medium border border-alert/20 leading-relaxed">
             {errorMessage}
           </div>
         )}

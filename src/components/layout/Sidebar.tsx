@@ -16,7 +16,7 @@ export default function Sidebar({ current, onNav, onCatat }: SidebarProps) {
   const { settings, activeDocTab, setActiveDocTab, logout } = useBK();
   const [dokumenCollapsed, setDokumenCollapsed] = useState(false);
   const isDokumenActive = current === 'dokumen' || current === 'akpd' || current === 'karir' || current === 'shinro';
-  const isDokumenExpanded = isDokumenActive || !dokumenCollapsed;
+  const isDokumenExpanded = !dokumenCollapsed;
   const navBtn = (id: NavView, label: string, Icon: React.ElementType, badge?: string) => {
     const active = current === id || (id === 'karir' && current === 'shinro');
     return (
@@ -32,7 +32,7 @@ export default function Sidebar({ current, onNav, onCatat }: SidebarProps) {
         <Icon size={20} strokeWidth={active ? 2.25 : 1.75} className="flex-none" />
         <span className="flex-1 truncate">{label}</span>
         {badge && (
-          <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-accent text-white flex-none">
+          <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-green-600 text-white flex-none">
             {badge}
           </span>
         )}
@@ -60,7 +60,7 @@ export default function Sidebar({ current, onNav, onCatat }: SidebarProps) {
       {/* CTA Button */}
       <button
         onClick={onCatat}
-        className="w-full min-h-[48px] rounded-[14px] bg-accent text-white font-bold text-[15px] flex items-center justify-center gap-2 mb-4 shadow-[0_6px_16px_rgb(15_118_110/0.25)] hover:brightness-105 active:scale-[0.98] transition-all"
+        className="w-full min-h-[48px] rounded-[14px] bg-accent text-white font-bold text-[15px] flex items-center justify-center gap-2 mb-4 shadow-[0_6px_16px_rgb(232_106_51/0.25)] hover:brightness-105 active:scale-[0.98] transition-all"
       >
         <Plus size={19} strokeWidth={2.5} />
         <span>Catat Layanan</span>
@@ -79,8 +79,8 @@ export default function Sidebar({ current, onNav, onCatat }: SidebarProps) {
                 : 'text-muted hover:bg-bg hover:text-text font-medium'
             }`}
             onClick={() => {
+              setDokumenCollapsed(false);
               if (!isDokumenActive) onNav('dokumen');
-              setDokumenCollapsed((prev) => !prev);
             }}
           >
             <FileText size={20} strokeWidth={isDokumenActive ? 2.25 : 1.75} className="flex-none" />
@@ -176,7 +176,7 @@ export default function Sidebar({ current, onNav, onCatat }: SidebarProps) {
               >
                 <FileCheck2 size={15} className="flex-none" />
                 <span className="flex-1 truncate">Angket AKPD</span>
-                <span className="text-[10px] font-extrabold px-1.5 py-0.2 rounded-full bg-primary/15 text-primary flex-none">
+                <span className="text-[10px] font-extrabold px-1.5 py-0.2 rounded-full bg-blue-500 text-white flex-none">
                   50
                 </span>
               </button>
@@ -192,9 +192,57 @@ export default function Sidebar({ current, onNav, onCatat }: SidebarProps) {
               >
                 <Compass size={15} className="flex-none" />
                 <span className="flex-1 truncate">Pilihan Karir</span>
-                <span className="text-[10px] font-extrabold px-1.5 py-0.2 rounded-full bg-accent text-white flex-none">
+                <span className="text-[10px] font-extrabold px-1.5 py-0.2 rounded-full bg-purple-500 text-white flex-none">
                   Kls 9
                 </span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setActiveDocTab('prosem');
+                  onNav('dokumen');
+                }}
+                className={`w-full min-h-[36px] px-2.5 rounded-[10px] flex items-center gap-2 text-[13px] transition-all text-left cursor-pointer ${
+                  current === 'dokumen' && activeDocTab === 'prosem'
+                    ? 'text-primary font-bold bg-primary/10'
+                    : 'text-muted hover:text-text hover:bg-bg font-medium'
+                }`}
+              >
+                <Calendar size={15} className="flex-none" />
+                <span className="flex-1 truncate">Program Semester</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setActiveDocTab('lapbul');
+                  onNav('dokumen');
+                }}
+                className={`w-full min-h-[36px] px-2.5 rounded-[10px] flex items-center gap-2 text-[13px] transition-all text-left cursor-pointer ${
+                  current === 'dokumen' && activeDocTab === 'lapbul'
+                    ? 'text-primary font-bold bg-primary/10'
+                    : 'text-muted hover:text-text hover:bg-bg font-medium'
+                }`}
+              >
+                <FileText size={15} className="flex-none" />
+                <span className="flex-1 truncate">Laporan Bulanan</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setActiveDocTab('lapsem');
+                  onNav('dokumen');
+                }}
+                className={`w-full min-h-[36px] px-2.5 rounded-[10px] flex items-center gap-2 text-[13px] transition-all text-left cursor-pointer ${
+                  current === 'dokumen' && activeDocTab === 'lapsem'
+                    ? 'text-primary font-bold bg-primary/10'
+                    : 'text-muted hover:text-text hover:bg-bg font-medium'
+                }`}
+              >
+                <FileText size={15} className="flex-none" />
+                <span className="flex-1 truncate">Laporan Semester</span>
               </button>
             </div>
           )}

@@ -1,5 +1,5 @@
-﻿import React, { useState } from 'react';
-import { ArrowLeft, Printer, Download, Save, Sparkles, BookOpen, Eye } from 'lucide-react';
+import React, { useState } from 'react';
+import { ArrowLeft, Printer, Save, Sparkles, BookOpen, Eye } from 'lucide-react';
 import KopSurat from '../../ui/KopSurat';
 import HvsPreviewModal from '../../ui/HvsPreviewModal';
 import { useBK } from '../../../context/BKContext';
@@ -43,31 +43,31 @@ const TEMPLATE_RPL_POPULER: TemplateRPL[] = [
 ];
 
 export const RplForm: React.FC<RplFormProps> = ({ onBack, onToast }) => {
-  const { settings } = useBK();
+  const { settings, akpdRecommendations, setAkpdRecommendations } = useBK();
   const [previewHvsOpen, setPreviewHvsOpen] = useState(false);
   // Form State RPL 1 Lembar Kurikulum Merdeka
   const [komponenLayanan, setKomponenLayanan] = useState('Layanan Dasar');
   const [bidangBimbingan, setBidangBimbingan] = useState<'Pribadi' | 'Sosial' | 'Belajar' | 'Karir'>('Pribadi');
   const [topik, setTopik] = useState('Cerdas dan Bijak Menggunakan Gawai & Media Sosial');
   const [kelas, setKelas] = useState('Kelas 8');
-  const [alokasiWaktu, setAlokasiWaktu] = useState('1 Pertemuan x 40 Menit');
-  const [fungsiLayanan, setFungsiLayanan] = useState('Pemahaman dan Pencegahan');
-  const [mediaAlat, setMediaAlat] = useState('LCD Proyektor, Slide Presentasi, Lembar Kerja Peserta Didik (LKPD)');
-  const [metode, setMetode] = useState('Experiential Learning, Curah Pendapat (Brainstorming), & Diskusi Kelompok');
+  const [alokasiWaktu, _setAlokasiWaktu] = useState('1 Pertemuan x 40 Menit');
+  const [fungsiLayanan, _setFungsiLayanan] = useState('Pemahaman dan Pencegahan');
+  const [mediaAlat, _setMediaAlat] = useState('LCD Proyektor, Slide Presentasi, Lembar Kerja Peserta Didik (LKPD)');
+  const [metode, _setMetode] = useState('Experiential Learning, Curah Pendapat (Brainstorming), & Diskusi Kelompok');
 
   const [tujuanLayanan, setTujuanLayanan] = useState(TEMPLATE_RPL_POPULER[0].tujuan);
-  const [tahapAwal, setTahapAwal] = useState(
+  const [tahapAwal, _setTahapAwal] = useState(
     'Guru BK membuka sesi dengan salam hangat, presensi kehadiran, apersepsi keterkaitan materi dengan kehidupan sehari-hari, ice-breaking konsentrasi, serta menyampaikan tujuan layanan yang ingin dicapai.'
   );
   const [tahapInti, setTahapInti] = useState(TEMPLATE_RPL_POPULER[0].langkahInti);
-  const [tahapPenutup, setTahapPenutup] = useState(
+  const [tahapPenutup, _setTahapPenutup] = useState(
     'Peserta didik diajak merumuskan kesimpulan bersama. Guru BK memberikan evaluasi refleksi pemahaman diri, motivasi penguatan karakter, serta doa penutup bersama.'
   );
 
-  const [evaluasiProses, setEvaluasiProses] = useState(
+  const [evaluasiProses, _setEvaluasiProses] = useState(
     'Mengamati antusiasme, keaktifan partisipasi, dinamika kelompok, serta keterbukaan siswa selama proses bimbingan klasikal berlangsung.'
   );
-  const [evaluasiHasil, setEvaluasiHasil] = useState(
+  const [evaluasiHasil, _setEvaluasiHasil] = useState(
     'Menilai lembar refleksi pemahaman materi (Understanding), kenyamanan perasaan (Comfort), dan rencana aksi konkret siswa pada lembar LKPD (Action).'
   );
 
@@ -77,6 +77,13 @@ export const RplForm: React.FC<RplFormProps> = ({ onBack, onToast }) => {
     setTujuanLayanan(tmpl.tujuan);
     setTahapInti(tmpl.langkahInti);
     onToast(`Topik "${tmpl.topik}" dipilih.`);
+  };
+
+  const handleApplyAkpd = (rec: { no: number; pernyataan: string; topikRPL: string; bidang: 'Pribadi' | 'Sosial' | 'Belajar' | 'Karir' }) => {
+    setTopik(rec.topikRPL);
+    setBidangBimbingan(rec.bidang);
+    setTujuanLayanan(`Berdasarkan hasil AKPD, peserta didik memerlukan layanan bimbingan pada bidang ${rec.bidang} terkait: "${rec.pernyataan}" Peserta didik mampu memahami dan mengatasi kebutuhan tersebut.`);
+    onToast(`Rekomendasi AKPD No.${rec.no}: "${rec.topikRPL}" dipilih.`);
   };
 
   const handleSave = () => {
@@ -138,6 +145,38 @@ export const RplForm: React.FC<RplFormProps> = ({ onBack, onToast }) => {
           </button>
         </div>
       </div>
+
+      {/* Rekomendasi dari AKPD - Hidden on Print */}
+      {akpdRecommendations.length > 0 && (
+        <div className="print:hidden p-4 rounded-[16px] bg-gradient-to-r from-blue-50 to-blue-100 border border-blue-300 space-y-2.5">
+          <span className="text-xs font-bold text-blue-700 flex items-center gap-1.5">
+            <Sparkles size={15} /> Rekomendasi Topik RPL dari Hasil AKPD:
+          </span>
+          <div className="flex flex-wrap gap-2">
+            {akpdRecommendations.map((rec) => (
+              <button
+                key={`rec-${rec.no}`}
+                type="button"
+                onClick={() => handleApplyAkpd(rec)}
+                className="px-3 py-1.5 rounded-[10px] bg-white border border-blue-300 hover:border-blue-600 text-xs font-bold text-text hover:text-blue-700 transition-all shadow-xs text-left"
+              >
+                <span className="text-[10px] font-extrabold uppercase px-1.5 py-0.5 rounded bg-blue-100 text-blue-700 mr-1.5">
+                  {rec.bidang} (#{rec.no})
+                </span>
+                {rec.topikRPL}
+              </button>
+            ))}
+            <button
+              type="button"
+              onClick={() => setAkpdRecommendations([])}
+              className="px-2 py-1.5 rounded-[10px] bg-white border border-blue-300 text-xs font-bold text-blue-600 hover:bg-blue-50 transition-all shadow-xs"
+              title="Tutup rekomendasi dan gunakan template populer"
+            >
+              ✕ Tutup
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Template Cepat Populer - Hidden on Print */}
       <div className="print:hidden p-4 rounded-[16px] bg-gradient-to-r from-primary-tint/50 to-accent-tint/40 border border-primary/20 space-y-2.5">

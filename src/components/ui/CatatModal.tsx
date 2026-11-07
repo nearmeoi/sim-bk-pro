@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { DoorOpen, MessageSquare, Folder, FileText, ChevronRight, ArrowLeft, Check, Save } from 'lucide-react';
+import { DoorOpen, MessageSquare, Folder, FileText, ChevronRight, ArrowLeft, Save } from "lucide-react";
 import { useBK } from '../../context/BKContext';
 import type { QuickCatatPayload } from '../../types';
 interface CatatModalProps {
@@ -280,9 +280,9 @@ export default function CatatModal({ open, onClose, onSelect }: CatatModalProps)
                     className={`px-4 py-2 rounded-full text-xs font-bold transition-all border ${
                       status === st
                         ? st === 'Selesai'
-                          ? 'bg-emerald-600 text-white border-emerald-600 shadow-sm'
+                          ? 'bg-accent-700 text-white border-accent-700 shadow-sm'
                           : st === 'Menunggu'
-                            ? 'bg-amber-600 text-white border-amber-600 shadow-sm'
+                            ? 'bg-orange-600 text-white border-orange-600 shadow-sm'
                             : 'bg-primary text-white border-primary shadow-sm'
                         : 'bg-surface text-muted border-border hover:bg-bg'
                     }`}
@@ -304,7 +304,7 @@ export default function CatatModal({ open, onClose, onSelect }: CatatModalProps)
               </button>
               <button
                 type="submit"
-                className="bk-btn primary min-h-[48px] px-7"
+                className="min-h-[48px] px-7 rounded-[14px] bg-accent text-white font-bold text-sm hover:brightness-105 active:scale-[0.98] transition-all shadow-[0_6px_16px_rgb(232_106_51/0.25)] flex items-center gap-2"
               >
                 <Save size={17} />
                 <span>Simpan Catatan Layanan</span>

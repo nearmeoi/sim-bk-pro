@@ -1,5 +1,5 @@
 import React from 'react';
-import { FileQuestion, Home, ArrowLeft } from 'lucide-react';
+import { FileQuestion, Home } from "lucide-react";
 import { NavView } from '../../types';
 
 interface NotFoundViewProps {

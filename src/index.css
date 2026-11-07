@@ -3,22 +3,22 @@
 @tailwind utilities;
 
 :root {
-  --primary: #3949AB;
-  --primary-2: #5262C9;
-  --accent: #0F766E;
+  --primary: #FFA36C;
+  --primary-2: #FF8A3D;
+  --accent: #E86A33;
   --alert: #B91C1C;
-  --primary-tint: #EEF0FA;
-  --accent-tint: #E3F4F1;
+  --primary-tint: #FFF5ED;
+  --accent-tint: #FFE8D9;
   --alert-tint: #FCE9E9;
   --bg: #F5F7FC;
   --surface: #FFFFFF;
-  --border: #E8EBF3;
-  --text: #1B2236;
-  --muted: #667085;
-  --shadow: 0 1px 2px rgb(25 32 80 / 0.05), 0 8px 24px rgb(57 73 171 / 0.07);
-  --shadow-hero: 0 12px 28px rgb(57 73 171 / 0.28);
-  --shadow-fab: 0 6px 16px rgb(15 118 110 / 0.35), 0 0 0 5px #F5F7FC;
-  --shadow-bnav: 0 -6px 20px rgb(57 73 171 / 0.06);
+  --border: #E8E8E8;
+  --text: #2D3748;
+  --muted: #666666;
+  --shadow: 0 1px 2px rgb(0 0 0 / 0.03), 0 4px 12px rgb(0 0 0 / 0.06);
+  --shadow-hero: 0 8px 24px rgb(255 163 108 / 0.2);
+  --shadow-fab: 0 4px 12px rgb(255 163 108 / 0.3), 0 0 0 5px #FFFFFF;
+  --shadow-bnav: 0 -4px 16px rgb(0 0 0 / 0.04);
   --rc: 20px;
   --rx: 14px;
   --tap: 48px;
@@ -92,7 +92,7 @@ body {
 }
 
 .bk-row:hover {
-  box-shadow: 0 4px 12px rgb(25 32 80 / 0.06), 0 12px 28px rgb(57 73 171 / 0.09);
+  box-shadow: 0 4px 12px rgb(0 0 0 / 0.04), 0 8px 24px rgb(255 163 108 / 0.12);
 }
 
 .bk-row:active {
@@ -217,7 +217,7 @@ body {
 
 .bk-chip:hover {
   color: var(--text);
-  box-shadow: 0 2px 8px rgb(25 32 80 / 0.08);
+  box-shadow: 0 2px 8px rgb(0 0 0 / 0.05);
 }
 
 .bk-chip.on {

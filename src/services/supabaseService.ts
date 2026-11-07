@@ -4,6 +4,7 @@
  */
 
 import { supabase, isSupabaseConfigured } from '../lib/supabaseClient';
+import { AKPD_RPL_TOPICS } from '../data/dummy';
 import type {
   Student,
   CounselingRecord,
@@ -15,9 +16,6 @@ import type {
   IndividualKarirAngket,
 } from '../types';
 
-// ============================================================================
-// 1. STUDENTS SERVICE
-// ============================================================================
 export const studentService = {
   async getAll(): Promise<Student[] | null> {
     if (!isSupabaseConfigured() || !supabase) return null;
@@ -115,9 +113,6 @@ export const studentService = {
   },
 };
 
-// ============================================================================
-// 2. COUNSELING RECORDS SERVICE
-// ============================================================================
 export const counselingService = {
   async getAll(): Promise<CounselingRecord[] | null> {
     if (!isSupabaseConfigured() || !supabase) return null;
@@ -630,12 +625,18 @@ export const akpdService = {
       .eq('kelas', kelas)
       .order('no', { ascending: true });
     if (error || !data || data.length === 0) return null;
-    const items: AKPDStatement[] = data.map((r) => ({
-      no: r.no,
-      pernyataan: r.pernyataan,
-      jumlahPemilih: r.jumlah_pemilih,
-      jawaban: null,
-    }));
+    const items: AKPDStatement[] = data.map((r, idx) => {
+      const defaultBidang: 'Pribadi' | 'Sosial' | 'Belajar' | 'Karir' =
+        r.no <= 15 ? 'Pribadi' : r.no <= 30 ? 'Sosial' : r.no <= 45 ? 'Belajar' : 'Karir';
+      return {
+        no: r.no,
+        pernyataan: r.pernyataan,
+        jumlahPemilih: r.jumlah_pemilih,
+        jawaban: null,
+        bidang: r.bidang || defaultBidang,
+        topikRPL: r.topik_rpl || AKPD_RPL_TOPICS[idx] || '',
+      };
+    });
     return {
       items,
       totalResponden: data[0].total_responden || 32,

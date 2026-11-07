@@ -1,8 +1,18 @@
 ﻿import { useState } from 'react';
 import {
-  Printer, Plus, Save, RotateCcw, Trash2, Check, Download,
-  Table, FileText, ClipboardPaste, ArrowRight, HelpCircle, TrendingUp, Sparkles, Award, Eye
-} from 'lucide-react';
+  Printer,
+  Save,
+  RotateCcw,
+  Check,
+  Download,
+  Table,
+  FileText,
+  ClipboardPaste,
+  ArrowRight,
+  TrendingUp,
+  Eye,
+  Sparkles,
+} from "lucide-react";
 import PetunjukIbu from '../ui/PetunjukIbu';
 import { confirmDialog } from '../ui/ConfirmModal';
 import KopSurat from '../ui/KopSurat';
@@ -16,66 +26,7 @@ interface AKPDViewProps {
   onToast: (msg: string) => void;
 }
 
-const DEFAULT_STATEMENTS: string[] = [
-  'Saya kadang lupa bersyukur atas nikmat dan karunia dari Tuhan YME',
-  'Saya kadang lupa untuk berprilaku sopan dan santun dalam kehidupan',
-  'Saya merasa belum paham etika yang baik dan benar dalam pergaulan teman sebaya',
-  'Saya merasa sulit mematuhi tata tertib di sekolah',
-  'Kadang-kadang saya masih suka menyontek pada waktu ulangan',
-  'Kadang-kadang saya masih suka membolos sekolah / les / jam pelajaran',
-  'Rasa sakit hati / dendam masih membekas terhadap perlakuan orang lain',
-  'Saya masih merasa cemas atau takut jika berada di depan umum atau keramaian',
-  'Saya belum paham cara menjaga kesehatan tubuh dan kebersihan diri dengan baik',
-  'Saya belum tahu cara melakukan eksplorasi bakat secara mandiri',
-  'Saya masih sering mengalami sakit / alergi',
-  'Kondisi keluarga saya sedang tidak harmonis',
-  'Saya sedang mempunyai masalah dengan anggauta keluarga di rumah',
-  'Saya merasa belum bisa menjadi pribadi yang mandiri',
-  'Saya sering lupa waktu ketika bermain/membuka media sosial (fb, wa, instagram, dll)',
-  'Saya merasa sulit mengendalikan ketergantungan dengan handphone',
-  'Saya merasa tidak betah tinggal di rumah sendiri',
-  'Saya merasa tidak pernah di perhatikan dari orang tua',
-  'Kata maaf, tolong dan terimakasih kadang lupa saya ucapkan dalam pergaulan',
-  'Saya belum tahu tentang bentuk-bentuk kenakalan remaja saat ini dan cara mensikapinya',
-  'Saya sering beda pendapat dengan orang lain',
-  'Saya sedang mempunyai masalah dengan teman di sekolah',
-  'Saya belum tahu cara untuk menjaga persahabatan agar tetap langgeng',
-  'Saya belum tahu tentang bullying dan cara mensikapinya',
-  'Saya sukar bergaul dengan teman-teman di sekolah',
-  'Saya merasa masih sedikit pemahaman tentang kesehatan reproduksi remaja',
-  'Saya belum banyak tahu tentang dampak dari pacaran',
-  'Saya malu jika membicarakan masalah seks dan pacar kepada orang tua',
-  'Saya merasa malu jika bergaul dengan teman yang beda jenis kelamin',
-  'Saya merasa takut bertanya atau menjawab di kelas',
-  'Saya belum paham yang harus dilakukan dengan adanya pemanasan global',
-  'Saya belum mengetahui banyak tentang jenis obat-obat terlarang serta dampaknya',
-  'Saya belum tahu cara memilih lembaga bimbingan belajar',
-  'Saya merasa tidak memiliki semangat belajar',
-  'Saya belum tahu cara meraih prestasi di sekolah',
-  'Saya belum paham tentang gaya belajar dan strategi yang sesuai dengannya',
-  'Saya merasa kesulitan dalam memahami pelajaran',
-  'Saya belum terbiasa belajar bersama atau kelompok',
-  'Saya merasa belum menemukan cara belajar yang efektif',
-  'Saya selalu malas untuk belajar di rumah',
-  'Saya belajarnya jika akan ada ulangan atau ujian saja',
-  'Orang tua kurang peduli dengan kegiatan belajar saya',
-  'Saya belum bisa membuat peta pikiran (mind mapping)',
-  'Saya belum mengenal tentang macam-macam kecerdasan',
-  'Saya belum paham cara kerja otak kiri dan otak kanan',
-  'Saya sering dimarahi orang tua karena boros',
-  'Saya tidak terbiasa menabung',
-  'Saya kurang dapat menyalurkan bakat dan minat di sekolah',
-  'Saya belum tahu tentang prospek karir untuk setiap mapel',
-  'Saya belum banyak tahu tentang jenis-jenis profesi di masyarakat dan Prospeknya',
-];
 
-const SAMPLE_TALLY = [
-  18, 14, 22, 19, 21, 8, 15, 17, 12, 24,
-  9, 7, 11, 20, 29, 28, 6, 8, 16, 23,
-  19, 13, 21, 25, 14, 16, 22, 18, 15, 23,
-  10, 17, 15, 22, 20, 24, 26, 14, 25, 27,
-  28, 9, 21, 18, 19, 23, 20, 21, 26, 27,
-];
 
 export default function AKPDView({ onNav, onToast }: AKPDViewProps) {
   const {
@@ -90,6 +41,9 @@ export default function AKPDView({ onNav, onToast }: AKPDViewProps) {
     kelasAKPD: kelas,
     setKelasAKPD: setKelas,
     settings,
+    setAkpdRecommendations,
+    setAkpdProtaTargets,
+    setActiveDocTab,
   } = useBK();
 
   const [previewHvsOpen, setPreviewHvsOpen] = useState(false);
@@ -252,7 +206,7 @@ export default function AKPDView({ onNav, onToast }: AKPDViewProps) {
           <button
             type="button"
             onClick={handleSave}
-            className="min-h-[40px] px-4 rounded-[12px] bg-primary text-white text-xs font-bold hover:brightness-105 active:scale-[0.98] transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
+            className="min-h-[40px] px-4 rounded-[12px] bg-blue-600 text-white text-xs font-bold hover:brightness-105 active:scale-[0.98] transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
           >
             <Save size={15} />
             <span>Simpan</span>
@@ -316,7 +270,7 @@ export default function AKPDView({ onNav, onToast }: AKPDViewProps) {
             <select
               value={kelas}
               onChange={(e) => setKelas(e.target.value)}
-              className="min-h-[38px] px-3.5 rounded-[10px] border border-border text-xs font-extrabold bg-surface text-primary"
+              className="min-h-[38px] px-3.5 rounded-[10px] border border-border text-xs font-extrabold bg-surface text-gray-700"
             >
               <option value="KELAS 7">KELAS 7</option>
               <option value="KELAS 8">KELAS 8</option>
@@ -343,7 +297,7 @@ export default function AKPDView({ onNav, onToast }: AKPDViewProps) {
           {viewMode === 'batch' && (
             <button
               onClick={() => setShowPasteBox(!showPasteBox)}
-              className="min-h-[38px] px-3 rounded-[10px] bg-accent-tint text-accent text-xs font-bold hover:brightness-105 transition-all flex items-center gap-1.5 border border-accent/20"
+              className="min-h-[38px] px-3 rounded-[10px] bg-blue-50 text-blue-700 text-xs font-bold hover:brightness-105 transition-all flex items-center gap-1.5 border border-blue-200"
               title="Tempel deretan 50 angka sekaligus dari Excel"
             >
               <ClipboardPaste size={14} />
@@ -366,9 +320,9 @@ export default function AKPDView({ onNav, onToast }: AKPDViewProps) {
       {/* KOTAK INPUT CEPAT NOMOR LEMBAR SISWA (KHUSUS MODE BATCH) */}
       {/* ======================================================== */}
       {viewMode === 'batch' && (
-        <div className="print:hidden bk-card bg-primary-tint/40 border-primary/20 p-4 space-y-2.5">
+        <div className="print:hidden bk-card bg-blue-50 border border-blue-200 p-4 space-y-2.5">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-extrabold text-primary flex items-center gap-1.5">
+            <span className="text-xs font-extrabold text-blue-700 flex items-center gap-1.5">
               <Check size={16} /> Input Cepat Nomor Centang:
             </span>
             <span className="text-[11px] text-muted">Tekan Enter untuk menyimpan satu lembar</span>
@@ -379,11 +333,11 @@ export default function AKPDView({ onNav, onToast }: AKPDViewProps) {
               value={quickNumbers}
               onChange={(e) => setQuickNumbers(e.target.value)}
               placeholder="Ketik nomor yang dicentang siswa, contoh: 1, 3, 5, 15, 16, 24, 40 (pisahkan koma/spasi)..."
-              className="flex-1 min-h-[44px] px-4 rounded-[12px] border border-primary/30 text-sm font-bold bg-white text-text focus:outline-none focus:border-primary shadow-sm"
+              className="flex-1 min-h-[44px] px-4 rounded-[12px] border border-blue-300 text-sm font-bold bg-white text-text focus:outline-none focus:border-blue-500 shadow-sm"
             />
             <button
               type="submit"
-              className="min-h-[44px] px-5 rounded-[12px] bg-primary text-white text-xs font-bold hover:brightness-105 shrink-0 shadow-sm"
+              className="min-h-[44px] px-5 rounded-[12px] bg-blue-600 text-white text-xs font-bold hover:brightness-105 shrink-0 shadow-sm"
             >
               + Masukkan Lembar Siswa
             </button>
@@ -393,9 +347,9 @@ export default function AKPDView({ onNav, onToast }: AKPDViewProps) {
 
       {/* KOTAK TEMPEL ANGKA MASAL DARI EXCEL */}
       {showPasteBox && viewMode === 'batch' && (
-        <div className="print:hidden bk-card bg-emerald-50/80 border-emerald-300 p-4 space-y-3 fade-up">
+        <div className="print:hidden bk-card bg-yellow-50 border border-yellow-300 p-4 space-y-3 fade-up">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-emerald-900 flex items-center gap-1.5">
+            <span className="text-xs font-bold text-yellow-800 flex items-center gap-1.5">
               <ClipboardPaste size={16} /> Tempel 50 Angka Rekapitulasi (dari Excel / Catatan):
             </span>
             <button
@@ -405,7 +359,7 @@ export default function AKPDView({ onNav, onToast }: AKPDViewProps) {
               Tutup
             </button>
           </div>
-          <p className="text-[12px] text-emerald-950">
+          <p className="text-[12px] text-yellow-900">
             Paste deretan angka total centang (dipisahkan spasi, koma, atau baris baru).
           </p>
           <textarea
@@ -413,12 +367,12 @@ export default function AKPDView({ onNav, onToast }: AKPDViewProps) {
             value={pasteTallyText}
             onChange={(e) => setPasteTallyText(e.target.value)}
             placeholder="Contoh: 18, 14, 22, 19, 21, 8, 15, 17, 12, 24, 9, 7..."
-            className="w-full p-3 rounded-[10px] border border-emerald-300 text-xs bg-white text-text font-mono focus:outline-none focus:border-primary"
+            className="w-full p-3 rounded-[10px] border border-yellow-300 text-xs bg-white text-text font-mono focus:outline-none focus:border-yellow-500"
           />
           <div className="flex justify-end">
             <button
               onClick={handleProcessPasteTally}
-              className="min-h-[38px] px-4 rounded-[10px] bg-emerald-700 text-white font-bold text-xs hover:bg-emerald-800"
+              className="min-h-[38px] px-4 rounded-[10px] bg-yellow-600 text-white font-bold text-xs hover:bg-yellow-700"
             >
               Terapkan ke 50 Butir
             </button>
@@ -465,7 +419,7 @@ export default function AKPDView({ onNav, onToast }: AKPDViewProps) {
                 {items.map((item, idx) => {
                   const percent = Math.round((item.jumlahPemilih / totalRespondenKelas) * 100);
                   return (
-                    <tr key={idx} className="hover:bg-blue-50/40 transition-colors">
+                    <tr key={idx} className="hover:bg-gray-50/40 transition-colors">
                       <td className="border border-black px-2 py-1.5 text-center font-bold">
                         {item.no}
                       </td>
@@ -475,7 +429,7 @@ export default function AKPDView({ onNav, onToast }: AKPDViewProps) {
                           type="text"
                           value={item.pernyataan}
                           onChange={(e) => handleTextChange(idx, e.target.value)}
-                          className="w-full bg-transparent border-none focus:outline-none focus:ring-1 focus:ring-primary rounded px-1 py-0.5 text-black font-normal"
+                          className="w-full bg-transparent border-none focus:outline-none focus:ring-1 focus:ring-blue-400 rounded px-1 py-0.5 text-black font-normal"
                         />
                       </td>
 
@@ -486,7 +440,7 @@ export default function AKPDView({ onNav, onToast }: AKPDViewProps) {
                           max={totalRespondenKelas}
                           value={item.jumlahPemilih}
                           onChange={(e) => handleTallyCountChange(idx, parseInt(e.target.value) || 0)}
-                          className="w-16 min-h-[34px] text-center font-extrabold border border-gray-300 rounded bg-white text-black focus:outline-none focus:border-primary shadow-sm"
+                          className="w-16 min-h-[34px] text-center font-extrabold border border-gray-300 rounded bg-white text-black focus:outline-none focus:border-blue-500 shadow-sm"
                         />
                         <span className="text-xs text-muted ml-1">/ {totalRespondenKelas}</span>
                       </td>
@@ -497,8 +451,8 @@ export default function AKPDView({ onNav, onToast }: AKPDViewProps) {
                             percent >= 70
                               ? 'bg-red-100 text-red-800'
                               : percent >= 50
-                                ? 'bg-amber-100 text-amber-800'
-                                : 'bg-emerald-100 text-emerald-800'
+                                ? 'bg-blue-100 text-blue-700'
+                                : 'bg-yellow-100 text-yellow-800'
                           }`}
                         >
                           {percent}%
@@ -509,7 +463,7 @@ export default function AKPDView({ onNav, onToast }: AKPDViewProps) {
                         <button
                           type="button"
                           onClick={() => handleIncrementTally(idx)}
-                          className="px-3 py-1 rounded bg-primary text-white font-bold text-xs hover:brightness-110 active:scale-90 transition-all shadow-sm"
+                          className="px-3 py-1 rounded bg-blue-600 text-white font-bold text-xs hover:brightness-110 active:scale-90 transition-all shadow-sm"
                           title="Klik +1 setiap melihat centang di kertas"
                         >
                           +1
@@ -596,7 +550,7 @@ export default function AKPDView({ onNav, onToast }: AKPDViewProps) {
                 {items.map((item, idx) => (
                   <tr
                     key={idx}
-                    className="hover:bg-blue-50/40 print:hover:bg-transparent transition-colors group"
+                    className="hover:bg-gray-50/40 print:hover:bg-transparent transition-colors group"
                   >
                     <td className="border border-black px-2 py-1 text-center font-bold align-middle">
                       {item.no}
@@ -607,14 +561,14 @@ export default function AKPDView({ onNav, onToast }: AKPDViewProps) {
                         type="text"
                         value={item.pernyataan}
                         onChange={(e) => handleTextChange(idx, e.target.value)}
-                        className="w-full bg-transparent border-none focus:outline-none focus:ring-1 focus:ring-primary/40 rounded px-1 py-0.5 text-black font-normal"
+                        className="w-full bg-transparent border-none focus:outline-none focus:ring-1 focus:ring-blue-300 rounded px-1 py-0.5 text-black font-normal"
                         title="Klik untuk mengedit teks pernyataan"
                       />
                     </td>
 
                     <td
                       onClick={() => handleToggleAnswer(idx, 'ya')}
-                      className="border border-black px-1 py-1 text-center cursor-pointer select-none hover:bg-emerald-50 print:hover:bg-transparent align-middle font-extrabold text-[15px]"
+                      className="border border-black px-1 py-1 text-center cursor-pointer select-none hover:bg-blue-50 print:hover:bg-transparent align-middle font-extrabold text-[15px]"
                     >
                       {item.jawaban === 'ya' ? (
                         <span className="text-black font-extrabold block">âœ“</span>
@@ -671,9 +625,43 @@ export default function AKPDView({ onNav, onToast }: AKPDViewProps) {
 
             {/* Bagian 1: Tabel Persentase 4 Bidang */}
             <div className="space-y-2">
-              <h3 className="font-bold text-xs sm:text-sm text-black uppercase tracking-wide">
-                I. Persentase Kebutuhan per Bidang Layanan
-              </h3>
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <h3 className="font-bold text-xs sm:text-sm text-black uppercase tracking-wide">
+                  I. Persentase Kebutuhan per Bidang Layanan
+                </h3>
+                {onNav && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      // Generate Prota items from top 3 bidang with highest needs
+                      const bidangData = [
+                        { nama: 'Pribadi', pct: pctPribadi },
+                        { nama: 'Sosial', pct: pctSosial },
+                        { nama: 'Belajar', pct: pctBelajar },
+                        { nama: 'Karir', pct: pctKarir },
+                      ].sort((a, b) => b.pct - a.pct);
+
+                      const topBidang = bidangData.slice(0, 3);
+                      const protaTargets: any[] = topBidang.map((b, idx) => ({
+                        id: `akpd-prota-${idx}`,
+                        komponen: 'Layanan Dasar',
+                        jenis: `Bimbingan Klasikal: Kebutuhan ${b.nama} (dari AKPD ${kelas})`,
+                        bidang: b.nama as any,
+                        months: Array(12).fill(true),
+                        volume: 12,
+                        sasaran: `Siswa ${kelas} dengan kebutuhan tinggi di bidang ${b.nama} (${b.pct}%)`,
+                      }));
+
+                      setAkpdProtaTargets(protaTargets);
+                      setActiveDocTab('prota');
+                      onNav('dokumen');
+                    }}
+                    className="min-h-[32px] px-3.5 rounded-[8px] bg-accent text-white text-xs font-bold hover:brightness-105 active:scale-[0.98] transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
+                  >
+                    <TrendingUp size={13} /> Buat Target Prota
+                  </button>
+                )}
+              </div>
               <div className="overflow-x-auto border-t border-black">
                 <table className="w-full text-[12px] sm:text-[13px] border-collapse border border-black min-w-[560px]">
                   <thead>
@@ -692,7 +680,7 @@ export default function AKPDView({ onNav, onToast }: AKPDViewProps) {
                       { no: 3, nama: 'Bidang Belajar', range: 'Butir 31 - 45', butir: 15, pct: pctBelajar },
                       { no: 4, nama: 'Bidang Karir', range: 'Butir 46 - 50', butir: 5, pct: pctKarir },
                     ].map((row) => (
-                      <tr key={row.no} className="hover:bg-blue-50/30 transition-colors">
+                      <tr key={row.no} className="hover:bg-gray-50/30 transition-colors">
                         <td className="border border-black px-2 py-2 text-center font-bold">{row.no}</td>
                         <td className="border border-black px-3 py-2 font-bold text-black">
                           <span>{row.nama}</span>
@@ -708,8 +696,8 @@ export default function AKPDView({ onNav, onToast }: AKPDViewProps) {
                               row.pct >= 60
                                 ? 'bg-red-100 text-red-800'
                                 : row.pct >= 40
-                                ? 'bg-amber-100 text-amber-800'
-                                : 'bg-emerald-100 text-emerald-800'
+                                ? 'bg-blue-100 text-blue-700'
+                                : 'bg-yellow-100 text-yellow-800'
                             }`}
                           >
                             {row.pct >= 60 ? 'Prioritas Tinggi' : row.pct >= 40 ? 'Prioritas Sedang' : 'Cukup Baik'}
@@ -731,10 +719,20 @@ export default function AKPDView({ onNav, onToast }: AKPDViewProps) {
                 {onNav && (
                   <button
                     type="button"
-                    onClick={() => onNav('dokumen')}
-                    className="text-xs font-bold text-primary hover:underline flex items-center gap-1 cursor-pointer print:hidden"
+                    onClick={() => {
+                      const recs = top5Items.map(item => ({
+                        no: item.no,
+                        pernyataan: item.pernyataan,
+                        topikRPL: item.topikRPL,
+                        bidang: item.bidang,
+                      }));
+                      setAkpdRecommendations(recs);
+                      setActiveDocTab('rpl');
+                      onNav('dokumen');
+                    }}
+                    className="min-h-[32px] px-3.5 rounded-[8px] bg-accent text-white text-xs font-bold hover:brightness-105 active:scale-[0.98] transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
                   >
-                    Buka Penyusunan RPL <ArrowRight size={13} />
+                    <Sparkles size={13} /> Lihat Rekomendasi RPL
                   </button>
                 )}
               </div>
@@ -757,14 +755,14 @@ export default function AKPDView({ onNav, onToast }: AKPDViewProps) {
                       const pct = totalRespondenKelas > 0 ? Math.round((item.jumlahPemilih / totalRespondenKelas) * 100) : 0;
                       const bidang = item.no <= 15 ? 'Pribadi' : item.no <= 30 ? 'Sosial' : item.no <= 45 ? 'Belajar' : 'Karir';
                       return (
-                        <tr key={item.no} className="hover:bg-blue-50/30 transition-colors">
+                        <tr key={item.no} className="hover:bg-gray-50/30 transition-colors">
                           <td className="border border-black px-2 py-2 text-center font-black text-sm">
                             #{idx + 1}
                           </td>
                           <td className="border border-black px-2 py-2 text-center font-bold">
                             Butir {item.no}
                           </td>
-                          <td className="border border-black px-2 py-2 text-center font-bold text-primary">
+                          <td className="border border-black px-2 py-2 text-center font-bold text-blue-700">
                             {bidang}
                           </td>
                           <td className="border border-black px-3 py-2 text-black leading-snug font-medium">

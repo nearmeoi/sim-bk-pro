@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   Save, School, UserCheck, ShieldCheck, Check, RotateCcw, Upload, Trash2, Image,
   HardDriveDownload, CloudUpload
@@ -262,7 +262,7 @@ export const PengaturanView: React.FC<PengaturanViewProps> = ({ onToast }) => {
         {/* Dual Logo Upload: Sisi Kiri & Sisi Kanan */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {/* 1. LOGO SISI KIRI (LOGO PEMDA / YAYASAN / SEKOLAH) */}
-          <div className="p-4 rounded-[16px] bg-[#FAFBFD] border border-border flex flex-col justify-between gap-3">
+          <div className="p-4 rounded-[16px] bg-[#FFFFFF] border border-border flex flex-col justify-between gap-3">
             <div className="flex items-center gap-3.5">
               <div className="w-16 h-16 rounded-xl border-2 border-dashed border-border bg-white flex items-center justify-center overflow-hidden shrink-0">
                 {formSettings.logoUrl ? (
@@ -326,7 +326,7 @@ export const PengaturanView: React.FC<PengaturanViewProps> = ({ onToast }) => {
           </div>
 
           {/* 2. LOGO SISI KANAN (TUT WURI / KEMENAG / KHUSUS) */}
-          <div className="p-4 rounded-[16px] bg-[#FAFBFD] border border-border flex flex-col justify-between gap-3">
+          <div className="p-4 rounded-[16px] bg-[#FFFFFF] border border-border flex flex-col justify-between gap-3">
             <div className="flex items-center gap-3.5">
               <div className="w-16 h-16 rounded-xl border-2 border-dashed border-border bg-white flex items-center justify-center overflow-hidden shrink-0">
                 {formSettings.logoKananUrl ? (

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from "react";
 import {
   FileText, Download, ChevronRight, CheckCircle2, FileCheck2, Compass
 } from 'lucide-react';
@@ -10,6 +10,9 @@ import type { DocumentMeta, NavView } from '../../types';
 import ProtaForm from './dokumen/ProtaForm';
 import JurnalForm from './dokumen/JurnalForm';
 import RplForm from './dokumen/RplForm';
+import { ProsemForm } from './dokumen/ProsemForm';
+import { LapbulForm } from './dokumen/LapbulForm';
+import { LapsemForm } from './dokumen/LapsemForm';
 
 interface DokumenViewProps {
   onNav?: (v: NavView) => void;
@@ -18,8 +21,8 @@ interface DokumenViewProps {
 
 const STATUS_STYLE: Record<DocumentMeta['status'], string> = {
   Draf: 'bg-gray-100 text-gray-600',
-  Siap: 'bg-primary-tint text-primary font-bold',
-  Final: 'bg-emerald-50 text-emerald-700 font-bold',
+  Siap: 'bg-blue-100 text-blue-700 font-bold',
+  Final: 'bg-green-100 text-green-700 font-bold',
 };
 
 export const DokumenView: React.FC<DokumenViewProps> = ({ onNav, onToast }) => {
@@ -28,6 +31,9 @@ export const DokumenView: React.FC<DokumenViewProps> = ({ onNav, onToast }) => {
   if (activeDocTab === 'prota') return <ProtaForm onBack={() => setActiveDocTab(null)} onToast={onToast} />;
   if (activeDocTab === 'jurnal') return <JurnalForm onBack={() => setActiveDocTab(null)} onToast={onToast} />;
   if (activeDocTab === 'rpl') return <RplForm onBack={() => setActiveDocTab(null)} onToast={onToast} />;
+  if (activeDocTab === 'prosem') return <ProsemForm onBack={() => setActiveDocTab(null)} onToast={onToast} />;
+  if (activeDocTab === 'lapbul') return <LapbulForm onBack={() => setActiveDocTab(null)} onToast={onToast} />;
+  if (activeDocTab === 'lapsem') return <LapsemForm onBack={() => setActiveDocTab(null)} onToast={onToast} />;
 
   const handleExportAllCsv = () => {
     // Export combined summary of Prota and Jurnal
@@ -69,7 +75,9 @@ export const DokumenView: React.FC<DokumenViewProps> = ({ onNav, onToast }) => {
         tips={[
           'Klik "Program Tahunan BK (Prota)" untuk mengatur matriks jadwal layanan 12 bulan (Juli–Juni) dan alokasi jam kerja.',
           'Klik "Jurnal Harian BK" untuk memeriksa rekapitulasi kegiatan bimbingan harian. Data jurnal terisi otomatis setiap Ibu mencatat layanan.',
-          'Klik "RPL (Rencana Pelaksanaan Layanan)" untuk membuat modul bimbingan klasikal 1-lembar Kurikulum Merdeka siap cetak.',
+          'Klik "Program Semester" untuk penjabaran agenda bimbingan per semester ganjil & genap dengan matriks 12 bulan.',
+          'Klik "Laporan Bulanan" untuk rekapitulasi statistik layanan per bulan (otomatis dari data catatan) siap cetak untuk tanda tangan Kepsek.',
+          'Klik "Laporan Semester" untuk evaluasi ketercapaian program semesteran: statistik layanan, distribusi bidang, dan rencana tindak lanjut.',
           'Gunakan tombol hijau di bagian bawah untuk mengekspor bundel rekapitulasi seluruh administrasi ke Excel.'
         ]}
       />
@@ -79,7 +87,7 @@ export const DokumenView: React.FC<DokumenViewProps> = ({ onNav, onToast }) => {
           <button
             key={doc.id}
             onClick={() => {
-              if (doc.id === 'prota' || doc.id === 'jurnal' || doc.id === 'rpl') {
+              if (doc.id === 'prota' || doc.id === 'jurnal' || doc.id === 'rpl' || doc.id === 'prosem' || doc.id === 'lapbul' || doc.id === 'lapsem') {
                 setActiveDocTab(doc.id);
               } else if (doc.id === 'akpd') {
                 onNav?.('akpd');
@@ -101,7 +109,7 @@ export const DokumenView: React.FC<DokumenViewProps> = ({ onNav, onToast }) => {
               )}
             </div>
             <div className="flex-1 min-w-0">
-              <span className="block font-bold text-[15px] text-text group-hover:text-primary transition-colors truncate">
+              <span className="block font-bold text-[15px] text-text group-hover:text-muted transition-colors truncate">
                 {doc.title}
               </span>
               <span className="block text-xs text-muted truncate mt-0.5">
@@ -109,20 +117,20 @@ export const DokumenView: React.FC<DokumenViewProps> = ({ onNav, onToast }) => {
               </span>
             </div>
             <span className={`text-xs px-2.5 py-1 rounded-full shrink-0 ${STATUS_STYLE[doc.status]}`}>
-              {doc.id === 'prota' ? `${protaList.length} Item` : doc.id === 'jurnal' ? `${jurnalRows.length} Entri` : doc.id === 'rpl' ? 'Siap Cetak' : doc.status}
+              {doc.id === 'prota' ? `${protaList.length} Item` : doc.id === 'jurnal' ? `${jurnalRows.length} Entri` : doc.id === 'rpl' ? 'Siap Cetak' : doc.id === 'prosem' ? 'Matriks 12 Bulan' : doc.id === 'lapbul' ? 'Otomatis dari Catatan' : doc.id === 'lapsem' ? 'Evaluasi Semester' : doc.status}
             </span>
             <ChevronRight
               size={18}
-              className="text-muted/60 group-hover:text-primary group-hover:translate-x-0.5 transition-all flex-none"
+              className="text-muted/60 group-hover:text-muted/80 group-hover:translate-x-0.5 transition-all flex-none"
             />
           </button>
         ))}
       </div>
 
       {/* Batch Export Card */}
-      <div className="bk-card bg-gradient-to-br from-white to-[#F6F8FD] p-6 space-y-3">
+      <div className="bk-card bg-gradient-to-br from-white to-gray-50 p-6 space-y-3">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-[12px] bg-primary-tint text-primary flex items-center justify-center font-bold">
+          <div className="w-10 h-10 rounded-[12px] bg-blue-100 text-blue-600 flex items-center justify-center font-bold">
             <CheckCircle2 size={20} />
           </div>
           <div>
@@ -138,13 +146,13 @@ export const DokumenView: React.FC<DokumenViewProps> = ({ onNav, onToast }) => {
             onClick={() => {
               window.print();
             }}
-            className="min-h-[46px] px-5 rounded-[12px] bg-primary text-white text-xs font-bold hover:brightness-105 active:scale-[0.98] flex items-center gap-2 transition-all shadow-sm"
+            className="min-h-[46px] px-5 rounded-[12px] bg-blue-600 text-white text-xs font-bold hover:brightness-105 active:scale-[0.98] flex items-center gap-2 transition-all shadow-sm"
           >
             <Download size={14} /> Cetak / Simpan Ringkasan (PDF)
           </button>
           <button
             onClick={handleExportAllCsv}
-            className="min-h-[46px] px-5 rounded-[12px] bg-emerald-700 text-white text-xs font-bold hover:brightness-105 active:scale-[0.98] flex items-center gap-2 transition-all shadow-sm"
+            className="min-h-[46px] px-5 rounded-[12px] bg-green-600 text-white text-xs font-bold hover:brightness-105 active:scale-[0.98] flex items-center gap-2 transition-all shadow-sm"
           >
             <Download size={14} /> Unduh Format Rekap (Excel/CSV)
           </button>

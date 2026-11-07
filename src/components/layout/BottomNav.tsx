@@ -33,7 +33,7 @@ export default function BottomNav({ current, onNav, onCatat }: BottomNavProps) {
 
   return (
     <nav
-      className="fixed bottom-0 left-0 right-0 z-30 bg-surface/95 backdrop-blur-md border-t border-border flex items-center shadow-[0_-6px_20px_rgb(57_73_171/0.06)] lg:hidden"
+      className="fixed bottom-0 left-0 right-0 z-30 bg-surface/95 backdrop-blur-md border-t border-border flex items-center shadow-[0_-6px_20px_rgb(0_0_0/0.04)] lg:hidden"
       style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}
     >
       {tab('beranda', 'Beranda', Home)}
@@ -45,7 +45,7 @@ export default function BottomNav({ current, onNav, onCatat }: BottomNavProps) {
         className="flex-1 min-h-[68px] flex flex-col items-center justify-center select-none"
         aria-label="Catat Layanan"
       >
-        <span className="w-14 h-14 rounded-full bg-accent text-white flex items-center justify-center -mt-6 shadow-[0_6px_16px_rgb(15_118_110/0.35)] ring-4 ring-bg active:scale-90 transition-transform">
+        <span className="w-14 h-14 rounded-full bg-accent text-white flex items-center justify-center -mt-6 shadow-[0_6px_16px_rgb(232_106_51/0.35)] ring-4 ring-bg active:scale-90 transition-transform">
           <Plus size={24} strokeWidth={2.75} />
         </span>
         <span className="text-[12px] font-bold text-accent mt-1 leading-none">
