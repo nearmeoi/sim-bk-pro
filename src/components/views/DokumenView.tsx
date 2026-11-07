@@ -18,8 +18,8 @@ interface DokumenViewProps {
 
 const STATUS_STYLE: Record<DocumentMeta['status'], string> = {
   Draf: 'bg-gray-100 text-gray-600',
-  Siap: 'bg-primary-tint text-primary font-bold',
-  Final: 'bg-accent-50 text-accent-700 font-bold',
+  Siap: 'bg-blue-100 text-blue-700 font-bold',
+  Final: 'bg-green-100 text-green-700 font-bold',
 };
 
 export const DokumenView: React.FC<DokumenViewProps> = ({ onNav, onToast }) => {
@@ -101,7 +101,7 @@ export const DokumenView: React.FC<DokumenViewProps> = ({ onNav, onToast }) => {
               )}
             </div>
             <div className="flex-1 min-w-0">
-              <span className="block font-bold text-[15px] text-text group-hover:text-primary transition-colors truncate">
+              <span className="block font-bold text-[15px] text-text group-hover:text-muted transition-colors truncate">
                 {doc.title}
               </span>
               <span className="block text-xs text-muted truncate mt-0.5">
@@ -113,16 +113,16 @@ export const DokumenView: React.FC<DokumenViewProps> = ({ onNav, onToast }) => {
             </span>
             <ChevronRight
               size={18}
-              className="text-muted/60 group-hover:text-primary group-hover:translate-x-0.5 transition-all flex-none"
+              className="text-muted/60 group-hover:text-muted/80 group-hover:translate-x-0.5 transition-all flex-none"
             />
           </button>
         ))}
       </div>
 
       {/* Batch Export Card */}
-      <div className="bk-card bg-gradient-to-br from-white to-[#FFF5ED] p-6 space-y-3">
+      <div className="bk-card bg-gradient-to-br from-white to-gray-50 p-6 space-y-3">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-[12px] bg-primary-tint text-primary flex items-center justify-center font-bold">
+          <div className="w-10 h-10 rounded-[12px] bg-blue-100 text-blue-600 flex items-center justify-center font-bold">
             <CheckCircle2 size={20} />
           </div>
           <div>
@@ -138,13 +138,13 @@ export const DokumenView: React.FC<DokumenViewProps> = ({ onNav, onToast }) => {
             onClick={() => {
               window.print();
             }}
-            className="min-h-[46px] px-5 rounded-[12px] bg-primary text-white text-xs font-bold hover:brightness-105 active:scale-[0.98] flex items-center gap-2 transition-all shadow-sm"
+            className="min-h-[46px] px-5 rounded-[12px] bg-blue-600 text-white text-xs font-bold hover:brightness-105 active:scale-[0.98] flex items-center gap-2 transition-all shadow-sm"
           >
             <Download size={14} /> Cetak / Simpan Ringkasan (PDF)
           </button>
           <button
             onClick={handleExportAllCsv}
-            className="min-h-[46px] px-5 rounded-[12px] bg-accent-700 text-white text-xs font-bold hover:brightness-105 active:scale-[0.98] flex items-center gap-2 transition-all shadow-sm"
+            className="min-h-[46px] px-5 rounded-[12px] bg-green-600 text-white text-xs font-bold hover:brightness-105 active:scale-[0.98] flex items-center gap-2 transition-all shadow-sm"
           >
             <Download size={14} /> Unduh Format Rekap (Excel/CSV)
           </button>

@@ -105,15 +105,15 @@ export const BerandaView: React.FC<BerandaViewProps> = ({ onNav, onCatat }) => {
             <button
               key={label}
               onClick={action}
-              className={`min-h-[58px] sm:min-h-[62px] px-3.5 py-2.5 rounded-[16px] bg-surface border border-border/80 hover:border-primary/50 shadow-xs hover:shadow-sm active:scale-[0.98] transition-all flex items-center gap-3 text-left group cursor-pointer ${
+              className={`min-h-[58px] sm:min-h-[62px] px-3.5 py-2.5 rounded-[16px] bg-surface border border-border/80 hover:border-border shadow-xs hover:shadow-sm active:scale-[0.98] transition-all flex items-center gap-3 text-left group cursor-pointer ${
                 idx === quickActions.length - 1 ? 'col-span-2 sm:col-span-1' : ''
               }`}
             >
-              <div className="w-10 h-10 rounded-[12px] bg-primary-tint text-primary flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+              <div className="w-10 h-10 rounded-[12px] bg-gray-100 text-muted flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
                 <Icon size={20} strokeWidth={2.2} />
               </div>
               <div className="min-w-0 flex-1">
-                <span className="block text-[13px] font-bold text-text group-hover:text-primary transition-colors truncate leading-tight">
+                <span className="block text-[13px] font-bold text-text transition-colors truncate leading-tight">
                   {label}
                 </span>
                 <span className="block text-[11px] text-muted truncate mt-0.5">
@@ -133,14 +133,14 @@ export const BerandaView: React.FC<BerandaViewProps> = ({ onNav, onCatat }) => {
         <div className="grid grid-cols-3 gap-2.5 sm:gap-3.5 w-full">
           <div className="bk-card p-3.5 sm:p-4 text-center sm:text-left sm:flex sm:items-center sm:justify-between">
             <div>
-              <span className="block text-[26px] sm:text-[30px] font-black text-primary leading-none">
+              <span className="block text-[26px] sm:text-[30px] font-black text-blue-600 leading-none">
                 {aktif}
               </span>
               <span className="text-[11px] sm:text-xs font-semibold text-muted mt-1 block">
                 Siswa Aktif
               </span>
             </div>
-            <div className="hidden sm:flex w-10 h-10 rounded-xl bg-primary-tint text-primary items-center justify-center font-bold text-xs">
+            <div className="hidden sm:flex w-10 h-10 rounded-xl bg-blue-100 text-blue-600 items-center justify-center font-bold text-xs">
               BK
             </div>
           </div>
@@ -161,14 +161,14 @@ export const BerandaView: React.FC<BerandaViewProps> = ({ onNav, onCatat }) => {
 
           <div className="bk-card p-3.5 sm:p-4 text-center sm:text-left sm:flex sm:items-center sm:justify-between">
             <div>
-              <span className="block text-[26px] sm:text-[30px] font-black text-accent leading-none">
+              <span className="block text-[26px] sm:text-[30px] font-black text-gray-700 leading-none">
                 {totalKasus}
               </span>
               <span className="text-[11px] sm:text-xs font-semibold text-muted mt-1 block">
                 Total Kasus
               </span>
             </div>
-            <div className="hidden sm:flex w-10 h-10 rounded-xl bg-accent-tint text-accent items-center justify-center">
+            <div className="hidden sm:flex w-10 h-10 rounded-xl bg-gray-100 text-gray-700 items-center justify-center">
               <Folder size={18} />
             </div>
           </div>
@@ -188,7 +188,7 @@ export const BerandaView: React.FC<BerandaViewProps> = ({ onNav, onCatat }) => {
           </div>
           <button
             onClick={() => onNav('siswa')}
-            className="text-xs font-bold text-primary hover:underline flex items-center gap-0.5"
+            className="text-xs font-bold text-muted hover:text-text hover:underline flex items-center gap-0.5"
           >
             Buka Data Siswa <ChevronRight size={14} />
           </button>
@@ -266,13 +266,13 @@ export const BerandaView: React.FC<BerandaViewProps> = ({ onNav, onCatat }) => {
             <h2 className="text-[17px] font-[750] text-text">
               Dokumen Administrasi BK
             </h2>
-            <span className="text-xs font-bold text-primary bg-primary-tint px-2.5 py-0.5 rounded-full">
+            <span className="text-xs font-bold text-gray-600 bg-gray-100 px-2.5 py-0.5 rounded-full">
               {DOCUMENTS.length} Perangkat
             </span>
           </div>
           <button
             onClick={() => onNav('dokumen')}
-            className="text-xs font-bold text-primary hover:underline flex items-center gap-0.5 cursor-pointer"
+            className="text-xs font-bold text-muted hover:text-text hover:underline flex items-center gap-0.5 cursor-pointer"
           >
             Buka Menu Dokumen <ChevronRight size={14} />
           </button>
@@ -282,7 +282,7 @@ export const BerandaView: React.FC<BerandaViewProps> = ({ onNav, onCatat }) => {
           {/* Progress Singkat */}
           <div className="flex items-center justify-between text-xs pb-1 border-b border-border">
             <span className="text-muted font-medium">Status Perangkat BK:</span>
-            <span className="font-bold text-primary">Tersedia</span>
+            <span className="font-bold text-green-600">Tersedia</span>
           </div>
 
           {/* List Dokumen Terpadu (Top 3 tampil langsung, sisanya collapse / see more) */}
@@ -297,20 +297,20 @@ export const BerandaView: React.FC<BerandaViewProps> = ({ onNav, onCatat }) => {
                     else if (doc.id === 'karir') onNav('karir');
                     else onNav('dokumen');
                   }}
-                  className="w-full p-3 rounded-[14px] bg-[#FFFFFF] hover:bg-primary-tint/30 border border-border/80 hover:border-primary/40 transition-all flex items-center gap-3 text-left group cursor-pointer"
+                  className="w-full p-3 rounded-[14px] bg-[#FFFFFF] hover:bg-gray-50 border border-border/80 hover:border-border transition-all flex items-center gap-3 text-left group cursor-pointer"
                 >
-                  <div className="w-9 h-9 rounded-xl bg-white border border-border/80 text-primary flex items-center justify-center shrink-0 shadow-2xs group-hover:scale-105 transition-transform">
+                  <div className="w-9 h-9 rounded-xl bg-white border border-border/80 text-muted flex items-center justify-center shrink-0 shadow-2xs group-hover:scale-105 transition-transform">
                     <Icon size={18} strokeWidth={2.2} />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <span className="block text-xs sm:text-sm font-bold text-text group-hover:text-primary transition-colors truncate">
+                    <span className="block text-xs sm:text-sm font-bold text-text transition-colors truncate">
                       {doc.title}
                     </span>
                     <span className="block text-[11px] text-muted truncate mt-0.5">
                       {doc.desc}
                     </span>
                   </div>
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-primary-tint text-primary shrink-0">
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-gray-100 text-gray-600 shrink-0">
                     {doc.id === 'prota'
                       ? `${protaList.length} Item`
                       : doc.id === 'jurnal'

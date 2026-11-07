@@ -31,7 +31,7 @@ export default function Sidebar({ current, onNav, onCatat }: SidebarProps) {
         <Icon size={20} strokeWidth={active ? 2.25 : 1.75} className="flex-none" />
         <span className="flex-1 truncate">{label}</span>
         {badge && (
-          <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-accent text-white flex-none">
+          <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-green-600 text-white flex-none">
             {badge}
           </span>
         )}
@@ -175,7 +175,7 @@ export default function Sidebar({ current, onNav, onCatat }: SidebarProps) {
               >
                 <FileCheck2 size={15} className="flex-none" />
                 <span className="flex-1 truncate">Angket AKPD</span>
-                <span className="text-[10px] font-extrabold px-1.5 py-0.2 rounded-full bg-primary/15 text-primary flex-none">
+                <span className="text-[10px] font-extrabold px-1.5 py-0.2 rounded-full bg-blue-500 text-white flex-none">
                   50
                 </span>
               </button>
@@ -191,7 +191,7 @@ export default function Sidebar({ current, onNav, onCatat }: SidebarProps) {
               >
                 <Compass size={15} className="flex-none" />
                 <span className="flex-1 truncate">Pilihan Karir</span>
-                <span className="text-[10px] font-extrabold px-1.5 py-0.2 rounded-full bg-accent text-white flex-none">
+                <span className="text-[10px] font-extrabold px-1.5 py-0.2 rounded-full bg-purple-500 text-white flex-none">
                   Kls 9
                 </span>
               </button>
