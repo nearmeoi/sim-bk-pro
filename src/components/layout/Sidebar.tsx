@@ -195,6 +195,54 @@ export default function Sidebar({ current, onNav, onCatat }: SidebarProps) {
                   Kls 9
                 </span>
               </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setActiveDocTab('prosem');
+                  onNav('dokumen');
+                }}
+                className={`w-full min-h-[36px] px-2.5 rounded-[10px] flex items-center gap-2 text-[13px] transition-all text-left cursor-pointer ${
+                  current === 'dokumen' && activeDocTab === 'prosem'
+                    ? 'text-primary font-bold bg-primary/10'
+                    : 'text-muted hover:text-text hover:bg-bg font-medium'
+                }`}
+              >
+                <Calendar size={15} className="flex-none" />
+                <span className="flex-1 truncate">Program Semester</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setActiveDocTab('lapbul');
+                  onNav('dokumen');
+                }}
+                className={`w-full min-h-[36px] px-2.5 rounded-[10px] flex items-center gap-2 text-[13px] transition-all text-left cursor-pointer ${
+                  current === 'dokumen' && activeDocTab === 'lapbul'
+                    ? 'text-primary font-bold bg-primary/10'
+                    : 'text-muted hover:text-text hover:bg-bg font-medium'
+                }`}
+              >
+                <FileText size={15} className="flex-none" />
+                <span className="flex-1 truncate">Laporan Bulanan</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setActiveDocTab('lapsem');
+                  onNav('dokumen');
+                }}
+                className={`w-full min-h-[36px] px-2.5 rounded-[10px] flex items-center gap-2 text-[13px] transition-all text-left cursor-pointer ${
+                  current === 'dokumen' && activeDocTab === 'lapsem'
+                    ? 'text-primary font-bold bg-primary/10'
+                    : 'text-muted hover:text-text hover:bg-bg font-medium'
+                }`}
+              >
+                <FileText size={15} className="flex-none" />
+                <span className="flex-1 truncate">Laporan Semester</span>
+              </button>
             </div>
           )}
         </div>

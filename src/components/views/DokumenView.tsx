@@ -10,6 +10,9 @@ import type { DocumentMeta, NavView } from '../../types';
 import ProtaForm from './dokumen/ProtaForm';
 import JurnalForm from './dokumen/JurnalForm';
 import RplForm from './dokumen/RplForm';
+import { ProsemForm } from './dokumen/ProsemForm';
+import { LapbulForm } from './dokumen/LapbulForm';
+import { LapsemForm } from './dokumen/LapsemForm';
 
 interface DokumenViewProps {
   onNav?: (v: NavView) => void;
@@ -28,6 +31,9 @@ export const DokumenView: React.FC<DokumenViewProps> = ({ onNav, onToast }) => {
   if (activeDocTab === 'prota') return <ProtaForm onBack={() => setActiveDocTab(null)} onToast={onToast} />;
   if (activeDocTab === 'jurnal') return <JurnalForm onBack={() => setActiveDocTab(null)} onToast={onToast} />;
   if (activeDocTab === 'rpl') return <RplForm onBack={() => setActiveDocTab(null)} onToast={onToast} />;
+  if (activeDocTab === 'prosem') return <ProsemForm onBack={() => setActiveDocTab(null)} onToast={onToast} />;
+  if (activeDocTab === 'lapbul') return <LapbulForm onBack={() => setActiveDocTab(null)} onToast={onToast} />;
+  if (activeDocTab === 'lapsem') return <LapsemForm onBack={() => setActiveDocTab(null)} onToast={onToast} />;
 
   const handleExportAllCsv = () => {
     // Export combined summary of Prota and Jurnal
@@ -69,7 +75,9 @@ export const DokumenView: React.FC<DokumenViewProps> = ({ onNav, onToast }) => {
         tips={[
           'Klik "Program Tahunan BK (Prota)" untuk mengatur matriks jadwal layanan 12 bulan (Juli–Juni) dan alokasi jam kerja.',
           'Klik "Jurnal Harian BK" untuk memeriksa rekapitulasi kegiatan bimbingan harian. Data jurnal terisi otomatis setiap Ibu mencatat layanan.',
-          'Klik "RPL (Rencana Pelaksanaan Layanan)" untuk membuat modul bimbingan klasikal 1-lembar Kurikulum Merdeka siap cetak.',
+          'Klik "Program Semester" untuk penjabaran agenda bimbingan per semester ganjil & genap dengan matriks 12 bulan.',
+          'Klik "Laporan Bulanan" untuk rekapitulasi statistik layanan per bulan (otomatis dari data catatan) siap cetak untuk tanda tangan Kepsek.',
+          'Klik "Laporan Semester" untuk evaluasi ketercapaian program semesteran: statistik layanan, distribusi bidang, dan rencana tindak lanjut.',
           'Gunakan tombol hijau di bagian bawah untuk mengekspor bundel rekapitulasi seluruh administrasi ke Excel.'
         ]}
       />
@@ -79,7 +87,7 @@ export const DokumenView: React.FC<DokumenViewProps> = ({ onNav, onToast }) => {
           <button
             key={doc.id}
             onClick={() => {
-              if (doc.id === 'prota' || doc.id === 'jurnal' || doc.id === 'rpl') {
+              if (doc.id === 'prota' || doc.id === 'jurnal' || doc.id === 'rpl' || doc.id === 'prosem' || doc.id === 'lapbul' || doc.id === 'lapsem') {
                 setActiveDocTab(doc.id);
               } else if (doc.id === 'akpd') {
                 onNav?.('akpd');
@@ -109,7 +117,7 @@ export const DokumenView: React.FC<DokumenViewProps> = ({ onNav, onToast }) => {
               </span>
             </div>
             <span className={`text-xs px-2.5 py-1 rounded-full shrink-0 ${STATUS_STYLE[doc.status]}`}>
-              {doc.id === 'prota' ? `${protaList.length} Item` : doc.id === 'jurnal' ? `${jurnalRows.length} Entri` : doc.id === 'rpl' ? 'Siap Cetak' : doc.status}
+              {doc.id === 'prota' ? `${protaList.length} Item` : doc.id === 'jurnal' ? `${jurnalRows.length} Entri` : doc.id === 'rpl' ? 'Siap Cetak' : doc.id === 'prosem' ? 'Matriks 12 Bulan' : doc.id === 'lapbul' ? 'Otomatis dari Catatan' : doc.id === 'lapsem' ? 'Evaluasi Semester' : doc.status}
             </span>
             <ChevronRight
               size={18}
