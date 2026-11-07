@@ -134,7 +134,7 @@ export const PengaturanView: React.FC<PengaturanViewProps> = ({ onToast }) => {
         {/* Dual Logo Upload: Sisi Kiri & Sisi Kanan */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {/* 1. LOGO SISI KIRI (LOGO PEMDA / YAYASAN / SEKOLAH) */}
-          <div className="p-4 rounded-[16px] bg-[#FAFBFD] border border-border flex flex-col justify-between gap-3">
+          <div className="p-4 rounded-[16px] bg-[#FFFFFF] border border-border flex flex-col justify-between gap-3">
             <div className="flex items-center gap-3.5">
               <div className="w-16 h-16 rounded-xl border-2 border-dashed border-border bg-white flex items-center justify-center overflow-hidden shrink-0">
                 {formSettings.logoUrl ? (
@@ -198,7 +198,7 @@ export const PengaturanView: React.FC<PengaturanViewProps> = ({ onToast }) => {
           </div>
 
           {/* 2. LOGO SISI KANAN (TUT WURI / KEMENAG / KHUSUS) */}
-          <div className="p-4 rounded-[16px] bg-[#FAFBFD] border border-border flex flex-col justify-between gap-3">
+          <div className="p-4 rounded-[16px] bg-[#FFFFFF] border border-border flex flex-col justify-between gap-3">
             <div className="flex items-center gap-3.5">
               <div className="w-16 h-16 rounded-xl border-2 border-dashed border-border bg-white flex items-center justify-center overflow-hidden shrink-0">
                 {formSettings.logoKananUrl ? (
@@ -508,7 +508,7 @@ export const PengaturanView: React.FC<PengaturanViewProps> = ({ onToast }) => {
 
         <button
           onClick={handleSave}
-          className={`w-full sm:w-auto min-h-[50px] px-8 rounded-[14px] text-sm font-bold flex items-center justify-center gap-2 transition-all shadow-[0_6px_16px_rgb(57_73_171/0.25)] ${
+          className={`w-full sm:w-auto min-h-[50px] px-8 rounded-[14px] text-sm font-bold flex items-center justify-center gap-2 transition-all shadow-[0_6px_16px_rgb(255_163_108/0.25)] ${
             saved
               ? 'bg-accent-600 text-white'
               : 'bg-primary text-white hover:brightness-105 active:scale-[0.98]'

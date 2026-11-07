@@ -16,8 +16,8 @@ export const TutWuriEmblem = () => (
     {/* Perisai Biru Segi Lima */}
     <polygon
       points="50,4 93,26 80,88 50,98 20,88 7,26"
-      fill="#0072BC"
-      stroke="#005B94"
+      fill="#FFA36C"
+      stroke="#FF8A3D"
       strokeWidth="2"
     />
     <polygon
@@ -41,7 +41,7 @@ export const TutWuriEmblem = () => (
     {/* Garis Sayap */}
     <path
       d="M 30,47 Q 42,50 48,60 M 70,47 Q 58,50 52,60"
-      stroke="#0072BC"
+      stroke="#FFA36C"
       strokeWidth="1.2"
       fill="none"
     />
@@ -49,7 +49,7 @@ export const TutWuriEmblem = () => (
     <path
       d="M 50,72 Q 38,68 28,73 L 30,79 Q 40,75 50,78 Q 60,75 70,79 L 72,73 Q 62,68 50,72 Z"
       fill="#FFFFFF"
-      stroke="#005B94"
+      stroke="#FF8A3D"
       strokeWidth="1"
     />
     {/* Tangkai Obor Emas */}

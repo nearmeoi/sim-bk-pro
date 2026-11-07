@@ -307,7 +307,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
           onChange={(e) => setQ(e.target.value)}
           type="search"
           placeholder="Cari nama siswa, NIS, atau kelas... (Klik nama siswa untuk membuka catatan)"
-          className="w-full min-h-[50px] pl-11 pr-4 rounded-[16px] bg-surface text-text text-[15px] shadow-[0_1px_2px_rgb(25_32_80/0.05),0_8px_24px_rgb(57_73_171/0.07)] border border-border/80 placeholder:text-muted/70 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+          className="w-full min-h-[50px] pl-11 pr-4 rounded-[16px] bg-surface text-text text-[15px] shadow-[0_1px_2px_rgb(0_0_0/0.03),0_4px_12px_rgb(0_0_0/0.06)] border border-border/80 placeholder:text-muted/70 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
         />
       </div>
 

@@ -74,7 +74,7 @@ export const ProfilView: React.FC<ProfilViewProps> = ({ onNav, onToast }) => {
             Ringkasan Pelayanan Konseling
           </h2>
           <div className="grid grid-cols-3 gap-3">
-            <div className="p-4 rounded-[16px] bg-[#FAFBFD] border border-border text-center">
+            <div className="p-4 rounded-[16px] bg-[#FFFFFF] border border-border text-center">
               <span className="block text-2xl font-black text-primary leading-none">
                 {students.length}
               </span>
@@ -83,7 +83,7 @@ export const ProfilView: React.FC<ProfilViewProps> = ({ onNav, onToast }) => {
               </span>
             </div>
 
-            <div className="p-4 rounded-[16px] bg-[#FAFBFD] border border-border text-center">
+            <div className="p-4 rounded-[16px] bg-[#FFFFFF] border border-border text-center">
               <span className="block text-2xl font-black text-accent leading-none">
                 {records.length}
               </span>
@@ -92,7 +92,7 @@ export const ProfilView: React.FC<ProfilViewProps> = ({ onNav, onToast }) => {
               </span>
             </div>
 
-            <div className="p-4 rounded-[16px] bg-[#FAFBFD] border border-border text-center">
+            <div className="p-4 rounded-[16px] bg-[#FFFFFF] border border-border text-center">
               <span className="block text-2xl font-black text-accent-700 leading-none">
                 {totalSelesai}
               </span>

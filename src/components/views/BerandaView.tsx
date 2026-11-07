@@ -297,7 +297,7 @@ export const BerandaView: React.FC<BerandaViewProps> = ({ onNav, onCatat }) => {
                     else if (doc.id === 'karir') onNav('karir');
                     else onNav('dokumen');
                   }}
-                  className="w-full p-3 rounded-[14px] bg-[#FAFBFD] hover:bg-primary-tint/30 border border-border/80 hover:border-primary/40 transition-all flex items-center gap-3 text-left group cursor-pointer"
+                  className="w-full p-3 rounded-[14px] bg-[#FFFFFF] hover:bg-primary-tint/30 border border-border/80 hover:border-primary/40 transition-all flex items-center gap-3 text-left group cursor-pointer"
                 >
                   <div className="w-9 h-9 rounded-xl bg-white border border-border/80 text-primary flex items-center justify-center shrink-0 shadow-2xs group-hover:scale-105 transition-transform">
                     <Icon size={18} strokeWidth={2.2} />

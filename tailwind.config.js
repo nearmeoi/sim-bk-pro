@@ -13,9 +13,9 @@ export default {
       },
       colors: {
         primary: {
-          DEFAULT: '#B45309',
-          2: '#92400E',
-          tint: '#FEF3E2',
+          DEFAULT: '#FFA36C',
+          2: '#FF8A3D',
+          tint: '#FFF5ED',
         },
         accent: {
           DEFAULT: '#E86A33',
@@ -37,9 +37,9 @@ export default {
         },
         bg: '#FFFFFF',
         surface: '#FFFFFF',
-        border: '#E8EBF3',
-        text: '#1B2236',
-        muted: '#667085',
+        border: '#E8E8E8',
+        text: '#2D3748',
+        muted: '#666666',
       },
       borderRadius: {
         rc: '20px',
@@ -47,10 +47,10 @@ export default {
         panel: '28px',
       },
       boxShadow: {
-        card: '0 1px 2px rgb(55 35 15 / 0.05), 0 8px 24px rgb(232 106 51 / 0.07)',
-        hero: '0 12px 28px rgb(232 106 51 / 0.28)',
-        fab: '0 6px 16px rgb(232 106 51 / 0.35), 0 0 0 5px #FFFFFF',
-        bnav: '0 -6px 20px rgb(232 106 51 / 0.06)',
+        card: '0 1px 2px rgb(0 0 0 / 0.03), 0 4px 12px rgb(0 0 0 / 0.06)',
+        hero: '0 8px 24px rgb(255 163 108 / 0.2)',
+        fab: '0 4px 12px rgb(255 163 108 / 0.3), 0 0 0 5px #FFFFFF',
+        bnav: '0 -4px 16px rgb(0 0 0 / 0.04)',
       },
       minHeight: {
         tap: '48px',

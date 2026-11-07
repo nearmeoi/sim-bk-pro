@@ -16,7 +16,7 @@ export const PetunjukIbu: React.FC<PetunjukIbuProps> = ({
 
   return (
     <div
-      className={`print:hidden rounded-[18px] bg-gradient-to-r from-[#FFF7F0]/80 via-[#FFE8D9]/50 to-[#FFF0E6]/60 border border-primary/20 p-4 transition-all shadow-xs ${className}`}
+      className={`print:hidden rounded-[18px] bg-gradient-to-r from-[#FFF5ED]/80 via-[#FFF0E6]/50 to-[#FFFDF8]/60 border border-primary/20 p-4 transition-all shadow-xs ${className}`}
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2.5">

@@ -55,7 +55,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onSuccess, onToast }) => {
   };
 
   return (
-    <div className="min-h-screen bg-[#F5F7FC] flex flex-col justify-center items-center p-4 sm:p-6">
+    <div className="min-h-screen bg-[#FFFFFF] flex flex-col justify-center items-center p-4 sm:p-6">
       <div className="w-full max-w-[400px] bg-surface rounded-rc border border-border shadow-card p-6 sm:p-8">
         {/* Header: identitas satuan pendidikan + Tut Wuri mark */}
         <div className="text-center space-y-2 mb-2">

@@ -76,7 +76,7 @@ export const SuratModal: React.FC<SuratModalProps> = ({
         onClick={(e) => e.stopPropagation()}
       >
         {/* Top Control Header - Hidden when printing */}
-        <div className="print:hidden p-4 sm:p-5 border-b border-border bg-[#F9FAFD] flex flex-wrap items-center justify-between gap-3">
+        <div className="print:hidden p-4 sm:p-5 border-b border-border bg-[#FFFFFF] flex flex-wrap items-center justify-between gap-3">
           <div>
             <h3 className="font-extrabold text-[18px] text-text flex items-center gap-2">
               <FileText size={20} className="text-primary" />

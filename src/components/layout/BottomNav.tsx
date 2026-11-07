@@ -33,7 +33,7 @@ export default function BottomNav({ current, onNav, onCatat }: BottomNavProps) {
 
   return (
     <nav
-      className="fixed bottom-0 left-0 right-0 z-30 bg-surface/95 backdrop-blur-md border-t border-border flex items-center shadow-[0_-6px_20px_rgb(57_73_171/0.06)] lg:hidden"
+      className="fixed bottom-0 left-0 right-0 z-30 bg-surface/95 backdrop-blur-md border-t border-border flex items-center shadow-[0_-6px_20px_rgb(0_0_0/0.04)] lg:hidden"
       style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}
     >
       {tab('beranda', 'Beranda', Home)}

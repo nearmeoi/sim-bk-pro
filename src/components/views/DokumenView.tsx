@@ -120,7 +120,7 @@ export const DokumenView: React.FC<DokumenViewProps> = ({ onNav, onToast }) => {
       </div>
 
       {/* Batch Export Card */}
-      <div className="bk-card bg-gradient-to-br from-white to-[#F6F8FD] p-6 space-y-3">
+      <div className="bk-card bg-gradient-to-br from-white to-[#FFF5ED] p-6 space-y-3">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-[12px] bg-primary-tint text-primary flex items-center justify-center font-bold">
             <CheckCircle2 size={20} />
