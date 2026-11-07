@@ -586,17 +586,59 @@ export const ProsemForm: React.FC<ProsemFormProps> = ({ onBack, onToast }) => {
       <HvsPreviewModal
         open={previewHvsOpen}
         onClose={() => setPreviewHvsOpen(false)}
-        title="Program Semester (Prosem) BK"
+        title={`Pratinjau Kertas HVS: Program Semester (Prosem)`}
       >
-        <div className="text-black text-sm">
-          <p className="mb-4">
-            Pratinjau untuk pencetakan pada kertas HVS ukuran A4 landscape. Dokumen
-            akan tampil sama persis seperti di atas, termasuk header sekolah dan
-            tanda tangan.
-          </p>
-          <p className="text-xs text-muted">
-            Pastikan printer siap dan kertas HVS tersedia sebelum mencetak.
-          </p>
+        <KopSurat
+          settings={settings}
+          judul="PROGRAM SEMESTER (PROSEM) BIMBINGAN & KONSELING"
+          subjudul={`${settings.namaSekolah || 'SMP NEGERI 1 BINTANG'} · TAHUN AJARAN ${settings.tahunAjaran || '2026/2027'}`}
+        />
+
+        <table className="w-full text-[10px] border-collapse border border-black mb-6">
+          <thead>
+            <tr className="bg-gray-100 font-extrabold text-black uppercase">
+              <th className="border border-black p-1 text-center w-8">No</th>
+              <th className="border border-black p-1 text-left">Uraian Kegiatan Program Semester</th>
+              <th className="border border-black p-1 text-center w-20">Semester</th>
+              {MONTH_NAMES.map((m) => (
+                <th key={m} className="border border-black p-1 text-center w-7">{m}</th>
+              ))}
+              <th className="border border-black p-1 text-left w-28">Keterangan</th>
+            </tr>
+          </thead>
+          <tbody>
+            {prosemItems.map((row) => (
+              <tr key={row.id}>
+                <td className="border border-black p-1 text-center font-bold">{row.no}</td>
+                <td className="border border-black p-1 font-bold">{row.kegiatan}</td>
+                <td className="border border-black p-1 text-center">{row.semester === '1' ? 'Ganjil' : 'Genap'}</td>
+                {MONTH_NAMES.map((m) => {
+                  const k = m.toLowerCase() as keyof ProsemItem['bulan'];
+                  return <td key={k} className="border border-black p-1 text-center">{row.bulan[k] ? '✓' : ''}</td>;
+                })}
+                <td className="border border-black p-1">{row.keterangan || '-'}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+
+        <div className="grid grid-cols-2 text-center text-xs pt-4">
+          <div>
+            <p>Mengetahui,</p>
+            <p className="font-bold">Kepala Sekolah</p>
+            <div className="mt-16">
+              <p className="font-bold underline">{settings.kepalaSekolah || 'Drs. H. Mulyadi Kusuma, M.Pd.'}</p>
+              <p>NIP. {settings.nipKepala || '19750101 200003 1 001'}</p>
+            </div>
+          </div>
+          <div>
+            <p>{settings.kotaSurat || 'Makassar'}, {new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
+            <p className="font-bold">Guru BK / Konselor</p>
+            <div className="mt-16">
+              <p className="font-bold underline">{settings.guruBK || 'Siti Rahmawati, S.Pd., M.Kons., Gr.'}</p>
+              <p>NIP. {settings.nipGuruBK || '19880512 201402 2 003'}</p>
+            </div>
+          </div>
         </div>
       </HvsPreviewModal>
     </div>

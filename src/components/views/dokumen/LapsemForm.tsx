@@ -384,17 +384,128 @@ export const LapsemForm: React.FC<LapsemFormProps> = ({ onBack, onToast }) => {
           <HvsPreviewModal
             open={previewHvsOpen}
             onClose={() => setPreviewHvsOpen(false)}
-            title="Laporan Semester BK"
+            title={`Pratinjau Kertas HVS: Laporan Semester BK`}
           >
-            <div className="text-black text-sm">
-              <p className="mb-4">
-                Pratinjau untuk pencetakan pada kertas HVS ukuran A4 portrait. Dokumen
-                akan tampil sama persis seperti di atas, termasuk header sekolah dan
-                tanda tangan Kepala Sekolah.
-              </p>
-              <p className="text-xs text-muted">
-                Pastikan printer siap dan kertas HVS tersedia sebelum mencetak.
-              </p>
+            <KopSurat
+              settings={settings}
+              judul="LAPORAN SEMESTER BIMBINGAN DAN KONSELING"
+              subjudul={`${selectedSemester === '1' ? 'SEMESTER GANJIL' : 'SEMESTER GENAP'} TAHUN AJARAN ${selectedTahunAjaran}`}
+            />
+
+            {/* Statistik Layanan */}
+            <h3 className="text-xs font-extrabold text-black uppercase border-b border-black pb-1 mb-2">
+              I. STATISTIK LAYANAN BIMBINGAN DAN KONSELING
+            </h3>
+            <table className="w-full text-[10px] border-collapse border border-black mb-4">
+              <thead>
+                <tr className="bg-gray-100 font-extrabold text-black uppercase">
+                  <th className="border border-black p-1 text-left">JENIS LAYANAN</th>
+                  <th className="border border-black p-1 text-center w-16">JUMLAH</th>
+                  <th className="border border-black p-1 text-center w-16">SATUAN</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td className="border border-black p-1 font-bold">Bimbingan Klasikal</td>
+                  <td className="border border-black p-1 text-center font-bold">{stats.klasikal}</td>
+                  <td className="border border-black p-1 text-center">Sesi</td>
+                </tr>
+                <tr>
+                  <td className="border border-black p-1 font-bold">Konseling Kelompok</td>
+                  <td className="border border-black p-1 text-center font-bold">{stats.kelompok}</td>
+                  <td className="border border-black p-1 text-center">Sesi</td>
+                </tr>
+                <tr>
+                  <td className="border border-black p-1 font-bold">Konseling Individual</td>
+                  <td className="border border-black p-1 text-center font-bold">{stats.individual}</td>
+                  <td className="border border-black p-1 text-center">Sesi</td>
+                </tr>
+                <tr>
+                  <td className="border border-black p-1 font-bold">Kunjungan Rumah</td>
+                  <td className="border border-black p-1 text-center font-bold">{stats.kunjungan}</td>
+                  <td className="border border-black p-1 text-center">Kunjungan</td>
+                </tr>
+                <tr>
+                  <td className="border border-black p-1 font-bold">Konferensi Kasus</td>
+                  <td className="border border-black p-1 text-center font-bold">{stats.konferensi}</td>
+                  <td className="border border-black p-1 text-center">Sesi</td>
+                </tr>
+                <tr className="bg-blue-50 font-extrabold">
+                  <td className="border border-black p-1">Total Layanan</td>
+                  <td className="border border-black p-1 text-center">{stats.total}</td>
+                  <td className="border border-black p-1 text-center">Kegiatan</td>
+                </tr>
+              </tbody>
+            </table>
+
+            {/* Bidang Bimbingan */}
+            <h3 className="text-xs font-extrabold text-black uppercase border-b border-black pb-1 mb-2">
+              II. DISTRIBUSI BIDANG BIMBINGAN
+            </h3>
+            <table className="w-full text-[10px] border-collapse border border-black mb-4">
+              <thead>
+                <tr className="bg-gray-100 font-extrabold text-black uppercase">
+                  <th className="border border-black p-1 text-left">BIDANG BIMBINGAN</th>
+                  <th className="border border-black p-1 text-center w-16">JUMLAH</th>
+                  <th className="border border-black p-1 text-center w-16">%</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td className="border border-black p-1 font-bold">Bidang Pribadi</td>
+                  <td className="border border-black p-1 text-center font-bold">{bidangStats.pribadi}</td>
+                  <td className="border border-black p-1 text-center">{stats.total > 0 ? Math.round((bidangStats.pribadi / stats.total) * 100) : 0}%</td>
+                </tr>
+                <tr>
+                  <td className="border border-black p-1 font-bold">Bidang Sosial</td>
+                  <td className="border border-black p-1 text-center font-bold">{bidangStats.sosial}</td>
+                  <td className="border border-black p-1 text-center">{stats.total > 0 ? Math.round((bidangStats.sosial / stats.total) * 100) : 0}%</td>
+                </tr>
+                <tr>
+                  <td className="border border-black p-1 font-bold">Bidang Belajar</td>
+                  <td className="border border-black p-1 text-center font-bold">{bidangStats.belajar}</td>
+                  <td className="border border-black p-1 text-center">{stats.total > 0 ? Math.round((bidangStats.belajar / stats.total) * 100) : 0}%</td>
+                </tr>
+                <tr>
+                  <td className="border border-black p-1 font-bold">Bidang Karir</td>
+                  <td className="border border-black p-1 text-center font-bold">{bidangStats.karir}</td>
+                  <td className="border border-black p-1 text-center">{stats.total > 0 ? Math.round((bidangStats.karir / stats.total) * 100) : 0}%</td>
+                </tr>
+              </tbody>
+            </table>
+
+            {/* Evaluasi & Rekomendasi */}
+            <h3 className="text-xs font-extrabold text-black uppercase border-b border-black pb-1 mb-2">
+              III. EVALUASI & REKOMENDASI
+            </h3>
+            <div className="text-[10px] leading-relaxed mb-4 space-y-2">
+              <p className="font-bold">A. Pencapaian Program:</p>
+              <p>Program bimbingan semester {selectedSemester === '1' ? 'ganjil' : 'genap'} telah dilaksanakan sesuai rencana dengan total {stats.total} kegiatan layanan kepada {uniqueStudents} siswa.</p>
+              
+              <p className="font-bold mt-2">B. Kendala:</p>
+              <p>Keterbatasan waktu untuk kunjungan rumah dan koordinasi dengan siswa yang mengikuti ekstrakurikuler.</p>
+              
+              <p className="font-bold mt-2">C. Rencana Tindak Lanjut:</p>
+              <p>Meningkatkan koordinasi dengan wali kelas dan orang tua, serta memperkuat layanan berbasis teknologi.</p>
+            </div>
+
+            <div className="grid grid-cols-2 text-center text-xs pt-4">
+              <div>
+                <p>Mengetahui,</p>
+                <p className="font-bold">Kepala Sekolah</p>
+                <div className="mt-16">
+                  <p className="font-bold underline">{settings.kepalaSekolah || 'Drs. H. Mulyadi Kusuma, M.Pd.'}</p>
+                  <p>NIP. {settings.nipKepala || '19750101 200003 1 001'}</p>
+                </div>
+              </div>
+              <div>
+                <p>{settings.kotaSurat || 'Makassar'}, {new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
+                <p className="font-bold">Guru BK / Konselor</p>
+                <div className="mt-16">
+                  <p className="font-bold underline">{settings.guruBK || 'Siti Rahmawati, S.Pd., M.Kons., Gr.'}</p>
+                  <p>NIP. {settings.nipGuruBK || '19880512 201402 2 003'}</p>
+                </div>
+              </div>
             </div>
           </HvsPreviewModal>
         </div>
