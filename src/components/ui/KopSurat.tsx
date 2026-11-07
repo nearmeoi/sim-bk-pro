@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import type { SchoolSettings } from '../../types';
 
 interface KopSuratProps {
@@ -76,7 +76,7 @@ export const KopSurat: React.FC<KopSuratProps> = ({
   compact = false,
 }) => {
   const instansi = settings.instansiAtas || 'PEMERINTAH KOTA MAKASSAR';
-  const namaSekolah = settings.namaSekolah || 'UPT SPF SMP NEGERI 6 MAKASSAR';
+  const namaSekolah = settings.namaSekolah || 'UPT SPF NAMA SEKOLAH Ibu';
   const alamat = settings.alamat || 'Jl. Jend. A. Yani No. 25 Makassar RT/RW: 002/002 Kec. Ujung Pandang Kota Makassar';
   const npsn = settings.npsn ? `NPSN: ${settings.npsn}` : '';
   const kontak = [settings.teleponSekolah || '', settings.emailSekolah ? `Email: ${settings.emailSekolah}` : '']
@@ -124,7 +124,7 @@ export const KopSurat: React.FC<KopSuratProps> = ({
               {instansi}
             </h3>
 
-            {/* Baris 2: Nama Lengkap Sekolah (UPT SPF SMP NEGERI 6 MAKASSAR) */}
+            {/* Baris 2: Nama Lengkap Sekolah (UPT SPF NAMA SEKOLAH Ibu) */}
             <h1
               className={`font-black uppercase tracking-tight text-black leading-tight mt-0.5 ${
                 compact ? 'text-sm sm:text-lg' : 'text-base sm:text-[22px]'
@@ -212,3 +212,4 @@ export const KopSurat: React.FC<KopSuratProps> = ({
 };
 
 export default KopSurat;
+

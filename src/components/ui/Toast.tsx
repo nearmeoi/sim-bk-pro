@@ -13,7 +13,7 @@ export default function Toast({ message }: ToastProps) {
       return;
     }
     setVisible(true);
-    const t = setTimeout(() => setVisible(false), 2400);
+    const t = setTimeout(() => setVisible(false), 2800);
     return () => clearTimeout(t);
   }, [message]);
 
@@ -22,12 +22,18 @@ export default function Toast({ message }: ToastProps) {
   return (
     <div
       role="status"
-      className="fixed left-1/2 -translate-x-1/2 z-50 bg-[#1B2236] text-white text-[14px] font-medium px-5 py-3 rounded-[14px] shadow-2xl max-w-[90%] text-center fade-up select-none pointer-events-none border border-white/10"
-      style={{
-        bottom: 'calc(88px + env(safe-area-inset-bottom, 0px))',
-      }}
+      aria-live="polite"
+      className={
+        'fixed left-1/2 -translate-x-1/2 z-[60] fade-up select-none pointer-events-none ' +
+        // Mobile: turun dari atas layar supaya selalu terlihat, tidak tertutup navbar bawah
+        'top-[calc(env(safe-area-inset-top,0px)+14px)] max-w-[92%] ' +
+        // Desktop: kembali ke bawah tengah seperti biasa
+        'lg:!top-auto lg:!bottom-8 lg:max-w-md'
+      }
     >
-      <span className="lg:bottom-8">{message}</span>
+      <div className="bg-[#1B2236] text-white text-[14px] sm:text-[15px] font-semibold px-5 py-3.5 rounded-[16px] shadow-2xl text-center leading-relaxed border border-white/15 ring-1 ring-black/10">
+        {message}
+      </div>
     </div>
   );
 }

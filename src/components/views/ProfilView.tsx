@@ -1,10 +1,11 @@
-import React from 'react';
+﻿import React, { useState } from 'react';
 import {
   User, School, Phone, Mail, Award, ArrowLeft, LogOut, Settings, CheckCircle2,
   Users, BookOpen, ShieldCheck, HeartHandshake
 } from 'lucide-react';
 import { useBK } from '../../context/BKContext';
 import { NavView } from '../../types';
+import { confirmDialog } from '../ui/ConfirmModal';
 
 interface ProfilViewProps {
   onNav: (v: NavView) => void;
@@ -14,8 +15,14 @@ interface ProfilViewProps {
 export const ProfilView: React.FC<ProfilViewProps> = ({ onNav, onToast }) => {
   const { settings, students, records, cases, logout } = useBK();
 
-  const handleLogout = () => {
-    if (window.confirm('Keluar dari aplikasi BK?')) {
+  const handleLogout = async () => {
+    const ok = await confirmDialog({
+      title: 'Keluar dari aplikasi?',
+      description: 'Data yang tersimpan aman di cloud. Anda akan kembali ke halaman masuk.',
+      confirmLabel: 'Keluar',
+      tone: 'danger',
+    });
+    if (ok) {
       logout();
       onToast('Ibu telah keluar dari sesi aplikasi.');
       onNav('login');
@@ -54,14 +61,14 @@ export const ProfilView: React.FC<ProfilViewProps> = ({ onNav, onToast }) => {
               Guru Bimbingan & Konseling
             </span>
             <h1 className="text-[22px] sm:text-[26px] font-black text-text tracking-tight leading-tight">
-              {settings.guruBK || 'Siti Rahmawati, S.Pd., M.Kons., Gr.'}
+              {settings.guruBK || 'Belum Diisi di Pengaturan'}
             </h1>
             <p className="text-sm font-semibold text-muted">
               NIP. {settings.nipGuruBK || '19880512 201402 2 003'}
             </p>
             <p className="text-xs text-muted flex items-center justify-center sm:justify-start gap-1.5 pt-1">
               <School size={14} className="text-primary" />
-              <span>{settings.namaSekolah || 'SMP Negeri 1 Bintang'}</span>
+              <span>{settings.namaSekolah || 'SIM BK PRO'}</span>
             </p>
           </div>
         </div>
@@ -129,7 +136,7 @@ export const ProfilView: React.FC<ProfilViewProps> = ({ onNav, onToast }) => {
         {/* Tombol Aksi Keluar */}
         <div className="pt-2 border-t border-border flex justify-between items-center">
           <p className="text-[11px] text-muted">
-            Sesi aktif Guru BK · Tersimpan di peramban ini.
+            Sesi aktif Guru BK Â· Tersimpan di peramban ini.
           </p>
           <button
             type="button"
@@ -146,3 +153,5 @@ export const ProfilView: React.FC<ProfilViewProps> = ({ onNav, onToast }) => {
 };
 
 export default ProfilView;
+
+

@@ -1,7 +1,11 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Save, School, UserCheck, ShieldCheck, Check, RotateCcw, Upload, Trash2, Image, FileText } from 'lucide-react';
+﻿import React, { useState, useEffect, useRef } from 'react';
+import {
+  Save, School, UserCheck, ShieldCheck, Check, RotateCcw, Upload, Trash2, Image,
+  HardDriveDownload, CloudUpload
+} from 'lucide-react';
 import PetunjukIbu from '../ui/PetunjukIbu';
 import KopSurat, { TutWuriEmblem } from '../ui/KopSurat';
+import { confirmDialog } from '../ui/ConfirmModal';
 import { useBK } from '../../context/BKContext';
 import type { SchoolSettings } from '../../types';
 
@@ -10,7 +14,14 @@ interface PengaturanViewProps {
 }
 
 export const PengaturanView: React.FC<PengaturanViewProps> = ({ onToast }) => {
-  const { settings: savedSettings, updateSettings, resetAllData } = useBK();
+  const {
+    settings: savedSettings,
+    updateSettings,
+    resetAllData,
+    downloadDataBackup,
+    restoreDataBackup,
+  } = useBK();
+  const backupInputRef = useRef<HTMLInputElement>(null);
   const [formSettings, setFormSettings] = useState<SchoolSettings>(savedSettings);
   const [saved, setSaved] = useState(false);
   const logoInputRef = useRef<HTMLInputElement>(null);
@@ -19,22 +30,57 @@ export const PengaturanView: React.FC<PengaturanViewProps> = ({ onToast }) => {
     setFormSettings(savedSettings);
   }, [savedSettings]);
 
-  const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  // Ada perubahan yang belum disimpan â†’ tampilkan tombol Simpan mengambang di bawah
+  const isDirty =
+    JSON.stringify(formSettings) !== JSON.stringify(savedSettings);
+
+  const compressImage = (file: File): Promise<string> => {
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const img = new window.Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          const maxDim = 240;
+          let { width, height } = img;
+          if (width > maxDim || height > maxDim) {
+            if (width > height) {
+              height = Math.round((height * maxDim) / width);
+              width = maxDim;
+            } else {
+              width = Math.round((width * maxDim) / height);
+              height = maxDim;
+            }
+          }
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          if (!ctx) {
+            resolve(event.target?.result as string);
+            return;
+          }
+          ctx.drawImage(img, 0, 0, width, height);
+          resolve(canvas.toDataURL('image/png'));
+        };
+        img.onerror = () => resolve(event.target?.result as string);
+        img.src = event.target?.result as string;
+      };
+      reader.readAsDataURL(file);
+    });
+  };
+
+  const handleLogoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    if (file.size > 2 * 1024 * 1024) {
-      onToast('Ukuran gambar logo maksimal 2 MB');
+    if (file.size > 5 * 1024 * 1024) {
+      onToast('Ukuran gambar logo maksimal 5 MB');
       return;
     }
 
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      const dataUrl = event.target?.result as string;
-      setFormSettings((s) => ({ ...s, logoUrl: dataUrl }));
-      onToast('Logo sekolah berhasil dimuat.');
-    };
-    reader.readAsDataURL(file);
+    const compressed = await compressImage(file);
+    setFormSettings((s) => ({ ...s, logoUrl: compressed }));
+    onToast('Logo sekolah berhasil dimuat dan dioptimasi.');
   };
 
   const handleRemoveLogo = () => {
@@ -42,22 +88,18 @@ export const PengaturanView: React.FC<PengaturanViewProps> = ({ onToast }) => {
     if (logoInputRef.current) logoInputRef.current.value = '';
     onToast('Logo sekolah dihapus.');
   };
-  const handleLogoKananUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleLogoKananUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    if (file.size > 2 * 1024 * 1024) {
-      onToast('Ukuran gambar logo maksimal 2 MB');
+    if (file.size > 5 * 1024 * 1024) {
+      onToast('Ukuran gambar logo maksimal 5 MB');
       return;
     }
 
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      const dataUrl = event.target?.result as string;
-      setFormSettings((s) => ({ ...s, logoKananUrl: dataUrl }));
-      onToast('Logo kanan berhasil dimuat.');
-    };
-    reader.readAsDataURL(file);
+    const compressed = await compressImage(file);
+    setFormSettings((s) => ({ ...s, logoKananUrl: compressed }));
+    onToast('Logo kanan berhasil dimuat dan dioptimasi.');
   };
 
   const handleRemoveLogoKanan = () => {
@@ -73,8 +115,25 @@ export const PengaturanView: React.FC<PengaturanViewProps> = ({ onToast }) => {
     setTimeout(() => setSaved(false), 2500);
   };
 
-  const handleReset = () => {
-    if (window.confirm('Reset semua data ke contoh bawaan? Data yang telah diubah akan terhapus.')) {
+  // Cegah tab tertutup sebelum perubahan form yang belum disimpan hilang
+  useEffect(() => {
+    if (!isDirty) return;
+    const guard = (e: BeforeUnloadEvent) => {
+      e.preventDefault();
+      e.returnValue = '';
+    };
+    window.addEventListener('beforeunload', guard);
+    return () => window.removeEventListener('beforeunload', guard);
+  }, [isDirty]);
+
+  const handleReset = async () => {
+    const ok = await confirmDialog({
+      title: 'Reset semua data ke contoh bawaan?',
+      description: 'Data yang telah diubah akan terhapus.',
+      confirmLabel: 'Ya, Reset',
+      tone: 'danger',
+    });
+    if (ok) {
       resetAllData();
       onToast('Data aplikasi dikembalikan ke setelan awal.');
     }
@@ -89,8 +148,8 @@ export const PengaturanView: React.FC<PengaturanViewProps> = ({ onToast }) => {
           </h1>
         </div>
 
-        {/* Action Button Utama di Pojok Kanan Atas (Standar Seragam) */}
-        <div className="flex flex-wrap items-center gap-2 self-start sm:self-auto shrink-0">
+        {/* Aksi Reset (Simpan pindah ke tombol mengambang di bawah) */}
+        <div className="flex items-center gap-2 self-start sm:self-auto shrink-0">
           <button
             type="button"
             onClick={handleReset}
@@ -100,14 +159,6 @@ export const PengaturanView: React.FC<PengaturanViewProps> = ({ onToast }) => {
             <RotateCcw size={15} />
             <span>Reset Demo</span>
           </button>
-          <button
-            type="button"
-            onClick={handleSave}
-            className="min-h-[40px] px-4 rounded-[12px] bg-primary text-white text-xs font-bold hover:brightness-105 active:scale-[0.98] transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
-          >
-            <Save size={15} />
-            <span>Simpan</span>
-          </button>
         </div>
       </div>
 
@@ -115,9 +166,86 @@ export const PengaturanView: React.FC<PengaturanViewProps> = ({ onToast }) => {
         tips={[
           'Ibu bisa mengunggah foto/file Logo Asli Sekolah agar langsung muncul di pojok kiri atas setiap surat.',
           'Kop surat ini otomatis dipakai di Surat Panggilan Orang Tua, Home Visit, RPL 1-Lembar, Angket AKPD, dan Buku Siswa.',
-          'Setelah mengubah identitas sekolah, tekan tombol "Simpan" di pojok kanan atas agar tersimpan permanen di browser.'
+          'Setelah mengubah identitas sekolah, tombol "Simpan" akan muncul mengambang di bawah layar â€” cukup ditekan sekali untuk menyimpan.'
         ]}
       />
+
+      {/* Bagian Cadangkan Data: unduh/taap file JSON */}
+      <section className="bk-card space-y-4">
+        <div className="flex items-center gap-3 border-b border-border pb-3.5">
+          <div className="w-10 h-10 rounded-xl bg-primary-tint text-primary flex items-center justify-center flex-none">
+            <HardDriveDownload size={20} />
+          </div>
+          <div>
+            <h3 className="text-[17px] font-bold text-text">Cadangkan &amp; Kembalikan Data</h3>
+            <p className="text-xs text-muted mt-0.5">
+              Unduh salinan seluruh data (siswa, catatan, dokumen) sebagai satu berkas JSON
+            </p>
+          </div>
+        </div>
+
+        <div className="grid sm:grid-cols-2 gap-3.5">
+          <div className="p-4 rounded-[16px] bg-[#FAFBFD] border border-border space-y-3">
+            <p className="text-xs font-bold text-text">Unduh Cadangan</p>
+            <p className="text-[11px] text-muted leading-relaxed">
+              Simpan file di komputer atau Google Drive ibu. Lakukan rutin, misal tiap akhir bulan.
+            </p>
+            <button
+              type="button"
+              onClick={() => {
+                downloadDataBackup();
+                onToast('File cadangan sedang diunduh. Cek folder Unduhan.');
+              }}
+              className="bk-btn primary w-full"
+            >
+              <HardDriveDownload size={16} />
+              <span>Unduh File Cadangan</span>
+            </button>
+          </div>
+
+          <div className="p-4 rounded-[16px] bg-[#FAFBFD] border border-border space-y-3">
+            <p className="text-xs font-bold text-text">Kembalikan dari Cadangan</p>
+            <p className="text-[11px] text-muted leading-relaxed">
+              Data di aplikasi akan diganti dengan isi file cadangan. Hati-hati, tidak bisa dibatalkan.
+            </p>
+            <input
+              type="file"
+              accept="application/json,.json"
+              ref={backupInputRef}
+              onChange={async (e) => {
+                const file = e.target.files?.[0];
+                if (!file) return;
+                const ok = await confirmDialog({
+                  title: `Kembalikan data dari "${file.name}"?`,
+                  description: 'Seluruh data saat ini akan diganti dengan isi file cadangan.',
+                  confirmLabel: 'Ya, Kembalikan',
+                  tone: 'danger',
+                });
+                if (!ok) {
+                  if (backupInputRef.current) backupInputRef.current.value = '';
+                  return;
+                }
+                const res = await restoreDataBackup(file);
+                if (res.success) {
+                  onToast(res.error || 'Data berhasil dikembalikan dari cadangan.');
+                } else {
+                  onToast(res.error || 'Gagal membaca file cadangan.');
+                }
+                if (backupInputRef.current) backupInputRef.current.value = '';
+              }}
+              className="hidden"
+            />
+            <button
+              type="button"
+              onClick={() => backupInputRef.current?.click()}
+              className="bk-btn ghost w-full"
+            >
+              <CloudUpload size={16} />
+              <span>Pilih File Cadangan</span>
+            </button>
+          </div>
+        </div>
+      </section>
 
       {/* Bagian 1: Pengaturan Kop Surat & Logo Sekolah */}
       <section className="bk-card space-y-5">
@@ -289,7 +417,7 @@ export const PengaturanView: React.FC<PengaturanViewProps> = ({ onToast }) => {
               type="text"
               value={formSettings.namaSekolah}
               onChange={(e) => setFormSettings((s) => ({ ...s, namaSekolah: e.target.value }))}
-              placeholder="Contoh: UPT SPF SMP NEGERI 6 MAKASSAR"
+              placeholder="Contoh: UPT SPF NAMA SEKOLAH Ibu"
               className="w-full min-h-[48px] px-4 rounded-[12px] border border-border text-sm font-bold text-text placeholder:text-muted/60 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition shadow-sm"
             />
           </div>
@@ -391,7 +519,7 @@ export const PengaturanView: React.FC<PengaturanViewProps> = ({ onToast }) => {
                 type="text"
                 value={formSettings.kepalaSekolah}
                 onChange={(e) => setFormSettings((s) => ({ ...s, kepalaSekolah: e.target.value }))}
-                placeholder="Contoh: Drs. H. Mulyadi Kusuma, M.Pd."
+                placeholder="Contoh: Belum Diisi di Pengaturan"
                 className="w-full min-h-[48px] px-4 rounded-[12px] border border-border text-sm font-medium text-text focus:outline-none focus:border-primary shadow-sm"
               />
             </div>
@@ -416,7 +544,7 @@ export const PengaturanView: React.FC<PengaturanViewProps> = ({ onToast }) => {
                 type="text"
                 value={formSettings.guruBK}
                 onChange={(e) => setFormSettings((s) => ({ ...s, guruBK: e.target.value }))}
-                placeholder="Contoh: Siti Rahmawati, S.Pd., M.Kons., Gr."
+                placeholder="Contoh: Belum Diisi di Pengaturan"
                 className="w-full min-h-[48px] px-4 rounded-[12px] border border-border text-sm font-medium text-text focus:outline-none focus:border-primary shadow-sm"
               />
             </div>
@@ -468,7 +596,7 @@ export const PengaturanView: React.FC<PengaturanViewProps> = ({ onToast }) => {
               <p className="font-bold text-black mt-0.5">Kepala Sekolah</p>
               <div className="mt-16">
                 <p className="font-bold text-black underline underline-offset-4 text-[13px]">
-                  {formSettings.kepalaSekolah || 'Drs. H. Mulyadi Kusuma, M.Pd.'}
+                  {formSettings.kepalaSekolah || 'Belum Diisi di Pengaturan'}
                 </p>
                 <p className="text-gray-700 mt-1 text-[11px]">
                   NIP. {formSettings.nipKepala || '19750101 200003 1 001'}
@@ -478,13 +606,13 @@ export const PengaturanView: React.FC<PengaturanViewProps> = ({ onToast }) => {
 
             <div>
               <p className="text-gray-700">
-                {formSettings.kotaSurat || 'Kota Bintang'},{' '}
+                {formSettings.kotaSurat || 'diisi di Pengaturan'},{' '}
                 {new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}
               </p>
               <p className="font-bold text-black mt-0.5">Guru BK / Konselor</p>
               <div className="mt-16">
                 <p className="font-bold text-black underline underline-offset-4 text-[13px]">
-                  {formSettings.guruBK || 'Siti Rahmawati, S.Pd., Gr.'}
+                  {formSettings.guruBK || 'Belum Diisi di Pengaturan'}
                 </p>
                 <p className="text-gray-700 mt-1 text-[11px]">
                   NIP. {formSettings.nipGuruBK || '19880512 201402 2 003'}
@@ -495,40 +623,44 @@ export const PengaturanView: React.FC<PengaturanViewProps> = ({ onToast }) => {
         </div>
       </section>
 
-      {/* Tombol Simpan & Reset */}
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2">
-        <button
-          type="button"
-          onClick={handleReset}
-          className="w-full sm:w-auto min-h-[48px] px-5 rounded-[14px] text-xs font-bold text-alert hover:bg-alert-tint border border-alert/20 flex items-center justify-center gap-2 transition-all cursor-pointer"
+      {/* Tombol Simpan mengambang: hanya muncul saat ada perubahan yang belum disimpan */}
+      {isDirty && (
+        <div
+          className="fixed left-1/2 -translate-x-1/2 z-40 fade-up"
+          style={{ bottom: 'calc(88px + env(safe-area-inset-bottom, 0px))' }}
         >
-          <RotateCcw size={16} />
-          <span>Reset Semua Data ke Standar Demo</span>
-        </button>
-
-        <button
-          onClick={handleSave}
-          className={`w-full sm:w-auto min-h-[50px] px-8 rounded-[14px] text-sm font-bold flex items-center justify-center gap-2 transition-all shadow-[0_6px_16px_rgb(57_73_171/0.25)] ${
-            saved
-              ? 'bg-emerald-600 text-white'
-              : 'bg-primary text-white hover:brightness-105 active:scale-[0.98]'
-          }`}
-        >
-          {saved ? (
-            <>
-              <Check size={18} />
-              <span>Pengaturan Berhasil Disimpan</span>
-            </>
-          ) : (
-            <>
-              <Save size={18} />
-              <span>Simpan Perubahan Pengaturan</span>
-            </>
-          )}
-        </button>
-      </div>
+          <div className="w-fit flex items-center gap-3 pl-5 pr-2.5 py-2.5 rounded-[18px] bg-[#1B2236] text-white shadow-2xl border border-white/10">
+            <span className="text-[13px] font-semibold whitespace-nowrap">
+              {saved ? 'Berhasil disimpan' : 'Ada perubahan belum disimpan'}
+            </span>
+            <button
+              type="button"
+              onClick={handleSave}
+              className={`min-h-[44px] px-5 rounded-[14px] text-sm font-bold flex items-center justify-center gap-2 active:scale-[0.98] transition-all cursor-pointer whitespace-nowrap ${
+                saved
+                  ? 'bg-emerald-500 text-white'
+                  : 'bg-primary text-white hover:bg-primary-2'
+              }`}
+            >
+              {saved ? (
+                <>
+                  <Check size={17} />
+                  <span>Tersimpan</span>
+                </>
+              ) : (
+                <>
+                  <Save size={17} />
+                  <span>Simpan</span>
+                </>
+              )}
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
 
 export default PengaturanView;
+
+

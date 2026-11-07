@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import {
   Home, Users, FileText, Settings, Plus,
   FileCheck2, Compass, ChevronDown, ChevronUp, Calendar, BookOpen, LogOut
 } from 'lucide-react';
 import { useBK } from '../../context/BKContext';
+import { confirmDialog } from '../ui/ConfirmModal';
 import { NavView } from '../../types';
 interface SidebarProps {
   current: NavView;
@@ -216,16 +217,21 @@ export default function Sidebar({ current, onNav, onCatat }: SidebarProps) {
               {settings.guruBK ? settings.guruBK.split(',')[0] : 'Guru BK'}
             </p>
             <p className="text-[11px] text-muted truncate mt-0.5">
-              {settings.namaSekolah || 'SMP Negeri 1 Bintang'}
+              {settings.namaSekolah || 'SIM BK PRO'}
             </p>
           </div>
         </div>
 
         <button
           type="button"
-          onClick={(e) => {
+          onClick={async (e) => {
             e.stopPropagation();
-            if (window.confirm('Keluar dari aplikasi SIM-BK?')) {
+            const ok = await confirmDialog({
+              title: 'Keluar dari aplikasi SIM BK PRO?',
+              confirmLabel: 'Keluar',
+              tone: 'danger',
+            });
+            if (ok) {
               logout();
               onNav('login');
             }
@@ -239,3 +245,4 @@ export default function Sidebar({ current, onNav, onCatat }: SidebarProps) {
     </aside>
   );
 }
+

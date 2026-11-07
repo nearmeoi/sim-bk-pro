@@ -3,6 +3,8 @@ import Sidebar from './components/layout/Sidebar';
 import BottomNav from './components/layout/BottomNav';
 import CatatModal from './components/ui/CatatModal';
 import Toast from './components/ui/Toast';
+import WelcomeOfferModal from './components/ui/WelcomeOfferModal';
+import ConfirmModal from './components/ui/ConfirmModal';
 import BerandaView from './components/views/BerandaView';
 import SiswaView from './components/views/SiswaView';
 import AKPDView from './components/views/AKPDView';
@@ -11,8 +13,11 @@ import DokumenView from './components/views/DokumenView';
 import PengaturanView from './components/views/PengaturanView';
 import ProfilView from './components/views/ProfilView';
 import LoginView from './components/views/LoginView';
+import ResetPasswordView from './components/views/ResetPasswordView';
+import SyncBanner from './components/ui/SyncBanner';
 import NotFoundView from './components/views/NotFoundView';
 import { BKProvider, useBK } from './context/BKContext';
+import ErrorBoundary from './components/ui/ErrorBoundary';
 import { NavView } from './types';
 
 const VALID_VIEWS: NavView[] = [
@@ -30,9 +35,31 @@ const VALID_VIEWS: NavView[] = [
 
 function AppContent() {
   const { isAuthenticated } = useBK();
+  // Halaman tujuan tautan reset sandi (Vercel rewrite /reset → index.html)
+  const isResetPage = window.location.pathname
+    .replace(/\/+$/, '')
+    .toLowerCase()
+    .endsWith('/reset');
   const [view, setView] = useState<NavView>('beranda');
   const [catatOpen, setCatatOpen] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
+  // Modal penawaran muncul sekali saja per perangkat selama pembayaran belum aktif
+  const [offerOpen, setOfferOpen] = useState<boolean>(() => {
+    try {
+      return !window.localStorage.getItem('sim_bk_offer_seen');
+    } catch {
+      return false;
+    }
+  });
+
+  const closeOffer = useCallback(() => {
+    setOfferOpen(false);
+    try {
+      window.localStorage.setItem('sim_bk_offer_seen', '1');
+    } catch {
+      /* abaikan */
+    }
+  }, []);
 
   const showToast = useCallback((msg: string) => {
     setToast(null);
@@ -76,6 +103,11 @@ function AppContent() {
     return () => window.removeEventListener('hashchange', fn);
   }, []);
 
+  // Halaman reset sandi tampil apa pun status sesi
+  if (isResetPage) {
+    return <ResetPasswordView />;
+  }
+
   // If user is not authenticated or explicitly at login screen
   if (!isAuthenticated || view === 'login') {
     return (
@@ -95,6 +127,7 @@ function AppContent() {
           <NotFoundView onNav={navigate} />
         </main>
         <BottomNav current={view} onNav={navigate} onCatat={() => setCatatOpen(true)} />
+        <SyncBanner />
         <Toast message={toast} />
       </div>
     );
@@ -122,6 +155,10 @@ function AppContent() {
 
       <BottomNav current={view} onNav={navigate} onCatat={() => setCatatOpen(true)} />
 
+      <SyncBanner />
+
+      <WelcomeOfferModal open={offerOpen} onClose={closeOffer} />
+
       <CatatModal
         open={catatOpen}
         onClose={() => setCatatOpen(false)}
@@ -135,8 +172,11 @@ function AppContent() {
 
 export default function App() {
   return (
-    <BKProvider>
-      <AppContent />
-    </BKProvider>
+    <ErrorBoundary>
+      <BKProvider>
+        <AppContent />
+        <ConfirmModal />
+      </BKProvider>
+    </ErrorBoundary>
   );
 }

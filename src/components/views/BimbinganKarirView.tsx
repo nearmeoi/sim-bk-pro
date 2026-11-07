@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import {
   Printer, Plus, Save, Trash2, Check,
   Table, FileText, ClipboardPaste, Compass, Download, Eye
@@ -6,6 +6,7 @@ import {
 import PetunjukIbu from '../ui/PetunjukIbu';
 import HvsPreviewModal from '../ui/HvsPreviewModal';
 import { useBK } from '../../context/BKContext';
+import { newId } from '../../lib/id';
 import { exportToCsv } from '../../lib/exportCsv';
 import type { IndividualKarirAngket, NavView } from '../../types';
 import KarirAngketForm from './karir/KarirAngketForm';
@@ -67,14 +68,14 @@ export const BimbinganKarirView: React.FC<BimbinganKarirViewProps> = ({ onToast 
   };
 
   const handleAddBatchRow = () => {
-    const newId = `k-${Date.now()}`;
+    const kid = newId('k');
     const newRow: IndividualKarirAngket = {
-      id: newId,
+      id: kid,
       namaSiswa: 'Siswa Baru',
       kelas: kelasFilter !== 'Semua Kelas 9' ? kelasFilter : '9A',
       noAbsen: String(studentList.length + 1).padStart(2, '0'),
       nis: String(2400 + studentList.length + 1),
-      nisn: `310123${Date.now().toString().slice(-4)}`,
+      nisn: `310123${Math.floor(1000 + Math.random() * 9000)}`,
       namaOrtu: 'Orang Tua / Wali',
       noHpOrtu: '0812-xxxx-xxxx',
       rencanaSetelahSMP: 'SMA',
@@ -99,7 +100,7 @@ export const BimbinganKarirView: React.FC<BimbinganKarirViewProps> = ({ onToast 
     };
 
     addKarirStudent(newRow);
-    setSelectedStudentId(newId);
+    setSelectedStudentId(kid);
     onToast('Siswa baru berhasil ditambahkan.');
   };
 
@@ -120,13 +121,13 @@ export const BimbinganKarirView: React.FC<BimbinganKarirViewProps> = ({ onToast 
     const parsed: IndividualKarirAngket[] = lines.map((line, idx) => {
       const cols = line.split('\t').length > 1 ? line.split('\t') : line.split(',');
       const nama = cols[0]?.trim() || `Siswa ${studentList.length + idx + 1}`;
-      const sekolah1 = cols[1]?.trim() || 'SMAN 1 Bintang';
+      const sekolah1 = cols[1]?.trim() || '-';
       const jurusan1 = cols[2]?.trim() || 'MIPA';
       const cita = cols[3]?.trim() || 'Melanjutkan Studi';
 
       addedCount++;
       return {
-        id: `k-paste-${Date.now()}-${idx}`,
+        id: newId('kp'),
         namaSiswa: nama,
         kelas: kelasFilter !== 'Semua Kelas 9' ? kelasFilter : '9A',
         noAbsen: String(studentList.length + idx + 1).padStart(2, '0'),
@@ -156,7 +157,7 @@ export const BimbinganKarirView: React.FC<BimbinganKarirViewProps> = ({ onToast 
       };
     });
 
-    setKarirList((prev) => [...prev, ...parsed]);
+    parsed.forEach((item) => addKarirStudent(item));
     setPasteText('');
     setShowPasteBox(false);
     onToast(`${addedCount} data pilihan siswa berhasil diimpor.`);
@@ -204,7 +205,7 @@ export const BimbinganKarirView: React.FC<BimbinganKarirViewProps> = ({ onToast 
       headers,
       rows
     );
-    onToast(`✓ Berhasil mengekspor ${studentList.length} data pemetaan karir ke CSV!`);
+    onToast(`âœ“ Berhasil mengekspor ${studentList.length} data pemetaan karir ke CSV!`);
   };
 
   const handlePrint = () => {
@@ -407,7 +408,7 @@ export const BimbinganKarirView: React.FC<BimbinganKarirViewProps> = ({ onToast 
               TABULASI PEMETAAN PILIHAN SEKOLAH LANJUTAN ( {kelasFilter.toUpperCase()} )
             </h2>
             <p className="text-xs text-black/80 font-bold mt-0.5">
-              {settings.namaSekolah || 'SMP NEGERI 1 BINTANG'}, TAHUN AJARAN {settings.tahunAjaran || '2026/2027'}
+              {settings.namaSekolah || 'SIM BK PRO'}, TAHUN AJARAN {settings.tahunAjaran || '2026/2027'}
             </p>
           </div>
 
@@ -553,19 +554,39 @@ export const BimbinganKarirView: React.FC<BimbinganKarirViewProps> = ({ onToast 
 
           <div className="mt-5 pt-3 border-t border-black/30 text-[11px] text-muted flex justify-between items-center print:text-black">
             <p>Total: {displayedStudents.length} siswa terdata.</p>
-            <p className="font-semibold">{settings.namaSekolah || 'SMP Negeri 1 Bintang'}</p>
+            <p className="font-semibold">{settings.namaSekolah || 'SIM BK PRO'}</p>
           </div>
         </div>
       )}
 
       {/* MODE 2: LEMBAR ANGKET RESMI SISWA */}
-      {viewMode === 'angket' && (
-        <KarirAngketForm
-          current={current}
-          updateCurrent={updateCurrent}
-          settings={settings}
-        />
-      )}
+      {viewMode === 'angket' &&
+        (studentList.length === 0 ? (
+          <div className="bk-card py-14 text-center space-y-4">
+            <div className="w-12 h-12 mx-auto rounded-[14px] bg-primary-tint flex items-center justify-center text-primary">
+              <Plus size={22} />
+            </div>
+            <div className="space-y-1">
+              <h3 className="text-[16px] font-black text-text">Belum ada data bimbingan karir</h3>
+              <p className="text-xs text-muted max-w-[340px] mx-auto leading-relaxed">
+                Tambahkan siswa satu per satu, atau tempel langsung kolom dari Excel / Google Sheets.
+              </p>
+            </div>
+            <button
+              onClick={handleAddBatchRow}
+              className="bk-btn primary inline-flex"
+            >
+              <Plus size={16} />
+              <span>Tambah Siswa Pertama</span>
+            </button>
+          </div>
+        ) : (
+          <KarirAngketForm
+            current={current}
+            updateCurrent={updateCurrent}
+            settings={settings}
+          />
+        ))}
 
       {/* MODAL SIMULASI KERTAS HVS A4 / FOLIO PUTIH */}
       <HvsPreviewModal
@@ -584,3 +605,6 @@ export const BimbinganKarirView: React.FC<BimbinganKarirViewProps> = ({ onToast 
 };
 
 export default BimbinganKarirView;
+
+
+

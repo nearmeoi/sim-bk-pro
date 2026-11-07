@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { Plus, Trash2, ArrowLeft, Download, Printer, Save, Eye } from 'lucide-react';
 import KopSurat from '../../ui/KopSurat';
 import HvsPreviewModal from '../../ui/HvsPreviewModal';
@@ -147,7 +147,7 @@ export const JurnalForm: React.FC<JurnalFormProps> = ({ onBack, onToast }) => {
             JURNAL HARIAN KEGIATAN BIMBINGAN & KONSELING
           </h2>
           <p className="text-xs text-black/80 font-bold mt-0.5">
-            {settings.namaSekolah || 'SMP NEGERI 1 BINTANG'}, TAHUN AJARAN {settings.tahunAjaran || '2026/2027'}
+            {settings.namaSekolah || 'SIM BK PRO'}, TAHUN AJARAN {settings.tahunAjaran || '2026/2027'}
           </p>
         </div>
 
@@ -255,7 +255,7 @@ export const JurnalForm: React.FC<JurnalFormProps> = ({ onBack, onToast }) => {
 
         <div className="mt-4 pt-3 border-t border-black/30 text-[11px] text-muted flex justify-between items-center">
           <p>Total: {rows.length} Kegiatan Tercatat</p>
-          <p className="font-semibold text-text">{settings.namaSekolah || 'SMP Negeri 1 Bintang'}</p>
+          <p className="font-semibold text-text">{settings.namaSekolah || 'SIM BK PRO'}</p>
         </div>
 
         {/* Lembar Tanda Tangan Cetak Jurnal */}
@@ -269,7 +269,7 @@ export const JurnalForm: React.FC<JurnalFormProps> = ({ onBack, onToast }) => {
             </div>
           </div>
           <div>
-            <p>{settings.kotaSurat || 'Kota Bintang'}, {new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
+            <p>{settings.kotaSurat || 'diisi di Pengaturan'}, {new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
             <p className="font-bold">Guru BK / Konselor</p>
             <div className="mt-14">
               <p className="font-bold underline text-[11px]">{settings.guruBK || 'Guru BK'}</p>
@@ -321,15 +321,15 @@ export const JurnalForm: React.FC<JurnalFormProps> = ({ onBack, onToast }) => {
             <p>Mengetahui,</p>
             <p className="font-bold">Kepala Sekolah</p>
             <div className="mt-16">
-              <p className="font-bold underline">{settings.kepalaSekolah || 'Drs. H. Mulyadi Kusuma, M.Pd.'}</p>
+              <p className="font-bold underline">{settings.kepalaSekolah || 'Belum Diisi di Pengaturan'}</p>
               <p>NIP. {settings.nipKepala || '19750101 200003 1 001'}</p>
             </div>
           </div>
           <div>
-            <p>{settings.kotaSurat || 'Kota Bintang'}, {new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
+            <p>{settings.kotaSurat || 'diisi di Pengaturan'}, {new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
             <p className="font-bold">Guru BK / Konselor</p>
             <div className="mt-16">
-              <p className="font-bold underline">{settings.guruBK || 'Siti Rahmawati, S.Pd., Gr.'}</p>
+              <p className="font-bold underline">{settings.guruBK || 'Belum Diisi di Pengaturan'}</p>
               <p>NIP. {settings.nipGuruBK || '19880512 201402 2 003'}</p>
             </div>
           </div>
@@ -340,3 +340,4 @@ export const JurnalForm: React.FC<JurnalFormProps> = ({ onBack, onToast }) => {
 };
 
 export default JurnalForm;
+

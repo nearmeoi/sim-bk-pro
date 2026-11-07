@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import {
   DoorOpen, MessageSquare, Folder, FileText, ChevronRight, TrendingUp, Sparkles, AlertCircle,
   FileCheck2, Compass, ArrowRight, Plus, ChevronDown, ChevronUp
 } from 'lucide-react';
 import PetunjukIbu from '../ui/PetunjukIbu';
+import Skeleton from '../ui/Skeleton';
 import { greeting, DOCUMENTS } from '../../data/dummy';
 import { useBK } from '../../context/BKContext';
 import { NavView } from '../../types';
@@ -15,7 +16,7 @@ interface BerandaViewProps {
 }
 
 export const BerandaView: React.FC<BerandaViewProps> = ({ onNav, onCatat }) => {
-  const { students, cases, settings, protaList, jurnalRows } = useBK();
+  const { students, cases, settings, protaList, jurnalRows, isBooting } = useBK();
   const [showAllDocs, setShowAllDocs] = useState(false);
   const aktif = students.filter((s) => s.status === 'Aktif').length;
   const kasusProses = cases.filter((c) => c.status === 'Proses').length;
@@ -57,7 +58,7 @@ export const BerandaView: React.FC<BerandaViewProps> = ({ onNav, onCatat }) => {
               Bimbingan & Konseling
             </span>
             <h2 className="text-[22px] sm:text-[25px] font-bold text-white tracking-tight leading-snug">
-              {settings.namaSekolah || 'SMP Negeri 1 Bintang'}
+              {settings.namaSekolah || 'SIM BK PRO'}
             </h2>
             <p className="text-xs sm:text-sm text-white/90 leading-relaxed">
               Catatan konseling tersimpan ke buku siswa dan jurnal harian.
@@ -122,6 +123,14 @@ export const BerandaView: React.FC<BerandaViewProps> = ({ onNav, onCatat }) => {
           Statistik Layanan
         </h2>
         <div className="grid grid-cols-3 gap-2.5 sm:gap-3.5 w-full">
+          {isBooting ? (
+            <>
+              <Skeleton className="h-[86px]" />
+              <Skeleton className="h-[86px]" />
+              <Skeleton className="h-[86px]" />
+            </>
+          ) : (
+            <>
           <div className="bk-card p-3.5 sm:p-4 text-center sm:text-left sm:flex sm:items-center sm:justify-between">
             <div>
               <span className="block text-[26px] sm:text-[30px] font-black text-primary leading-none">
@@ -163,6 +172,8 @@ export const BerandaView: React.FC<BerandaViewProps> = ({ onNav, onCatat }) => {
               <Folder size={18} />
             </div>
           </div>
+            </>
+          )}
         </div>
       </section>
 
@@ -203,7 +214,7 @@ export const BerandaView: React.FC<BerandaViewProps> = ({ onNav, onCatat }) => {
                 {cases.filter((c) => c.status === 'Proses').length === 0 ? (
                   <tr>
                     <td colSpan={7} className="border border-black p-4 text-center text-xs text-gray-500 italic">
-                      ✓ Tidak ada kasus mendesak yang sedang berjalan saat ini. Semua tertangani dengan baik.
+                      âœ“ Tidak ada kasus mendesak yang sedang berjalan saat ini. Semua tertangani dengan baik.
                     </td>
                   </tr>
                 ) : (
@@ -341,3 +352,4 @@ export const BerandaView: React.FC<BerandaViewProps> = ({ onNav, onCatat }) => {
 };
 
 export default BerandaView;
+

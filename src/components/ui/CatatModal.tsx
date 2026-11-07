@@ -146,7 +146,7 @@ export default function CatatModal({ open, onClose, onSelect }: CatatModalProps)
 
             <button
               onClick={onClose}
-              className="w-full min-h-[48px] rounded-[14px] bg-bg hover:bg-gray-200 text-text font-bold text-[14px] transition-colors mt-2 active:scale-[0.99]"
+              className="bk-btn ghost w-full min-h-[48px] text-text mt-2"
             >
               Batal
             </button>
@@ -298,13 +298,13 @@ export default function CatatModal({ open, onClose, onSelect }: CatatModalProps)
               <button
                 type="button"
                 onClick={() => setSelectedAction(null)}
-                className="min-h-[48px] px-5 rounded-[14px] bg-bg font-bold text-sm text-muted hover:bg-gray-200 transition-colors"
+                className="bk-btn ghost min-h-[48px]"
               >
                 Ganti Jenis
               </button>
               <button
                 type="submit"
-                className="min-h-[48px] px-7 rounded-[14px] bg-accent text-white font-bold text-sm hover:brightness-105 active:scale-[0.98] transition-all shadow-[0_6px_16px_rgb(15_118_110/0.25)] flex items-center gap-2"
+                className="bk-btn primary min-h-[48px] px-7"
               >
                 <Save size={17} />
                 <span>Simpan Catatan Layanan</span>

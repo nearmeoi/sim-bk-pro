@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { ArrowLeft, Printer, Download, Save, Sparkles, BookOpen, Eye } from 'lucide-react';
 import KopSurat from '../../ui/KopSurat';
 import HvsPreviewModal from '../../ui/HvsPreviewModal';
@@ -185,7 +185,7 @@ export const RplForm: React.FC<RplFormProps> = ({ onBack, onToast }) => {
             <label className="block text-xs font-bold text-text mb-1">Bidang Bimbingan</label>
             <select
               value={bidangBimbingan}
-              onChange={(e) => setBidangBimbingan(e.target.value as any)}
+              onChange={(e) => setBidangBimbingan(e.target.value as 'Pribadi' | 'Sosial' | 'Belajar' | 'Karir')}
               className="w-full min-h-[44px] px-3 rounded-[10px] border border-border text-xs font-semibold text-text bg-surface"
             >
               <option value="Pribadi">Pribadi</option>
@@ -250,7 +250,7 @@ export const RplForm: React.FC<RplFormProps> = ({ onBack, onToast }) => {
             RENCANA PELAKSANAAN LAYANAN (RPL) BIMBINGAN KLASIKAL
           </h2>
           <p className="text-[10px] font-bold text-gray-800">
-            SEMESTER GANJIL / GENAP · TAHUN AJARAN {settings.tahunAjaran || '2026/2027'}
+            SEMESTER GANJIL / GENAP Â· TAHUN AJARAN {settings.tahunAjaran || '2026/2027'}
           </p>
         </div>
 
@@ -356,18 +356,18 @@ export const RplForm: React.FC<RplFormProps> = ({ onBack, onToast }) => {
             <p className="font-bold">Kepala Sekolah</p>
             <div className="mt-12">
               <p className="font-bold underline text-[11px]">
-                {settings.kepalaSekolah || 'Drs. H. Mulyadi Kusuma, M.Pd.'}
+                {settings.kepalaSekolah || 'Belum Diisi di Pengaturan'}
               </p>
               <p className="text-[9.5px]">NIP. {settings.nipKepala || '19750101 200003 1 001'}</p>
             </div>
           </div>
 
           <div>
-            <p>{settings.kotaSurat || 'Kota Bintang'}, {new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
+            <p>{settings.kotaSurat || 'diisi di Pengaturan'}, {new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
             <p className="font-bold">Guru Bimbingan dan Konseling</p>
             <div className="mt-12">
               <p className="font-bold underline text-[11px]">
-                {settings.guruBK || 'Siti Rahmawati, S.Pd., Gr.'}
+                {settings.guruBK || 'Belum Diisi di Pengaturan'}
               </p>
               <p className="text-[9.5px]">NIP. {settings.nipGuruBK || '19880512 201402 2 003'}</p>
             </div>
@@ -375,7 +375,7 @@ export const RplForm: React.FC<RplFormProps> = ({ onBack, onToast }) => {
         </div>
 
         <div className="mt-3 pt-1.5 border-t border-black/30 text-[9.5px] text-gray-600 flex justify-between">
-          <p>Bimbingan & Konseling · Kurikulum Merdeka</p>
+          <p>Bimbingan & Konseling Â· Kurikulum Merdeka</p>
           <p className="font-bold">Halaman 1 dari 1 (Format 1-Lembar Resmi)</p>
         </div>
       </div>
@@ -392,7 +392,7 @@ export const RplForm: React.FC<RplFormProps> = ({ onBack, onToast }) => {
             RENCANA PELAKSANAAN LAYANAN (RPL) BIMBINGAN KLASIKAL
           </h2>
           <p className="text-[10.5px] font-bold text-gray-800">
-            SEMESTER GANJIL / GENAP · TAHUN AJARAN {settings.tahunAjaran || '2026/2027'}
+            SEMESTER GANJIL / GENAP Â· TAHUN AJARAN {settings.tahunAjaran || '2026/2027'}
           </p>
         </div>
 
@@ -445,7 +445,7 @@ export const RplForm: React.FC<RplFormProps> = ({ onBack, onToast }) => {
             </div>
           </div>
           <div>
-            <p>{settings.kotaSurat || 'Kota Bintang'}, {new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
+            <p>{settings.kotaSurat || 'diisi di Pengaturan'}, {new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
             <p className="font-bold">Guru BK / Konselor</p>
             <div className="mt-14">
               <p className="font-bold underline text-[11px]">{settings.guruBK || 'Guru BK'}</p>
@@ -459,3 +459,4 @@ export const RplForm: React.FC<RplFormProps> = ({ onBack, onToast }) => {
 };
 
 export default RplForm;
+

@@ -1,229 +1,191 @@
 import React, { useState } from 'react';
-import { User, Lock, ArrowRight, Eye, EyeOff, CheckCircle2, ShieldCheck, Database, Server } from 'lucide-react';
+import { Lock, ArrowRight, Eye, EyeOff } from 'lucide-react';
 import { useBK } from '../../context/BKContext';
-import { TutWuriEmblem } from '../ui/KopSurat';
 
 interface LoginViewProps {
   onSuccess: () => void;
   onToast: (msg: string) => void;
 }
 
+/** Logo Google resmi (simplified) */
+const GoogleIcon: React.FC<{ size?: number }> = ({ size = 18 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" aria-hidden="true">
+    <path fill="#4285F4" d="M23.5 12.3c0-.9-.1-1.5-.3-2.2H12v4.1h6.5c-.1 1.1-.8 2.7-2.4 3.8l-.02.15 3.5 2.7.24.02c2.2-2.05 3.5-5.05 3.5-8.55" />
+    <path fill="#34A853" d="M12 24c3.2 0 5.9-1.1 7.9-2.9l-3.8-2.9c-1 .7-2.4 1.2-4.1 1.2-3.1 0-5.8-2.1-6.8-5l-.14.01-3.6 2.8-.05.12C3.4 21.3 7.4 24 12 24" />
+    <path fill="#FBBC05" d="M5.2 14.4c-.2-.7-.4-1.5-.4-2.4s.2-1.7.4-2.4V9.4L1.4 6.6l-.12.06C.5 8.2 0 10 0 12s.5 3.8 1.3 5.4l3.9-3" />
+    <path fill="#EA4335" d="M12 4.8c2.2 0 3.7.9 4.5 1.7l3.3-3.2C17.9 1.3 15.2 0 12 0 7.4 0 3.4 2.7 1.3 6.6l3.9 3c1-2.9 3.7-4.8 6.8-4.8" />
+  </svg>
+);
+
 export const LoginView: React.FC<LoginViewProps> = ({ onSuccess, onToast }) => {
-  const { settings, login, isBackendConnected } = useBK();
-  const [username, setUsername] = useState(settings.nipGuruBK || '19880512 201402 2 003');
-  const [password, setPassword] = useState('guru123');
-  const [rememberMe, setRememberMe] = useState(true);
+  const { login, loginWithGoogle, resetPasswordEmail } = useBK();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState<'form' | 'google' | 'reset' | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [resetSent, setResetSent] = useState(false);
+
+  const handleReset = async () => {
+    if (!email.trim() || !email.includes('@')) {
+      setErrorMessage('Isi email di kolom atas dulu, lalu tekan kirim ulang sandi.');
+      return;
+    }
+    setErrorMessage(null);
+    setLoading('reset');
+    const res = await resetPasswordEmail(email);
+    setLoading(null);
+    if (res.success) {
+      setResetSent(true);
+      onToast('Email pengaturan ulang sandi terkirim. Periksa kotak masuk Anda.');
+    } else {
+      setErrorMessage(res.error || 'Gagal mengirim email reset sandi.');
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage(null);
-
-    if (!username.trim()) {
-      onToast('NIP atau nama pengguna wajib diisi.');
+    if (!email.trim() || !password) {
+      setErrorMessage('Email dan kata sandi wajib diisi.');
       return;
     }
-
-    setLoading(true);
-    try {
-      const res = await login(username, password);
-      setLoading(false);
-
-      if (res.success) {
-        onToast(`Selamat datang, ${settings.guruBK ? settings.guruBK.split(',')[0] : 'Ibu Guru BK'}.`);
-        onSuccess();
-      } else {
-        setErrorMessage(res.error || 'Kata sandi atau NIP tidak sesuai.');
-        onToast(res.error || 'Gagal masuk. Periksa kembali NIP dan kata sandi Anda.');
-      }
-    } catch (err: any) {
-      setLoading(false);
-      setErrorMessage(err?.message || 'Terjadi kesalahan sistem.');
+    setLoading('form');
+    const res = await login(email.trim(), password);
+    setLoading(null);
+    if (res.success) {
+      onToast('Selamat datang kembali.');
+      onSuccess();
+    } else {
+      setErrorMessage(res.error || 'Email atau kata sandi tidak sesuai.');
     }
   };
 
-  const handleQuickLogin = async () => {
-    setLoading(true);
-    const nip = settings.nipGuruBK || '19880512 201402 2 003';
-    setUsername(nip);
-    setPassword('guru123');
-    await login(nip, 'guru123');
-    setLoading(false);
-    onToast(`Selamat datang, ${settings.guruBK ? settings.guruBK.split(',')[0] : 'Ibu Guru BK'}.`);
-    onSuccess();
+  const handleGoogle = async () => {
+    setErrorMessage(null);
+    setLoading('google');
+    const res = await loginWithGoogle();
+    setLoading(null);
+    // Bila redirect OAuth gagal diproses (bukan pindah halaman), tampilkan sebabnya.
+    if (!res.success) setErrorMessage(res.error || 'Login Google gagal. Coba lagi.');
   };
 
   return (
-    <div className="min-h-screen bg-bg flex flex-col justify-center items-center p-4 py-8">
-      <div className="w-full max-w-[440px] bg-surface rounded-[24px] sm:rounded-[28px] p-6 sm:p-8 shadow-card border border-border space-y-6 fade-up">
-        {/* Identitas Satuan Pendidikan & Dua Logo Resmi */}
-        <div className="text-center space-y-3">
-          <div className="flex items-center justify-center gap-3 sm:gap-4">
-            {/* Logo Kiri */}
-            <div className="w-14 h-16 rounded-[14px] bg-white border border-border p-1 flex items-center justify-center shadow-xs">
-              {settings.logoUrl ? (
-                <img
-                  src={settings.logoUrl}
-                  alt="Logo Daerah"
-                  className="max-w-full max-h-full object-contain"
-                />
-              ) : (
-                <div className="w-full h-full flex flex-col items-center justify-center bg-red-50 text-center">
-                  <div className="w-6 h-6 rounded-full border border-red-700 bg-red-100 flex items-center justify-center text-red-700 font-black text-[9px]">
-                    MKS
-                  </div>
-                  <span className="text-[7.5px] font-black uppercase text-black mt-0.5 leading-none">PEMDA</span>
-                </div>
-              )}
-            </div>
-
-            {/* Logo Kanan (Tut Wuri) */}
-            <div className="w-14 h-16 rounded-[14px] bg-white border border-border p-1 flex items-center justify-center shadow-xs">
-              {settings.logoKananUrl ? (
-                <img
-                  src={settings.logoKananUrl}
-                  alt="Logo Kanan"
-                  className="max-w-full max-h-full object-contain"
-                />
-              ) : (
-                <div className="w-10 h-10 flex items-center justify-center scale-90">
-                  <TutWuriEmblem />
-                </div>
-              )}
-            </div>
+    <div className="min-h-screen bg-[#F7F8FC] flex flex-col justify-center items-center p-4">
+      <div className="w-full max-w-[400px] bg-surface rounded-[28px] p-7 sm:p-9 shadow-card border border-border space-y-7 fade-up">
+        {/* Brand */}
+        <div className="text-center space-y-1.5">
+          <div className="w-12 h-12 mx-auto rounded-[14px] bg-primary flex items-center justify-center text-white font-black text-lg shadow-hero">
+            BK
           </div>
-
-          <div>
-            <span className="inline-block text-[10.5px] font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-primary-tint text-primary mb-1">
-              Portal Guru BK Resmi
-            </span>
-            <h1 className="text-[20px] sm:text-[22px] font-black text-text tracking-tight leading-tight">
-              SIM-BK
-            </h1>
-            <p className="text-xs font-semibold text-muted mt-0.5">
-              {settings.namaSekolah || 'SMP Negeri 1 Bintang'}
-            </p>
-          </div>
+          <h1 className="text-[22px] font-black text-text tracking-tight pt-2">SIM BK PRO</h1>
+          <p className="text-[13px] text-muted leading-relaxed">
+            Masuk untuk melanjutkan pengelolaan
+            <br />
+            bimbingan &amp; konseling Anda.
+          </p>
         </div>
 
-        {/* Notifikasi Error jika ada */}
         {errorMessage && (
           <div className="p-3 rounded-[12px] bg-alert-tint text-alert text-xs font-semibold border border-alert/20 leading-relaxed fade-up">
             {errorMessage}
           </div>
         )}
 
-        {/* Formulir Masuk */}
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-1.5">
-            <label className="block text-xs font-bold text-text">
-              NIP atau Nama Pengguna / Email
+            <label htmlFor="login-email" className="block text-xs font-bold text-text">
+              Email
             </label>
-            <div className="relative">
-              <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted pointer-events-none">
-                <User size={16} />
-              </div>
-              <input
-                type="text"
-                required
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                placeholder="Masukkan NIP atau email..."
-                className="w-full min-h-[46px] pl-10 pr-4 rounded-[12px] border border-border text-sm font-medium text-text bg-white focus:outline-none focus:border-primary shadow-xs"
-              />
-            </div>
+            <input
+              id="login-email"
+              type="email"
+              required
+              autoComplete="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="nama@sekolah.sch.id"
+              className="w-full min-h-[46px] px-4 rounded-[12px] border border-border text-sm font-medium text-text bg-white focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/15 shadow-xs"
+            />
           </div>
 
           <div className="space-y-1.5">
-            <label className="block text-xs font-bold text-text">
-              Kata Sandi Akun
+            <label htmlFor="login-password" className="block text-xs font-bold text-text">
+              Kata sandi
             </label>
             <div className="relative">
               <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted pointer-events-none">
                 <Lock size={16} />
               </div>
               <input
+                id="login-password"
                 type={showPassword ? 'text' : 'password'}
                 required
+                autoComplete="current-password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="Masukkan kata sandi..."
-                className="w-full min-h-[46px] pl-10 pr-11 rounded-[12px] border border-border text-sm font-medium text-text bg-white focus:outline-none focus:border-primary shadow-xs"
+                placeholder="Kata sandi Anda"
+                className="w-full min-h-[46px] pl-10 pr-11 rounded-[12px] border border-border text-sm font-medium text-text bg-white focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/15 shadow-xs"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
                 className="absolute right-3.5 top-1/2 -translate-y-1/2 text-muted hover:text-text cursor-pointer p-1"
-                tabIndex={-1}
+                aria-label={showPassword ? 'Sembunyikan kata sandi' : 'Tampilkan kata sandi'}
               >
                 {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
               </button>
             </div>
           </div>
 
-          <div className="flex items-center justify-between text-xs pt-1">
-            <label className="flex items-center gap-2 cursor-pointer text-muted font-medium hover:text-text">
-              <input
-                type="checkbox"
-                checked={rememberMe}
-                onChange={(e) => setRememberMe(e.target.checked)}
-                className="rounded text-primary focus:ring-primary w-4 h-4 cursor-pointer"
-              />
-              <span>Ingat saya di perangkat ini</span>
-            </label>
-            <span className="text-primary hover:underline font-semibold cursor-pointer" onClick={() => onToast('Silakan gunakan Akses Cepat di bawah jika lupa kata sandi.')}>
-              Lupa sandi?
-            </span>
+          <div className="flex items-center justify-between text-xs pt-0.5">
+            <span className="text-muted font-medium">Sandi pribadi Anda, jangan dibagikan.</span>
+            <button
+              type="button"
+              onClick={handleReset}
+              disabled={loading !== null}
+              className="text-primary hover:underline font-bold cursor-pointer disabled:opacity-50"
+            >
+              {loading === 'reset' ? 'Mengirim...' : 'Lupa sandi?'}
+            </button>
           </div>
+
+          {resetSent && (
+            <div className="p-3 rounded-[12px] bg-accent-tint text-accent text-xs font-semibold border border-accent/20 leading-relaxed fade-up">
+              Email pengaturan ulang sandi telah dikirim ke <b>{email}</b>. Buka tautan di dalamnya untuk membuat sandi baru.
+            </div>
+          )}
 
           <button
             type="submit"
-            disabled={loading}
-            className="w-full min-h-[48px] rounded-[14px] bg-primary text-white text-sm font-bold hover:brightness-105 active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-sm cursor-pointer mt-2"
+            disabled={loading !== null}
+            className="w-full min-h-[48px] rounded-[14px] bg-primary text-white text-sm font-bold hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-sm cursor-pointer disabled:opacity-60"
           >
-            <span>{loading ? 'Memverifikasi...' : 'Masuk ke Aplikasi BK'}</span>
-            <ArrowRight size={16} />
+            <span>{loading === 'form' ? 'Memverifikasi...' : 'Masuk'}</span>
+            {loading !== 'form' && <ArrowRight size={16} />}
           </button>
         </form>
 
-        {/* Tombol Akses Cepat untuk Pengujian Guru BK */}
-        <div className="pt-2 border-t border-border/80 text-center space-y-2">
-          <p className="text-[11px] text-muted font-medium">Akses Cepat Pengujian (1-Klik):</p>
-          <button
-            type="button"
-            onClick={handleQuickLogin}
-            disabled={loading}
-            className="w-full py-2.5 px-4 rounded-[12px] bg-emerald-50 hover:bg-emerald-100 text-emerald-800 text-xs font-bold transition-colors flex items-center justify-center gap-2 border border-emerald-200 cursor-pointer"
-          >
-            <CheckCircle2 size={15} />
-            <span>Masuk Langsung sebagai {settings.guruBK ? settings.guruBK.split(',')[0] : 'Ibu Guru BK'}</span>
-          </button>
+        {/* Login Google */}
+        <div className="flex items-center gap-3" aria-hidden="true">
+          <div className="flex-1 h-px bg-border" />
+          <span className="text-[11px] text-muted font-semibold">atau</span>
+          <div className="flex-1 h-px bg-border" />
         </div>
 
-        {/* Indikator Status Kesiapan Backend Supabase */}
-        <div className="pt-3 border-t border-border/60 flex items-center justify-between text-[11px] text-muted">
-          <div className="flex items-center gap-1.5">
-            <Database size={13} className={isBackendConnected ? 'text-emerald-600' : 'text-primary'} />
-            <span className="font-semibold text-text">Status Backend:</span>
-          </div>
-          {isBackendConnected ? (
-            <span className="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 font-bold border border-emerald-200 flex items-center gap-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-              Supabase Terhubung
-            </span>
-          ) : (
-            <span className="px-2 py-0.5 rounded-full bg-primary-tint text-primary font-bold flex items-center gap-1" title="Siap dihubungkan ke Supabase kapan saja">
-              <span className="w-1.5 h-1.5 rounded-full bg-primary" />
-              Siap Backend (Mode Lokal)
-            </span>
-          )}
-        </div>
+        <button
+          type="button"
+          onClick={handleGoogle}
+          disabled={loading !== null}
+          className="w-full min-h-[48px] rounded-[14px] bg-white border border-border text-sm font-bold text-text hover:bg-[#F7F8FC] active:scale-[0.98] transition-all flex items-center justify-center gap-2.5 cursor-pointer disabled:opacity-60"
+        >
+          <GoogleIcon />
+          <span>{loading === 'google' ? 'Mengalihkan ke Google...' : 'Masuk dengan Google'}</span>
+        </button>
       </div>
 
-      <p className="text-[11px] text-center text-muted mt-4">
-        SIM-BK · Sistem Informasi Manajemen Bimbingan & Konseling Sekolah
+      <p className="text-[11px] text-center text-muted mt-5">
+        SIM BK PRO · Sistem Informasi Manajemen Bimbingan &amp; Konseling
       </p>
     </div>
   );

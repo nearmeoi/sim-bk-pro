@@ -1,4 +1,4 @@
-import { useState, useMemo, useRef } from 'react';
+﻿import { useState, useMemo, useEffect, useRef } from 'react';
 import {
   Search, Plus, Upload, Download, X, ArrowUpDown, UserCheck,
   Printer, MessageSquare, Phone, Home, Calendar, Clock, Check,
@@ -10,6 +10,7 @@ import HvsPreviewModal from '../ui/HvsPreviewModal';
 import { SuratModal } from './siswa/SuratModal';
 import { useBK } from '../../context/BKContext';
 import { exportToCsv, parseCsv } from '../../lib/exportCsv';
+import { ListSkeleton } from '../ui/Skeleton';
 import type { Student, CounselingRecord } from '../../types';
 interface SiswaViewProps {
   onToast: (msg: string) => void;
@@ -18,7 +19,7 @@ interface SiswaViewProps {
 type SortKey = keyof Pick<Student, 'nama' | 'nis' | 'kelas' | 'status'>;
 
 export default function SiswaView({ onToast }: SiswaViewProps) {
-  const { students, records, addStudent, updateStudent, addCounselingRecord, settings } = useBK();
+  const { students, records, addStudent, updateStudent, addCounselingRecord, settings, isBooting } = useBK();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [q, setQ] = useState('');
   const [kelasFilter, setKelasFilter] = useState('');
@@ -105,14 +106,22 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
   const [previewHvsOpen, setPreviewHvsOpen] = useState(false);
   const [suratType, setSuratType] = useState<'panggilan' | 'home_visit'>('panggilan');
   const [showAddRecord, setShowAddRecord] = useState(false);
-  const [newRecordForm, setNewRecordForm] = useState({
-    jenis: 'Konseling Individual' as const,
-    bidang: 'Pribadi' as const,
+  const [newRecordForm, setNewRecordForm] = useState<{
+    jenis: CounselingRecord['jenis'];
+    bidang: CounselingRecord['bidang'];
+    tanggal: string;
+    waktu: string;
+    masalah: string;
+    tindakLanjut: string;
+    status: CounselingRecord['status'];
+  }>({
+    jenis: 'Konseling Individual',
+    bidang: 'Pribadi',
     tanggal: '2026-11-05',
     waktu: '10:00',
     masalah: '',
     tindakLanjut: '',
-    status: 'Proses' as const,
+    status: 'Proses',
   });
 
   const filtered = useMemo(() => {
@@ -133,11 +142,24 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
       });
   }, [students, q, kelasFilter, sortKey, sortAsc]);
 
+  // Pagination tabel siswa: 20 baris/halaman agar tetap ringan di HP
+  const PAGE_SIZE = 20;
+  const [page, setPage] = useState(1);
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  const pageRows = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+
+  // Kembali ke halaman 1 saat pencarian/filter berubah, dan jaga page tetap valid
+  useEffect(() => {
+    setPage(1);
+  }, [q, kelasFilter, sortKey, sortAsc]);
+  useEffect(() => {
+    if (page > totalPages) setPage(totalPages);
+  }, [totalPages, page]);
+
   const toggleSort = (key: SortKey) => {
     if (sortKey === key) setSortAsc((v) => !v);
     else {
-      setSortKey(key);
-      setSortAsc(true);
+      setSortKey(key);      setSortAsc(true);
     }
   };
 
@@ -400,7 +422,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
             BUKU CATATAN PESERTA DIDIK {kelasFilter ? `( KELAS ${kelasFilter} )` : '( SEMUA KELAS )'}
           </h2>
           <p className="text-xs text-black/80 font-bold mt-0.5">
-            {settings.namaSekolah || 'SMP NEGERI 1 BINTANG'} · TAHUN AJARAN {settings.tahunAjaran || '2026/2027'}
+            {settings.namaSekolah || 'SIM BK PRO'} Â· TAHUN AJARAN {settings.tahunAjaran || '2026/2027'}
           </p>
         </div>
 
@@ -452,7 +474,13 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
               </tr>
             </thead>
             <tbody>
-              {filtered.length === 0 ? (
+              {isBooting ? (
+                <tr className="no-print">
+                  <td colSpan={9} className="border border-black p-4">
+                    <ListSkeleton rows={5} className="print:hidden" />
+                  </td>
+                </tr>
+              ) : filtered.length === 0 ? (
                 <tr>
                   <td colSpan={9} className="border border-black px-4 py-12 text-center text-muted">
                     <UserCheck size={32} className="mx-auto mb-2 text-muted/50" />
@@ -461,7 +489,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                   </td>
                 </tr>
               ) : (
-                filtered.map((s, i) => {
+                pageRows.map((s, i) => {
                   const sRecords = records.filter((r) => r.studentId === s.id);
                   const hasActiveCase = sRecords.some((r) => r.status === 'Proses');
                   return (
@@ -472,7 +500,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                       title="Klik untuk membuka catatan konseling siswa"
                     >
                       <td className="border border-black px-2 py-2 text-center font-bold">
-                        {i + 1}
+                        {(page - 1) * PAGE_SIZE + i + 1}
                       </td>
                       <td className="border border-black px-3 py-2 font-bold text-black whitespace-nowrap">
                         <div className="flex items-center gap-2">
@@ -554,10 +582,35 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
           </table>
         </div>
 
+        {/* Pagination: sembunyikan bila hanya 1 halaman */}
+        {totalPages > 1 && (
+          <div className="mt-4 flex items-center justify-center gap-2 print:hidden">
+            <button
+              type="button"
+              disabled={page <= 1}
+              onClick={() => setPage((p) => Math.max(1, p - 1))}
+              className="bk-btn ghost !min-h-[42px] !text-xs !px-4"
+            >
+              â€¹ Sebelumnya
+            </button>
+            <span className="px-3 py-1.5 rounded-full bg-primary-tint text-primary text-xs font-bold whitespace-nowrap">
+              Halaman {page} dari {totalPages}
+            </span>
+            <button
+              type="button"
+              disabled={page >= totalPages}
+              onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+              className="bk-btn ghost !min-h-[42px] !text-xs !px-4"
+            >
+              Berikutnya â€º
+            </button>
+          </div>
+        )}
+
         {/* Table Footer */}
         <div className="mt-4 pt-3 border-t border-black/30 text-[11px] text-muted flex justify-between items-center">
           <p>Total: {filtered.length} siswa terdata. Klik "Buka" untuk melihat catatan konseling.</p>
-          <p className="font-semibold text-text">{settings.namaSekolah || 'SMP Negeri 1 Bintang'}</p>
+          <p className="font-semibold text-text">{settings.namaSekolah || 'SIM BK PRO'}</p>
         </div>
       </div>
 
@@ -590,12 +643,23 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                 </div>
               </div>
 
-              <button
-                onClick={() => setSelectedStudent(null)}
-                className="p-2 text-muted hover:text-text rounded-full hover:bg-bg transition-colors"
-              >
-                <X size={20} />
-              </button>
+              <div className="flex items-center gap-2 flex-none">
+                <button
+                  type="button"
+                  onClick={() => handleOpenEdit(selectedStudent)}
+                  className="min-h-[40px] px-4 rounded-[12px] bg-primary text-white text-xs font-bold hover:brightness-105 active:scale-[0.98] transition-all flex items-center gap-1.5 shadow-xs cursor-pointer"
+                  title="Ubah data master siswa dan nama orang tua"
+                >
+                  <Edit2 size={14} />
+                  <span>Edit Data</span>
+                </button>
+                <button
+                  onClick={() => setSelectedStudent(null)}
+                  className="w-10 h-10 text-muted hover:text-text rounded-full hover:bg-bg transition-colors cursor-pointer"
+                >
+                  <X size={20} />
+                </button>
+              </div>
             </div>
 
             {/* Biodata Ringkas Siswa (Model Bimbingan Karir: Rapi, Atas ke Bawah, Tanpa Kolom Terpisah) */}
@@ -603,7 +667,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
               <div className="flex flex-wrap items-center justify-between gap-2 border-b border-black/20 pb-1.5">
                 <div>
                   <span className="font-bold">Wali Murid / Orang Tua : </span>
-                  <span className="font-bold text-text">{selectedStudent.namaWali || '(Belum diisi - klik ubah)'}</span>
+                  <span className="font-bold text-text">{selectedStudent.namaWali || '(Belum diisi â€” tekan Edit Data di atas)'}</span>
                   {selectedStudent.kontakWali && (
                     <span className="ml-1 text-muted">({selectedStudent.kontakWali})</span>
                   )}
@@ -612,15 +676,6 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                   <span className="font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded text-[11px] border border-emerald-200">
                     {selectedStudent.status}
                   </span>
-                  <button
-                    type="button"
-                    onClick={() => handleOpenEdit(selectedStudent)}
-                    className="px-2.5 py-1 rounded-[8px] bg-white border border-black/30 hover:border-primary text-xs font-bold text-primary hover:bg-primary-tint transition-all flex items-center gap-1 cursor-pointer shadow-xs"
-                    title="Ubah data master siswa dan nama orang tua"
-                  >
-                    <Edit2 size={13} />
-                    <span>Ubah Data Siswa / Orang Tua</span>
-                  </button>
                 </div>
               </div>
 
@@ -715,7 +770,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                       <label className="block text-xs font-bold text-text mb-1">Jenis Layanan</label>
                       <select
                         value={newRecordForm.jenis}
-                        onChange={(e) => setNewRecordForm((prev) => ({ ...prev, jenis: e.target.value as any }))}
+                        onChange={(e) => setNewRecordForm((prev) => ({ ...prev, jenis: e.target.value as CounselingRecord['jenis'] }))}
                         className="w-full min-h-[42px] px-3 rounded-[10px] border border-border text-xs font-bold bg-white"
                       >
                         <option>Konseling Individual</option>
@@ -730,7 +785,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                       <label className="block text-xs font-bold text-text mb-1">Bidang Layanan</label>
                       <select
                         value={newRecordForm.bidang}
-                        onChange={(e) => setNewRecordForm((prev) => ({ ...prev, bidang: e.target.value as any }))}
+                        onChange={(e) => setNewRecordForm((prev) => ({ ...prev, bidang: e.target.value as CounselingRecord['bidang'] }))}
                         className="w-full min-h-[42px] px-3 rounded-[10px] border border-border text-xs font-bold bg-white"
                       >
                         <option value="Pribadi">Pribadi</option>
@@ -744,7 +799,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                       <label className="block text-xs font-bold text-text mb-1">Status Penanganan</label>
                       <select
                         value={newRecordForm.status}
-                        onChange={(e) => setNewRecordForm((prev) => ({ ...prev, status: e.target.value as any }))}
+                        onChange={(e) => setNewRecordForm((prev) => ({ ...prev, status: e.target.value as CounselingRecord['status'] }))}
                         className="w-full min-h-[42px] px-3 rounded-[10px] border border-border text-xs font-bold bg-white"
                       >
                         <option value="Proses">Masih Diproses</option>
@@ -783,19 +838,19 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                     />
                   </div>
 
-                  <div className="flex justify-end gap-2 pt-2">
+                  <div className="flex gap-3 pt-3">
                     <button
                       type="button"
                       onClick={() => setShowAddRecord(false)}
-                      className="px-4 py-2 rounded-[10px] bg-bg font-bold text-xs text-muted hover:bg-gray-200"
+                      className="bk-btn ghost !min-h-[40px] !text-xs"
                     >
                       Batal
                     </button>
                     <button
                       type="submit"
-                      className="px-5 py-2 rounded-[10px] bg-primary text-white font-bold text-xs hover:brightness-105 shadow-sm"
+                      className="bk-btn primary flex-1 !min-h-[40px] !text-xs"
                     >
-                      Simpan ke Riwayat Siswa
+                      Simpan Catatan
                     </button>
                   </div>
                 </form>
@@ -1004,13 +1059,13 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                 <button
                   type="button"
                   onClick={() => setAddOpen(false)}
-                  className="flex-1 min-h-[48px] rounded-[14px] bg-bg text-sm font-bold text-muted hover:bg-gray-200 transition-colors"
+                  className="bk-btn ghost flex-1"
                 >
                   Batal
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 min-h-[48px] rounded-[14px] bg-accent text-white text-sm font-bold hover:brightness-105 transition-colors shadow-sm"
+                  className="bk-btn primary flex-1"
                 >
                   Simpan Siswa
                 </button>
@@ -1170,13 +1225,13 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                 <button
                   type="button"
                   onClick={() => setEditOpen(false)}
-                  className="flex-1 min-h-[46px] rounded-[12px] bg-bg text-sm font-bold text-muted hover:bg-gray-200 transition-colors"
+                  className="bk-btn ghost flex-1"
                 >
                   Batal
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 min-h-[46px] rounded-[12px] bg-primary text-white text-sm font-bold hover:brightness-105 transition-all shadow-sm"
+                  className="bk-btn primary flex-1"
                 >
                   Simpan Perubahan
                 </button>
@@ -1247,15 +1302,15 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
               <p>Mengetahui,</p>
               <p className="font-bold">Kepala Sekolah</p>
               <div className="mt-16">
-                <p className="font-bold underline">{settings.kepalaSekolah || 'Drs. H. Mulyadi Kusuma, M.Pd.'}</p>
+                <p className="font-bold underline">{settings.kepalaSekolah || 'Belum Diisi di Pengaturan'}</p>
                 <p>NIP. {settings.nipKepala || '19750101 200003 1 001'}</p>
               </div>
             </div>
             <div>
-              <p>{settings.kotaSurat || 'Kota Bintang'}, {new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
+              <p>{settings.kotaSurat || 'diisi di Pengaturan'}, {new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
               <p className="font-bold mt-0.5">Guru BK / Konselor</p>
               <div className="mt-20">
-                <p className="font-bold underline">{settings.guruBK || 'Siti Rahmawati, S.Pd., Gr.'}</p>
+                <p className="font-bold underline">{settings.guruBK || 'Belum Diisi di Pengaturan'}</p>
                 <p>NIP. {settings.nipGuruBK || '19880512 201402 2 003'}</p>
               </div>
             </div>
@@ -1336,15 +1391,15 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
               <p>Mengetahui,</p>
               <p className="font-bold">Kepala Sekolah</p>
               <div className="mt-14">
-                <p className="font-bold underline">{settings.kepalaSekolah || 'Drs. H. Mulyadi Kusuma, M.Pd.'}</p>
+                <p className="font-bold underline">{settings.kepalaSekolah || 'Belum Diisi di Pengaturan'}</p>
                 <p>NIP. {settings.nipKepala || '-'}</p>
               </div>
             </div>
             <div>
-              <p>{settings.kotaSurat || 'Kota Bintang'}, {new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
+              <p>{settings.kotaSurat || 'diisi di Pengaturan'}, {new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
               <p className="font-bold">Guru BK / Konselor</p>
               <div className="mt-14">
-                <p className="font-bold underline">{settings.guruBK || 'Siti Rahmawati, S.Pd., Gr.'}</p>
+                <p className="font-bold underline">{settings.guruBK || 'Belum Diisi di Pengaturan'}</p>
                 <p>NIP. {settings.nipGuruBK || '-'}</p>
               </div>
             </div>
@@ -1354,3 +1409,4 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
     </div>
   );
 }
+

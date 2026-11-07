@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import KopSurat from '../../ui/KopSurat';
 import type { IndividualKarirAngket, SchoolSettings } from '../../../types';
 interface KarirAngketFormProps {
@@ -20,7 +20,7 @@ export const KarirAngketForm: React.FC<KarirAngketFormProps> = ({
         settings={settings}
         compact
         judul="ANGKET PEMETAAN JALUR PENDIDIKAN LANJUTAN & KARIR SISWA"
-        subjudul={`KELAS 9 · TAHUN AJARAN ${settings.tahunAjaran || '2026/2027'}`}
+        subjudul={`KELAS 9 Â· TAHUN AJARAN ${settings.tahunAjaran || '2026/2027'}`}
       />
 
       {/* Identitas Peserta Didik */}
@@ -398,7 +398,7 @@ export const KarirAngketForm: React.FC<KarirAngketFormProps> = ({
         </div>
 
         <div>
-          <p>{settings.kotaSurat || 'Kota Bintang'}, {new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
+          <p>{settings.kotaSurat || 'diisi di Pengaturan'}, {new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
           <p className="font-bold mt-0.5">Peserta Didik</p>
           <div className="mt-12">
             <p className="font-extrabold underline underline-offset-4 text-[12px]">
@@ -413,7 +413,7 @@ export const KarirAngketForm: React.FC<KarirAngketFormProps> = ({
           <p className="font-bold mt-0.5">Guru BK / Konselor</p>
           <div className="mt-12">
             <p className="font-extrabold underline underline-offset-4 text-[12px]">
-              {settings.guruBK || 'Siti Rahmawati, S.Pd., Gr.'}
+              {settings.guruBK || 'Belum Diisi di Pengaturan'}
             </p>
             <p className="mt-1 text-[10.5px] text-black/70">NIP. {settings.nipGuruBK || '-'}</p>
           </div>
@@ -421,11 +421,12 @@ export const KarirAngketForm: React.FC<KarirAngketFormProps> = ({
       </div>
 
       <div className="mt-4 pt-2 border-t border-black/40 text-[10px] text-black/70 flex justify-between items-center">
-        <p>SIM-BK · Formulir Pilihan Jalur Lanjutan Siswa</p>
-        <p className="font-bold">Halaman 1 dari 1 · {settings.namaSekolah || 'SMP Negeri 1 Bintang'}</p>
+        <p>SIM-BK Â· Formulir Pilihan Jalur Lanjutan Siswa</p>
+        <p className="font-bold">Halaman 1 dari 1 Â· {settings.namaSekolah || 'SIM BK PRO'}</p>
       </div>
     </div>
   );
 };
 
 export default KarirAngketForm;
+

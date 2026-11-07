@@ -2,6 +2,15 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.tsx'
 import './index.css'
+import { registerSW } from 'virtual:pwa-register'
+
+// PWA: daftarkan service worker agar aplikasi bisa dipasang ke layar utama HP
+registerSW({ immediate: true })
+
+// Self-check logika murni — hanya saat mode pengembangan
+if (import.meta.env.DEV) {
+  void import('./lib/selfcheck').then((m) => m.runSelfChecks())
+}
 
 if (typeof window !== 'undefined') {
   let originalTitle = document.title;
