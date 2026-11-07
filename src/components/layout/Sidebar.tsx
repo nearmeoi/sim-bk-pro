@@ -15,7 +15,7 @@ export default function Sidebar({ current, onNav, onCatat }: SidebarProps) {
   const { settings, activeDocTab, setActiveDocTab, logout } = useBK();
   const [dokumenCollapsed, setDokumenCollapsed] = useState(false);
   const isDokumenActive = current === 'dokumen' || current === 'akpd' || current === 'karir' || current === 'shinro';
-  const isDokumenExpanded = isDokumenActive || !dokumenCollapsed;
+  const isDokumenExpanded = !dokumenCollapsed;
   const navBtn = (id: NavView, label: string, Icon: React.ElementType, badge?: string) => {
     const active = current === id || (id === 'karir' && current === 'shinro');
     return (
@@ -78,8 +78,8 @@ export default function Sidebar({ current, onNav, onCatat }: SidebarProps) {
                 : 'text-muted hover:bg-bg hover:text-text font-medium'
             }`}
             onClick={() => {
+              setDokumenCollapsed(false);
               if (!isDokumenActive) onNav('dokumen');
-              setDokumenCollapsed((prev) => !prev);
             }}
           >
             <FileText size={20} strokeWidth={isDokumenActive ? 2.25 : 1.75} className="flex-none" />
