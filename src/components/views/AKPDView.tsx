@@ -41,6 +41,7 @@ export default function AKPDView({ onNav, onToast }: AKPDViewProps) {
     setKelasAKPD: setKelas,
     settings,
     setAkpdRecommendations,
+    setAkpdProtaTargets,
     setActiveDocTab,
   } = useBK();
 
@@ -618,9 +619,43 @@ export default function AKPDView({ onNav, onToast }: AKPDViewProps) {
 
             {/* Bagian 1: Tabel Persentase 4 Bidang */}
             <div className="space-y-2">
-              <h3 className="font-bold text-xs sm:text-sm text-black uppercase tracking-wide">
-                I. Persentase Kebutuhan per Bidang Layanan
-              </h3>
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <h3 className="font-bold text-xs sm:text-sm text-black uppercase tracking-wide">
+                  I. Persentase Kebutuhan per Bidang Layanan
+                </h3>
+                {onNav && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      // Generate Prota items from top 3 bidang with highest needs
+                      const bidangData = [
+                        { nama: 'Pribadi', pct: pctPribadi },
+                        { nama: 'Sosial', pct: pctSosial },
+                        { nama: 'Belajar', pct: pctBelajar },
+                        { nama: 'Karir', pct: pctKarir },
+                      ].sort((a, b) => b.pct - a.pct);
+
+                      const topBidang = bidangData.slice(0, 3);
+                      const protaTargets: any[] = topBidang.map((b, idx) => ({
+                        id: `akpd-prota-${idx}`,
+                        komponen: 'Layanan Dasar',
+                        jenis: `Bimbingan Klasikal: Kebutuhan ${b.nama} (dari AKPD ${kelas})`,
+                        bidang: b.nama as any,
+                        months: Array(12).fill(true),
+                        volume: 12,
+                        sasaran: `Siswa ${kelas} dengan kebutuhan tinggi di bidang ${b.nama} (${b.pct}%)`,
+                      }));
+
+                      setAkpdProtaTargets(protaTargets);
+                      setActiveDocTab('prota');
+                      onNav('dokumen');
+                    }}
+                    className="min-h-[32px] px-3.5 rounded-[8px] bg-accent text-white text-xs font-bold hover:brightness-105 active:scale-[0.98] transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
+                  >
+                    <TrendingUp size={13} /> Buat Target Prota
+                  </button>
+                )}
+              </div>
               <div className="overflow-x-auto border-t border-black">
                 <table className="w-full text-[12px] sm:text-[13px] border-collapse border border-black min-w-[560px]">
                   <thead>

@@ -111,6 +111,10 @@ interface BKContextType {
   akpdRecommendations: Array<{ no: number; pernyataan: string; topikRPL: string; bidang: 'Pribadi' | 'Sosial' | 'Belajar' | 'Karir' }>;
   setAkpdRecommendations: React.Dispatch<React.SetStateAction<Array<{ no: number; pernyataan: string; topikRPL: string; bidang: 'Pribadi' | 'Sosial' | 'Belajar' | 'Karir' }>>>;
 
+  // AKPD -> Prota bridge: pending auto-generated Prota targets
+  akpdProtaTargets: ProtaItem[];
+  setAkpdProtaTargets: React.Dispatch<React.SetStateAction<ProtaItem[]>>;
+
   // Authentication
   isAuthenticated: boolean;
   isBackendConnected: boolean;
@@ -161,6 +165,7 @@ export const BKProvider: React.FC<{ children: React.ReactNode }> = ({ children }
   const [settings, setSettings] = useLocalStorage<SchoolSettings>('sim_bk_settings', DEFAULT_SETTINGS);
   const [activeDocTab, setActiveDocTab] = useState<string | null>(null);
   const [akpdRecommendations, setAkpdRecommendations] = useState<Array<{ no: number; pernyataan: string; topikRPL: string; bidang: 'Pribadi' | 'Sosial' | 'Belajar' | 'Karir' }>>([]);
+  const [akpdProtaTargets, setAkpdProtaTargets] = useState<ProtaItem[]>([]);
   const [isAuthenticated, setIsAuthenticated] = useLocalStorage<boolean>('sim_bk_auth', true);
   const isBackendConnected = isSupabaseConfigured();
 
@@ -518,6 +523,10 @@ export const BKProvider: React.FC<{ children: React.ReactNode }> = ({ children }
         // AKPD -> RPL recommendations
         akpdRecommendations,
         setAkpdRecommendations,
+
+        // AKPD -> Prota bridge
+        akpdProtaTargets,
+        setAkpdProtaTargets,
 
         // Auth
         isAuthenticated,
