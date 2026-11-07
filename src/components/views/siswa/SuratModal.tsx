@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import { X, Printer, Calendar, Clock, MapPin, FileText, Send } from 'lucide-react';
+import { X, Printer, FileText } from "lucide-react";
 import KopSurat from '../../ui/KopSurat';
 import type { Student, SchoolSettings } from '../../../types';
 

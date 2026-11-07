@@ -289,7 +289,6 @@ export const DEFAULT_SETTINGS: SchoolSettings = {
   logoUrl: '',
 };
 
-// --- DATA ANGKET KEBUTUHAN PESERTA DIDIK (AKPD) KEMENDIKBUD ---
 export const INITIAL_AKPD_ITEMS: AKPDItem[] = [
   // 1. BIDANG PRIBADI
   {
@@ -470,7 +469,6 @@ export const INITIAL_AKPD_ITEMS: AKPDItem[] = [
   },
 ];
 
-// --- DATA E-SHINRO CHOSA (進路調査 - FORMULIR JALUR LANJUTAN KELAS 9) ---
 export const INITIAL_SHINRO_ITEMS: ShinroChosaItem[] = [
   {
     id: 'sh-1',

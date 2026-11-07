@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowLeft, Printer, Download, Save, Sparkles, BookOpen, Eye } from 'lucide-react';
+import { ArrowLeft, Printer, Save, Sparkles, BookOpen, Eye } from "lucide-react";
 import KopSurat from '../../ui/KopSurat';
 import HvsPreviewModal from '../../ui/HvsPreviewModal';
 import { useBK } from '../../../context/BKContext';
@@ -50,24 +50,24 @@ export const RplForm: React.FC<RplFormProps> = ({ onBack, onToast }) => {
   const [bidangBimbingan, setBidangBimbingan] = useState<'Pribadi' | 'Sosial' | 'Belajar' | 'Karir'>('Pribadi');
   const [topik, setTopik] = useState('Cerdas dan Bijak Menggunakan Gawai & Media Sosial');
   const [kelas, setKelas] = useState('Kelas 8');
-  const [alokasiWaktu, setAlokasiWaktu] = useState('1 Pertemuan x 40 Menit');
-  const [fungsiLayanan, setFungsiLayanan] = useState('Pemahaman dan Pencegahan');
-  const [mediaAlat, setMediaAlat] = useState('LCD Proyektor, Slide Presentasi, Lembar Kerja Peserta Didik (LKPD)');
-  const [metode, setMetode] = useState('Experiential Learning, Curah Pendapat (Brainstorming), & Diskusi Kelompok');
+  const [alokasiWaktu, _setAlokasiWaktu] = useState('1 Pertemuan x 40 Menit');
+  const [fungsiLayanan, _setFungsiLayanan] = useState('Pemahaman dan Pencegahan');
+  const [mediaAlat, _setMediaAlat] = useState('LCD Proyektor, Slide Presentasi, Lembar Kerja Peserta Didik (LKPD)');
+  const [metode, _setMetode] = useState('Experiential Learning, Curah Pendapat (Brainstorming), & Diskusi Kelompok');
 
   const [tujuanLayanan, setTujuanLayanan] = useState(TEMPLATE_RPL_POPULER[0].tujuan);
-  const [tahapAwal, setTahapAwal] = useState(
+  const [tahapAwal, _setTahapAwal] = useState(
     'Guru BK membuka sesi dengan salam hangat, presensi kehadiran, apersepsi keterkaitan materi dengan kehidupan sehari-hari, ice-breaking konsentrasi, serta menyampaikan tujuan layanan yang ingin dicapai.'
   );
   const [tahapInti, setTahapInti] = useState(TEMPLATE_RPL_POPULER[0].langkahInti);
-  const [tahapPenutup, setTahapPenutup] = useState(
+  const [tahapPenutup, _setTahapPenutup] = useState(
     'Peserta didik diajak merumuskan kesimpulan bersama. Guru BK memberikan evaluasi refleksi pemahaman diri, motivasi penguatan karakter, serta doa penutup bersama.'
   );
 
-  const [evaluasiProses, setEvaluasiProses] = useState(
+  const [evaluasiProses, _setEvaluasiProses] = useState(
     'Mengamati antusiasme, keaktifan partisipasi, dinamika kelompok, serta keterbukaan siswa selama proses bimbingan klasikal berlangsung.'
   );
-  const [evaluasiHasil, setEvaluasiHasil] = useState(
+  const [evaluasiHasil, _setEvaluasiHasil] = useState(
     'Menilai lembar refleksi pemahaman materi (Understanding), kenyamanan perasaan (Comfort), dan rencana aksi konkret siswa pada lembar LKPD (Action).'
   );
 

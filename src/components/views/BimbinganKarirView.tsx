@@ -1,8 +1,15 @@
 import React, { useState } from 'react';
 import {
-  Printer, Plus, Save, Trash2, Check,
-  Table, FileText, ClipboardPaste, Compass, Download, Eye
-} from 'lucide-react';
+  Printer,
+  Plus,
+  Save,
+  Trash2,
+  Table,
+  FileText,
+  ClipboardPaste,
+  Download,
+  Eye,
+} from "lucide-react";
 import PetunjukIbu from '../ui/PetunjukIbu';
 import HvsPreviewModal from '../ui/HvsPreviewModal';
 import { useBK } from '../../context/BKContext';
@@ -429,7 +436,7 @@ export const BimbinganKarirView: React.FC<BimbinganKarirViewProps> = ({ onToast 
               </thead>
               <tbody>
                 {displayedStudents.map((item, idx) => (
-                  <tr key={item.id} className="hover:bg-blue-50/30 transition-colors">
+                  <tr key={item.id} className="hover:bg-orange-50/30 transition-colors">
                     <td className="border border-black px-2 py-1 text-center font-bold">
                       {idx + 1}
                     </td>
@@ -523,7 +530,7 @@ export const BimbinganKarirView: React.FC<BimbinganKarirViewProps> = ({ onToast 
                         }
                         className={`w-full text-xs font-bold py-1 bg-transparent border-none focus:outline-none focus:ring-1 focus:ring-primary text-center ${
                           item.statusDiskusiOrtu === 'Setuju Penuh'
-                            ? 'text-emerald-800'
+                            ? 'text-accent-800'
                             : item.statusDiskusiOrtu === 'Orang Tua Beda Pilihan'
                             ? 'text-red-700 font-extrabold underline'
                             : 'text-amber-800'

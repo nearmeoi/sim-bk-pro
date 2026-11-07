@@ -21,11 +21,11 @@ Dokumen ini merangkum seluruh pedoman desain visual, token CSS, tata letak respo
 
 | Token CSS | Nilai HEX / RGB | Peran / Deskripsi |
 | :--- | :--- | :--- |
-| `--primary` | `#3949AB` | Warna utama (Indigo / Slate Blue), brand header, tombol sorotan |
-| `--primary-2` | `#5262C9` | Variasi gradien primer, aksen tombol hero |
-| `--primary-tint` | `#EEF0FA` | Latar belakang badge/avatar aktif, baris hover, tab aktif |
-| `--accent` | `#0F766E` | Warna aksen (Teal / Emerald), FAB `+ Catat`, status sukses/selesai |
-| `--accent-tint` | `#E3F4F1` | Latar belakang badge/avatar aksen |
+| `--primary` | `#B45309` | Warna utama (Orange Muda / Amber), brand header, tombol sorotan |
+| `--primary-2` | `#92400E` | Variasi gradien primer, aksen tombol hero |
+| `--primary-tint` | `#FEF3E2` | Latar belakang badge/avatar aktif, baris hover, tab aktif |
+| `--accent` | `#E86A33` | Warna aksen (Orange Hangat), FAB `+ Catat`, status sukses/selesai |
+| `--accent-tint` | `#FFE8D9` | Latar belakang badge/avatar aksen |
 | `--alert` | `#B91C1C` | Peringatan / Keterlambatan / Kasus mendesak (Crimson Red) |
 | `--alert-tint` | `#FCE9E9` | Latar belakang pill keterlambatan & avatar kasus |
 | `--bg` | `#F5F7FC` | Latar belakang halaman (Cool Light Grey) |
@@ -35,21 +35,21 @@ Dokumen ini merangkum seluruh pedoman desain visual, token CSS, tata letak respo
 | `--muted` | `#667085` | Teks sekunder, label pembantu, deskripsi waktu |
 
 #### Gradien Khas
-- **Hero & Logo**: `linear-gradient(135deg, #3949AB 0%, #5262C9 100%)`
+- **Hero & Logo**: `linear-gradient(135deg, #B45309 0%, #92400E 100%)`
 
 ### 2.2 Bayangan (*Shadows & Elevation*)
 ```css
 /* Card & Tile Standard Shadow */
---shadow: 0 1px 2px rgb(25 32 80 / 0.05), 0 8px 24px rgb(57 73 171 / 0.07);
+--shadow: 0 1px 2px rgb(55 35 15 / 0.05), 0 8px 24px rgb(232 106 51 / 0.07);
 
 /* Hero Card Shadow */
---shadow-hero: 0 12px 28px rgb(57 73 171 / 0.28);
+--shadow-hero: 0 12px 28px rgb(232 106 51 / 0.28);
 
 /* FAB Button Shadow */
---shadow-fab: 0 6px 16px rgb(15 118 110 / 0.35), 0 0 0 5px var(--bg);
+--shadow-fab: 0 6px 16px rgb(232 106 51 / 0.35), 0 0 0 5px var(--bg);
 
 /* Bottom Navigation Top Shadow */
---shadow-bnav: 0 -6px 20px rgb(57 73 171 / 0.06);
+--shadow-bnav: 0 -6px 20px rgb(232 106 51 / 0.06);
 ```
 
 ### 2.3 Radius Sudut (*Border Radius*)
@@ -205,19 +205,19 @@ export default {
     extend: {
       colors: {
         primary: {
-          DEFAULT: '#3949AB',
-          2: '#5262C9',
-          tint: '#EEF0FA',
+          DEFAULT: '#B45309',
+          2: '#92400E',
+          tint: '#FEF3E2',
         },
         accent: {
-          DEFAULT: '#0F766E',
-          tint: '#E3F4F1',
+          DEFAULT: '#E86A33',
+          tint: '#FFE8D9',
         },
         alert: {
           DEFAULT: '#B91C1C',
           tint: '#FCE9E9',
         },
-        bg: '#F5F7FC',
+        bg: '#FFFFFF',
         surface: '#FFFFFF',
         border: '#E8EBF3',
         text: '#1B2236',
@@ -229,10 +229,10 @@ export default {
         panel: '28px',
       },
       boxShadow: {
-        card: '0 1px 2px rgb(25 32 80 / 0.05), 0 8px 24px rgb(57 73 171 / 0.07)',
-        hero: '0 12px 28px rgb(57 73 171 / 0.28)',
-        fab: '0 6px 16px rgb(15 118 110 / 0.35), 0 0 0 5px #F5F7FC',
-        bnav: '0 -6px 20px rgb(57 73 171 / 0.06)',
+        card: '0 1px 2px rgb(55 35 15 / 0.05), 0 8px 24px rgb(232 106 51 / 0.07)',
+        hero: '0 12px 28px rgb(232 106 51 / 0.28)',
+        fab: '0 6px 16px rgb(232 106 51 / 0.35), 0 0 0 5px #FFFFFF',
+        bnav: '0 -6px 20px rgb(232 106 51 / 0.06)',
       },
       minHeight: {
         tap: '48px',
@@ -247,7 +247,7 @@ export default {
 
 ## 7. Rangkuman Aturan Konsistensi untuk Developer
 
-1. **Jangan mengubah skema warna dasar**: Tetap gunakan `#3949AB` untuk identitas sekolah/BK dan `#0F766E` khusus untuk aksi utama (*Call to Action* / tombol sukses).
+1. **Jangan mengubah skema warna dasar**: Tetap gunakan `#B45309` untuk identitas sekolah/BK dan `#E86A33` khusus untuk aksi utama (*Call to Action* / tombol sukses).
 2. **Pertahankan tinggi interaksi**: Selalu terapkan minimal `48px` untuk setiap tombol navigasi, field input, dan filter chip.
 3. **Sticky Column pada Tabel Mobile**: Pastikan kolom nama siswa selalu terkunci di sebelah kiri (`sticky left-0 bg-white z-1`) agar data NIS dan status dapat diinspeksi dengan nyaman di ponsel.
 4. **Animasi Halus & Ringan**: Terapkan transisi `150ms ease` untuk hover kartu dan transform tekan (`active:scale-95`). Gunakan animasi fade-in sederhana (`opacity: 0 -> 1`) saat perpindahan tab tampilan.

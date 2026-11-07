@@ -59,7 +59,7 @@ export default function Sidebar({ current, onNav, onCatat }: SidebarProps) {
       {/* CTA Button */}
       <button
         onClick={onCatat}
-        className="w-full min-h-[48px] rounded-[14px] bg-accent text-white font-bold text-[15px] flex items-center justify-center gap-2 mb-4 shadow-[0_6px_16px_rgb(15_118_110/0.25)] hover:brightness-105 active:scale-[0.98] transition-all"
+        className="w-full min-h-[48px] rounded-[14px] bg-accent text-white font-bold text-[15px] flex items-center justify-center gap-2 mb-4 shadow-[0_6px_16px_rgb(232_106_51/0.25)] hover:brightness-105 active:scale-[0.98] transition-all"
       >
         <Plus size={19} strokeWidth={2.5} />
         <span>Catat Layanan</span>

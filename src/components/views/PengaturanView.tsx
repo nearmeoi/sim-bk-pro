@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Save, School, UserCheck, ShieldCheck, Check, RotateCcw, Upload, Trash2, Image, FileText } from 'lucide-react';
+import { Save, School, UserCheck, ShieldCheck, Check, RotateCcw, Upload, Trash2 } from "lucide-react";
 import PetunjukIbu from '../ui/PetunjukIbu';
 import KopSurat, { TutWuriEmblem } from '../ui/KopSurat';
 import { useBK } from '../../context/BKContext';
@@ -510,7 +510,7 @@ export const PengaturanView: React.FC<PengaturanViewProps> = ({ onToast }) => {
           onClick={handleSave}
           className={`w-full sm:w-auto min-h-[50px] px-8 rounded-[14px] text-sm font-bold flex items-center justify-center gap-2 transition-all shadow-[0_6px_16px_rgb(57_73_171/0.25)] ${
             saved
-              ? 'bg-emerald-600 text-white'
+              ? 'bg-accent-600 text-white'
               : 'bg-primary text-white hover:brightness-105 active:scale-[0.98]'
           }`}
         >

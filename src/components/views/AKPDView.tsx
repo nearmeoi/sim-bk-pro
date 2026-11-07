@@ -1,8 +1,17 @@
 import { useState } from 'react';
 import {
-  Printer, Plus, Save, RotateCcw, Trash2, Check, Download,
-  Table, FileText, ClipboardPaste, ArrowRight, HelpCircle, TrendingUp, Sparkles, Award, Eye
-} from 'lucide-react';
+  Printer,
+  Save,
+  RotateCcw,
+  Check,
+  Download,
+  Table,
+  FileText,
+  ClipboardPaste,
+  ArrowRight,
+  TrendingUp,
+  Eye,
+} from "lucide-react";
 import PetunjukIbu from '../ui/PetunjukIbu';
 import KopSurat from '../ui/KopSurat';
 import HvsPreviewModal from '../ui/HvsPreviewModal';
@@ -15,66 +24,7 @@ interface AKPDViewProps {
   onToast: (msg: string) => void;
 }
 
-const DEFAULT_STATEMENTS: string[] = [
-  'Saya kadang lupa bersyukur atas nikmat dan karunia dari Tuhan YME',
-  'Saya kadang lupa untuk berprilaku sopan dan santun dalam kehidupan',
-  'Saya merasa belum paham etika yang baik dan benar dalam pergaulan teman sebaya',
-  'Saya merasa sulit mematuhi tata tertib di sekolah',
-  'Kadang-kadang saya masih suka menyontek pada waktu ulangan',
-  'Kadang-kadang saya masih suka membolos sekolah / les / jam pelajaran',
-  'Rasa sakit hati / dendam masih membekas terhadap perlakuan orang lain',
-  'Saya masih merasa cemas atau takut jika berada di depan umum atau keramaian',
-  'Saya belum paham cara menjaga kesehatan tubuh dan kebersihan diri dengan baik',
-  'Saya belum tahu cara melakukan eksplorasi bakat secara mandiri',
-  'Saya masih sering mengalami sakit / alergi',
-  'Kondisi keluarga saya sedang tidak harmonis',
-  'Saya sedang mempunyai masalah dengan anggauta keluarga di rumah',
-  'Saya merasa belum bisa menjadi pribadi yang mandiri',
-  'Saya sering lupa waktu ketika bermain/membuka media sosial (fb, wa, instagram, dll)',
-  'Saya merasa sulit mengendalikan ketergantungan dengan handphone',
-  'Saya merasa tidak betah tinggal di rumah sendiri',
-  'Saya merasa tidak pernah di perhatikan dari orang tua',
-  'Kata maaf, tolong dan terimakasih kadang lupa saya ucapkan dalam pergaulan',
-  'Saya belum tahu tentang bentuk-bentuk kenakalan remaja saat ini dan cara mensikapinya',
-  'Saya sering beda pendapat dengan orang lain',
-  'Saya sedang mempunyai masalah dengan teman di sekolah',
-  'Saya belum tahu cara untuk menjaga persahabatan agar tetap langgeng',
-  'Saya belum tahu tentang bullying dan cara mensikapinya',
-  'Saya sukar bergaul dengan teman-teman di sekolah',
-  'Saya merasa masih sedikit pemahaman tentang kesehatan reproduksi remaja',
-  'Saya belum banyak tahu tentang dampak dari pacaran',
-  'Saya malu jika membicarakan masalah seks dan pacar kepada orang tua',
-  'Saya merasa malu jika bergaul dengan teman yang beda jenis kelamin',
-  'Saya merasa takut bertanya atau menjawab di kelas',
-  'Saya belum paham yang harus dilakukan dengan adanya pemanasan global',
-  'Saya belum mengetahui banyak tentang jenis obat-obat terlarang serta dampaknya',
-  'Saya belum tahu cara memilih lembaga bimbingan belajar',
-  'Saya merasa tidak memiliki semangat belajar',
-  'Saya belum tahu cara meraih prestasi di sekolah',
-  'Saya belum paham tentang gaya belajar dan strategi yang sesuai dengannya',
-  'Saya merasa kesulitan dalam memahami pelajaran',
-  'Saya belum terbiasa belajar bersama atau kelompok',
-  'Saya merasa belum menemukan cara belajar yang efektif',
-  'Saya selalu malas untuk belajar di rumah',
-  'Saya belajarnya jika akan ada ulangan atau ujian saja',
-  'Orang tua kurang peduli dengan kegiatan belajar saya',
-  'Saya belum bisa membuat peta pikiran (mind mapping)',
-  'Saya belum mengenal tentang macam-macam kecerdasan',
-  'Saya belum paham cara kerja otak kiri dan otak kanan',
-  'Saya sering dimarahi orang tua karena boros',
-  'Saya tidak terbiasa menabung',
-  'Saya kurang dapat menyalurkan bakat dan minat di sekolah',
-  'Saya belum tahu tentang prospek karir untuk setiap mapel',
-  'Saya belum banyak tahu tentang jenis-jenis profesi di masyarakat dan Prospeknya',
-];
 
-const SAMPLE_TALLY = [
-  18, 14, 22, 19, 21, 8, 15, 17, 12, 24,
-  9, 7, 11, 20, 29, 28, 6, 8, 16, 23,
-  19, 13, 21, 25, 14, 16, 22, 18, 15, 23,
-  10, 17, 15, 22, 20, 24, 26, 14, 25, 27,
-  28, 9, 21, 18, 19, 23, 20, 21, 26, 27,
-];
 
 export default function AKPDView({ onNav, onToast }: AKPDViewProps) {
   const {
@@ -387,9 +337,9 @@ export default function AKPDView({ onNav, onToast }: AKPDViewProps) {
 
       {/* KOTAK TEMPEL ANGKA MASAL DARI EXCEL */}
       {showPasteBox && viewMode === 'batch' && (
-        <div className="print:hidden bk-card bg-emerald-50/80 border-emerald-300 p-4 space-y-3 fade-up">
+        <div className="print:hidden bk-card bg-accent-50/80 border-accent-300 p-4 space-y-3 fade-up">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-emerald-900 flex items-center gap-1.5">
+            <span className="text-xs font-bold text-accent-900 flex items-center gap-1.5">
               <ClipboardPaste size={16} /> Tempel 50 Angka Rekapitulasi (dari Excel / Catatan):
             </span>
             <button
@@ -399,7 +349,7 @@ export default function AKPDView({ onNav, onToast }: AKPDViewProps) {
               Tutup
             </button>
           </div>
-          <p className="text-[12px] text-emerald-950">
+          <p className="text-[12px] text-accent-950">
             Paste deretan angka total centang (dipisahkan spasi, koma, atau baris baru).
           </p>
           <textarea
@@ -407,12 +357,12 @@ export default function AKPDView({ onNav, onToast }: AKPDViewProps) {
             value={pasteTallyText}
             onChange={(e) => setPasteTallyText(e.target.value)}
             placeholder="Contoh: 18, 14, 22, 19, 21, 8, 15, 17, 12, 24, 9, 7..."
-            className="w-full p-3 rounded-[10px] border border-emerald-300 text-xs bg-white text-text font-mono focus:outline-none focus:border-primary"
+            className="w-full p-3 rounded-[10px] border border-accent-300 text-xs bg-white text-text font-mono focus:outline-none focus:border-primary"
           />
           <div className="flex justify-end">
             <button
               onClick={handleProcessPasteTally}
-              className="min-h-[38px] px-4 rounded-[10px] bg-emerald-700 text-white font-bold text-xs hover:bg-emerald-800"
+              className="min-h-[38px] px-4 rounded-[10px] bg-accent-700 text-white font-bold text-xs hover:bg-accent-800"
             >
               Terapkan ke 50 Butir
             </button>
@@ -459,7 +409,7 @@ export default function AKPDView({ onNav, onToast }: AKPDViewProps) {
                 {items.map((item, idx) => {
                   const percent = Math.round((item.jumlahPemilih / totalRespondenKelas) * 100);
                   return (
-                    <tr key={idx} className="hover:bg-blue-50/40 transition-colors">
+                    <tr key={idx} className="hover:bg-orange-50/40 transition-colors">
                       <td className="border border-black px-2 py-1.5 text-center font-bold">
                         {item.no}
                       </td>
@@ -492,7 +442,7 @@ export default function AKPDView({ onNav, onToast }: AKPDViewProps) {
                               ? 'bg-red-100 text-red-800'
                               : percent >= 50
                                 ? 'bg-amber-100 text-amber-800'
-                                : 'bg-emerald-100 text-emerald-800'
+                                : 'bg-accent-100 text-accent-800'
                           }`}
                         >
                           {percent}%
@@ -590,7 +540,7 @@ export default function AKPDView({ onNav, onToast }: AKPDViewProps) {
                 {items.map((item, idx) => (
                   <tr
                     key={idx}
-                    className="hover:bg-blue-50/40 print:hover:bg-transparent transition-colors group"
+                    className="hover:bg-orange-50/40 print:hover:bg-transparent transition-colors group"
                   >
                     <td className="border border-black px-2 py-1 text-center font-bold align-middle">
                       {item.no}
@@ -608,7 +558,7 @@ export default function AKPDView({ onNav, onToast }: AKPDViewProps) {
 
                     <td
                       onClick={() => handleToggleAnswer(idx, 'ya')}
-                      className="border border-black px-1 py-1 text-center cursor-pointer select-none hover:bg-emerald-50 print:hover:bg-transparent align-middle font-extrabold text-[15px]"
+                      className="border border-black px-1 py-1 text-center cursor-pointer select-none hover:bg-accent-50 print:hover:bg-transparent align-middle font-extrabold text-[15px]"
                     >
                       {item.jawaban === 'ya' ? (
                         <span className="text-black font-extrabold block">✓</span>
@@ -686,7 +636,7 @@ export default function AKPDView({ onNav, onToast }: AKPDViewProps) {
                       { no: 3, nama: 'Bidang Belajar', range: 'Butir 31 - 45', butir: 15, pct: pctBelajar },
                       { no: 4, nama: 'Bidang Karir', range: 'Butir 46 - 50', butir: 5, pct: pctKarir },
                     ].map((row) => (
-                      <tr key={row.no} className="hover:bg-blue-50/30 transition-colors">
+                      <tr key={row.no} className="hover:bg-orange-50/30 transition-colors">
                         <td className="border border-black px-2 py-2 text-center font-bold">{row.no}</td>
                         <td className="border border-black px-3 py-2 font-bold text-black">
                           <span>{row.nama}</span>
@@ -703,7 +653,7 @@ export default function AKPDView({ onNav, onToast }: AKPDViewProps) {
                                 ? 'bg-red-100 text-red-800'
                                 : row.pct >= 40
                                 ? 'bg-amber-100 text-amber-800'
-                                : 'bg-emerald-100 text-emerald-800'
+                                : 'bg-accent-100 text-accent-800'
                             }`}
                           >
                             {row.pct >= 60 ? 'Prioritas Tinggi' : row.pct >= 40 ? 'Prioritas Sedang' : 'Cukup Baik'}
@@ -751,7 +701,7 @@ export default function AKPDView({ onNav, onToast }: AKPDViewProps) {
                       const pct = totalRespondenKelas > 0 ? Math.round((item.jumlahPemilih / totalRespondenKelas) * 100) : 0;
                       const bidang = item.no <= 15 ? 'Pribadi' : item.no <= 30 ? 'Sosial' : item.no <= 45 ? 'Belajar' : 'Karir';
                       return (
-                        <tr key={item.no} className="hover:bg-blue-50/30 transition-colors">
+                        <tr key={item.no} className="hover:bg-orange-50/30 transition-colors">
                           <td className="border border-black px-2 py-2 text-center font-black text-sm">
                             #{idx + 1}
                           </td>

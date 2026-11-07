@@ -252,7 +252,7 @@ export const ProtaForm: React.FC<ProtaFormProps> = ({ onBack, onToast }) => {
             </thead>
             <tbody>
               {protaList.map((row, i) => (
-                <tr key={row.id} className="hover:bg-blue-50/30 transition-colors">
+                <tr key={row.id} className="hover:bg-orange-50/30 transition-colors">
                   <td className="border border-black px-2 py-2 text-center font-bold align-top">
                     {i + 1}
                   </td>

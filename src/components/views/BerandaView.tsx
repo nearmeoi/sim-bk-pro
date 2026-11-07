@@ -1,8 +1,17 @@
 import React, { useState } from 'react';
 import {
-  DoorOpen, MessageSquare, Folder, FileText, ChevronRight, TrendingUp, Sparkles, AlertCircle,
-  FileCheck2, Compass, ArrowRight, Plus, ChevronDown, ChevronUp
-} from 'lucide-react';
+  DoorOpen,
+  MessageSquare,
+  Folder,
+  FileText,
+  ChevronRight,
+  AlertCircle,
+  FileCheck2,
+  Compass,
+  Plus,
+  ChevronDown,
+  ChevronUp,
+} from "lucide-react";
 import PetunjukIbu from '../ui/PetunjukIbu';
 import { greeting, DOCUMENTS } from '../../data/dummy';
 import { useBK } from '../../context/BKContext';
@@ -210,7 +219,7 @@ export const BerandaView: React.FC<BerandaViewProps> = ({ onNav, onCatat }) => {
                   cases
                     .filter((c) => c.status === 'Proses')
                     .map((c, idx) => (
-                      <tr key={c.id} className="hover:bg-blue-50/30 transition-colors">
+                      <tr key={c.id} className="hover:bg-orange-50/30 transition-colors">
                         <td className="border border-black px-2 py-2 text-center font-bold">
                           {idx + 1}
                         </td>

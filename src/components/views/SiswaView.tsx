@@ -1,9 +1,20 @@
 import { useState, useMemo, useRef } from 'react';
 import {
-  Search, Plus, Upload, Download, X, ArrowUpDown, UserCheck,
-  Printer, MessageSquare, Phone, Home, Calendar, Clock, Check,
-  AlertTriangle, Shield, BookOpen, ChevronRight, Save, FileText, Mail, Eye, Edit2
-} from 'lucide-react';
+  Search,
+  Plus,
+  Upload,
+  Download,
+  X,
+  ArrowUpDown,
+  UserCheck,
+  Printer,
+  Home,
+  Check,
+  Save,
+  Mail,
+  Eye,
+  Edit2,
+} from "lucide-react";
 import PetunjukIbu from '../ui/PetunjukIbu';
 import KopSurat from '../ui/KopSurat';
 import HvsPreviewModal from '../ui/HvsPreviewModal';
@@ -468,7 +479,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                     <tr
                       key={s.id}
                       onClick={() => setSelectedStudent(s)}
-                      className="hover:bg-blue-50/30 cursor-pointer transition-colors group"
+                      className="hover:bg-orange-50/30 cursor-pointer transition-colors group"
                       title="Klik untuk membuka catatan konseling siswa"
                     >
                       <td className="border border-black px-2 py-2 text-center font-bold">
@@ -513,7 +524,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                         <span
                           className={`inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-bold ${
                             s.status === 'Aktif'
-                              ? 'bg-emerald-50 text-emerald-800'
+                              ? 'bg-accent-50 text-accent-800'
                               : 'bg-gray-100 text-gray-600'
                           }`}
                         >
@@ -609,7 +620,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                   )}
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded text-[11px] border border-emerald-200">
+                  <span className="font-bold text-accent-800 bg-accent-50 px-2 py-0.5 rounded text-[11px] border border-accent-200">
                     {selectedStudent.status}
                   </span>
                   <button
@@ -823,7 +834,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                       </tr>
                     ) : (
                       studentRecords.map((rec, idx) => (
-                        <tr key={rec.id} className="hover:bg-blue-50/30 transition-colors">
+                        <tr key={rec.id} className="hover:bg-orange-50/30 transition-colors">
                           <td className="border border-black px-2 py-2 text-center font-bold">
                             {idx + 1}
                           </td>
@@ -843,7 +854,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                             <span
                               className={`px-2 py-0.5 rounded-full text-[11px] font-bold ${
                                 rec.status === 'Selesai'
-                                  ? 'bg-emerald-50 text-emerald-800'
+                                  ? 'bg-accent-50 text-accent-800'
                                   : 'bg-alert-tint text-alert'
                               }`}
                             >

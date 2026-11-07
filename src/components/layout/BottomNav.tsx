@@ -45,7 +45,7 @@ export default function BottomNav({ current, onNav, onCatat }: BottomNavProps) {
         className="flex-1 min-h-[68px] flex flex-col items-center justify-center select-none"
         aria-label="Catat Layanan"
       >
-        <span className="w-14 h-14 rounded-full bg-accent text-white flex items-center justify-center -mt-6 shadow-[0_6px_16px_rgb(15_118_110/0.35)] ring-4 ring-bg active:scale-90 transition-transform">
+        <span className="w-14 h-14 rounded-full bg-accent text-white flex items-center justify-center -mt-6 shadow-[0_6px_16px_rgb(232_106_51/0.35)] ring-4 ring-bg active:scale-90 transition-transform">
           <Plus size={24} strokeWidth={2.75} />
         </span>
         <span className="text-[12px] font-bold text-accent mt-1 leading-none">

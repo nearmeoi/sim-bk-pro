@@ -15,9 +15,6 @@ import type {
   IndividualKarirAngket,
 } from '../types';
 
-// ============================================================================
-// 1. STUDENTS SERVICE
-// ============================================================================
 export const studentService = {
   async getAll(): Promise<Student[] | null> {
     if (!isSupabaseConfigured() || !supabase) return null;
@@ -95,9 +92,6 @@ export const studentService = {
   },
 };
 
-// ============================================================================
-// 2. COUNSELING RECORDS SERVICE
-// ============================================================================
 export const counselingService = {
   async getAll(): Promise<CounselingRecord[] | null> {
     if (!isSupabaseConfigured() || !supabase) return null;
@@ -142,9 +136,6 @@ export const counselingService = {
   },
 };
 
-// ============================================================================
-// 3. DAILY JOURNALS SERVICE
-// ============================================================================
 export const journalService = {
   async getAll(): Promise<JurnalRow[] | null> {
     if (!isSupabaseConfigured() || !supabase) return null;
@@ -181,9 +172,6 @@ export const journalService = {
   },
 };
 
-// ============================================================================
-// 4. SCHOOL SETTINGS SERVICE
-// ============================================================================
 export const settingsService = {
   async get(): Promise<SchoolSettings | null> {
     if (!isSupabaseConfigured() || !supabase) return null;

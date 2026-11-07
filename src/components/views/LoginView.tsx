@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { User, Lock, ArrowRight, Eye, EyeOff, CheckCircle2, ShieldCheck, Database, Server } from 'lucide-react';
+import { User, Lock, ArrowRight, Eye, EyeOff, Database } from 'lucide-react';
 import { useBK } from '../../context/BKContext';
 import { TutWuriEmblem } from '../ui/KopSurat';
 
@@ -12,7 +12,6 @@ export const LoginView: React.FC<LoginViewProps> = ({ onSuccess, onToast }) => {
   const { settings, login, isBackendConnected } = useBK();
   const [username, setUsername] = useState(settings.nipGuruBK || '19880512 201402 2 003');
   const [password, setPassword] = useState('guru123');
-  const [rememberMe, setRememberMe] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -56,61 +55,29 @@ export const LoginView: React.FC<LoginViewProps> = ({ onSuccess, onToast }) => {
   };
 
   return (
-    <div className="min-h-screen bg-bg flex flex-col justify-center items-center p-4 py-8">
-      <div className="w-full max-w-[440px] bg-surface rounded-[24px] sm:rounded-[28px] p-6 sm:p-8 shadow-card border border-border space-y-6 fade-up">
-        {/* Identitas Satuan Pendidikan & Dua Logo Resmi */}
-        <div className="text-center space-y-3">
-          <div className="flex items-center justify-center gap-3 sm:gap-4">
-            {/* Logo Kiri */}
-            <div className="w-14 h-16 rounded-[14px] bg-white border border-border p-1 flex items-center justify-center shadow-xs">
-              {settings.logoUrl ? (
-                <img
-                  src={settings.logoUrl}
-                  alt="Logo Daerah"
-                  className="max-w-full max-h-full object-contain"
-                />
-              ) : (
-                <div className="w-full h-full flex flex-col items-center justify-center bg-red-50 text-center">
-                  <div className="w-6 h-6 rounded-full border border-red-700 bg-red-100 flex items-center justify-center text-red-700 font-black text-[9px]">
-                    MKS
-                  </div>
-                  <span className="text-[7.5px] font-black uppercase text-black mt-0.5 leading-none">PEMDA</span>
-                </div>
-              )}
-            </div>
-
-            {/* Logo Kanan (Tut Wuri) */}
-            <div className="w-14 h-16 rounded-[14px] bg-white border border-border p-1 flex items-center justify-center shadow-xs">
-              {settings.logoKananUrl ? (
-                <img
-                  src={settings.logoKananUrl}
-                  alt="Logo Kanan"
-                  className="max-w-full max-h-full object-contain"
-                />
-              ) : (
-                <div className="w-10 h-10 flex items-center justify-center scale-90">
-                  <TutWuriEmblem />
-                </div>
-              )}
-            </div>
-          </div>
-
-          <div>
-            <span className="inline-block text-[10.5px] font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-primary-tint text-primary mb-1">
-              Portal Guru BK Resmi
-            </span>
-            <h1 className="text-[20px] sm:text-[22px] font-black text-text tracking-tight leading-tight">
-              SIM-BK
+    <div className="min-h-screen bg-[#F5F7FC] flex flex-col justify-center items-center p-4 sm:p-6">
+      <div className="w-full max-w-[400px] bg-surface rounded-rc border border-border shadow-card p-6 sm:p-8">
+        {/* Header: identitas satuan pendidikan + Tut Wuri mark */}
+        <div className="text-center space-y-2 mb-2">
+          <span className="text-xs font-semibold text-muted tracking-tight">
+            {settings.namaSekolah || 'SMP Negeri 1 Bintang'}
+          </span>
+          <div className="flex items-center justify-center gap-2">
+            <h1 className="text-[22px] font-[750] text-text tracking-tight">
+              Masuk
             </h1>
-            <p className="text-xs font-semibold text-muted mt-0.5">
-              {settings.namaSekolah || 'SMP Negeri 1 Bintang'}
-            </p>
+            <div className="w-6 h-6 flex shrink-0">
+              <TutWuriEmblem />
+            </div>
           </div>
+          <p className="text-[12px] text-muted font-medium">
+            Portal Bimbingan &amp; Konseling
+          </p>
         </div>
 
         {/* Notifikasi Error jika ada */}
         {errorMessage && (
-          <div className="p-3 rounded-[12px] bg-alert-tint text-alert text-xs font-semibold border border-alert/20 leading-relaxed fade-up">
+          <div className="p-3 rounded-rx bg-alert-tint text-alert text-sm font-medium border border-alert/20 leading-relaxed">
             {errorMessage}
           </div>
         )}
@@ -118,7 +85,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onSuccess, onToast }) => {
         {/* Formulir Masuk */}
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-1.5">
-            <label className="block text-xs font-bold text-text">
+            <label className="block text-xs font-semibold text-text">
               NIP atau Nama Pengguna / Email
             </label>
             <div className="relative">
@@ -131,13 +98,13 @@ export const LoginView: React.FC<LoginViewProps> = ({ onSuccess, onToast }) => {
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 placeholder="Masukkan NIP atau email..."
-                className="w-full min-h-[46px] pl-10 pr-4 rounded-[12px] border border-border text-sm font-medium text-text bg-white focus:outline-none focus:border-primary shadow-xs"
+                className="w-full min-h-tap pl-10 pr-4 rounded-rx border border-border text-sm font-medium text-text bg-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary shadow-xs"
               />
             </div>
           </div>
 
           <div className="space-y-1.5">
-            <label className="block text-xs font-bold text-text">
+            <label className="block text-xs font-semibold text-text">
               Kata Sandi Akun
             </label>
             <div className="relative">
@@ -150,7 +117,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onSuccess, onToast }) => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Masukkan kata sandi..."
-                className="w-full min-h-[46px] pl-10 pr-11 rounded-[12px] border border-border text-sm font-medium text-text bg-white focus:outline-none focus:border-primary shadow-xs"
+                className="w-full min-h-tap pl-10 pr-11 rounded-rx border border-border text-sm font-medium text-text bg-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary shadow-xs"
               />
               <button
                 type="button"
@@ -167,13 +134,11 @@ export const LoginView: React.FC<LoginViewProps> = ({ onSuccess, onToast }) => {
             <label className="flex items-center gap-2 cursor-pointer text-muted font-medium hover:text-text">
               <input
                 type="checkbox"
-                checked={rememberMe}
-                onChange={(e) => setRememberMe(e.target.checked)}
-                className="rounded text-primary focus:ring-primary w-4 h-4 cursor-pointer"
+                className="rounded text-accent focus:ring-accent w-4 h-4 cursor-pointer"
               />
               <span>Ingat saya di perangkat ini</span>
             </label>
-            <span className="text-primary hover:underline font-semibold cursor-pointer" onClick={() => onToast('Silakan gunakan Akses Cepat di bawah jika lupa kata sandi.')}>
+            <span className="text-accent hover:underline font-semibold cursor-pointer" onClick={() => onToast('Gunakan Akses Cepat di bawah jika lupa kata sandi.')}>
               Lupa sandi?
             </span>
           </div>
@@ -181,36 +146,49 @@ export const LoginView: React.FC<LoginViewProps> = ({ onSuccess, onToast }) => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full min-h-[48px] rounded-[14px] bg-primary text-white text-sm font-bold hover:brightness-105 active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-sm cursor-pointer mt-2"
+            className="w-full min-h-tap rounded-rx bg-accent text-white text-sm font-bold active:scale-[0.98] transition-colors flex items-center justify-center gap-2 shadow-sm cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
           >
-            <span>{loading ? 'Memverifikasi...' : 'Masuk ke Aplikasi BK'}</span>
+            <span>{loading ? 'Memverifikasi...' : 'Masuk'}</span>
             <ArrowRight size={16} />
           </button>
         </form>
 
-        {/* Tombol Akses Cepat untuk Pengujian Guru BK */}
-        <div className="pt-2 border-t border-border/80 text-center space-y-2">
-          <p className="text-[11px] text-muted font-medium">Akses Cepat Pengujian (1-Klik):</p>
+        {/* Akses Cepat untuk Pengujian Guru BK */}
+        <div className="pt-2 border-t border-border/60 text-center space-y-2">
+          <p className="text-[11px] text-muted font-medium">Akses Cepat (1-Klik):</p>
           <button
             type="button"
             onClick={handleQuickLogin}
             disabled={loading}
-            className="w-full py-2.5 px-4 rounded-[12px] bg-emerald-50 hover:bg-emerald-100 text-emerald-800 text-xs font-bold transition-colors flex items-center justify-center gap-2 border border-emerald-200 cursor-pointer"
+            className="w-full py-2.5 px-4 rounded-rx bg-accent-tint hover:bg-accent-tint/80 text-accent text-xs font-bold transition-colors flex items-center justify-center gap-2 border border-accent/20 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
           >
-            <CheckCircle2 size={15} />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="15"
+              height="15"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+              <polyline points="22 4 12 14.01 9 11.01" />
+            </svg>
             <span>Masuk Langsung sebagai {settings.guruBK ? settings.guruBK.split(',')[0] : 'Ibu Guru BK'}</span>
           </button>
         </div>
 
         {/* Indikator Status Kesiapan Backend Supabase */}
-        <div className="pt-3 border-t border-border/60 flex items-center justify-between text-[11px] text-muted">
+        <div className="pt-3 border-t border-border/40 flex items-center justify-between text-[11px] text-muted">
           <div className="flex items-center gap-1.5">
-            <Database size={13} className={isBackendConnected ? 'text-emerald-600' : 'text-primary'} />
+            <Database size={13} className={isBackendConnected ? 'text-accent' : 'text-primary'} />
             <span className="font-semibold text-text">Status Backend:</span>
           </div>
           {isBackendConnected ? (
-            <span className="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 font-bold border border-emerald-200 flex items-center gap-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+            <span className="px-2 py-0.5 rounded-full bg-accent-tint text-accent font-bold border border-accent/20 flex items-center gap-1">
+              <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
               Supabase Terhubung
             </span>
           ) : (
@@ -222,8 +200,8 @@ export const LoginView: React.FC<LoginViewProps> = ({ onSuccess, onToast }) => {
         </div>
       </div>
 
-      <p className="text-[11px] text-center text-muted mt-4">
-        SIM-BK · Sistem Informasi Manajemen Bimbingan & Konseling Sekolah
+      <p className="text-[11px] text-center text-muted mt-6">
+        SIM-BK · Sistem Informasi Manajemen Bimbingan &amp; Konseling Sekolah
       </p>
     </div>
   );

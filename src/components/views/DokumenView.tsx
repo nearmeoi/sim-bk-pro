@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from "react";
 import {
   FileText, Download, ChevronRight, CheckCircle2, FileCheck2, Compass
 } from 'lucide-react';
@@ -19,7 +19,7 @@ interface DokumenViewProps {
 const STATUS_STYLE: Record<DocumentMeta['status'], string> = {
   Draf: 'bg-gray-100 text-gray-600',
   Siap: 'bg-primary-tint text-primary font-bold',
-  Final: 'bg-emerald-50 text-emerald-700 font-bold',
+  Final: 'bg-accent-50 text-accent-700 font-bold',
 };
 
 export const DokumenView: React.FC<DokumenViewProps> = ({ onNav, onToast }) => {
@@ -144,7 +144,7 @@ export const DokumenView: React.FC<DokumenViewProps> = ({ onNav, onToast }) => {
           </button>
           <button
             onClick={handleExportAllCsv}
-            className="min-h-[46px] px-5 rounded-[12px] bg-emerald-700 text-white text-xs font-bold hover:brightness-105 active:scale-[0.98] flex items-center gap-2 transition-all shadow-sm"
+            className="min-h-[46px] px-5 rounded-[12px] bg-accent-700 text-white text-xs font-bold hover:brightness-105 active:scale-[0.98] flex items-center gap-2 transition-all shadow-sm"
           >
             <Download size={14} /> Unduh Format Rekap (Excel/CSV)
           </button>
