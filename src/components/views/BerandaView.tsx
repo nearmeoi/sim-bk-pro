@@ -110,7 +110,7 @@ export const BerandaView: React.FC<BerandaViewProps> = ({ onNav, onCatat }) => {
                 idx === quickActions.length - 1 ? 'col-span-2 sm:col-span-1' : ''
               }`}
             >
-              <div className="w-10 h-10 rounded-[12px] bg-gray-100 text-muted flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+              <div className="w-10 h-10 rounded-[12px] bg-primary text-white flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
                 <Icon size={20} strokeWidth={2.2} />
               </div>
               <div className="min-w-0 flex-1">
