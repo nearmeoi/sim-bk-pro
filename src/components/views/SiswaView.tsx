@@ -302,7 +302,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
           <button
             type="button"
             onClick={() => setAddOpen(true)}
-            className="min-h-[40px] px-4 rounded-[12px] bg-green-600 text-white font-bold text-xs hover:brightness-105 active:scale-[0.98] transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
+            className="min-h-[40px] px-4 rounded-[12px] bg-black text-white font-bold text-xs hover:bg-neutral-800 active:scale-[0.98] transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
           >
             <Plus size={16} strokeWidth={2.5} />
             <span>Tambah Siswa</span>
@@ -329,7 +329,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
           onChange={(e) => setQ(e.target.value)}
           type="search"
           placeholder="Cari nama siswa, NIS, atau kelas... (Klik nama siswa untuk membuka catatan)"
-          className="w-full min-h-[50px] pl-11 pr-4 rounded-[16px] bg-surface text-text text-[15px] shadow-[0_1px_2px_rgb(0_0_0/0.03),0_4px_12px_rgb(0_0_0/0.06)] border border-border/80 placeholder:text-muted/70 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+          className="w-full min-h-[50px] pl-11 pr-4 rounded-[16px] bg-surface text-text text-[15px] shadow-[0_1px_2px_rgb(0_0_0/0.03),0_4px_12px_rgb(0_0_0/0.06)] border border-border/80 placeholder:text-muted/70 focus:outline-none focus:ring-2 focus:ring-black/10 focus:border-black transition-all"
         />
       </div>
 
@@ -539,7 +539,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                             className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-bold ${
                               hasActiveCase
                                 ? 'bg-alert-tint text-alert'
-                                : 'bg-blue-100 text-blue-700'
+                                : 'bg-neutral-200 text-neutral-800'
                             }`}
                           >
                             {sRecords.length} Catatan
@@ -552,7 +552,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                         <span
                           className={`inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-bold ${
                             s.status === 'Aktif'
-                              ? 'bg-blue-50 text-blue-700'
+                              ? 'bg-neutral-50 text-neutral-800'
                               : 'bg-gray-100 text-gray-600'
                           }`}
                         >
@@ -567,7 +567,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                               e.stopPropagation();
                               setSelectedStudent(s);
                             }}
-                            className="px-2.5 py-1 rounded-[8px] bg-blue-600 text-white text-xs font-bold hover:brightness-105 active:scale-95 transition-all shadow-xs"
+                            className="px-2.5 py-1 rounded-[8px] bg-black text-white text-xs font-bold hover:bg-neutral-800 active:scale-95 transition-all shadow-xs"
                             title="Buka Catatan Siswa"
                           >
                             Buka
@@ -604,7 +604,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
             >
               â€¹ Sebelumnya
             </button>
-            <span className="px-3 py-1.5 rounded-full bg-primary-tint text-primary text-xs font-bold whitespace-nowrap">
+            <span className="px-3 py-1.5 rounded-full bg-neutral-100 text-neutral-800 text-xs font-bold whitespace-nowrap">
               Halaman {page} dari {totalPages}
             </span>
             <button
@@ -638,13 +638,13 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
             {/* Header Profil Siswa */}
             <div className="flex items-start justify-between border-b border-border pb-4">
               <div className="flex items-center gap-3.5">
-                <div className="w-14 h-14 rounded-full bg-blue-600 text-white flex items-center justify-center font-extrabold text-xl shadow-md flex-none">
+                <div className="w-14 h-14 rounded-full bg-black text-white flex items-center justify-center font-extrabold text-xl shadow-md flex-none">
                   {selectedStudent.nama.split(' ').map((w) => w[0]).join('').substring(0, 2).toUpperCase()}
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
                     <h3 className="font-extrabold text-[20px] text-text">{selectedStudent.nama}</h3>
-                    <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-100 text-blue-700">
+                    <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-neutral-200 text-neutral-800">
                       Kelas {selectedStudent.kelas}
                     </span>
                   </div>
@@ -658,7 +658,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                 <button
                   type="button"
                   onClick={() => handleOpenEdit(selectedStudent)}
-                  className="min-h-[40px] px-4 rounded-[12px] bg-primary text-white text-xs font-bold hover:brightness-105 active:scale-[0.98] transition-all flex items-center gap-1.5 shadow-xs cursor-pointer"
+                  className="min-h-[40px] px-4 rounded-[12px] bg-black text-white text-xs font-bold hover:bg-neutral-800 active:scale-[0.98] transition-all flex items-center gap-1.5 shadow-xs cursor-pointer"
                   title="Ubah data master siswa dan nama orang tua"
                 >
                   <Edit2 size={14} />
@@ -761,7 +761,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                   </button>
                   <button
                     onClick={() => setShowAddRecord(!showAddRecord)}
-                    className="min-h-[38px] px-3.5 rounded-[12px] bg-blue-600 text-white font-bold text-xs hover:brightness-105 flex items-center gap-1.5 shadow-sm"
+                    className="min-h-[38px] px-3.5 rounded-[12px] bg-black text-white font-bold text-xs hover:bg-neutral-800 flex items-center gap-1.5 shadow-sm"
                   >
                     <Plus size={15} /> Tambah Sesi
                   </button>
@@ -772,10 +772,10 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
               {showAddRecord && (
                 <form
                   onSubmit={handleSaveStudentRecord}
-                  className="p-5 rounded-[18px] bg-blue-50 border border-blue-200 space-y-4 fade-up"
+                  className="p-5 rounded-[18px] bg-neutral-50 border border-neutral-300 space-y-4 fade-up"
                 >
-                  <div className="flex items-center justify-between border-b border-blue-200 pb-2">
-                    <h5 className="font-bold text-sm text-blue-700">Tambah Catatan Konseling untuk {selectedStudent.nama}</h5>
+                    <div className="flex items-center justify-between border-b border-neutral-300 pb-2">
+                    <h5 className="font-bold text-sm text-neutral-800">Tambah Catatan Konseling untuk {selectedStudent.nama}</h5>
                     <button
                       type="button"
                       onClick={() => setShowAddRecord(false)}
@@ -840,7 +840,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                       value={newRecordForm.masalah}
                       onChange={(e) => setNewRecordForm((prev) => ({ ...prev, masalah: e.target.value }))}
                       placeholder="Tuliskan kronologi, keluhan siswa, atau observasi sesi konseling secara leluasa..."
-                      className="w-full min-h-[100px] p-3.5 rounded-[12px] border border-border text-sm leading-relaxed text-text bg-white focus:outline-none focus:border-primary shadow-sm"
+                      className="w-full min-h-[100px] p-3.5 rounded-[12px] border border-border text-sm leading-relaxed text-text bg-white focus:outline-none focus:border-black shadow-sm"
                     />
                   </div>
 
@@ -854,7 +854,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                       value={newRecordForm.tindakLanjut}
                       onChange={(e) => setNewRecordForm((prev) => ({ ...prev, tindakLanjut: e.target.value }))}
                       placeholder="Langkah berikutnya, komitmen siswa, koordinasi ortu..."
-                      className="w-full min-h-[70px] p-3 rounded-[12px] border border-border text-sm leading-relaxed text-text bg-white focus:outline-none focus:border-primary shadow-sm"
+                      className="w-full min-h-[70px] p-3 rounded-[12px] border border-border text-sm leading-relaxed text-text bg-white focus:outline-none focus:border-black shadow-sm"
                     />
                   </div>
 
@@ -868,7 +868,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                     </button>
                     <button
                       type="submit"
-                      className="px-5 py-2 rounded-[10px] bg-blue-600 text-white font-bold text-xs hover:brightness-105 shadow-sm"
+                      className="px-5 py-2 rounded-[10px] bg-black text-white font-bold text-xs hover:bg-neutral-800 shadow-sm"
                     >
                       Simpan Catatan
                     </button>
@@ -918,7 +918,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                             <span
                               className={`px-2 py-0.5 rounded-full text-[11px] font-bold ${
                                 rec.status === 'Selesai'
-                                  ? 'bg-blue-50 text-blue-700'
+                                  ? 'bg-neutral-50 text-neutral-800'
                                   : 'bg-alert-tint text-alert'
                               }`}
                             >
@@ -976,7 +976,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                   value={form.nama}
                   onChange={(e) => setForm((f) => ({ ...f, nama: e.target.value }))}
                   placeholder="Contoh: Muhammad Raditya Pratama"
-                  className="w-full min-h-[48px] px-4 rounded-[12px] border border-border text-[15px] font-medium text-text focus:outline-none focus:border-primary shadow-sm"
+                  className="w-full min-h-[48px] px-4 rounded-[12px] border border-border text-[15px] font-medium text-text focus:outline-none focus:border-black shadow-sm"
                 />
               </div>
 
@@ -988,7 +988,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                     value={form.nis}
                     onChange={(e) => setForm((f) => ({ ...f, nis: e.target.value }))}
                     placeholder="2413"
-                    className="w-full min-h-[48px] px-4 rounded-[12px] border border-border text-[15px] font-medium text-text focus:outline-none focus:border-primary shadow-sm"
+                    className="w-full min-h-[48px] px-4 rounded-[12px] border border-border text-[15px] font-medium text-text focus:outline-none focus:border-black shadow-sm"
                   />
                 </div>
                 <div>
@@ -997,7 +997,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                     value={form.nisn}
                     onChange={(e) => setForm((f) => ({ ...f, nisn: e.target.value }))}
                     placeholder="3101234509"
-                    className="w-full min-h-[48px] px-4 rounded-[12px] border border-border text-[15px] font-medium text-text focus:outline-none focus:border-primary shadow-sm"
+                    className="w-full min-h-[48px] px-4 rounded-[12px] border border-border text-[15px] font-medium text-text focus:outline-none focus:border-black shadow-sm"
                   />
                 </div>
               </div>
@@ -1008,7 +1008,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                   <select
                     value={form.jk}
                     onChange={(e) => setForm((f) => ({ ...f, jk: e.target.value as 'L' | 'P' }))}
-                    className="w-full min-h-[48px] px-3.5 rounded-[12px] border border-border text-sm text-text bg-surface focus:outline-none focus:border-primary"
+                    className="w-full min-h-[48px] px-3.5 rounded-[12px] border border-border text-sm text-text bg-surface focus:outline-none focus:border-black"
                   >
                     <option value="L">Laki-laki (L)</option>
                     <option value="P">Perempuan (P)</option>
@@ -1019,7 +1019,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                   <select
                     value={form.kelas}
                     onChange={(e) => setForm((f) => ({ ...f, kelas: e.target.value }))}
-                    className="w-full min-h-[48px] px-3.5 rounded-[12px] border border-border text-sm text-text bg-surface focus:outline-none focus:border-primary"
+                    className="w-full min-h-[48px] px-3.5 rounded-[12px] border border-border text-sm text-text bg-surface focus:outline-none focus:border-black"
                   >
                     {['7A', '7B', '7C', '8A', '8B', '8C', '9A', '9B', '9C'].map((k) => (
                       <option key={k} value={k}>{k}</option>
@@ -1032,13 +1032,13 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                 <div>
                   <div className="flex items-center justify-between mb-1.5">
                     <label className="block text-xs font-bold text-text">Nama Orang Tua / Wali</label>
-                    <span className="text-[10.5px] text-blue-600 font-bold">Untuk TTD Surat</span>
+                    <span className="text-[10.5px] text-neutral-800 font-bold">Untuk TTD Surat</span>
                   </div>
                   <input
                     value={form.namaWali}
                     onChange={(e) => setForm((f) => ({ ...f, namaWali: e.target.value }))}
                     placeholder="Contoh: Bpk. Supardi / Ibu Ratna"
-                    className="w-full min-h-[48px] px-4 rounded-[12px] border border-border text-sm text-text focus:outline-none focus:border-primary shadow-sm"
+                    className="w-full min-h-[48px] px-4 rounded-[12px] border border-border text-sm text-text focus:outline-none focus:border-black shadow-sm"
                   />
                 </div>
                 <div>
@@ -1047,7 +1047,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                     value={form.kontakWali}
                     onChange={(e) => setForm((f) => ({ ...f, kontakWali: e.target.value }))}
                     placeholder="0812-3456-xxxx"
-                    className="w-full min-h-[48px] px-4 rounded-[12px] border border-border text-sm text-text focus:outline-none focus:border-primary shadow-sm"
+                    className="w-full min-h-[48px] px-4 rounded-[12px] border border-border text-sm text-text focus:outline-none focus:border-black shadow-sm"
                   />
                 </div>
               </div>
@@ -1058,7 +1058,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                   value={form.alamat}
                   onChange={(e) => setForm((f) => ({ ...f, alamat: e.target.value }))}
                   placeholder="Jl. Merpati No. 12, RT 01/RW 02..."
-                  className="w-full min-h-[48px] px-4 rounded-[12px] border border-border text-sm text-text focus:outline-none focus:border-primary shadow-sm"
+                    className="w-full min-h-[48px] px-4 rounded-[12px] border border-border text-sm text-text focus:outline-none focus:border-black shadow-sm"
                 />
               </div>
 
@@ -1071,7 +1071,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                   value={form.catatanKhusus}
                   onChange={(e) => setForm((f) => ({ ...f, catatanKhusus: e.target.value }))}
                   placeholder="Contoh: Siswa tinggal bersama nenek, berbakat di bidang atletik, butuh pemantauan kedisiplinan..."
-                  className="w-full min-h-[84px] p-3.5 rounded-[12px] border border-border text-sm leading-relaxed text-text focus:outline-none focus:border-primary shadow-sm resize-y"
+                  className="w-full min-h-[84px] p-3.5 rounded-[12px] border border-border text-sm leading-relaxed text-text focus:outline-none focus:border-black shadow-sm resize-y"
                 />
               </div>
 
@@ -1085,7 +1085,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 min-h-[48px] rounded-[14px] bg-green-600 text-white text-sm font-bold hover:brightness-105 transition-colors shadow-sm"
+                  className="flex-1 min-h-[48px] rounded-[14px] bg-black text-white text-sm font-bold hover:bg-neutral-800 transition-colors shadow-sm"
                 >
                   Simpan Siswa
                 </button>
@@ -1125,7 +1125,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                   value={editForm.nama}
                   onChange={(e) => setEditForm((f) => ({ ...f, nama: e.target.value }))}
                   placeholder="Nama Lengkap Siswa"
-                  className="w-full min-h-[46px] px-3.5 rounded-[12px] border border-border text-[15px] font-medium text-text focus:outline-none focus:border-primary shadow-xs"
+                  className="w-full min-h-[46px] px-3.5 rounded-[12px] border border-border text-[15px] font-medium text-text focus:outline-none focus:border-black shadow-xs"
                 />
               </div>
 
@@ -1136,7 +1136,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                     required
                     value={editForm.nis}
                     onChange={(e) => setEditForm((f) => ({ ...f, nis: e.target.value }))}
-                    className="w-full min-h-[46px] px-3.5 rounded-[12px] border border-border text-sm text-text focus:outline-none focus:border-primary shadow-xs"
+                    className="w-full min-h-[46px] px-3.5 rounded-[12px] border border-border text-sm text-text focus:outline-none focus:border-black shadow-xs"
                   />
                 </div>
                 <div>
@@ -1144,7 +1144,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                   <input
                     value={editForm.nisn}
                     onChange={(e) => setEditForm((f) => ({ ...f, nisn: e.target.value }))}
-                    className="w-full min-h-[46px] px-3.5 rounded-[12px] border border-border text-sm text-text focus:outline-none focus:border-primary shadow-xs"
+                    className="w-full min-h-[46px] px-3.5 rounded-[12px] border border-border text-sm text-text focus:outline-none focus:border-black shadow-xs"
                   />
                 </div>
               </div>
@@ -1155,7 +1155,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                   <select
                     value={editForm.jk}
                     onChange={(e) => setEditForm((f) => ({ ...f, jk: e.target.value as 'L' | 'P' }))}
-                    className="w-full min-h-[46px] px-2.5 rounded-[12px] border border-border text-xs text-text bg-surface focus:outline-none focus:border-primary"
+                    className="w-full min-h-[46px] px-2.5 rounded-[12px] border border-border text-xs text-text bg-surface focus:outline-none focus:border-black"
                   >
                     <option value="L">Laki-laki (L)</option>
                     <option value="P">Perempuan (P)</option>
@@ -1166,7 +1166,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                   <select
                     value={editForm.kelas}
                     onChange={(e) => setEditForm((f) => ({ ...f, kelas: e.target.value }))}
-                    className="w-full min-h-[46px] px-2.5 rounded-[12px] border border-border text-xs text-text bg-surface focus:outline-none focus:border-primary"
+                    className="w-full min-h-[46px] px-2.5 rounded-[12px] border border-border text-xs text-text bg-surface focus:outline-none focus:border-black"
                   >
                     {['7A', '7B', '7C', '8A', '8B', '8C', '9A', '9B', '9C'].map((k) => (
                       <option key={k} value={k}>{k}</option>
@@ -1178,7 +1178,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                   <select
                     value={editForm.status}
                     onChange={(e) => setEditForm((f) => ({ ...f, status: e.target.value as 'Aktif' | 'Pindah' | 'Lulus' }))}
-                    className="w-full min-h-[46px] px-2.5 rounded-[12px] border border-border text-xs text-text bg-surface focus:outline-none focus:border-primary"
+                    className="w-full min-h-[46px] px-2.5 rounded-[12px] border border-border text-xs text-text bg-surface focus:outline-none focus:border-black"
                   >
                     <option value="Aktif">Aktif</option>
                     <option value="Pindah">Pindah</option>
@@ -1188,13 +1188,13 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
               </div>
 
               {/* NAMA ORANG TUA / WALI MURID (PENTING UNTUK TTD) */}
-              <div className="bg-blue-50 border border-blue-200 p-3.5 rounded-[14px] space-y-3">
+              <div className="bg-neutral-50 border border-neutral-300 p-3.5 rounded-[14px] space-y-3">
                 <div>
                   <div className="flex items-center justify-between mb-1">
-                    <label className="block text-xs font-bold text-blue-700">
+                    <label className="block text-xs font-bold text-neutral-800">
                       Nama Lengkap Orang Tua / Wali Murid
                     </label>
-                    <span className="text-[10.5px] bg-blue-600 text-white font-bold px-2 py-0.5 rounded-full">
+                    <span className="text-[10.5px] bg-black text-white font-bold px-2 py-0.5 rounded-full">
                       Penting untuk Kolom TTD
                     </span>
                   </div>
@@ -1202,9 +1202,9 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                     value={editForm.namaWali}
                     onChange={(e) => setEditForm((f) => ({ ...f, namaWali: e.target.value }))}
                     placeholder="Contoh: Bpk. Hendra Rahman / Ibu Sri Wahyuni"
-                    className="w-full min-h-[46px] px-3.5 rounded-[10px] border border-blue-300 bg-white text-sm font-semibold text-text focus:outline-none focus:border-blue-500 shadow-xs"
+                    className="w-full min-h-[46px] px-3.5 rounded-[10px] border border-neutral-300 bg-white text-sm font-semibold text-text focus:outline-none focus:border-black shadow-xs"
                   />
-                  <p className="text-[11px] text-blue-600 mt-1 leading-snug">
+                  <p className="text-[11px] text-neutral-800 mt-1 leading-snug">
                     Nama ini akan otomatis tercetak di bawah kolom tanda tangan orang tua pada <b>Surat Panggilan</b>, <b>Surat Kunjungan Rumah</b>, dan <b>Formulir Pemetaan Karir</b>.
                   </p>
                 </div>
@@ -1215,7 +1215,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                     value={editForm.kontakWali}
                     onChange={(e) => setEditForm((f) => ({ ...f, kontakWali: e.target.value }))}
                     placeholder="0812-3456-xxxx"
-                    className="w-full min-h-[44px] px-3.5 rounded-[10px] border border-border bg-white text-sm text-text focus:outline-none focus:border-primary shadow-xs"
+                    className="w-full min-h-[44px] px-3.5 rounded-[10px] border border-border bg-white text-sm text-text focus:outline-none focus:border-black shadow-xs"
                   />
                 </div>
               </div>
@@ -1226,7 +1226,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                   value={editForm.alamat}
                   onChange={(e) => setEditForm((f) => ({ ...f, alamat: e.target.value }))}
                   placeholder="Alamat tempat tinggal siswa..."
-                  className="w-full min-h-[46px] px-3.5 rounded-[12px] border border-border text-sm text-text focus:outline-none focus:border-primary shadow-xs"
+                  className="w-full min-h-[46px] px-3.5 rounded-[12px] border border-border text-sm text-text focus:outline-none focus:border-black shadow-xs"
                 />
               </div>
 
@@ -1237,7 +1237,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                   value={editForm.catatanKhusus}
                   onChange={(e) => setEditForm((f) => ({ ...f, catatanKhusus: e.target.value }))}
                   placeholder="Catatan latar belakang siswa..."
-                  className="w-full p-3 rounded-[12px] border border-border text-xs leading-relaxed text-text focus:outline-none focus:border-primary shadow-xs resize-y"
+                  className="w-full p-3 rounded-[12px] border border-border text-xs leading-relaxed text-text focus:outline-none focus:border-black shadow-xs resize-y"
                 />
               </div>
 
@@ -1251,7 +1251,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 min-h-[46px] rounded-[12px] bg-blue-600 text-white text-sm font-bold hover:brightness-105 transition-all shadow-sm"
+                  className="flex-1 min-h-[46px] rounded-[12px] bg-black text-white text-sm font-bold hover:bg-neutral-800 transition-all shadow-sm"
                 >
                   Simpan Perubahan
                 </button>

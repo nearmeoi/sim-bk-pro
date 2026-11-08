@@ -152,8 +152,8 @@ body {
   width: 42px;
   height: 42px;
   border-radius: 12px;
-  background: var(--primary-tint);
-  color: var(--primary);
+  background: var(--surface);
+  color: var(--muted);
   box-shadow: none;
   border: none;
 }
@@ -221,9 +221,9 @@ body {
 }
 
 .bk-chip.on {
-  background: var(--primary);
+  background: #000;
   color: #fff;
-  border-color: var(--primary);
+  border-color: #000;
 }
 
 /* User avatar */
@@ -231,8 +231,8 @@ body {
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  background: var(--primary);
-  color: #fff;
+  background: var(--surface);
+  color: var(--text);
   display: grid;
   place-items: center;
   font-weight: 700;
