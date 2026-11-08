@@ -44,7 +44,7 @@ export const HvsPreviewModal: React.FC<HvsPreviewModalProps> = ({
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-lg bg-primary-tint text-primary flex items-center justify-center">
+          <div className="w-8 h-8 rounded-lg bg-neutral-100 text-neutral-900 border border-neutral-300 flex items-center justify-center">
             <Eye size={18} />
           </div>
           <div>
@@ -57,7 +57,7 @@ export const HvsPreviewModal: React.FC<HvsPreviewModalProps> = ({
           <button
             type="button"
             onClick={() => window.print()}
-            className="min-h-[38px] px-4 rounded-[10px] bg-primary text-white text-xs font-bold hover:brightness-105 active:scale-[0.98] transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
+            className="min-h-[38px] px-4 rounded-[10px] bg-black text-white text-xs font-bold hover:bg-neutral-800 active:scale-[0.98] transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
           >
             <Printer size={15} />
             <span>Cetak Kertas Ini</span>

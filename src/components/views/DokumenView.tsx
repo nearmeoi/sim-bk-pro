@@ -20,9 +20,9 @@ interface DokumenViewProps {
 }
 
 const STATUS_STYLE: Record<DocumentMeta['status'], string> = {
-  Draf: 'bg-gray-100 text-gray-600',
-  Siap: 'bg-blue-100 text-blue-700 font-bold',
-  Final: 'bg-green-100 text-green-700 font-bold',
+  Draf: 'bg-neutral-100 text-neutral-600 border border-neutral-200',
+  Siap: 'bg-neutral-900 text-white font-bold',
+  Final: 'bg-neutral-800 text-white font-bold',
 };
 
 export const DokumenView: React.FC<DokumenViewProps> = ({ onNav, onToast }) => {
@@ -130,7 +130,7 @@ export const DokumenView: React.FC<DokumenViewProps> = ({ onNav, onToast }) => {
       {/* Batch Export Card */}
       <div className="bk-card bg-gradient-to-br from-white to-gray-50 p-6 space-y-3">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-[12px] bg-blue-100 text-blue-600 flex items-center justify-center font-bold">
+          <div className="w-10 h-10 rounded-[12px] bg-neutral-100 text-neutral-900 border border-neutral-300 flex items-center justify-center font-bold">
             <CheckCircle2 size={20} />
           </div>
           <div>
@@ -146,13 +146,13 @@ export const DokumenView: React.FC<DokumenViewProps> = ({ onNav, onToast }) => {
             onClick={() => {
               window.print();
             }}
-            className="min-h-[46px] px-5 rounded-[12px] bg-blue-600 text-white text-xs font-bold hover:brightness-105 active:scale-[0.98] flex items-center gap-2 transition-all shadow-sm"
+            className="min-h-[46px] px-5 rounded-[12px] bg-black text-white text-xs font-bold hover:bg-neutral-800 active:scale-[0.98] flex items-center gap-2 transition-all shadow-sm cursor-pointer"
           >
             <Download size={14} /> Cetak / Simpan Ringkasan (PDF)
           </button>
           <button
             onClick={handleExportAllCsv}
-            className="min-h-[46px] px-5 rounded-[12px] bg-green-600 text-white text-xs font-bold hover:brightness-105 active:scale-[0.98] flex items-center gap-2 transition-all shadow-sm"
+            className="min-h-[46px] px-5 rounded-[12px] bg-neutral-800 text-white text-xs font-bold hover:bg-neutral-700 active:scale-[0.98] flex items-center gap-2 transition-all shadow-sm cursor-pointer"
           >
             <Download size={14} /> Unduh Format Rekap (Excel/CSV)
           </button>

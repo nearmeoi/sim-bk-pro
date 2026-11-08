@@ -265,7 +265,7 @@ export const BimbinganKarirView: React.FC<BimbinganKarirViewProps> = ({ onToast 
           <button
             type="button"
             onClick={handleSave}
-            className="min-h-[40px] px-4 rounded-[12px] bg-blue-600 text-white text-xs font-bold hover:brightness-105 active:scale-[0.98] transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
+            className="min-h-[40px] px-4 rounded-[12px] bg-black text-white text-xs font-bold hover:bg-neutral-800 active:scale-[0.98] transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
           >
             <Save size={15} />
             <span>Simpan</span>
@@ -287,7 +287,7 @@ export const BimbinganKarirView: React.FC<BimbinganKarirViewProps> = ({ onToast 
             onClick={() => setViewMode('angket')}
             className={`px-5 py-3 text-xs sm:text-sm font-bold transition-all border-b-2 flex items-center gap-2 ${
               viewMode === 'angket'
-                ? 'border-primary text-primary bg-primary-tint/30 rounded-t-[10px]'
+                ? 'border-black text-black bg-neutral-100 rounded-t-[10px]'
                 : 'border-transparent text-muted hover:text-text hover:bg-bg rounded-t-[10px]'
             }`}
           >
@@ -299,13 +299,13 @@ export const BimbinganKarirView: React.FC<BimbinganKarirViewProps> = ({ onToast 
             onClick={() => setViewMode('batch')}
             className={`px-4 sm:px-5 py-3 text-xs sm:text-sm font-bold transition-all border-b-2 flex items-center gap-2 ${
               viewMode === 'batch'
-                ? 'border-primary text-primary bg-primary-tint/30 rounded-t-[10px]'
+                ? 'border-black text-black bg-neutral-100 rounded-t-[10px]'
                 : 'border-transparent text-muted hover:text-text hover:bg-bg rounded-t-[10px]'
             }`}
           >
             <Table size={16} />
             <span>2. Rekap Kelas</span>
-            <span className="ml-1 text-[11px] px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 font-bold">
+            <span className="ml-1 text-[11px] px-2 py-0.5 rounded-full bg-neutral-200 text-neutral-800 font-bold">
               {displayedStudents.length} Siswa
             </span>
           </button>
@@ -325,7 +325,7 @@ export const BimbinganKarirView: React.FC<BimbinganKarirViewProps> = ({ onToast 
                     onClick={() => setKelasFilter(k)}
                     className={`px-3 py-1.5 rounded-[10px] text-xs font-bold transition-all ${
                       kelasFilter === k
-                        ? 'bg-blue-600 text-white shadow-sm'
+                        ? 'bg-black text-white shadow-sm'
                         : 'bg-bg text-muted hover:text-text hover:bg-gray-200'
                     }`}
                   >
@@ -344,7 +344,7 @@ export const BimbinganKarirView: React.FC<BimbinganKarirViewProps> = ({ onToast 
               </button>
               <button
                 onClick={handleAddBatchRow}
-                className="px-4 py-2 rounded-[12px] bg-green-600 text-white text-xs font-bold hover:brightness-105 active:scale-[0.98] transition-all flex items-center gap-1.5 shadow-sm"
+                className="px-4 py-2 rounded-[12px] bg-black text-white text-xs font-bold hover:bg-neutral-800 active:scale-[0.98] transition-all flex items-center gap-1.5 shadow-sm"
               >
                 <Plus size={15} /> Tambah Baris
               </button>
@@ -357,7 +357,7 @@ export const BimbinganKarirView: React.FC<BimbinganKarirViewProps> = ({ onToast 
               <select
                 value={selectedStudentId}
                 onChange={(e) => setSelectedStudentId(e.target.value)}
-                className="min-h-[40px] px-3 rounded-[10px] border border-border text-xs font-bold text-text bg-surface focus:outline-none focus:border-primary shadow-sm"
+                className="min-h-[40px] px-3 rounded-[10px] border border-border text-xs font-bold text-text bg-surface focus:outline-none focus:border-black shadow-sm"
               >
                 {studentList.map((s) => (
                   <option key={s.id} value={s.id}>
@@ -376,9 +376,9 @@ export const BimbinganKarirView: React.FC<BimbinganKarirViewProps> = ({ onToast 
 
       {/* QUICK PASTE BOX */}
       {showPasteBox && viewMode === 'batch' && (
-        <div className="p-4 bg-blue-50 border border-blue-200 rounded-[16px] space-y-3 fade-up">
+        <div className="p-4 bg-neutral-50 border border-neutral-300 rounded-[16px] space-y-3 fade-up">
           <div className="flex items-center justify-between">
-            <h4 className="text-xs font-bold text-blue-700 flex items-center gap-1.5">
+            <h4 className="text-xs font-bold text-neutral-800 flex items-center gap-1.5">
               <ClipboardPaste size={16} /> Paste Kolom dari Microsoft Excel / Google Sheets
             </h4>
             <span className="text-[11px] text-muted">Format: Nama [Tab] Sekolah1 [Tab] Jurusan1 [Tab] Cita-cita</span>
@@ -388,7 +388,7 @@ export const BimbinganKarirView: React.FC<BimbinganKarirViewProps> = ({ onToast 
             value={pasteText}
             onChange={(e) => setPasteText(e.target.value)}
             placeholder="Contoh:&#10;Ahmad Dahlan	SMAN 1 Bintang	MIPA	Dokter&#10;Nurul Hidayah	SMKN 2 Bintang	DKV	Desainer Grafis"
-            className="w-full p-2.5 bg-white border border-border rounded-[10px] text-xs font-mono text-text focus:outline-none focus:border-primary resize-y"
+            className="w-full p-2.5 bg-white border border-border rounded-[10px] text-xs font-mono text-text focus:outline-none focus:border-black resize-y"
           />
           <div className="flex justify-end gap-2">
             <button
@@ -399,7 +399,7 @@ export const BimbinganKarirView: React.FC<BimbinganKarirViewProps> = ({ onToast 
             </button>
             <button
               onClick={handleProcessPaste}
-              className="px-4 py-1.5 rounded-[8px] bg-blue-600 text-white text-xs font-bold hover:brightness-105"
+              className="px-4 py-1.5 rounded-[8px] bg-black text-white text-xs font-bold hover:bg-neutral-800"
             >
               Proses Impor Teks
             </button>
@@ -437,7 +437,7 @@ export const BimbinganKarirView: React.FC<BimbinganKarirViewProps> = ({ onToast 
               </thead>
               <tbody>
                 {displayedStudents.map((item, idx) => (
-                  <tr key={item.id} className="hover:bg-orange-50/30 transition-colors">
+                  <tr key={item.id} className="hover:bg-neutral-50/30 transition-colors">
                     <td className="border border-black px-2 py-1 text-center font-bold">
                       {idx + 1}
                     </td>
@@ -447,7 +447,7 @@ export const BimbinganKarirView: React.FC<BimbinganKarirViewProps> = ({ onToast 
                         type="text"
                         value={item.namaSiswa}
                         onChange={(e) => updateStudentField(item.id, 'namaSiswa', e.target.value)}
-                        className="w-full bg-transparent border-none focus:outline-none focus:ring-1 focus:ring-primary rounded px-1 py-0.5 font-bold text-black"
+                        className="w-full bg-transparent border-none focus:outline-none focus:ring-1 focus:ring-black rounded px-1 py-0.5 font-bold text-black"
                       />
                     </td>
 
@@ -456,7 +456,7 @@ export const BimbinganKarirView: React.FC<BimbinganKarirViewProps> = ({ onToast 
                         type="text"
                         value={item.kelas}
                         onChange={(e) => updateStudentField(item.id, 'kelas', e.target.value)}
-                        className="w-12 text-center bg-transparent border-none focus:outline-none focus:ring-1 focus:ring-primary rounded px-1 py-0.5 font-bold text-black"
+                        className="w-12 text-center bg-transparent border-none focus:outline-none focus:ring-1 focus:ring-black rounded px-1 py-0.5 font-bold text-black"
                       />
                     </td>
 
@@ -470,7 +470,7 @@ export const BimbinganKarirView: React.FC<BimbinganKarirViewProps> = ({ onToast 
                             e.target.value as IndividualKarirAngket['rencanaSetelahSMP']
                           )
                         }
-                        className="w-full text-xs font-bold py-1 bg-transparent border-none focus:outline-none focus:ring-1 focus:ring-primary text-center"
+                        className="w-full text-xs font-bold py-1 bg-transparent border-none focus:outline-none focus:ring-1 focus:ring-black text-center"
                       >
                         <option value="SMA">SMA</option>
                         <option value="SMK">SMK</option>
@@ -485,7 +485,7 @@ export const BimbinganKarirView: React.FC<BimbinganKarirViewProps> = ({ onToast 
                         value={item.pilihan1Sekolah}
                         onChange={(e) => updateStudentField(item.id, 'pilihan1Sekolah', e.target.value)}
                         placeholder="SMAN 1 / SMKN..."
-                        className="w-full bg-transparent border-none focus:outline-none focus:ring-1 focus:ring-primary rounded px-1 py-0.5 font-bold text-black"
+                        className="w-full bg-transparent border-none focus:outline-none focus:ring-1 focus:ring-black rounded px-1 py-0.5 font-bold text-black"
                       />
                     </td>
 
@@ -515,7 +515,7 @@ export const BimbinganKarirView: React.FC<BimbinganKarirViewProps> = ({ onToast 
                         value={item.citaCita}
                         onChange={(e) => updateStudentField(item.id, 'citaCita', e.target.value)}
                         placeholder="Profesi..."
-                        className="w-full bg-transparent border-none focus:outline-none focus:ring-1 focus:ring-primary rounded px-1 py-0.5 text-xs font-semibold text-black"
+                        className="w-full bg-transparent border-none focus:outline-none focus:ring-1 focus:ring-black rounded px-1 py-0.5 text-xs font-semibold text-black"
                       />
                     </td>
 
@@ -529,12 +529,12 @@ export const BimbinganKarirView: React.FC<BimbinganKarirViewProps> = ({ onToast 
                             e.target.value as IndividualKarirAngket['statusDiskusiOrtu']
                           )
                         }
-                        className={`w-full text-xs font-bold py-1 bg-transparent border-none focus:outline-none focus:ring-1 focus:ring-primary text-center ${
+                        className={`w-full text-xs font-bold py-1 bg-transparent border-none focus:outline-none focus:ring-1 focus:ring-black text-center ${
                           item.statusDiskusiOrtu === 'Setuju Penuh'
                             ? 'text-accent-800'
                             : item.statusDiskusiOrtu === 'Orang Tua Beda Pilihan'
                             ? 'text-red-700 font-extrabold underline'
-                            : 'text-primary-2'
+                            : 'text-black'
                         }`}
                       >
                         <option value="Setuju Penuh">Setuju</option>
@@ -570,7 +570,7 @@ export const BimbinganKarirView: React.FC<BimbinganKarirViewProps> = ({ onToast 
       {viewMode === 'angket' &&
         (studentList.length === 0 ? (
           <div className="bk-card py-14 text-center space-y-4">
-            <div className="w-12 h-12 mx-auto rounded-[14px] bg-primary-tint flex items-center justify-center text-primary">
+            <div className="w-12 h-12 mx-auto rounded-[14px] bg-neutral-100 flex items-center justify-center text-black">
               <Plus size={22} />
             </div>
             <div className="space-y-1">

@@ -72,7 +72,7 @@ export const JurnalForm: React.FC<JurnalFormProps> = ({ onBack, onToast }) => {
         <button onClick={onBack} className="bk-chip !min-h-[44px] text-xs font-bold">
           <ArrowLeft size={16} /> Kembali ke Dokumen
         </button>
-        <span className="text-xs bg-primary-tint text-primary font-bold px-3.5 py-1.5 rounded-full">
+        <span className="text-xs bg-neutral-100 text-black font-bold px-3.5 py-1.5 rounded-full">
           {rows.length} Kegiatan Tercatat
         </span>
       </div>
@@ -121,7 +121,7 @@ export const JurnalForm: React.FC<JurnalFormProps> = ({ onBack, onToast }) => {
           <button
             type="button"
             onClick={() => onToast('Jurnal harian berhasil disimpan.')}
-            className="min-h-[40px] px-4 rounded-[12px] bg-primary text-white text-xs font-bold hover:brightness-105 active:scale-[0.98] transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
+            className="min-h-[40px] px-4 rounded-[12px] bg-black text-white text-xs font-bold hover:bg-neutral-800 active:scale-[0.98] transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
           >
             <Save size={15} />
             <span>Simpan</span>
@@ -129,7 +129,7 @@ export const JurnalForm: React.FC<JurnalFormProps> = ({ onBack, onToast }) => {
           <button
             type="button"
             onClick={handleAddRow}
-            className="min-h-[40px] px-4 rounded-[12px] bg-accent text-white font-bold text-xs hover:brightness-105 active:scale-[0.98] transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
+            className="min-h-[40px] px-4 rounded-[12px] bg-black text-white font-bold text-xs hover:bg-neutral-800 active:scale-[0.98] transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
           >
             <Plus size={15} strokeWidth={2.5} />
             <span>Tambah Entri</span>
@@ -168,7 +168,7 @@ export const JurnalForm: React.FC<JurnalFormProps> = ({ onBack, onToast }) => {
             </thead>
             <tbody>
               {rows.map((r, i) => (
-                <tr key={r.id} className="hover:bg-orange-50/30 transition-colors">
+                <tr key={r.id} className="hover:bg-neutral-50/30 transition-colors">
                   <td className="border border-black px-2 py-2 text-center font-bold align-top">
                     {i + 1}
                   </td>
@@ -177,7 +177,7 @@ export const JurnalForm: React.FC<JurnalFormProps> = ({ onBack, onToast }) => {
                        type="text"
                        value={r.hariTanggal}
                        onChange={(e) => handleCellChange(r.id, 'hariTanggal', e.target.value)}
-                      className="w-full bg-transparent border-none focus:outline-none focus:ring-1 focus:ring-primary rounded px-1 py-0.5 font-medium text-black text-xs"
+                      className="w-full bg-transparent border-none focus:outline-none focus:ring-1 focus:ring-black rounded px-1 py-0.5 font-medium text-black text-xs"
                     />
                   </td>
                   <td className="border border-black px-1.5 py-1.5 text-center align-top">
@@ -185,7 +185,7 @@ export const JurnalForm: React.FC<JurnalFormProps> = ({ onBack, onToast }) => {
                       type="text"
                       value={r.waktu}
                       onChange={(e) => handleCellChange(r.id, 'waktu', e.target.value)}
-                      className="w-full text-center bg-transparent border-none focus:outline-none focus:ring-1 focus:ring-primary rounded px-1 py-0.5 font-bold text-black text-xs"
+                      className="w-full text-center bg-transparent border-none focus:outline-none focus:ring-1 focus:ring-black rounded px-1 py-0.5 font-bold text-black text-xs"
                     />
                   </td>
                   <td className="border border-black px-2 py-1.5 align-top">
@@ -194,7 +194,7 @@ export const JurnalForm: React.FC<JurnalFormProps> = ({ onBack, onToast }) => {
                       value={r.nama}
                       onChange={(e) => handleCellChange(r.id, 'nama', e.target.value)}
                       placeholder="Nama siswa..."
-                      className="w-full bg-transparent border-none focus:outline-none focus:ring-1 focus:ring-primary rounded px-1 py-0.5 font-bold text-black text-xs"
+                      className="w-full bg-transparent border-none focus:outline-none focus:ring-1 focus:ring-black rounded px-1 py-0.5 font-bold text-black text-xs"
                     />
                   </td>
                   <td className="border border-black px-1 py-1.5 text-center align-top">
@@ -202,14 +202,14 @@ export const JurnalForm: React.FC<JurnalFormProps> = ({ onBack, onToast }) => {
                       type="text"
                       value={r.kelas}
                       onChange={(e) => handleCellChange(r.id, 'kelas', e.target.value)}
-                      className="w-12 text-center bg-transparent border-none focus:outline-none focus:ring-1 focus:ring-primary rounded px-1 py-0.5 font-bold text-black text-xs"
+                      className="w-12 text-center bg-transparent border-none focus:outline-none focus:ring-1 focus:ring-black rounded px-1 py-0.5 font-bold text-black text-xs"
                     />
                   </td>
                   <td className="border border-black px-2 py-1.5 align-top">
                     <select
                       value={r.jenis}
                       onChange={(e) => handleCellChange(r.id, 'jenis', e.target.value)}
-                      className="w-full text-xs font-semibold py-0.5 bg-transparent border-none focus:outline-none focus:ring-1 focus:ring-primary text-black"
+                      className="w-full text-xs font-semibold py-0.5 bg-transparent border-none focus:outline-none focus:ring-1 focus:ring-black text-black"
                     >
                       <option value="Konseling Individual">Konseling Individual</option>
                       <option value="Kunjungan Rumah">Kunjungan Rumah</option>
@@ -225,7 +225,7 @@ export const JurnalForm: React.FC<JurnalFormProps> = ({ onBack, onToast }) => {
                       value={r.topik}
                       onChange={(e) => handleCellChange(r.id, 'topik', e.target.value)}
                       placeholder="Uraian kegiatan atau masalah..."
-                      className="w-full p-1 bg-transparent border-none focus:outline-none focus:ring-1 focus:ring-primary rounded text-xs leading-relaxed text-black resize-y"
+                      className="w-full p-1 bg-transparent border-none focus:outline-none focus:ring-1 focus:ring-black rounded text-xs leading-relaxed text-black resize-y"
                     />
                   </td>
                   <td className="border border-black px-2 py-1.5 align-top">
@@ -234,7 +234,7 @@ export const JurnalForm: React.FC<JurnalFormProps> = ({ onBack, onToast }) => {
                       value={r.keterangan}
                       onChange={(e) => handleCellChange(r.id, 'keterangan', e.target.value)}
                       placeholder="Tindak lanjut..."
-                      className="w-full bg-transparent border-none focus:outline-none focus:ring-1 focus:ring-primary rounded px-1 py-0.5 text-xs text-gray-800"
+                      className="w-full bg-transparent border-none focus:outline-none focus:ring-1 focus:ring-black rounded px-1 py-0.5 text-xs text-gray-800"
                     />
                   </td>
                   <td className="print:hidden border border-black px-1 py-1.5 text-center align-top">

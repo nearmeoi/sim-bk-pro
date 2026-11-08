@@ -161,7 +161,7 @@ export const ProtaForm: React.FC<ProtaFormProps> = ({ onBack, onToast }) => {
         <button onClick={onBack} className="bk-chip !min-h-[44px] text-xs font-bold">
           <ArrowLeft size={16} /> Kembali ke Dokumen
         </button>
-        <span className="text-xs bg-primary-tint text-primary font-bold px-3.5 py-1.5 rounded-full">
+        <span className="text-xs bg-neutral-100 text-black font-bold px-3.5 py-1.5 rounded-full">
           {protaList.length} Program Kerja Terjadwal
         </span>
       </div>
@@ -210,7 +210,7 @@ export const ProtaForm: React.FC<ProtaFormProps> = ({ onBack, onToast }) => {
           <button
             type="button"
             onClick={() => onToast('Perubahan Program Tahunan disimpan.')}
-            className="min-h-[40px] px-4 rounded-[12px] bg-primary text-white text-xs font-bold hover:brightness-105 active:scale-[0.98] transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
+            className="min-h-[40px] px-4 rounded-[12px] bg-black text-white text-xs font-bold hover:bg-neutral-800 active:scale-[0.98] transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
           >
             <Save size={15} />
             <span>Simpan</span>
@@ -218,7 +218,7 @@ export const ProtaForm: React.FC<ProtaFormProps> = ({ onBack, onToast }) => {
           <button
             type="button"
             onClick={handleOpenAdd}
-            className="min-h-[40px] px-4 rounded-[12px] bg-accent text-white text-xs font-bold hover:brightness-105 active:scale-[0.98] transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
+            className="min-h-[40px] px-4 rounded-[12px] bg-black text-white text-xs font-bold hover:bg-neutral-800 active:scale-[0.98] transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
           >
             <Plus size={15} strokeWidth={2.5} />
             <span>Tambah Program</span>
@@ -228,21 +228,21 @@ export const ProtaForm: React.FC<ProtaFormProps> = ({ onBack, onToast }) => {
 
       {/* AKPD -> Prota Bridge: Target dari Hasil AKPD */}
       {akpdProtaTargets.length > 0 && (
-        <div className="bg-blue-50 border-2 border-blue-200 rounded-xl p-4 sm:p-5 shadow-sm">
+        <div className="bg-neutral-50 border-2 border-neutral-300 rounded-xl p-4 sm:p-5 shadow-sm">
           <div className="flex items-start justify-between gap-3 mb-3">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-blue-500 text-white flex items-center justify-center flex-shrink-0">
+              <div className="w-8 h-8 rounded-lg bg-black text-white flex items-center justify-center flex-shrink-0">
                 <TrendingUp size={16} />
               </div>
               <div>
-                <h3 className="text-sm font-bold text-blue-900">Target Prota dari Hasil AKPD</h3>
-                <p className="text-xs text-blue-700">Pilih program yang ingin ditambahkan ke Prota</p>
+                <h3 className="text-sm font-bold text-neutral-900">Target Prota dari Hasil AKPD</h3>
+                <p className="text-xs text-neutral-800">Pilih program yang ingin ditambahkan ke Prota</p>
               </div>
             </div>
             <button
               type="button"
               onClick={() => setAkpdProtaTargets([])}
-              className="text-blue-400 hover:text-blue-600 transition-colors cursor-pointer"
+              className="text-neutral-500 hover:text-neutral-800 transition-colors cursor-pointer"
               title="Tutup"
             >
               <X size={18} />
@@ -252,7 +252,7 @@ export const ProtaForm: React.FC<ProtaFormProps> = ({ onBack, onToast }) => {
             {akpdProtaTargets.map((target) => (
               <label
                 key={target.id}
-                className="flex items-start gap-3 bg-white border border-blue-200 rounded-lg p-3 cursor-pointer hover:bg-blue-50 transition-colors"
+                className="flex items-start gap-3 bg-white border border-neutral-300 rounded-lg p-3 cursor-pointer hover:bg-neutral-50 transition-colors"
               >
                 <input
                   type="checkbox"
@@ -266,12 +266,12 @@ export const ProtaForm: React.FC<ProtaFormProps> = ({ onBack, onToast }) => {
                     }
                     setSelectedAkpdTargets(newSet);
                   }}
-                  className="mt-0.5 w-4 h-4 rounded border-blue-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
+                  className="mt-0.5 w-4 h-4 rounded border-neutral-300 text-black focus:ring-black cursor-pointer"
                 />
                 <div className="flex-1 min-w-0">
                   <div className="text-xs font-bold text-gray-900">{target.jenis}</div>
                   <div className="flex flex-wrap gap-2 mt-1">
-                    <span className="inline-block text-[10px] font-medium text-blue-700 bg-blue-100 px-2 py-0.5 rounded">
+                    <span className="inline-block text-[10px] font-medium text-neutral-800 bg-neutral-200 px-2 py-0.5 rounded">
                       {target.bidang}
                     </span>
                     <span className="text-[10px] text-gray-500">{target.sasaran}</span>
@@ -288,7 +288,7 @@ export const ProtaForm: React.FC<ProtaFormProps> = ({ onBack, onToast }) => {
                 const allIds = new Set(akpdProtaTargets.map(t => t.id));
                 setSelectedAkpdTargets(allIds);
               }}
-              className="px-3 py-1.5 rounded-lg text-xs font-bold text-blue-700 bg-white border border-blue-300 hover:bg-blue-100 transition-colors cursor-pointer"
+              className="px-3 py-1.5 rounded-lg text-xs font-bold text-neutral-800 bg-white border border-neutral-300 hover:bg-neutral-100 transition-colors cursor-pointer"
             >
               Pilih Semua
             </button>
@@ -307,7 +307,7 @@ export const ProtaForm: React.FC<ProtaFormProps> = ({ onBack, onToast }) => {
                 setAkpdProtaTargets([]);
                 setSelectedAkpdTargets(new Set());
               }}
-              className="px-4 py-1.5 rounded-lg text-xs font-bold text-white bg-accent hover:brightness-105 disabled:opacity-40 disabled:cursor-not-allowed transition-all cursor-pointer"
+              className="px-4 py-1.5 rounded-lg text-xs font-bold text-white bg-black hover:bg-neutral-800 disabled:opacity-40 disabled:cursor-not-allowed transition-all cursor-pointer"
             >
               <Plus size={14} className="inline mr-1" />
               Tambahkan ({selectedAkpdTargets.size})
@@ -349,7 +349,7 @@ export const ProtaForm: React.FC<ProtaFormProps> = ({ onBack, onToast }) => {
             </thead>
             <tbody>
               {protaList.map((row, i) => (
-                <tr key={row.id} className="hover:bg-orange-50/30 transition-colors">
+                <tr key={row.id} className="hover:bg-neutral-50/30 transition-colors">
                   <td className="border border-black px-2 py-2 text-center font-bold align-top">
                     {i + 1}
                   </td>
@@ -362,7 +362,7 @@ export const ProtaForm: React.FC<ProtaFormProps> = ({ onBack, onToast }) => {
                     </p>
                   </td>
                   <td className="border border-black px-2 py-2 align-top">
-                    <span className="inline-block px-2 py-0.5 rounded text-[11px] font-bold bg-primary-tint text-primary whitespace-nowrap">
+                    <span className="inline-block px-2 py-0.5 rounded text-[11px] font-bold bg-neutral-100 text-black whitespace-nowrap">
                       {row.bidang}
                     </span>
                   </td>
@@ -373,7 +373,7 @@ export const ProtaForm: React.FC<ProtaFormProps> = ({ onBack, onToast }) => {
                         checked={checked}
                         onChange={() => handleToggleMonth(row.id, mi)}
                         title={`${MONTH_NAMES[mi]}: ${checked ? 'Aktif' : 'Nonaktif'}`}
-                        className="w-4 h-4 rounded accent-primary cursor-pointer"
+                        className="w-4 h-4 rounded accent-black cursor-pointer"
                       />
                     </td>
                   ))}
@@ -383,7 +383,7 @@ export const ProtaForm: React.FC<ProtaFormProps> = ({ onBack, onToast }) => {
                       min="0"
                       value={row.volume}
                       onChange={(e) => handleVolumeChange(row.id, parseInt(e.target.value) || 0)}
-                      className="w-11 min-h-[32px] text-center text-xs font-bold border border-black/40 rounded bg-white focus:outline-none focus:border-primary shadow-xs"
+                      className="w-11 min-h-[32px] text-center text-xs font-bold border border-black/40 rounded bg-white focus:outline-none focus:border-black shadow-xs"
                     />
                   </td>
                   <td className="border border-black px-3 py-2 text-xs text-gray-800 font-medium leading-relaxed align-top">
@@ -394,7 +394,7 @@ export const ProtaForm: React.FC<ProtaFormProps> = ({ onBack, onToast }) => {
                       <button
                         onClick={() => handleOpenEdit(row)}
                         title="Edit Program"
-                        className="p-1.5 text-muted hover:text-primary rounded hover:bg-gray-100 transition-colors"
+                        className="p-1.5 text-muted hover:text-black rounded hover:bg-gray-100 transition-colors"
                       >
                         <Edit2 size={15} />
                       </button>
@@ -459,7 +459,7 @@ export const ProtaForm: React.FC<ProtaFormProps> = ({ onBack, onToast }) => {
               value={prioritas.pribadi}
               onChange={(e) => setPrioritas((prev) => ({ ...prev, pribadi: e.target.value }))}
               placeholder="Tuliskan sasaran dan prioritas bimbingan pribadi..."
-              className="w-full min-h-[120px] p-3.5 rounded-[14px] border border-border text-[14px] leading-relaxed text-text focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition resize-y shadow-sm"
+              className="w-full min-h-[120px] p-3.5 rounded-[14px] border border-border text-[14px] leading-relaxed text-text focus:outline-none focus:border-black focus:ring-2 focus:ring-black/10 transition resize-y shadow-sm"
             />
           </label>
 
@@ -473,7 +473,7 @@ export const ProtaForm: React.FC<ProtaFormProps> = ({ onBack, onToast }) => {
               value={prioritas.sosial}
               onChange={(e) => setPrioritas((prev) => ({ ...prev, sosial: e.target.value }))}
               placeholder="Tuliskan sasaran dan prioritas bimbingan sosial..."
-              className="w-full min-h-[120px] p-3.5 rounded-[14px] border border-border text-[14px] leading-relaxed text-text focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition resize-y shadow-sm"
+              className="w-full min-h-[120px] p-3.5 rounded-[14px] border border-border text-[14px] leading-relaxed text-text focus:outline-none focus:border-black focus:ring-2 focus:ring-black/10 transition resize-y shadow-sm"
             />
           </label>
 
@@ -487,7 +487,7 @@ export const ProtaForm: React.FC<ProtaFormProps> = ({ onBack, onToast }) => {
               value={prioritas.belajar}
               onChange={(e) => setPrioritas((prev) => ({ ...prev, belajar: e.target.value }))}
               placeholder="Tuliskan sasaran dan prioritas bimbingan belajar..."
-              className="w-full min-h-[120px] p-3.5 rounded-[14px] border border-border text-[14px] leading-relaxed text-text focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition resize-y shadow-sm"
+              className="w-full min-h-[120px] p-3.5 rounded-[14px] border border-border text-[14px] leading-relaxed text-text focus:outline-none focus:border-black focus:ring-2 focus:ring-black/10 transition resize-y shadow-sm"
             />
           </label>
 
@@ -501,7 +501,7 @@ export const ProtaForm: React.FC<ProtaFormProps> = ({ onBack, onToast }) => {
               value={prioritas.karir}
               onChange={(e) => setPrioritas((prev) => ({ ...prev, karir: e.target.value }))}
               placeholder="Tuliskan sasaran dan prioritas bimbingan karir..."
-              className="w-full min-h-[120px] p-3.5 rounded-[14px] border border-border text-[14px] leading-relaxed text-text focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition resize-y shadow-sm"
+              className="w-full min-h-[120px] p-3.5 rounded-[14px] border border-border text-[14px] leading-relaxed text-text focus:outline-none focus:border-black focus:ring-2 focus:ring-black/10 transition resize-y shadow-sm"
             />
           </label>
         </div>
@@ -594,7 +594,7 @@ export const ProtaForm: React.FC<ProtaFormProps> = ({ onBack, onToast }) => {
                   <select
                     value={formData.komponen}
                     onChange={(e) => setFormData((prev) => ({ ...prev, komponen: e.target.value }))}
-                    className="w-full min-h-[48px] px-3.5 rounded-[12px] border border-border text-sm text-text bg-surface focus:outline-none focus:border-primary"
+                    className="w-full min-h-[48px] px-3.5 rounded-[12px] border border-border text-sm text-text bg-surface focus:outline-none focus:border-black"
                   >
                     {KOMPONEN_OPTIONS.map((opt) => (
                       <option key={opt} value={opt}>{opt}</option>
@@ -606,7 +606,7 @@ export const ProtaForm: React.FC<ProtaFormProps> = ({ onBack, onToast }) => {
                   <select
                     value={formData.bidang}
                     onChange={(e) => setFormData((prev) => ({ ...prev, bidang: e.target.value }))}
-                    className="w-full min-h-[48px] px-3.5 rounded-[12px] border border-border text-sm text-text bg-surface focus:outline-none focus:border-primary"
+                    className="w-full min-h-[48px] px-3.5 rounded-[12px] border border-border text-sm text-text bg-surface focus:outline-none focus:border-black"
                   >
                     {BIDANG_OPTIONS.map((opt) => (
                       <option key={opt} value={opt}>{opt}</option>
@@ -625,7 +625,7 @@ export const ProtaForm: React.FC<ProtaFormProps> = ({ onBack, onToast }) => {
                   value={formData.jenis}
                   onChange={(e) => setFormData((prev) => ({ ...prev, jenis: e.target.value }))}
                   placeholder="Contoh: Bimbingan Klasikal: Motivasi Belajar & Manajemen Waktu"
-                  className="w-full min-h-[48px] px-4 rounded-[12px] border border-border text-sm text-text focus:outline-none focus:border-primary shadow-sm"
+                  className="w-full min-h-[48px] px-4 rounded-[12px] border border-border text-sm text-text focus:outline-none focus:border-black shadow-sm"
                 />
               </div>
 
@@ -639,7 +639,7 @@ export const ProtaForm: React.FC<ProtaFormProps> = ({ onBack, onToast }) => {
                     min="1"
                     value={formData.volume}
                     onChange={(e) => setFormData((prev) => ({ ...prev, volume: parseInt(e.target.value) || 1 }))}
-                    className="w-full min-h-[48px] px-4 rounded-[12px] border border-border text-sm text-text focus:outline-none focus:border-primary shadow-sm"
+                    className="w-full min-h-[48px] px-4 rounded-[12px] border border-border text-sm text-text focus:outline-none focus:border-black shadow-sm"
                   />
                 </div>
                 <div>
@@ -649,7 +649,7 @@ export const ProtaForm: React.FC<ProtaFormProps> = ({ onBack, onToast }) => {
                     value={formData.sasaran}
                     onChange={(e) => setFormData((prev) => ({ ...prev, sasaran: e.target.value }))}
                     placeholder="Contoh: Seluruh siswa kelas 8"
-                    className="w-full min-h-[48px] px-4 rounded-[12px] border border-border text-sm text-text focus:outline-none focus:border-primary shadow-sm"
+                    className="w-full min-h-[48px] px-4 rounded-[12px] border border-border text-sm text-text focus:outline-none focus:border-black shadow-sm"
                   />
                 </div>
               </div>
@@ -666,7 +666,7 @@ export const ProtaForm: React.FC<ProtaFormProps> = ({ onBack, onToast }) => {
                       onClick={() => handleModalToggleMonth(idx)}
                       className={`min-h-[40px] text-xs font-bold rounded-[10px] transition-all flex flex-col items-center justify-center ${
                         formData.months[idx]
-                          ? 'bg-primary text-white shadow-sm'
+                          ? 'bg-black text-white shadow-sm'
                           : 'bg-bg text-muted hover:bg-gray-200'
                       }`}
                     >

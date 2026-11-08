@@ -101,7 +101,7 @@ export const LapbulForm: React.FC<LapbulFormProps> = ({ onBack, onToast }) => {
         <button onClick={onBack} className="bk-chip !min-h-[44px] text-xs font-bold">
           <ArrowLeft size={16} /> Kembali ke Dokumen
         </button>
-        <span className="text-xs bg-blue-50 text-blue-700 font-bold px-3.5 py-1.5 rounded-full">
+          <span className="text-xs bg-neutral-50 text-neutral-800 font-bold px-3.5 py-1.5 rounded-full">
           Laporan Bulanan
         </span>
       </div>
@@ -128,7 +128,7 @@ export const LapbulForm: React.FC<LapbulFormProps> = ({ onBack, onToast }) => {
           <button
             type="button"
             onClick={handleExportCsv}
-            className="min-h-[40px] px-4 rounded-[12px] bg-blue-600 text-white text-xs font-bold hover:brightness-105 active:scale-[0.98] transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
+            className="min-h-[40px] px-4 rounded-[12px] bg-black text-white text-xs font-bold hover:bg-neutral-800 active:scale-[0.98] transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
           >
             <Download size={15} />
             <span>Unduh Excel</span>
@@ -136,7 +136,7 @@ export const LapbulForm: React.FC<LapbulFormProps> = ({ onBack, onToast }) => {
           <button
             type="button"
             onClick={() => onToast('Laporan bulanan disimpan.')}
-            className="min-h-[40px] px-4 rounded-[12px] bg-blue-600 text-white text-xs font-bold hover:brightness-105 active:scale-[0.98] transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
+            className="min-h-[40px] px-4 rounded-[12px] bg-black text-white text-xs font-bold hover:bg-neutral-800 active:scale-[0.98] transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
           >
             <Save size={15} />
             <span>Simpan</span>
@@ -204,39 +204,39 @@ export const LapbulForm: React.FC<LapbulFormProps> = ({ onBack, onToast }) => {
             <tbody>
               <tr className="hover:bg-gray-50/30">
                 <td className="border border-black px-3 py-2 font-bold">Bimbingan Klasikal</td>
-                <td className="border border-black px-2 py-2 text-center font-bold text-blue-700">{stats.klasikal}</td>
+                <td className="border border-black px-2 py-2 text-center font-bold text-neutral-800">{stats.klasikal}</td>
                 <td className="border border-black px-2 py-2 text-center">Sesi</td>
                 <td className="border border-black px-3 py-2">Layanan kelompok di kelas</td>
               </tr>
               <tr className="hover:bg-gray-50/30">
                 <td className="border border-black px-3 py-2 font-bold">Konseling Kelompok</td>
-                <td className="border border-black px-2 py-2 text-center font-bold text-blue-700">{stats.kelompok}</td>
+                <td className="border border-black px-2 py-2 text-center font-bold text-neutral-800">{stats.kelompok}</td>
                 <td className="border border-black px-2 py-2 text-center">Sesi</td>
                 <td className="border border-black px-3 py-2">Kelompok kecil (3-8 siswa)</td>
               </tr>
               <tr className="hover:bg-gray-50/30">
                 <td className="border border-black px-3 py-2 font-bold">Konseling Individual</td>
-                <td className="border border-black px-2 py-2 text-center font-bold text-blue-700">{stats.individual}</td>
+                <td className="border border-black px-2 py-2 text-center font-bold text-neutral-800">{stats.individual}</td>
                 <td className="border border-black px-2 py-2 text-center">Sesi</td>
                 <td className="border border-black px-3 py-2">Bimbingan satu-satu</td>
               </tr>
               <tr className="hover:bg-gray-50/30">
                 <td className="border border-black px-3 py-2 font-bold">Kunjungan Rumah</td>
-                <td className="border border-black px-2 py-2 text-center font-bold text-blue-700">{stats.kunjungan}</td>
+                <td className="border border-black px-2 py-2 text-center font-bold text-neutral-800">{stats.kunjungan}</td>
                 <td className="border border-black px-2 py-2 text-center">Kunjungan</td>
                 <td className="border border-black px-3 py-2">Home visit</td>
               </tr>
               <tr className="hover:bg-gray-50/30">
                 <td className="border border-black px-3 py-2 font-bold">Konferensi Kasus</td>
-                <td className="border border-black px-2 py-2 text-center font-bold text-blue-700">{stats.konferensi}</td>
+                <td className="border border-black px-2 py-2 text-center font-bold text-neutral-800">{stats.konferensi}</td>
                 <td className="border border-black px-2 py-2 text-center">Sesi</td>
                 <td className="border border-black px-3 py-2">Pertemuan lintas pihak</td>
               </tr>
-              <tr className="bg-blue-50 font-extrabold">
+              <tr className="bg-neutral-50 font-extrabold">
                 <td className="border border-black px-3 py-2 text-black uppercase">Total Layanan</td>
                 <td className="border border-black px-2 py-2 text-center text-black font-black text-base">{stats.total}</td>
                 <td className="border border-black px-2 py-2 text-center font-bold">Kegiatan</td>
-                <td className="border border-black px-3 py-2 font-bold text-blue-700">Keseluruhan layanan bulan ini</td>
+                <td className="border border-black px-3 py-2 font-bold text-neutral-800">Keseluruhan layanan bulan ini</td>
               </tr>
             </tbody>
           </table>
@@ -302,7 +302,7 @@ export const LapbulForm: React.FC<LapbulFormProps> = ({ onBack, onToast }) => {
             </div>
             <div className="border border-black p-3 text-center">
               <p className="text-xs font-bold text-gray-700 uppercase">Total Kasus</p>
-              <p className="text-2xl font-black text-blue-700">{stats.siswaAktif + stats.siswaSelesai}</p>
+              <p className="text-2xl font-black text-neutral-800">{stats.siswaAktif + stats.siswaSelesai}</p>
               <p className="text-[10px] text-muted">Kasus</p>
             </div>
           </div>
@@ -379,7 +379,7 @@ export const LapbulForm: React.FC<LapbulFormProps> = ({ onBack, onToast }) => {
               <td className="border border-black p-1 text-center font-bold">{stats.konferensi}</td>
               <td className="border border-black p-1 text-center">Sesi</td>
             </tr>
-            <tr className="bg-blue-50 font-extrabold">
+            <tr className="bg-neutral-50 font-extrabold">
               <td className="border border-black p-1">Total Layanan</td>
               <td className="border border-black p-1 text-center">{stats.total}</td>
               <td className="border border-black p-1 text-center">Kegiatan</td>

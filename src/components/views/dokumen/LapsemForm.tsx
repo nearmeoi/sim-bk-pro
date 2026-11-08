@@ -101,7 +101,7 @@ export const LapsemForm: React.FC<LapsemFormProps> = ({ onBack, onToast }) => {
         <button onClick={onBack} className="bk-chip !min-h-[44px] text-xs font-bold">
           <ArrowLeft size={16} /> Kembali ke Dokumen
         </button>
-        <span className="text-xs bg-green-50 text-green-700 font-bold px-3.5 py-1.5 rounded-full">
+          <span className="text-xs bg-neutral-50 text-neutral-800 font-bold px-3.5 py-1.5 rounded-full">
           Laporan Semester
         </span>
       </div>
@@ -128,7 +128,7 @@ export const LapsemForm: React.FC<LapsemFormProps> = ({ onBack, onToast }) => {
           <button
             type="button"
             onClick={handleExportCsv}
-            className="min-h-[40px] px-4 rounded-[12px] bg-blue-600 text-white text-xs font-bold hover:brightness-105 active:scale-[0.98] transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
+            className="min-h-[40px] px-4 rounded-[12px] bg-black text-white text-xs font-bold hover:bg-neutral-800 active:scale-[0.98] transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
           >
             <Download size={15} />
             <span>Unduh Excel</span>
@@ -136,7 +136,7 @@ export const LapsemForm: React.FC<LapsemFormProps> = ({ onBack, onToast }) => {
           <button
             type="button"
             onClick={() => onToast('Laporan semester disimpan.')}
-            className="min-h-[40px] px-4 rounded-[12px] bg-green-600 text-white text-xs font-bold hover:brightness-105 active:scale-[0.98] transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
+            className="min-h-[40px] px-4 rounded-[12px] bg-black text-white text-xs font-bold hover:bg-neutral-800 active:scale-[0.98] transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
           >
             <Save size={15} />
             <span>Simpan</span>
@@ -197,30 +197,30 @@ export const LapsemForm: React.FC<LapsemFormProps> = ({ onBack, onToast }) => {
             <tbody>
               <tr className="hover:bg-gray-50/30">
                 <td className="border border-black px-3 py-2 font-bold">Bimbingan Klasikal</td>
-                <td className="border border-black px-2 py-2 text-center font-bold text-blue-700">{stats.klasikal}</td>
+                <td className="border border-black px-2 py-2 text-center font-bold text-neutral-800">{stats.klasikal}</td>
                 <td className="border border-black px-2 py-2 text-center">Sesi</td>
               </tr>
               <tr className="hover:bg-gray-50/30">
                 <td className="border border-black px-3 py-2 font-bold">Konseling Kelompok</td>
-                <td className="border border-black px-2 py-2 text-center font-bold text-blue-700">{stats.kelompok}</td>
+                <td className="border border-black px-2 py-2 text-center font-bold text-neutral-800">{stats.kelompok}</td>
                 <td className="border border-black px-2 py-2 text-center">Sesi</td>
               </tr>
               <tr className="hover:bg-gray-50/30">
                 <td className="border border-black px-3 py-2 font-bold">Konseling Individual</td>
-                <td className="border border-black px-2 py-2 text-center font-bold text-blue-700">{stats.individual}</td>
+                <td className="border border-black px-2 py-2 text-center font-bold text-neutral-800">{stats.individual}</td>
                 <td className="border border-black px-2 py-2 text-center">Sesi</td>
               </tr>
               <tr className="hover:bg-gray-50/30">
                 <td className="border border-black px-3 py-2 font-bold">Kunjungan Rumah</td>
-                <td className="border border-black px-2 py-2 text-center font-bold text-blue-700">{stats.kunjungan}</td>
+                <td className="border border-black px-2 py-2 text-center font-bold text-neutral-800">{stats.kunjungan}</td>
                 <td className="border border-black px-2 py-2 text-center">Kunjungan</td>
               </tr>
               <tr className="hover:bg-gray-50/30">
                 <td className="border border-black px-3 py-2 font-bold">Konferensi Kasus</td>
-                <td className="border border-black px-2 py-2 text-center font-bold text-blue-700">{stats.konferensi}</td>
+                <td className="border border-black px-2 py-2 text-center font-bold text-neutral-800">{stats.konferensi}</td>
                 <td className="border border-black px-2 py-2 text-center">Sesi</td>
               </tr>
-              <tr className="bg-blue-50 font-extrabold">
+              <tr className="bg-neutral-50 font-extrabold">
                 <td className="border border-black px-3 py-2 text-black uppercase">Total Layanan</td>
                 <td className="border border-black px-2 py-2 text-center text-black font-black text-base">{stats.total}</td>
                 <td className="border border-black px-2 py-2 text-center font-bold">Kegiatan</td>
@@ -276,7 +276,7 @@ export const LapsemForm: React.FC<LapsemFormProps> = ({ onBack, onToast }) => {
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mt-2">
             <div className="border border-black p-3 text-center">
               <p className="text-xs font-bold text-gray-700 uppercase">Total Siswa Layanan</p>
-              <p className="text-2xl font-black text-blue-700">{uniqueStudents}</p>
+              <p className="text-2xl font-black text-neutral-800">{uniqueStudents}</p>
               <p className="text-[10px] text-muted">Siswa</p>
             </div>
             <div className="border border-black p-3 text-center">
@@ -288,7 +288,7 @@ export const LapsemForm: React.FC<LapsemFormProps> = ({ onBack, onToast }) => {
             </div>
             <div className="border border-black p-3 text-center">
               <p className="text-xs font-bold text-gray-700 uppercase">Cakupan Layanan</p>
-              <p className="text-2xl font-black text-green-700">
+              <p className="text-2xl font-black text-neutral-800">
                 {uniqueStudents > 0 ? Math.round((uniqueStudents / 100) * 100) : 0}%
               </p>
               <p className="text-[10px] text-muted">estimatif</p>
@@ -296,13 +296,13 @@ export const LapsemForm: React.FC<LapsemFormProps> = ({ onBack, onToast }) => {
           </div>
 
           {/* Evaluasi Program */}
-          <div className="bg-blue-50 border border-blue-200 p-4 rounded-[12px]">
-            <h4 className="text-sm font-extrabold text-blue-800 uppercase mb-2">
+          <div className="bg-neutral-50 border border-neutral-300 p-4 rounded-[12px]">
+            <h4 className="text-sm font-extrabold text-neutral-900 uppercase mb-2">
               III. EVALUASI PROGRAM SEMESTER
             </h4>
             <div className="space-y-3">
               <div className="space-y-1">
-                <label className="block text-xs font-bold text-blue-800">
+                <label className="block text-xs font-bold text-neutral-900">
                   A. Pencapaian Program
                 </label>
                 <p className="text-sm text-text leading-relaxed">
@@ -312,7 +312,7 @@ export const LapsemForm: React.FC<LapsemFormProps> = ({ onBack, onToast }) => {
                 </p>
               </div>
               <div className="space-y-1">
-                <label className="block text-xs font-bold text-blue-800">
+                <label className="block text-xs font-bold text-neutral-900">
                   B. Kendala dan Hambatan
                 </label>
                 <p className="text-sm text-text leading-relaxed">
@@ -322,7 +322,7 @@ export const LapsemForm: React.FC<LapsemFormProps> = ({ onBack, onToast }) => {
                 </p>
               </div>
               <div className="space-y-1">
-                <label className="block text-xs font-bold text-blue-800">
+                <label className="block text-xs font-bold text-neutral-900">
                   C. Rencana Tindak Lanjut
                 </label>
                 <p className="text-sm text-text leading-relaxed">
@@ -430,7 +430,7 @@ export const LapsemForm: React.FC<LapsemFormProps> = ({ onBack, onToast }) => {
                   <td className="border border-black p-1 text-center font-bold">{stats.konferensi}</td>
                   <td className="border border-black p-1 text-center">Sesi</td>
                 </tr>
-                <tr className="bg-blue-50 font-extrabold">
+                <tr className="bg-neutral-50 font-extrabold">
                   <td className="border border-black p-1">Total Layanan</td>
                   <td className="border border-black p-1 text-center">{stats.total}</td>
                   <td className="border border-black p-1 text-center">Kegiatan</td>

@@ -276,7 +276,7 @@ export const ProsemForm: React.FC<ProsemFormProps> = ({ onBack, onToast }) => {
         <button onClick={onBack} className="bk-chip !min-h-[44px] text-xs font-bold">
           <ArrowLeft size={16} /> Kembali ke Dokumen
         </button>
-        <span className="text-xs bg-blue-50 text-blue-700 font-bold px-3.5 py-1.5 rounded-full">
+        <span className="text-xs bg-neutral-50 text-neutral-800 font-bold px-3.5 py-1.5 rounded-full">
           {prosemItems.length} Kegiatan Tercatat
         </span>
       </div>
@@ -304,7 +304,7 @@ export const ProsemForm: React.FC<ProsemFormProps> = ({ onBack, onToast }) => {
           <button
             type="button"
             onClick={handleExportCsv}
-            className="min-h-[40px] px-4 rounded-[12px] bg-blue-600 text-white text-xs font-bold hover:brightness-105 active:scale-[0.98] transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
+            className="min-h-[40px] px-4 rounded-[12px] bg-black text-white text-xs font-bold hover:bg-neutral-800 active:scale-[0.98] transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
           >
             <Download size={15} />
             <span>Unduh Excel</span>
@@ -312,7 +312,7 @@ export const ProsemForm: React.FC<ProsemFormProps> = ({ onBack, onToast }) => {
           <button
             type="button"
             onClick={() => onToast('Perubahan Program Semester disimpan.')}
-            className="min-h-[40px] px-4 rounded-[12px] bg-blue-600 text-white text-xs font-bold hover:brightness-105 active:scale-[0.98] transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
+            className="min-h-[40px] px-4 rounded-[12px] bg-black text-white text-xs font-bold hover:bg-neutral-800 active:scale-[0.98] transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
           >
             <Save size={15} />
             <span>Simpan</span>
@@ -320,7 +320,7 @@ export const ProsemForm: React.FC<ProsemFormProps> = ({ onBack, onToast }) => {
           <button
             type="button"
             onClick={handleOpenAdd}
-            className="min-h-[40px] px-4 rounded-[12px] bg-green-600 text-white text-xs font-bold hover:brightness-105 active:scale-[0.98] transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
+            className="min-h-[40px] px-4 rounded-[12px] bg-black text-white text-xs font-bold hover:bg-neutral-800 active:scale-[0.98] transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
           >
             <Plus size={15} strokeWidth={2.5} />
             <span>Tambah Kegiatan</span>
@@ -382,8 +382,8 @@ export const ProsemForm: React.FC<ProsemFormProps> = ({ onBack, onToast }) => {
                     <span
                       className={`inline-block px-2 py-0.5 rounded text-[11px] font-bold ${
                         row.semester === '1'
-                          ? 'bg-blue-100 text-blue-700'
-                          : 'bg-green-100 text-green-700'
+                          ? 'bg-neutral-200 text-neutral-800'
+                          : 'bg-neutral-100 text-neutral-800'
                       } whitespace-nowrap`}
                     >
                       {row.semester === '1' ? 'GANJIL' : 'GENAP'}
@@ -401,7 +401,7 @@ export const ProsemForm: React.FC<ProsemFormProps> = ({ onBack, onToast }) => {
                           checked={row.bulan[monthKey]}
                           onChange={() => handleToggleMonth(row.id, monthKey)}
                           title={`${monthName}: ${row.bulan[monthKey] ? 'Aktif' : 'Nonaktif'}`}
-                          className="w-4 h-4 rounded accent-blue-600 cursor-pointer"
+                          className="w-4 h-4 rounded accent-black cursor-pointer"
                         />
                       </td>
                     );
@@ -414,7 +414,7 @@ export const ProsemForm: React.FC<ProsemFormProps> = ({ onBack, onToast }) => {
                       <button
                         type="button"
                         onClick={() => handleOpenEdit(row)}
-                        className="px-2 py-1 rounded bg-blue-600 text-white text-[10px] font-bold hover:brightness-110 transition-all flex items-center justify-center gap-1"
+                        className="px-2 py-1 rounded bg-black text-white text-[10px] font-bold hover:bg-neutral-800 transition-all flex items-center justify-center gap-1"
                       >
                         <Edit2 size={10} />
                         Edit
@@ -537,7 +537,7 @@ export const ProsemForm: React.FC<ProsemFormProps> = ({ onBack, onToast }) => {
                               },
                             })
                           }
-                          className="w-4 h-4 rounded accent-blue-600"
+                          className="w-4 h-4 rounded accent-black"
                         />
                         <span className="text-black font-medium">{monthName}</span>
                       </label>
@@ -571,7 +571,7 @@ export const ProsemForm: React.FC<ProsemFormProps> = ({ onBack, onToast }) => {
                 </button>
                 <button
                   type="submit"
-                  className="min-h-[40px] px-4 rounded-[12px] bg-blue-600 text-white text-xs font-bold hover:brightness-105 transition-all flex items-center gap-1.5"
+                  className="min-h-[40px] px-4 rounded-[12px] bg-black text-white text-xs font-bold hover:bg-neutral-800 transition-all flex items-center gap-1.5"
                 >
                   <Save size={14} />
                   {editingItem ? 'Simpan Perubahan' : 'Tambahkan'}

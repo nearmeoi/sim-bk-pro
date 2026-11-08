@@ -79,7 +79,7 @@ export const SuratModal: React.FC<SuratModalProps> = ({
         <div className="print:hidden p-4 sm:p-5 border-b border-border bg-[#FFFFFF] flex flex-wrap items-center justify-between gap-3">
           <div>
             <h3 className="font-extrabold text-[18px] text-text flex items-center gap-2">
-              <FileText size={20} className="text-primary" />
+              <FileText size={20} className="text-black" />
               {isPanggilan ? 'Cetak Surat Panggilan Orang Tua / Wali' : 'Cetak Surat Kunjungan Rumah (Home Visit)'}
             </h3>
             <p className="text-xs text-muted mt-0.5">
@@ -90,7 +90,7 @@ export const SuratModal: React.FC<SuratModalProps> = ({
           <div className="flex items-center gap-2">
             <button
               onClick={() => window.print()}
-              className="min-h-[42px] px-5 rounded-[12px] bg-primary text-white text-xs font-bold hover:brightness-105 active:scale-[0.98] transition-all flex items-center gap-2 shadow-sm"
+              className="min-h-[42px] px-5 rounded-[12px] bg-black text-white text-xs font-bold hover:bg-neutral-800 active:scale-[0.98] transition-all flex items-center gap-2 shadow-sm"
             >
               <Printer size={16} />
               <span>Cetak Surat Sekarang</span>
@@ -117,7 +117,7 @@ export const SuratModal: React.FC<SuratModalProps> = ({
                 type="text"
                 value={nomorSurat}
                 onChange={(e) => setNomorSurat(e.target.value)}
-                className="w-full px-2.5 py-1.5 rounded-[8px] border border-border text-xs focus:outline-none focus:border-primary"
+                className="w-full px-2.5 py-1.5 rounded-[8px] border border-border text-xs focus:outline-none focus:border-black"
               />
             </div>
             <div>
@@ -126,7 +126,7 @@ export const SuratModal: React.FC<SuratModalProps> = ({
                 type="text"
                 value={hariTanggal}
                 onChange={(e) => setHariTanggal(e.target.value)}
-                className="w-full px-2.5 py-1.5 rounded-[8px] border border-border text-xs focus:outline-none focus:border-primary"
+                className="w-full px-2.5 py-1.5 rounded-[8px] border border-border text-xs focus:outline-none focus:border-black"
               />
             </div>
             <div>
@@ -135,7 +135,7 @@ export const SuratModal: React.FC<SuratModalProps> = ({
                 type="text"
                 value={waktu}
                 onChange={(e) => setWaktu(e.target.value)}
-                className="w-full px-2.5 py-1.5 rounded-[8px] border border-border text-xs focus:outline-none focus:border-primary"
+                className="w-full px-2.5 py-1.5 rounded-[8px] border border-border text-xs focus:outline-none focus:border-black"
               />
             </div>
             <div>
@@ -144,7 +144,7 @@ export const SuratModal: React.FC<SuratModalProps> = ({
                 type="text"
                 value={tempat}
                 onChange={(e) => setTempat(e.target.value)}
-                className="w-full px-2.5 py-1.5 rounded-[8px] border border-border text-xs focus:outline-none focus:border-primary"
+                className="w-full px-2.5 py-1.5 rounded-[8px] border border-border text-xs focus:outline-none focus:border-black"
               />
             </div>
           </div>
@@ -154,7 +154,7 @@ export const SuratModal: React.FC<SuratModalProps> = ({
               rows={2}
               value={keperluan}
               onChange={(e) => setKeperluan(e.target.value)}
-              className="w-full p-2 rounded-[8px] border border-border text-xs focus:outline-none focus:border-primary resize-y"
+              className="w-full p-2 rounded-[8px] border border-border text-xs focus:outline-none focus:border-black resize-y"
             />
           </div>
         </div>

@@ -23,16 +23,16 @@ export default function Sidebar({ current, onNav, onCatat }: SidebarProps) {
       <button
         key={id}
         onClick={() => onNav(id)}
-        className={`w-full min-h-[48px] px-3.5 rounded-[14px] flex items-center gap-3 text-[15px] transition-all text-left ${
+        className={`w-full min-h-[48px] px-3.5 rounded-[14px] flex items-center gap-3 text-[15px] transition-all text-left cursor-pointer ${
           active
-            ? 'bg-primary-tint text-primary font-bold shadow-sm'
-            : 'text-muted hover:bg-bg hover:text-text font-medium'
+            ? 'bg-neutral-900 text-white font-bold shadow-sm'
+            : 'text-muted hover:bg-neutral-100 hover:text-text font-medium'
         }`}
       >
         <Icon size={20} strokeWidth={active ? 2.25 : 1.75} className="flex-none" />
         <span className="flex-1 truncate">{label}</span>
         {badge && (
-          <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-green-600 text-white flex-none">
+          <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-neutral-800 text-white flex-none">
             {badge}
           </span>
         )}
@@ -44,7 +44,7 @@ export default function Sidebar({ current, onNav, onCatat }: SidebarProps) {
     <aside className="hidden lg:flex flex-col fixed inset-y-0 left-0 w-[248px] bg-surface border-r border-border p-5 z-20">
       {/* Brand */}
       <div className="flex items-center gap-3 px-2 pb-5">
-        <div className="w-10 h-10 rounded-[12px] bg-gradient-to-br from-primary to-primary-2 text-white flex items-center justify-center font-extrabold text-[15px] shadow-sm flex-none">
+        <div className="w-10 h-10 rounded-[12px] bg-black text-white flex items-center justify-center font-black text-[15px] shadow-sm flex-none">
           BK
         </div>
         <div>
@@ -60,7 +60,7 @@ export default function Sidebar({ current, onNav, onCatat }: SidebarProps) {
       {/* CTA Button */}
       <button
         onClick={onCatat}
-        className="w-full min-h-[48px] rounded-[14px] bg-accent text-white font-bold text-[15px] flex items-center justify-center gap-2 mb-4 shadow-[0_6px_16px_rgb(232_106_51/0.25)] hover:brightness-105 active:scale-[0.98] transition-all"
+        className="w-full min-h-[48px] rounded-[14px] bg-black hover:bg-neutral-800 text-white font-bold text-[15px] flex items-center justify-center gap-2 mb-4 shadow-sm active:scale-[0.98] transition-all cursor-pointer"
       >
         <Plus size={19} strokeWidth={2.5} />
         <span>Catat Layanan</span>
@@ -75,8 +75,8 @@ export default function Sidebar({ current, onNav, onCatat }: SidebarProps) {
           <div
             className={`w-full min-h-[48px] px-3.5 rounded-[14px] flex items-center gap-3 text-[15px] transition-all text-left cursor-pointer ${
               isDokumenActive
-                ? 'bg-primary-tint text-primary font-bold shadow-sm'
-                : 'text-muted hover:bg-bg hover:text-text font-medium'
+                ? 'bg-neutral-900 text-white font-bold shadow-sm'
+                : 'text-muted hover:bg-neutral-100 hover:text-text font-medium'
             }`}
             onClick={() => {
               setDokumenCollapsed(false);
@@ -91,8 +91,9 @@ export default function Sidebar({ current, onNav, onCatat }: SidebarProps) {
                 e.stopPropagation();
                 setDokumenCollapsed((prev) => !prev);
               }}
-              className="p-1 hover:bg-black/5 rounded-md transition-colors text-muted hover:text-text"
-              title={isDokumenExpanded ? 'Tutup sub-menu' : 'Buka sub-menu'}
+              className={`p-1 rounded-md transition-colors ${
+                isDokumenActive ? 'hover:bg-white/10 text-white/80' : 'hover:bg-black/5 text-muted hover:text-text'
+              }`}
             >
               {isDokumenExpanded ? <ChevronUp size={15} /> : <ChevronDown size={15} />}
             </button>
@@ -100,7 +101,7 @@ export default function Sidebar({ current, onNav, onCatat }: SidebarProps) {
 
           {/* Sub-menu Collapsible */}
           {isDokumenExpanded && (
-            <div className="border-l-2 border-primary/20 ml-5 pl-2.5 space-y-1 py-1 fade-up">
+            <div className="border-l-2 border-neutral-300 ml-5 pl-2.5 space-y-1 py-1 fade-up">
               <button
                 type="button"
                 onClick={() => {
@@ -109,8 +110,8 @@ export default function Sidebar({ current, onNav, onCatat }: SidebarProps) {
                 }}
                 className={`w-full min-h-[36px] px-2.5 rounded-[10px] flex items-center gap-2 text-[13px] transition-all text-left cursor-pointer ${
                   current === 'dokumen' && !activeDocTab
-                    ? 'text-primary font-bold bg-primary/10'
-                    : 'text-muted hover:text-text hover:bg-bg font-medium'
+                    ? 'text-neutral-900 font-extrabold bg-neutral-200/80'
+                    : 'text-muted hover:text-text hover:bg-neutral-100 font-medium'
                 }`}
               >
                 <span className="w-1.5 h-1.5 rounded-full bg-current opacity-70" />
@@ -125,8 +126,8 @@ export default function Sidebar({ current, onNav, onCatat }: SidebarProps) {
                 }}
                 className={`w-full min-h-[36px] px-2.5 rounded-[10px] flex items-center gap-2 text-[13px] transition-all text-left cursor-pointer ${
                   current === 'dokumen' && activeDocTab === 'prota'
-                    ? 'text-primary font-bold bg-primary/10'
-                    : 'text-muted hover:text-text hover:bg-bg font-medium'
+                    ? 'text-neutral-900 font-extrabold bg-neutral-200/80'
+                    : 'text-muted hover:text-text hover:bg-neutral-100 font-medium'
                 }`}
               >
                 <Calendar size={15} className="flex-none" />
@@ -141,8 +142,8 @@ export default function Sidebar({ current, onNav, onCatat }: SidebarProps) {
                 }}
                 className={`w-full min-h-[36px] px-2.5 rounded-[10px] flex items-center gap-2 text-[13px] transition-all text-left cursor-pointer ${
                   current === 'dokumen' && activeDocTab === 'jurnal'
-                    ? 'text-primary font-bold bg-primary/10'
-                    : 'text-muted hover:text-text hover:bg-bg font-medium'
+                    ? 'text-neutral-900 font-extrabold bg-neutral-200/80'
+                    : 'text-muted hover:text-text hover:bg-neutral-100 font-medium'
                 }`}
               >
                 <FileText size={15} className="flex-none" />
@@ -157,8 +158,8 @@ export default function Sidebar({ current, onNav, onCatat }: SidebarProps) {
                 }}
                 className={`w-full min-h-[36px] px-2.5 rounded-[10px] flex items-center gap-2 text-[13px] transition-all text-left cursor-pointer ${
                   current === 'dokumen' && activeDocTab === 'rpl'
-                    ? 'text-primary font-bold bg-primary/10'
-                    : 'text-muted hover:text-text hover:bg-bg font-medium'
+                    ? 'text-neutral-900 font-extrabold bg-neutral-200/80'
+                    : 'text-muted hover:text-text hover:bg-neutral-100 font-medium'
                 }`}
               >
                 <BookOpen size={15} className="flex-none" />
@@ -170,13 +171,13 @@ export default function Sidebar({ current, onNav, onCatat }: SidebarProps) {
                 onClick={() => onNav('akpd')}
                 className={`w-full min-h-[36px] px-2.5 rounded-[10px] flex items-center gap-2 text-[13px] transition-all text-left cursor-pointer ${
                   current === 'akpd'
-                    ? 'text-primary font-bold bg-primary/10'
-                    : 'text-muted hover:text-text hover:bg-bg font-medium'
+                    ? 'text-neutral-900 font-extrabold bg-neutral-200/80'
+                    : 'text-muted hover:text-text hover:bg-neutral-100 font-medium'
                 }`}
               >
                 <FileCheck2 size={15} className="flex-none" />
                 <span className="flex-1 truncate">Angket AKPD</span>
-                <span className="text-[10px] font-extrabold px-1.5 py-0.2 rounded-full bg-blue-500 text-white flex-none">
+                <span className="text-[10px] font-extrabold px-1.5 py-0.2 rounded-full bg-neutral-800 text-white flex-none">
                   50
                 </span>
               </button>
@@ -186,13 +187,13 @@ export default function Sidebar({ current, onNav, onCatat }: SidebarProps) {
                 onClick={() => onNav('karir')}
                 className={`w-full min-h-[36px] px-2.5 rounded-[10px] flex items-center gap-2 text-[13px] transition-all text-left cursor-pointer ${
                   current === 'karir' || current === 'shinro'
-                    ? 'text-primary font-bold bg-primary/10'
-                    : 'text-muted hover:text-text hover:bg-bg font-medium'
+                    ? 'text-neutral-900 font-extrabold bg-neutral-200/80'
+                    : 'text-muted hover:text-text hover:bg-neutral-100 font-medium'
                 }`}
               >
                 <Compass size={15} className="flex-none" />
                 <span className="flex-1 truncate">Pilihan Karir</span>
-                <span className="text-[10px] font-extrabold px-1.5 py-0.2 rounded-full bg-purple-500 text-white flex-none">
+                <span className="text-[10px] font-extrabold px-1.5 py-0.2 rounded-full bg-neutral-800 text-white flex-none">
                   Kls 9
                 </span>
               </button>
@@ -205,8 +206,8 @@ export default function Sidebar({ current, onNav, onCatat }: SidebarProps) {
                 }}
                 className={`w-full min-h-[36px] px-2.5 rounded-[10px] flex items-center gap-2 text-[13px] transition-all text-left cursor-pointer ${
                   current === 'dokumen' && activeDocTab === 'prosem'
-                    ? 'text-primary font-bold bg-primary/10'
-                    : 'text-muted hover:text-text hover:bg-bg font-medium'
+                    ? 'text-neutral-900 font-extrabold bg-neutral-200/80'
+                    : 'text-muted hover:text-text hover:bg-neutral-100 font-medium'
                 }`}
               >
                 <Calendar size={15} className="flex-none" />
@@ -221,8 +222,8 @@ export default function Sidebar({ current, onNav, onCatat }: SidebarProps) {
                 }}
                 className={`w-full min-h-[36px] px-2.5 rounded-[10px] flex items-center gap-2 text-[13px] transition-all text-left cursor-pointer ${
                   current === 'dokumen' && activeDocTab === 'lapbul'
-                    ? 'text-primary font-bold bg-primary/10'
-                    : 'text-muted hover:text-text hover:bg-bg font-medium'
+                    ? 'text-neutral-900 font-extrabold bg-neutral-200/80'
+                    : 'text-muted hover:text-text hover:bg-neutral-100 font-medium'
                 }`}
               >
                 <FileText size={15} className="flex-none" />
@@ -237,8 +238,8 @@ export default function Sidebar({ current, onNav, onCatat }: SidebarProps) {
                 }}
                 className={`w-full min-h-[36px] px-2.5 rounded-[10px] flex items-center gap-2 text-[13px] transition-all text-left cursor-pointer ${
                   current === 'dokumen' && activeDocTab === 'lapsem'
-                    ? 'text-primary font-bold bg-primary/10'
-                    : 'text-muted hover:text-text hover:bg-bg font-medium'
+                    ? 'text-neutral-900 font-extrabold bg-neutral-200/80'
+                    : 'text-muted hover:text-text hover:bg-neutral-100 font-medium'
                 }`}
               >
                 <FileText size={15} className="flex-none" />
@@ -257,7 +258,7 @@ export default function Sidebar({ current, onNav, onCatat }: SidebarProps) {
           className="flex items-center gap-2.5 min-w-0 flex-1 px-1.5 py-1 rounded-xl hover:bg-bg cursor-pointer transition-colors"
           title="Buka Profil Pengguna"
         >
-          <div className="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-bold text-xs shadow-xs flex-none">
+          <div className="w-8 h-8 rounded-full bg-neutral-900 text-white flex items-center justify-center font-bold text-xs shadow-xs flex-none">
             {settings.guruBK ? settings.guruBK.split(' ')[0][0] : 'G'}
           </div>
           <div className="min-w-0 flex-1">

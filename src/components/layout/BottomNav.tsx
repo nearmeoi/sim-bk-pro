@@ -16,12 +16,12 @@ export default function BottomNav({ current, onNav, onCatat }: BottomNavProps) {
         key={id}
         onClick={() => onNav(id)}
         className={`flex-1 min-h-[68px] flex flex-col items-center justify-center gap-1 text-[11px] transition-all select-none ${
-          active ? 'text-primary font-bold' : 'text-muted font-medium hover:text-text'
+          active ? 'text-neutral-900 font-bold' : 'text-muted font-medium hover:text-text'
         }`}
       >
         <span
           className={`w-12 h-7 rounded-[15px] flex items-center justify-center transition-all ${
-            active ? 'bg-primary-tint text-primary' : 'text-muted'
+            active ? 'bg-neutral-900 text-white' : 'text-muted'
           }`}
         >
           <Icon size={19} strokeWidth={active ? 2.25 : 1.75} />
@@ -45,10 +45,10 @@ export default function BottomNav({ current, onNav, onCatat }: BottomNavProps) {
         className="flex-1 min-h-[68px] flex flex-col items-center justify-center select-none"
         aria-label="Catat Layanan"
       >
-        <span className="w-14 h-14 rounded-full bg-accent text-white flex items-center justify-center -mt-6 shadow-[0_6px_16px_rgb(232_106_51/0.35)] ring-4 ring-bg active:scale-90 transition-transform">
+        <span className="w-14 h-14 rounded-full bg-black text-white flex items-center justify-center -mt-6 shadow-lg ring-4 ring-bg active:scale-90 transition-transform">
           <Plus size={24} strokeWidth={2.75} />
         </span>
-        <span className="text-[12px] font-bold text-accent mt-1 leading-none">
+        <span className="text-[12px] font-bold text-neutral-900 mt-1 leading-none">
           Catat
         </span>
       </button>
