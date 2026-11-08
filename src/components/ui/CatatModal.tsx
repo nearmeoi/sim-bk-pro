@@ -282,7 +282,7 @@ export default function CatatModal({ open, onClose, onSelect }: CatatModalProps)
                         ? st === 'Selesai'
                           ? 'bg-accent-700 text-white border-accent-700 shadow-sm'
                           : st === 'Menunggu'
-                            ? 'bg-orange-600 text-white border-orange-600 shadow-sm'
+                            ? 'bg-primary text-white border-primary shadow-sm'
                             : 'bg-primary text-white border-primary shadow-sm'
                         : 'bg-surface text-muted border-border hover:bg-bg'
                     }`}

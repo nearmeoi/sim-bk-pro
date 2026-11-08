@@ -100,7 +100,7 @@ export const KopSurat: React.FC<KopSuratProps> = ({
               />
             ) : (
               <div className="w-full h-full flex flex-col items-center justify-center p-1 border border-black/60 rounded-xs bg-gray-50 text-center font-sans">
-                <div className="w-8 h-8 rounded-full border-2 border-red-700 bg-red-50 flex items-center justify-center text-red-700 font-black text-xs">
+                <div className="w-8 h-8 rounded-full border-2 border-alert bg-alert-tint flex items-center justify-center text-alert font-black text-xs">
                   MKS
                 </div>
                 <span className="text-[7.5px] font-black uppercase tracking-tight text-black mt-1 leading-none">

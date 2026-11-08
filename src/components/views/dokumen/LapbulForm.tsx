@@ -292,12 +292,12 @@ export const LapbulForm: React.FC<LapbulFormProps> = ({ onBack, onToast }) => {
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
             <div className="border border-black p-3 text-center">
               <p className="text-xs font-bold text-gray-700 uppercase">Dalam Proses</p>
-              <p className="text-2xl font-black text-yellow-700">{stats.siswaAktif}</p>
+              <p className="text-2xl font-black text-primary">{stats.siswaAktif}</p>
               <p className="text-[10px] text-muted">Kasus</p>
             </div>
             <div className="border border-black p-3 text-center">
               <p className="text-xs font-bold text-gray-700 uppercase">Selesai Ditangani</p>
-              <p className="text-2xl font-black text-green-700">{stats.siswaSelesai}</p>
+              <p className="text-2xl font-black text-primary">{stats.siswaSelesai}</p>
               <p className="text-[10px] text-muted">Kasus</p>
             </div>
             <div className="border border-black p-3 text-center">

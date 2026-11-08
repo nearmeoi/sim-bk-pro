@@ -401,7 +401,7 @@ export const ProtaForm: React.FC<ProtaFormProps> = ({ onBack, onToast }) => {
                       <button
                         onClick={() => handleDelete(row.id, row.jenis)}
                         title="Hapus Program"
-                        className="p-1.5 text-muted hover:text-alert rounded hover:bg-red-50 transition-colors"
+                        className="p-1.5 text-muted hover:text-alert rounded hover:bg-alert-tint transition-colors"
                       >
                         <Trash2 size={15} />
                       </button>

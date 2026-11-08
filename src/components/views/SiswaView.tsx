@@ -507,7 +507,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                     <tr
                       key={s.id}
                       onClick={() => setSelectedStudent(s)}
-                      className="hover:bg-orange-50/30 cursor-pointer transition-colors group"
+                      className="hover:bg-primary-tint cursor-pointer transition-colors group"
                       title="Klik untuk membuka catatan konseling siswa"
                     >
                       <td className="border border-black px-2 py-2 text-center font-bold">
@@ -684,7 +684,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                   )}
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="font-bold text-yellow-700 bg-yellow-50 px-2 py-0.5 rounded text-[11px] border border-yellow-200">
+                  <span className="font-bold text-primary bg-primary-tint px-2 py-0.5 rounded text-[11px] border border-primary">
                     {selectedStudent.status}
                   </span>
                   <button
@@ -898,7 +898,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                       </tr>
                     ) : (
                       studentRecords.map((rec, idx) => (
-                        <tr key={rec.id} className="hover:bg-orange-50/30 transition-colors">
+                        <tr key={rec.id} className="hover:bg-primary-tint transition-colors">
                           <td className="border border-black px-2 py-2 text-center font-bold">
                             {idx + 1}
                           </td>

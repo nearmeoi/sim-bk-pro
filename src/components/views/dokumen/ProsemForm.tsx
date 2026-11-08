@@ -422,7 +422,7 @@ export const ProsemForm: React.FC<ProsemFormProps> = ({ onBack, onToast }) => {
                       <button
                         type="button"
                         onClick={() => handleDelete(row.id, row.kegiatan)}
-                        className="px-2 py-1 rounded bg-red-100 text-red-800 text-[10px] font-bold hover:bg-red-200 transition-all flex items-center justify-center gap-1"
+                        className="px-2 py-1 rounded bg-alert-tint text-alert text-[10px] font-bold hover:bg-alert-tint transition-all flex items-center justify-center gap-1"
                       >
                         <Trash2 size={10} />
                         Hapus

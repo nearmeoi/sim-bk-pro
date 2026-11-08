@@ -2,22 +2,22 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --primary: #FFA36C;
-  --primary-2: #FF8A3D;
-  --accent: #E86A33;
+::root {
+  --primary: #000000;
+  --primary-2: #000000;
+  --accent: #000000;
   --alert: #B91C1C;
-  --primary-tint: #FFF5ED;
-  --accent-tint: #FFE8D9;
+  --primary-tint: #F2F2F2;
+  --accent-tint: #F2F2F2;
   --alert-tint: #FCE9E9;
-  --bg: #F5F7FC;
+  --bg: #F5F5F5;
   --surface: #FFFFFF;
   --border: #E8E8E8;
-  --text: #2D3748;
+  --text: #1A1A1A;
   --muted: #666666;
   --shadow: 0 1px 2px rgb(0 0 0 / 0.03), 0 4px 12px rgb(0 0 0 / 0.06);
-  --shadow-hero: 0 8px 24px rgb(255 163 108 / 0.2);
-  --shadow-fab: 0 4px 12px rgb(255 163 108 / 0.3), 0 0 0 5px #FFFFFF;
+  --shadow-hero: 0 8px 24px rgb(0 0 0 / 0.15);
+  --shadow-fab: 0 4px 12px rgb(0 0 0 / 0.25), 0 0 0 5px #FFFFFF;
   --shadow-bnav: 0 -4px 16px rgb(0 0 0 / 0.04);
   --rc: 20px;
   --rx: 14px;
@@ -291,6 +291,21 @@ body {
 .bk-btn.danger:hover {
   filter: brightness(1.1);
 }
+
+/* Warna seragam dari satu config (:root) — ubah di satu tempat, berubah semua */
+.bg-primary { background: var(--primary); }
+.text-primary { color: var(--primary); }
+.border-primary { border-color: var(--primary); }
+.bg-primary-tint { background: var(--primary-tint); }
+.text-primary-tint { color: var(--primary-tint); }
+.bg-accent { background: var(--accent); }
+.text-accent { color: var(--accent); }
+.border-accent { border-color: var(--accent); }
+.bg-alert { background: var(--alert); }
+.text-alert { color: var(--alert); }
+.border-alert { border-color: var(--alert); }
+.bg-alert-tint { background: var(--alert-tint); }
+.text-alert-tint { color: var(--alert-tint); }
 
 /* Skeleton shimmer */
 .skeleton {

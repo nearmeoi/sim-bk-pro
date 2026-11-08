@@ -347,9 +347,9 @@ export default function AKPDView({ onNav, onToast }: AKPDViewProps) {
 
       {/* KOTAK TEMPEL ANGKA MASAL DARI EXCEL */}
       {showPasteBox && viewMode === 'batch' && (
-        <div className="print:hidden bk-card bg-yellow-50 border border-yellow-300 p-4 space-y-3 fade-up">
+        <div className="print:hidden bk-card bg-primary-tint border border-primary p-4 space-y-3 fade-up">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-yellow-800 flex items-center gap-1.5">
+            <span className="text-xs font-bold text-primary flex items-center gap-1.5">
               <ClipboardPaste size={16} /> Tempel 50 Angka Rekapitulasi (dari Excel / Catatan):
             </span>
             <button
@@ -359,7 +359,7 @@ export default function AKPDView({ onNav, onToast }: AKPDViewProps) {
               Tutup
             </button>
           </div>
-          <p className="text-[12px] text-yellow-900">
+          <p className="text-[12px] text-primary">
             Paste deretan angka total centang (dipisahkan spasi, koma, atau baris baru).
           </p>
           <textarea
@@ -367,12 +367,12 @@ export default function AKPDView({ onNav, onToast }: AKPDViewProps) {
             value={pasteTallyText}
             onChange={(e) => setPasteTallyText(e.target.value)}
             placeholder="Contoh: 18, 14, 22, 19, 21, 8, 15, 17, 12, 24, 9, 7..."
-            className="w-full p-3 rounded-[10px] border border-yellow-300 text-xs bg-white text-text font-mono focus:outline-none focus:border-yellow-500"
+            className="w-full p-3 rounded-[10px] border border-primary text-xs bg-white text-text font-mono focus:outline-none focus:border-primary"
           />
           <div className="flex justify-end">
             <button
               onClick={handleProcessPasteTally}
-              className="min-h-[38px] px-4 rounded-[10px] bg-yellow-600 text-white font-bold text-xs hover:bg-yellow-700"
+              className="min-h-[38px] px-4 rounded-[10px] bg-primary text-white font-bold text-xs hover:bg-neutral-800"
             >
               Terapkan ke 50 Butir
             </button>
@@ -449,10 +449,10 @@ export default function AKPDView({ onNav, onToast }: AKPDViewProps) {
                         <span
                           className={`px-2 py-0.5 rounded-full ${
                             percent >= 70
-                              ? 'bg-red-100 text-red-800'
+                              ? 'bg-alert-tint text-alert'
                               : percent >= 50
                                 ? 'bg-neutral-200 text-neutral-800'
-                                : 'bg-yellow-100 text-yellow-800'
+                                : 'bg-primary-tint text-primary'
                           }`}
                         >
                           {percent}%
@@ -694,10 +694,10 @@ export default function AKPDView({ onNav, onToast }: AKPDViewProps) {
                           <span
                             className={`px-2.5 py-0.5 rounded text-[11px] font-bold ${
                               row.pct >= 60
-                                ? 'bg-red-100 text-red-800'
+                                ? 'bg-alert-tint text-alert'
                                 : row.pct >= 40
                                 ? 'bg-neutral-200 text-neutral-800'
-                                : 'bg-yellow-100 text-yellow-800'
+                                : 'bg-primary-tint text-primary'
                             }`}
                           >
                             {row.pct >= 60 ? 'Prioritas Tinggi' : row.pct >= 40 ? 'Prioritas Sedang' : 'Cukup Baik'}
@@ -775,7 +775,7 @@ export default function AKPDView({ onNav, onToast }: AKPDViewProps) {
                             {pct}%
                           </td>
                           <td className="border border-black px-2 py-2 text-center">
-                            <span className="px-2.5 py-0.5 rounded text-[11px] font-bold bg-red-100 text-red-800 whitespace-nowrap">
+                            <span className="px-2.5 py-0.5 rounded text-[11px] font-bold bg-alert-tint text-alert whitespace-nowrap">
                               Prioritas Tinggi
                             </span>
                           </td>

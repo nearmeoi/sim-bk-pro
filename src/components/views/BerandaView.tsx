@@ -142,14 +142,14 @@ export const BerandaView: React.FC<BerandaViewProps> = ({ onNav, onCatat }) => {
             <>
           <div className="bk-card p-3.5 sm:p-4 text-center sm:text-left sm:flex sm:items-center sm:justify-between">
             <div>
-              <span className="block text-[26px] sm:text-[30px] font-black text-blue-600 leading-none">
+<span className="block text-[26px] sm:text-[30px] font-black text-primary leading-none">
                 {aktif}
               </span>
               <span className="text-[11px] sm:text-xs font-semibold text-muted mt-1 block">
                 Siswa Aktif
               </span>
             </div>
-            <div className="hidden sm:flex w-10 h-10 rounded-xl bg-blue-100 text-blue-600 items-center justify-center font-bold text-xs">
+<div className="hidden sm:flex w-10 h-10 rounded-xl bg-primary-tint text-primary items-center justify-center font-bold text-xs">
               BK
             </div>
           </div>
@@ -230,7 +230,7 @@ export const BerandaView: React.FC<BerandaViewProps> = ({ onNav, onCatat }) => {
                   cases
                     .filter((c) => c.status === 'Proses')
                     .map((c, idx) => (
-                      <tr key={c.id} className="hover:bg-orange-50/30 transition-colors">
+<tr key={c.id} className="hover:bg-primary-tint transition-colors">
                         <td className="border border-black px-2 py-2 text-center font-bold">
                           {idx + 1}
                         </td>
@@ -293,7 +293,7 @@ export const BerandaView: React.FC<BerandaViewProps> = ({ onNav, onCatat }) => {
           {/* Progress Singkat */}
           <div className="flex items-center justify-between text-xs pb-1 border-b border-border">
             <span className="text-muted font-medium">Status Perangkat BK:</span>
-            <span className="font-bold text-green-600">Tersedia</span>
+<span className="font-bold text-primary">Tersedia</span>
           </div>
 
           {/* List Dokumen Terpadu (Top 3 tampil langsung, sisanya collapse / see more) */}

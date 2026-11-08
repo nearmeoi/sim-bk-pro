@@ -300,7 +300,7 @@ export const KarirAngketForm: React.FC<KarirAngketFormProps> = ({
                     }
                     className="accent-black w-4 h-4 cursor-pointer"
                   />
-                  <span className={key === 'Orang Tua Beda Pilihan' ? 'text-red-700 font-bold' : ''}>
+                  <span className={key === 'Orang Tua Beda Pilihan' ? 'text-alert font-bold' : ''}>
                     {label}
                   </span>
                 </label>
@@ -309,15 +309,15 @@ export const KarirAngketForm: React.FC<KarirAngketFormProps> = ({
           </div>
 
           {current.statusDiskusiOrtu === 'Orang Tua Beda Pilihan' && (
-            <div className="p-2.5 bg-red-50 border border-red-300 rounded space-y-1">
-              <span className="font-bold text-xs text-red-800 block">
+            <div className="p-2.5 bg-alert-tint border border-alert rounded space-y-1">
+              <span className="font-bold text-xs text-alert block">
                 Jika orang tua berbeda pendapat, sekolah/jurusan apa yang diinginkan orang tua?
               </span>
               <input
                 type="text"
                 value={current.aspirasiPilihanOrtu}
                 onChange={(e) => updateCurrent('aspirasiPilihanOrtu', e.target.value)}
-                className="w-full p-1.5 bg-white border border-red-400 rounded focus:outline-none text-xs"
+                className="w-full p-1.5 bg-white border border-alert rounded focus:outline-none text-xs"
                 placeholder="Contoh: Orang tua ingin masuk SMA reguler agar bisa kuliah akuntansi..."
               />
             </div>

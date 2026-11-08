@@ -281,7 +281,7 @@ export const LapsemForm: React.FC<LapsemFormProps> = ({ onBack, onToast }) => {
             </div>
             <div className="border border-black p-3 text-center">
               <p className="text-xs font-bold text-gray-700 uppercase">Rata-rata Layanan/Siswa</p>
-              <p className="text-2xl font-black text-purple-700">
+              <p className="text-2xl font-black text-primary">
                 {uniqueStudents > 0 ? (stats.total / uniqueStudents).toFixed(1) : '0'}
               </p>
               <p className="text-[10px] text-muted">Kegiatan</p>
@@ -334,8 +334,8 @@ export const LapsemForm: React.FC<LapsemFormProps> = ({ onBack, onToast }) => {
           </div>
 
           {/* Rekomendasi */}
-          <div className="bg-yellow-50 border border-yellow-200 p-4 rounded-[12px]">
-            <h4 className="text-sm font-extrabold text-yellow-800 uppercase mb-2">
+          <div className="bg-primary-tint border border-primary p-4 rounded-[12px]">
+            <h4 className="text-sm font-extrabold text-primary uppercase mb-2">
                   IV. REKOMENDASI
                 </h4>
                 <ul className="space-y-2 text-sm text-text">
