@@ -10,7 +10,7 @@ const ResetPasswordView: React.FC = () => {
   const [err, setErr] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setErr(null);
     if (password.length < 6) {
@@ -29,15 +29,15 @@ const ResetPasswordView: React.FC = () => {
         return;
       }
       const { error } = await supabase.auth.updateUser({ password });
-      setLoading(false);
       if (error) {
         setErr(error.message);
-        return;
+      } else {
+        setMsg('Password berhasil diubah.');
       }
-      setMsg('Sandi berhasil diubah. Silakan masuk dengan sandi baru Anda.');
     } catch (ex) {
+      setErr('Terjadi kesalahan saat mengubah password.');
+    } finally {
       setLoading(false);
-      setErr(ex instanceof Error ? ex.message : 'Terjadi kesalahan.');
     }
   };
 

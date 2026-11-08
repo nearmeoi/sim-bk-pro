@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { X, Printer, Eye } from 'lucide-react';
 
@@ -15,21 +15,41 @@ export const HvsPreviewModal: React.FC<HvsPreviewModalProps> = ({
   title = 'Pratinjau Kertas HVS',
   children,
 }) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const sheetRef = useRef<HTMLDivElement>(null);
+  const [scale, setScale] = useState(1);
+  const [naturalHeight, setNaturalHeight] = useState(1100);
+
+  const updateScale = useCallback(() => {
+    const c = containerRef.current;
+    const s = sheetRef.current;
+    if (!c) return;
+    const sh = s ? (s.scrollHeight || 1100) : 1100;
+    setNaturalHeight(sh);
+    const scaleW = (c.clientWidth - 16) / 820;
+    const scaleH = (c.clientHeight - 16) / sh;
+    setScale(Math.min(1, scaleW, scaleH));
+  }, []);
+
   useEffect(() => {
     if (!open) return;
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
-    };
+    const handleKeyDown = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
     window.addEventListener('keydown', handleKeyDown);
     const originalOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
     document.body.classList.add('hvs-modal-open');
+    const raf = requestAnimationFrame(updateScale);
+    const ro = new ResizeObserver(updateScale);
+    if (containerRef.current) ro.observe(containerRef.current);
+    if (sheetRef.current) ro.observe(sheetRef.current);
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
       document.body.style.overflow = originalOverflow;
       document.body.classList.remove('hvs-modal-open');
+      cancelAnimationFrame(raf);
+      ro.disconnect();
     };
-  }, [open, onClose]);
+  }, [open, onClose, updateScale]);
 
   if (!open || typeof document === 'undefined') return null;
 
@@ -40,20 +60,20 @@ export const HvsPreviewModal: React.FC<HvsPreviewModalProps> = ({
     >
       {/* Top Floating Toolbar */}
       <div
-        className="w-full max-w-4xl mx-auto mb-3 bg-surface rounded-[16px] p-3 sm:px-5 flex items-center justify-between shadow-xl border border-border print:hidden"
+        className="w-full max-w-4xl mx-auto mb-3 bg-surface rounded-[16px] p-3 sm:px-5 flex items-center justify-between shadow-xl border border-border print:hidden flex-shrink-0"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-lg bg-neutral-100 text-neutral-900 border border-neutral-300 flex items-center justify-center">
+        <div className="flex items-center gap-2.5 min-w-0">
+          <div className="w-8 h-8 rounded-lg bg-neutral-100 text-neutral-900 border border-neutral-300 flex items-center justify-center flex-shrink-0">
             <Eye size={18} />
           </div>
-          <div>
-            <h3 className="font-extrabold text-sm text-text">{title}</h3>
+          <div className="min-w-0">
+            <h3 className="font-extrabold text-sm text-text truncate">{title}</h3>
             <p className="text-[11px] text-muted">Format Kertas A4 / Folio Standar Dinas</p>
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-shrink-0">
           <button
             type="button"
             onClick={() => window.print()}
@@ -73,17 +93,31 @@ export const HvsPreviewModal: React.FC<HvsPreviewModalProps> = ({
         </div>
       </div>
 
-      {/* Sheet Simulation Container */}
-      <div className="flex-1 overflow-y-auto flex justify-center pb-8 print:p-0 print:overflow-visible print:block">
+      {/* Sheet — fills remaining space, centered, scaled to fit */}
+      <div
+        ref={containerRef}
+        className="flex-1 flex items-center justify-center overflow-hidden print:p-0 print:overflow-visible print:block"
+        onClick={onClose}
+      >
         <div
-          className="hvs-sheet-print w-full max-w-[820px] bg-white text-black shadow-2xl border border-black rounded-none p-6 sm:p-12 print:border-none print:shadow-none print:p-0 my-auto min-h-[900px] text-xs leading-relaxed font-sans print:max-w-none print:min-h-0 print:m-0"
-          onClick={(e) => e.stopPropagation()}
+          style={{ width: 820 * scale, height: naturalHeight * scale, flexShrink: 0 }}
         >
-          {children}
+          <div
+            ref={sheetRef}
+            style={{
+              transform: scale < 1 ? `scale(${scale})` : undefined,
+              transformOrigin: 'top left',
+              width: 820,
+            }}
+            className="hvs-sheet-print bg-white text-black shadow-2xl border border-black rounded-none p-6 sm:p-12 print:border-none print:shadow-none print:p-0 min-h-[900px] text-xs leading-relaxed font-sans print:max-w-none print:min-h-0 print:m-0 print:transform-none"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {children}
+          </div>
         </div>
       </div>
     </div>,
-    document.body
+    document.body as Element
   );
 };
 

@@ -103,10 +103,9 @@ export default function AKPDView({ onNav, onToast }: AKPDViewProps) {
     exportToCsv(`Rekap_AKPD_${kelas.replace(/\s+/g, '_')}_${new Date().toISOString().slice(0, 10)}`, headers, rows);
     onToast(`âœ“ Berhasil mengekspor 50 butir AKPD ${kelas} ke CSV!`);
   };
-  const handleAddQuickNumbers = (e: React.FormEvent) => {
+  const handleAddQuickNumbers = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!quickNumbers.trim()) return;
-
     const numbers = quickNumbers
       .split(/[\s,;]+/)
       .map((n) => parseInt(n))
@@ -321,23 +320,23 @@ export default function AKPDView({ onNav, onToast }: AKPDViewProps) {
       {/* ======================================================== */}
       {viewMode === 'batch' && (
         <div className="print:hidden bk-card bg-neutral-50 border border-neutral-300 p-4 space-y-2.5">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
             <span className="text-xs font-extrabold text-neutral-800 flex items-center gap-1.5">
               <Check size={16} /> Input Cepat Nomor Centang:
             </span>
             <span className="text-[11px] text-muted">Tekan Enter untuk menyimpan satu lembar</span>
           </div>
-          <form onSubmit={handleAddQuickNumbers} className="flex gap-2">
+          <form onSubmit={handleAddQuickNumbers} className="flex flex-col gap-2 sm:flex-row">
             <input
               type="text"
               value={quickNumbers}
               onChange={(e) => setQuickNumbers(e.target.value)}
               placeholder="Ketik nomor yang dicentang siswa, contoh: 1, 3, 5, 15, 16, 24, 40 (pisahkan koma/spasi)..."
-              className="flex-1 min-h-[44px] px-4 rounded-[12px] border border-neutral-300 text-sm font-bold bg-white text-text focus:outline-none focus:border-black shadow-sm"
+              className="w-full min-w-0 flex-1 min-h-[44px] px-4 rounded-[12px] border border-neutral-300 text-sm font-bold bg-white text-text focus:outline-none focus:border-black shadow-sm"
             />
             <button
               type="submit"
-              className="min-h-[44px] px-5 rounded-[12px] bg-black text-white text-xs font-bold hover:bg-neutral-800 shrink-0 shadow-sm"
+              className="w-full sm:w-auto min-h-[44px] px-5 rounded-[12px] bg-black text-white text-xs font-bold hover:bg-neutral-800 sm:shrink-0 shadow-sm"
             >
               + Masukkan Lembar Siswa
             </button>
@@ -392,7 +391,7 @@ export default function AKPDView({ onNav, onToast }: AKPDViewProps) {
               TABEL TABULASI MASAL KEBUTUHAN PESERTA DIDIK
             </h2>
             <p className="text-xs font-semibold text-black/80 mt-0.5">
-              {kelas} Â· TAHUN AJARAN 2026/2027 Â· TOTAL {totalRespondenKelas} SISWA PER KELAS
+              {kelas} · TAHUN AJARAN 2026/2027 · TOTAL {totalRespondenKelas} SISWA PER KELAS
             </p>
           </div>
 
@@ -489,7 +488,7 @@ export default function AKPDView({ onNav, onToast }: AKPDViewProps) {
           {/* Kop Judul Angket Resmi */}
           <KopSurat
             settings={settings}
-            judul={`ANGKET KEBUTUHAN PESERTA DIDIK (AKPD) Â· ${kelas}`}
+            judul={`ANGKET KEBUTUHAN PESERTA DIDIK (AKPD) · ${kelas}`}
             subjudul={`TAHUN AJARAN ${settings.tahunAjaran || '2026/2027'}`}
           />
 
@@ -529,63 +528,25 @@ export default function AKPDView({ onNav, onToast }: AKPDViewProps) {
 
           {/* TABEL ANGKET SIMPLE EDITABLE (Format 1:1 Screenshot) */}
           <div className="overflow-x-auto border-t border-black">
-            <table className="w-full text-[12.5px] sm:text-[13px] border-collapse border border-black">
+            <table className="w-full text-[12.5px] sm:text-[13px] border-collapse border border-black min-w-[500px]">
               <thead>
-                <tr className="bg-gray-50 print:bg-transparent font-extrabold text-black">
-                  <th className="border border-black px-2 py-2 text-center w-12 font-extrabold uppercase">
-                    NO
-                  </th>
-                  <th className="border border-black px-3 py-2 text-center font-extrabold uppercase">
-                    PERNYATAAN
-                  </th>
-                  <th className="border border-black px-2 py-2 text-center w-14 sm:w-16 font-extrabold uppercase">
-                    YA
-                  </th>
-                  <th className="border border-black px-2 py-2 text-center w-14 sm:w-16 font-extrabold uppercase">
-                    TIDAK
-                  </th>
+                <tr className="bg-gray-100 font-extrabold text-black">
+                  <th className="border border-black px-1.5 py-1 text-center w-8">NO</th>
+                  <th className="border border-black px-2 py-1 text-center font-extrabold">PERNYATAAN BUTIR KEBUTUHAN</th>
+                  <th className="border border-black px-1 py-1 text-center w-12">YA</th>
+                  <th className="border border-black px-1 py-1 text-center w-12">TIDAK</th>
                 </tr>
               </thead>
               <tbody>
-                {items.map((item, idx) => (
-                  <tr
-                    key={idx}
-                    className="hover:bg-gray-50/40 print:hover:bg-transparent transition-colors group"
-                  >
-                    <td className="border border-black px-2 py-1 text-center font-bold align-middle">
-                      {item.no}
+                {items.map((item) => (
+                  <tr key={item.no}>
+                    <td className="border border-black px-1.5 py-1 text-center">{item.no}</td>
+                    <td className="border border-black px-2 py-1">{item.pernyataan}</td>
+                    <td className="border border-black px-1 py-1 text-center font-bold">
+                      {item.jawaban === 'ya' ? 'âœ“' : ''}
                     </td>
-
-                    <td className="border border-black px-2.5 py-1 align-middle">
-                      <input
-                        type="text"
-                        value={item.pernyataan}
-                        onChange={(e) => handleTextChange(idx, e.target.value)}
-                        className="w-full bg-transparent border-none focus:outline-none focus:ring-1 focus:ring-black rounded px-1 py-0.5 text-black font-normal"
-                        title="Klik untuk mengedit teks pernyataan"
-                      />
-                    </td>
-
-                    <td
-                      onClick={() => handleToggleAnswer(idx, 'ya')}
-                      className="border border-black px-1 py-1 text-center cursor-pointer select-none hover:bg-neutral-50 print:hover:bg-transparent align-middle font-extrabold text-[15px]"
-                    >
-                      {item.jawaban === 'ya' ? (
-                        <span className="text-black font-extrabold block">âœ“</span>
-                      ) : (
-                        <span className="text-transparent">.</span>
-                      )}
-                    </td>
-
-                    <td
-                      onClick={() => handleToggleAnswer(idx, 'tidak')}
-                      className="border border-black px-1 py-1 text-center cursor-pointer select-none hover:bg-gray-100 print:hover:bg-transparent align-middle font-extrabold text-[15px]"
-                    >
-                      {item.jawaban === 'tidak' ? (
-                        <span className="text-black font-extrabold block">âœ“</span>
-                      ) : (
-                        <span className="text-transparent">.</span>
-                      )}
+                    <td className="border border-black px-1 py-1 text-center font-bold">
+                      {item.jawaban === 'tidak' ? 'âœ“' : ''}
                     </td>
                   </tr>
                 ))}
@@ -607,7 +568,7 @@ export default function AKPDView({ onNav, onToast }: AKPDViewProps) {
           <div className="hidden print:block">
             <KopSurat
               settings={settings}
-              judul={`HASIL ANALISIS KEBUTUHAN PESERTA DIDIK (AKPD) Â· ${kelas}`}
+              judul={`HASIL ANALISIS KEBUTUHAN PESERTA DIDIK (AKPD) · ${kelas}`}
               subjudul={`TAHUN AJARAN ${settings.tahunAjaran || '2026/2027'}`}
             />
           </div>
@@ -619,7 +580,7 @@ export default function AKPDView({ onNav, onToast }: AKPDViewProps) {
                 REKAPITULASI & ANALISIS KEBUTUHAN PESERTA DIDIK (AKPD)
               </h2>
               <p className="text-xs text-black/80 font-bold mt-0.5">
-                {kelas} Â· {settings.namaSekolah || 'SIM BK PRO'} Â· TAHUN AJARAN {settings.tahunAjaran || '2026/2027'} ({totalRespondenKelas} Siswa)
+                {kelas} · {settings.namaSekolah || 'SIM BK PRO'} · TAHUN AJARAN {settings.tahunAjaran || '2026/2027'} ({totalRespondenKelas} Siswa)
               </p>
             </div>
 
@@ -822,7 +783,7 @@ export default function AKPDView({ onNav, onToast }: AKPDViewProps) {
       >
         <KopSurat
           settings={settings}
-          judul={`ANGKET KEBUTUHAN PESERTA DIDIK (AKPD) Â· ${kelas}`}
+          judul={`ANGKET KEBUTUHAN PESERTA DIDIK (AKPD) · ${kelas}`}
           subjudul={`TAHUN AJARAN ${settings.tahunAjaran || '2026/2027'}`}
         />
 
@@ -831,32 +792,33 @@ export default function AKPDView({ onNav, onToast }: AKPDViewProps) {
           <p>KELAS : {kelas}</p>
         </div>
 
-        <table className="w-full text-[11px] border-collapse border border-black mb-6">
-          <thead>
-            <tr className="bg-gray-100 font-extrabold text-black">
-              <th className="border border-black px-1.5 py-1 text-center w-8">NO</th>
-              <th className="border border-black px-2 py-1 text-center font-extrabold">PERNYATAAN BUTIR KEBUTUHAN</th>
-              <th className="border border-black px-1 py-1 text-center w-12">YA</th>
-              <th className="border border-black px-1 py-1 text-center w-12">TIDAK</th>
-            </tr>
-          </thead>
-          <tbody>
-            {items.map((item) => (
-              <tr key={item.no}>
-                <td className="border border-black px-1.5 py-1 text-center">{item.no}</td>
-                <td className="border border-black px-2 py-1">{item.pernyataan}</td>
-                <td className="border border-black px-1 py-1 text-center font-bold">
-                  {item.jawaban === 'ya' ? 'âœ“' : ''}
-                </td>
-                <td className="border border-black px-1 py-1 text-center font-bold">
-                  {item.jawaban === 'tidak' ? 'âœ“' : ''}
-                </td>
+        <div className="overflow-x-auto border-t border-black">
+          <table className="w-full text-[11px] border-collapse border border-black mb-6 min-w-[500px]">
+            <thead>
+              <tr className="bg-gray-100 font-extrabold text-black">
+                <th className="border border-black px-1.5 py-1 text-center w-8">NO</th>
+                <th className="border border-black px-2 py-1 text-center font-extrabold">PERNYATAAN BUTIR KEBUTUHAN</th>
+                <th className="border border-black px-1 py-1 text-center w-12">YA</th>
+                <th className="border border-black px-1 py-1 text-center w-12">TIDAK</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {items.map((item) => (
+                <tr key={item.no}>
+                  <td className="border border-black px-1.5 py-1 text-center">{item.no}</td>
+                  <td className="border border-black px-2 py-1">{item.pernyataan}</td>
+                  <td className="border border-black px-1 py-1 text-center font-bold">
+                    {item.jawaban === 'ya' ? 'âœ“' : ''}
+                  </td>
+                  <td className="border border-black px-1 py-1 text-center font-bold">
+                    {item.jawaban === 'tidak' ? 'âœ“' : ''}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </HvsPreviewModal>
     </div>
   );
 }
-

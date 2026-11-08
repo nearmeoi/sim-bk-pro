@@ -61,15 +61,14 @@ export default function CatatModal({ open, onClose, onSelect }: CatatModalProps)
     };
   }, [open, onClose]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!namaSiswa.trim()) {
       return;
     }
-
-    const payload: QuickCatatPayload = {
-      actionId: selectedAction?.id || 'konseling',
-      actionLabel: selectedAction?.label || 'Konseling Individual',
+  const payload = {
+    actionId: selectedAction?.id || 'konseling',
+    actionLabel: selectedAction?.label || 'Konseling Individual',
       namaSiswa: namaSiswa.trim(),
       kelas,
       tanggal,

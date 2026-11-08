@@ -116,7 +116,7 @@ export const DokumenView: React.FC<DokumenViewProps> = ({ onNav, onToast }) => {
                 {doc.desc}
               </span>
             </div>
-            <span className={`text-xs px-2.5 py-1 rounded-full shrink-0 ${STATUS_STYLE[doc.status]}`}>
+            <span className={`hidden sm:inline text-xs px-2.5 py-1 rounded-full shrink-0 ${STATUS_STYLE[doc.status]}`}>
               {doc.id === 'prota' ? `${protaList.length} Item` : doc.id === 'jurnal' ? `${jurnalRows.length} Entri` : doc.id === 'rpl' ? 'Siap Cetak' : doc.id === 'prosem' ? 'Matriks 12 Bulan' : doc.id === 'lapbul' ? 'Otomatis dari Catatan' : doc.id === 'lapsem' ? 'Evaluasi Semester' : doc.status}
             </span>
             <ChevronRight

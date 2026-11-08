@@ -138,7 +138,7 @@ export const ProfilView: React.FC<ProfilViewProps> = ({ onNav, onToast }) => {
         {/* Tombol Aksi Keluar */}
         <div className="pt-2 border-t border-border flex justify-between items-center">
           <p className="text-[11px] text-muted">
-            Sesi aktif Guru BK Â· Tersimpan di peramban ini.
+            Sesi aktif Guru BK · Tersimpan di peramban ini.
           </p>
           <button
             type="button"

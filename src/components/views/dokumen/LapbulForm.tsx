@@ -192,7 +192,8 @@ export const LapbulForm: React.FC<LapbulFormProps> = ({ onBack, onToast }) => {
           <h3 className="text-sm font-extrabold text-black uppercase border-b border-black pb-1">
             I. STATISTIK LAYANAN BIMBINGAN DAN KONSELING
           </h3>
-          <table className="w-full text-[12px] sm:text-[13px] border-collapse border border-black">
+          <div className="overflow-x-auto border-t border-black">
+          <table className="w-full text-[12px] sm:text-[13px] border-collapse border border-black min-w-[500px]">
             <thead>
               <tr className="bg-gray-100 font-extrabold text-black uppercase">
                 <th className="border border-black px-3 py-2 text-left">JENIS LAYANAN</th>
@@ -240,12 +241,14 @@ export const LapbulForm: React.FC<LapbulFormProps> = ({ onBack, onToast }) => {
               </tr>
             </tbody>
           </table>
+          </div>
 
           {/* Bidang Bimbingan */}
           <h3 className="text-sm font-extrabold text-black uppercase border-b border-black pb-1 pt-4">
             II. DISTRIBUSI BIDANG BIMBINGAN
           </h3>
-          <table className="w-full text-[12px] sm:text-[13px] border-collapse border border-black">
+          <div className="overflow-x-auto border-t border-black">
+          <table className="w-full text-[12px] sm:text-[13px] border-collapse border border-black min-w-[500px]">
             <thead>
               <tr className="bg-gray-100 font-extrabold text-black uppercase">
                 <th className="border border-black px-3 py-2 text-left">BIDANG BIMBINGAN</th>
@@ -284,6 +287,7 @@ export const LapbulForm: React.FC<LapbulFormProps> = ({ onBack, onToast }) => {
               </tr>
             </tbody>
           </table>
+          </div>
 
           {/* Status Penanganan */}
           <h3 className="text-sm font-extrabold text-black uppercase border-b border-black pb-1 pt-4">
@@ -345,7 +349,8 @@ export const LapbulForm: React.FC<LapbulFormProps> = ({ onBack, onToast }) => {
         <h3 className="text-xs font-extrabold text-black uppercase border-b border-black pb-1 mb-2">
           I. STATISTIK LAYANAN BIMBINGAN DAN KONSELING
         </h3>
-        <table className="w-full text-[10px] border-collapse border border-black mb-4">
+        <div className="overflow-x-auto border-t border-black">
+        <table className="w-full text-[10px] border-collapse border border-black mb-4 min-w-[500px]">
           <thead>
             <tr className="bg-gray-100 font-extrabold text-black uppercase">
               <th className="border border-black p-1 text-left">JENIS LAYANAN</th>
@@ -386,12 +391,14 @@ export const LapbulForm: React.FC<LapbulFormProps> = ({ onBack, onToast }) => {
             </tr>
           </tbody>
         </table>
+        </div>
 
         {/* Bidang Bimbingan */}
         <h3 className="text-xs font-extrabold text-black uppercase border-b border-black pb-1 mb-2 mt-3">
           II. DISTRIBUSI BIDANG BIMBINGAN
         </h3>
-        <table className="w-full text-[10px] border-collapse border border-black mb-6">
+        <div className="overflow-x-auto border-t border-black">
+        <table className="w-full text-[10px] border-collapse border border-black mb-6 min-w-[500px]">
           <thead>
             <tr className="bg-gray-100 font-extrabold text-black uppercase">
               <th className="border border-black p-1 text-left">BIDANG BIMBINGAN</th>
@@ -422,6 +429,7 @@ export const LapbulForm: React.FC<LapbulFormProps> = ({ onBack, onToast }) => {
             </tr>
           </tbody>
         </table>
+        </div>
 
         <div className="grid grid-cols-2 text-center text-xs pt-4">
           <div>

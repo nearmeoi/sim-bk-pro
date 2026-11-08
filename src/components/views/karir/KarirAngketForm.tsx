@@ -20,7 +20,7 @@ export const KarirAngketForm: React.FC<KarirAngketFormProps> = ({
         settings={settings}
         compact
         judul="ANGKET PEMETAAN JALUR PENDIDIKAN LANJUTAN & KARIR SISWA"
-        subjudul={`KELAS 9 Â· TAHUN AJARAN ${settings.tahunAjaran || '2026/2027'}`}
+        subjudul={`KELAS 9 · TAHUN AJARAN ${settings.tahunAjaran || '2026/2027'}`}
       />
 
       {/* Identitas Peserta Didik */}
@@ -421,8 +421,8 @@ export const KarirAngketForm: React.FC<KarirAngketFormProps> = ({
       </div>
 
       <div className="mt-4 pt-2 border-t border-black/40 text-[10px] text-black/70 flex justify-between items-center">
-        <p>SIM-BK Â· Formulir Pilihan Jalur Lanjutan Siswa</p>
-        <p className="font-bold">Halaman 1 dari 1 Â· {settings.namaSekolah || 'SIM BK PRO'}</p>
+        <p>SIM-BK · Formulir Pilihan Jalur Lanjutan Siswa</p>
+        <p className="font-bold">Halaman 1 dari 1 · {settings.namaSekolah || 'SIM BK PRO'}</p>
       </div>
     </div>
   );

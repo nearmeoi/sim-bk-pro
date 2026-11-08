@@ -289,12 +289,13 @@ export const RplForm: React.FC<RplFormProps> = ({ onBack, onToast }) => {
             RENCANA PELAKSANAAN LAYANAN (RPL) BIMBINGAN KLASIKAL
           </h2>
           <p className="text-[10px] font-bold text-gray-800">
-            SEMESTER GANJIL / GENAP Â· TAHUN AJARAN {settings.tahunAjaran || '2026/2027'}
+            SEMESTER GANJIL / GENAP · TAHUN AJARAN {settings.tahunAjaran || '2026/2027'}
           </p>
         </div>
 
         {/* Tabel Identitas Layanan */}
-        <table className="w-full border-collapse border border-black text-[10.5px] mb-2.5">
+        <div className="overflow-x-auto border-t border-black">
+        <table className="w-full border-collapse border border-black text-[10.5px] mb-2.5 min-w-[600px]">
           <tbody>
             <tr>
               <td className="border border-black px-2.5 py-1.5 font-bold w-36 bg-gray-50 print:bg-transparent">
@@ -342,7 +343,7 @@ export const RplForm: React.FC<RplFormProps> = ({ onBack, onToast }) => {
             </tr>
           </tbody>
         </table>
-
+        </div>
         {/* Uraian 1 Lembar */}
         <div className="space-y-1.5 text-[10.5px] leading-snug">
           {/* 1. Tujuan */}
@@ -414,7 +415,7 @@ export const RplForm: React.FC<RplFormProps> = ({ onBack, onToast }) => {
         </div>
 
         <div className="mt-3 pt-1.5 border-t border-black/30 text-[9.5px] text-gray-600 flex justify-between">
-          <p>Bimbingan & Konseling Â· Kurikulum Merdeka</p>
+          <p>Bimbingan & Konseling · Kurikulum Merdeka</p>
           <p className="font-bold">Halaman 1 dari 1 (Format 1-Lembar Resmi)</p>
         </div>
       </div>
@@ -431,31 +432,39 @@ export const RplForm: React.FC<RplFormProps> = ({ onBack, onToast }) => {
             RENCANA PELAKSANAAN LAYANAN (RPL) BIMBINGAN KLASIKAL
           </h2>
           <p className="text-[10.5px] font-bold text-gray-800">
-            SEMESTER GANJIL / GENAP Â· TAHUN AJARAN {settings.tahunAjaran || '2026/2027'}
+            SEMESTER GANJIL / GENAP · TAHUN AJARAN {settings.tahunAjaran || '2026/2027'}
           </p>
         </div>
-
-        <table className="w-full border-collapse border border-black text-[10.5px] mb-3">
-          <tbody>
-            <tr>
-              <td className="border border-black p-1.5 font-bold w-32 bg-gray-50">Komponen Layanan</td>
-              <td className="border border-black p-1.5">{komponenLayanan}</td>
-              <td className="border border-black p-1.5 font-bold w-28 bg-gray-50">Bidang</td>
-              <td className="border border-black p-1.5 font-bold">{bidangBimbingan}</td>
-            </tr>
-            <tr>
-              <td className="border border-black p-1.5 font-bold bg-gray-50">Topik / Tema</td>
-              <td colSpan={3} className="border border-black p-1.5 font-black">{topik}</td>
-            </tr>
-            <tr>
-              <td className="border border-black p-1.5 font-bold bg-gray-50">Sasaran / Waktu</td>
-              <td className="border border-black p-1.5">{kelas} ({alokasiWaktu})</td>
-              <td className="border border-black p-1.5 font-bold bg-gray-50">Metode</td>
-              <td className="border border-black p-1.5">{metode}</td>
-            </tr>
-          </tbody>
-        </table>
-
+        <div className="overflow-x-auto border-t border-black">
+          <table className="w-full border-collapse border border-black text-[10.5px] mb-3 min-w-[500px]">
+            <thead>
+              <tr className="bg-gray-50 font-bold uppercase">
+                <td className="border border-black p-1.5">Komponen Layanan</td>
+                <td className="border border-black p-1.5">Nilai</td>
+                <td className="border border-black p-1.5">Bidang</td>
+                <td className="border border-black p-1.5">Bidang Bimbingan</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td className="border border-black p-1.5 font-bold w-32 bg-gray-50">Komponen Layanan</td>
+                <td className="border border-black p-1.5">{komponenLayanan}</td>
+                <td className="border border-black p-1.5 font-bold w-28 bg-gray-50">Bidang</td>
+                <td className="border border-black p-1.5 font-bold">{bidangBimbingan}</td>
+              </tr>
+              <tr>
+                <td className="border border-black p-1.5 font-bold bg-gray-50">Topik / Tema</td>
+                <td colSpan={3} className="border border-black p-1.5 font-black">{topik}</td>
+              </tr>
+              <tr>
+                <td className="border border-black p-1.5 font-bold bg-gray-50">Sasaran / Waktu</td>
+                <td className="border border-black p-1.5">{kelas} ({alokasiWaktu})</td>
+                <td className="border border-black p-1.5 font-bold bg-gray-50">Metode</td>
+                <td className="border border-black p-1.5">{metode}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
         <div className="space-y-2 text-[10.5px] leading-relaxed">
           <div className="border border-black p-2">
             <p className="font-bold uppercase text-[10px] mb-0.5 bg-gray-100 px-1 inline-block">1. Tujuan Layanan</p>

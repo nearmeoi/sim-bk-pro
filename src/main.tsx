@@ -22,7 +22,7 @@ if (typeof window !== 'undefined') {
     document.title = originalTitle || 'SIM-BK';
   });
 }
-ReactDOM.createRoot(document.getElementById('root')!).render(
+ReactDOM.createRoot(document.getElementById('root')! as Element).render(
   <React.StrictMode>
     <App />
   </React.StrictMode>,

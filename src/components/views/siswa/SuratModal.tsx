@@ -83,7 +83,7 @@ export const SuratModal: React.FC<SuratModalProps> = ({
               {isPanggilan ? 'Cetak Surat Panggilan Orang Tua / Wali' : 'Cetak Surat Kunjungan Rumah (Home Visit)'}
             </h3>
             <p className="text-xs text-muted mt-0.5">
-              Siswa: <b>{student.nama}</b> (Kelas {student.kelas}) Â· Format resmi siap cetak
+              Siswa: <b>{student.nama}</b> (Kelas {student.kelas}) · Format resmi siap cetak
             </p>
           </div>
 
@@ -297,7 +297,7 @@ export const SuratModal: React.FC<SuratModalProps> = ({
         </div>
       </div>
     </div>,
-    document.body
+    document.body as Element
   );
 };
 export default SuratModal;

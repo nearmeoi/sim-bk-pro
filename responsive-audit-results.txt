@@ -1,0 +1,27 @@
+RESPONSIVE LAYOUT AUDIT RESULTS
+================================
+
+Pages WITH responsive wrappers (overflow-x-auto + min-w-[XXXpx]):
+- src/components/views/BerandaView.tsx: lines 370+
+- src/components/views/BimbinganKarirView.tsx: lines 430+
+- src/components/views/SiswaView.tsx: pagination table
+
+Pages WITHOUT responsive wrappers (CRITICAL):
+- src/components/views/dokumen/JurnalForm.tsx: table lines 250+ (batch mode)
+- src/components/views/dokumen/LapsemForm.tsx: table 1 lines 189-229, table 2 lines 235-273
+- src/components/views/dokumen/LapbulForm.tsx: table 1 lines 195-242, table 2 lines 248-286
+- src/components/views/dokumen/ProsemForm.tsx: table line 297 (print section)
+- src/components/views/dokumen/ProtaForm.tsx: table lines 349+ (batch mode)
+- src/components/views/dokumen/RplForm.tsx: table line 297 (print section)
+- src/components/views/AKPDView.tsx: batch mode tables (line 859+)
+
+Pages with no tables (no action needed):
+- src/components/views/ProfilView.tsx
+- src/components/views/LoginView.tsx
+- src/components/views/PengaturanView.tsx
+- src/components/views/ResetPasswordView.tsx
+- src/components/views/NotFoundView.tsx
+- src/components/views/ShinroView.tsx
+- src/components/views/DokumenView.tsx
+- src/components/views/KarirAngketForm.tsx
+- src/components/views/SuratModal.tsx
