@@ -63,9 +63,10 @@ export const BerandaView: React.FC<BerandaViewProps> = ({ onNav, onCatat }) => {
       <div className="bk-hero">
         <div className="relative z-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div className="space-y-1.5 max-w-lg">
-            <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-white/90 bg-white/10 px-2.5 py-0.5 rounded-full">
+            <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-black bg-white px-2.5 py-0.5 rounded-full">
               Bimbingan & Konseling
             </span>
+
             <h2 className="text-[22px] sm:text-[25px] font-bold text-white tracking-tight leading-snug">
               {settings.namaSekolah || 'SIM BK PRO'}
             </h2>
@@ -76,7 +77,7 @@ export const BerandaView: React.FC<BerandaViewProps> = ({ onNav, onCatat }) => {
 
           <button
             onClick={onCatat}
-            className="w-full sm:w-auto min-h-[48px] px-6 rounded-[14px] bg-white text-primary font-black text-sm shadow-md hover:bg-white/95 active:scale-[0.98] transition-all flex items-center justify-center gap-2 shrink-0 cursor-pointer"
+            className="w-full sm:w-auto min-h-[48px] px-6 rounded-[14px] bg-white text-black font-black text-sm shadow-md hover:bg-white/95 active:scale-[0.98] transition-all flex items-center justify-center gap-2 shrink-0 cursor-pointer"
           >
             <Plus size={18} strokeWidth={2.5} className="text-accent" />
             <span>Catat Layanan</span>
@@ -110,7 +111,7 @@ export const BerandaView: React.FC<BerandaViewProps> = ({ onNav, onCatat }) => {
                 idx === quickActions.length - 1 ? 'col-span-2 sm:col-span-1' : ''
               }`}
             >
-              <div className="w-10 h-10 rounded-[12px] bg-primary text-white flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+              <div className="w-10 h-10 rounded-[12px] bg-black text-white flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
                 <Icon size={20} strokeWidth={2.2} />
               </div>
               <div className="min-w-0 flex-1">
@@ -142,14 +143,14 @@ export const BerandaView: React.FC<BerandaViewProps> = ({ onNav, onCatat }) => {
             <>
           <div className="bk-card p-3.5 sm:p-4 text-center sm:text-left sm:flex sm:items-center sm:justify-between">
             <div>
-<span className="block text-[26px] sm:text-[30px] font-black text-primary leading-none">
+<span className="block text-[26px] sm:text-[30px] font-black text-black leading-none">
                 {aktif}
               </span>
               <span className="text-[11px] sm:text-xs font-semibold text-muted mt-1 block">
                 Siswa Aktif
               </span>
             </div>
-<div className="hidden sm:flex w-10 h-10 rounded-xl bg-primary-tint text-primary items-center justify-center font-bold text-xs">
+<div className="hidden sm:flex w-10 h-10 rounded-xl bg-gray-100 text-black items-center justify-center font-bold text-xs">
               BK
             </div>
           </div>
@@ -230,7 +231,7 @@ export const BerandaView: React.FC<BerandaViewProps> = ({ onNav, onCatat }) => {
                   cases
                     .filter((c) => c.status === 'Proses')
                     .map((c, idx) => (
-<tr key={c.id} className="hover:bg-primary-tint transition-colors">
+<tr key={c.id} className="hover:bg-gray-100 transition-colors">
                         <td className="border border-black px-2 py-2 text-center font-bold">
                           {idx + 1}
                         </td>
@@ -255,7 +256,7 @@ export const BerandaView: React.FC<BerandaViewProps> = ({ onNav, onCatat }) => {
                           <button
                             type="button"
                             onClick={() => onNav('siswa')}
-                            className="px-3 py-1 rounded-[8px] bg-primary text-white text-xs font-bold hover:brightness-105 active:scale-95 transition-all shadow-xs"
+                            className="px-3 py-1 rounded-[8px] bg-black text-white text-xs font-bold hover:brightness-105 active:scale-95 transition-all shadow-xs"
                             title="Buka catatan siswa"
                           >
                             Buka
@@ -293,7 +294,7 @@ export const BerandaView: React.FC<BerandaViewProps> = ({ onNav, onCatat }) => {
           {/* Progress Singkat */}
           <div className="flex items-center justify-between text-xs pb-1 border-b border-border">
             <span className="text-muted font-medium">Status Perangkat BK:</span>
-<span className="font-bold text-primary">Tersedia</span>
+<span className="font-bold text-black">Tersedia</span>
           </div>
 
           {/* List Dokumen Terpadu (Top 3 tampil langsung, sisanya collapse / see more) */}
