@@ -32,6 +32,7 @@ export const ProfilView: React.FC<ProfilViewProps> = ({ onNav, onToast }) => {
   };
 
   const totalSelesai = cases.filter((c) => c.status === 'Selesai').length;
+  const displaySetting = (value: string) => value.trim() || 'Belum diisi';
 
   return (
     <div className="fade-up space-y-6 max-w-4xl mx-auto">
@@ -55,7 +56,7 @@ export const ProfilView: React.FC<ProfilViewProps> = ({ onNav, onToast }) => {
       <div className="bk-card p-6 sm:p-8 space-y-6">
         <div className="flex flex-col sm:flex-row items-center sm:items-start gap-5 text-center sm:text-left border-b border-border pb-6">
           <div className="w-20 h-20 rounded-full bg-primary text-white flex items-center justify-center font-extrabold text-3xl shadow-md shrink-0">
-            {settings.guruBK ? settings.guruBK.split(' ')[0][0] : 'G'}
+            {settings.guruBK.trim().charAt(0) || 'G'}
           </div>
 
           <div className="space-y-1 flex-1">
@@ -66,11 +67,11 @@ export const ProfilView: React.FC<ProfilViewProps> = ({ onNav, onToast }) => {
               {settings.guruBK || 'Belum Diisi di Pengaturan'}
             </h1>
             <p className="text-sm font-semibold text-muted">
-              NIP. {settings.nipGuruBK || '19880512 201402 2 003'}
+              NIP. {displaySetting(settings.nipGuruBK)}
             </p>
             <p className="text-xs text-muted flex items-center justify-center sm:justify-start gap-1.5 pt-1">
               <School size={14} className="text-primary" />
-              <span>{settings.namaSekolah || 'SIM BK PRO'}</span>
+              <span>{displaySetting(settings.namaSekolah)}</span>
             </p>
           </div>
         </div>
@@ -118,15 +119,15 @@ export const ProfilView: React.FC<ProfilViewProps> = ({ onNav, onToast }) => {
           <div className="p-4 rounded-[16px] bg-white border border-border space-y-2.5 text-xs text-text">
             <div className="flex justify-between border-b border-border/60 pb-2">
               <span className="text-muted font-medium">Satuan Pendidikan:</span>
-              <span className="font-bold">{settings.namaSekolah}</span>
+              <span className="font-bold">{displaySetting(settings.namaSekolah)}</span>
             </div>
             <div className="flex justify-between border-b border-border/60 pb-2">
               <span className="text-muted font-medium">NPSN:</span>
-              <span className="font-bold">{settings.npsn || '20123456'}</span>
+              <span className="font-bold">{displaySetting(settings.npsn)}</span>
             </div>
             <div className="flex justify-between border-b border-border/60 pb-2">
               <span className="text-muted font-medium">Kepala Sekolah:</span>
-              <span className="font-bold">{settings.kepalaSekolah}</span>
+              <span className="font-bold">{displaySetting(settings.kepalaSekolah)}</span>
             </div>
             <div className="flex justify-between">
               <span className="text-muted font-medium">Tahun Ajaran:</span>
@@ -155,5 +156,4 @@ export const ProfilView: React.FC<ProfilViewProps> = ({ onNav, onToast }) => {
 };
 
 export default ProfilView;
-
 

@@ -250,7 +250,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
   return (
     <div className="space-y-4 fade-up">
       {/* Head */}
-      <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between sm:gap-4">
+      <div className="flex flex-col gap-2 lg:flex-row lg:items-end lg:justify-between lg:gap-4">
         <div className="min-w-0">
           <h1 className="text-[24px] sm:text-[28px] font-[750] text-text tracking-tight leading-tight">
             Data Siswa &amp; Catatan Konseling
@@ -489,8 +489,23 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                 <tr>
                   <td colSpan={9} className="border border-black px-4 py-12 text-center text-muted">
                     <UserCheck size={32} className="mx-auto mb-2 text-muted/50" />
-                    <p className="text-[14px] font-bold text-text">Siswa tidak ditemukan</p>
-                    <p className="text-xs text-muted mt-1">Coba sesuaikan kata kunci pencarian atau filter kelas.</p>
+                    <p className="text-[14px] font-bold text-text">
+                      {students.length === 0 ? 'Belum ada data siswa' : 'Siswa tidak ditemukan'}
+                    </p>
+                    <p className="text-xs text-muted mt-1">
+                      {students.length === 0
+                        ? 'Tambahkan siswa atau impor daftar siswa untuk mulai mengisi buku catatan.'
+                        : 'Coba sesuaikan kata kunci pencarian atau filter kelas.'}
+                    </p>
+                    {students.length === 0 && (
+                      <button
+                        type="button"
+                        onClick={() => setAddOpen(true)}
+                        className="mt-3 min-h-[40px] px-4 rounded-[12px] bg-black text-white text-xs font-bold hover:bg-neutral-800"
+                      >
+                        Tambah siswa pertama
+                      </button>
+                    )}
                   </td>
                 </tr>
               ) : (
@@ -1423,4 +1438,3 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
     </div>
   );
 }
-
