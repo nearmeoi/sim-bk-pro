@@ -290,31 +290,32 @@ export const JurnalForm: React.FC<JurnalFormProps> = ({ onBack, onToast }) => {
           judul="JURNAL HARIAN KEGIATAN BIMBINGAN & KONSELING"
           subjudul={`TAHUN AJARAN ${settings.tahunAjaran || '2026/2027'}`}
         />
-
-        <table className="w-full text-[10.5px] border-collapse border border-black mb-6">
-          <thead>
-            <tr className="bg-gray-100 font-extrabold text-black">
-              <th className="border border-black p-1 text-center w-8">NO</th>
-              <th className="border border-black p-1 text-left w-24">HARI/TGL</th>
-              <th className="border border-black p-1 text-left w-28">SASARAN</th>
-              <th className="border border-black p-1 text-left w-28">LAYANAN</th>
-              <th className="border border-black p-1 text-left">URAIAN KEGIATAN</th>
-              <th className="border border-black p-1 text-left w-28">KETERANGAN</th>
-            </tr>
-          </thead>
-          <tbody>
-            {rows.map((r, i) => (
-              <tr key={r.id}>
-                <td className="border border-black p-1 text-center font-bold">{i + 1}</td>
-                <td className="border border-black p-1">{r.hariTanggal}</td>
-                <td className="border border-black p-1 font-bold">{r.nama} ({r.kelas})</td>
-                <td className="border border-black p-1">{r.jenis}</td>
-                <td className="border border-black p-1">{r.topik}</td>
-                <td className="border border-black p-1">{r.keterangan}</td>
+        <div className="overflow-x-auto border-t border-black">
+          <table className="w-full text-[10.5px] border-collapse border border-black mb-6 min-w-[500px]">
+            <thead>
+              <tr className="bg-gray-100 font-extrabold text-black">
+                <th className="border border-black p-1 text-center w-8">NO</th>
+                <th className="border border-black p-1 text-left w-24">HARI/TGL</th>
+                <th className="border border-black p-1 text-left w-28">SASARAN</th>
+                <th className="border border-black p-1 text-left w-28">LAYANAN</th>
+                <th className="border border-black p-1 text-left">URAIAN KEGIATAN</th>
+                <th className="border border-black p-1 text-left w-28">KETERANGAN</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {rows.map((r, i) => (
+                <tr key={r.id}>
+                  <td className="border border-black p-1 text-center font-bold">{i + 1}</td>
+                  <td className="border border-black p-1">{r.hariTanggal}</td>
+                  <td className="border border-black p-1 font-bold">{r.nama} ({r.kelas})</td>
+                  <td className="border border-black p-1">{r.jenis}</td>
+                  <td className="border border-black p-1">{r.topik}</td>
+                  <td className="border border-black p-1">{r.keterangan}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
 
         <div className="grid grid-cols-2 text-center text-xs pt-4">
           <div>

@@ -82,35 +82,29 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
     });
     setEditOpen(true);
   };
-
-  const handleSaveEdit = (e: React.FormEvent) => {
+  // Simpan perubahan data siswa
+  const handleSaveEdit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!editingStudent || !editForm.nama.trim() || !editForm.nis.trim()) {
-      onToast('Nama dan NIS siswa wajib diisi.');
-      return;
-    }
-    updateStudent(editingStudent.id, {
-      nama: editForm.nama.trim(),
-      nis: editForm.nis.trim(),
-      nisn: editForm.nisn.trim() || '-',
-      jk: editForm.jk,
-      kelas: editForm.kelas,
-      status: editForm.status,
-      namaWali: editForm.namaWali.trim(),
-      kontakWali: editForm.kontakWali.trim(),
-      alamat: editForm.alamat.trim(),
-      catatanKhusus: editForm.catatanKhusus.trim(),
-    });
-    if (selectedStudent && selectedStudent.id === editingStudent.id) {
-      setSelectedStudent({
-        ...selectedStudent,
-        ...editForm,
-      });
-    }
+    if (!editingStudent) return;
+
+    updateStudent(editingStudent.id, editForm);
     setEditOpen(false);
-    onToast(`Data siswa & wali ${editForm.nama} berhasil diperbarui.`);
+    setEditForm({
+      nama: '',
+      nis: '',
+      nisn: '',
+      jk: 'L',
+      kelas: '7A',
+      status: 'Aktif',
+      namaWali: '',
+      kontakWali: '',
+      alamat: '',
+      catatanKhusus: '',
+    });
+    onToast(`Data ${editForm.nama} berhasil diperbarui.`);
   };
 
+  // Drawer / Modal Buku Pribadi Siswa
   // Drawer / Modal Buku Pribadi Siswa
   const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
   const [suratModalOpen, setSuratModalOpen] = useState(false);
@@ -208,7 +202,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
   };
 
   // Tambah catatan baru langsung ke buku siswa ini
-  const handleSaveStudentRecord = (e: React.FormEvent) => {
+  const handleSaveStudentRecord = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!selectedStudent || !newRecordForm.masalah.trim()) {
       onToast('Uraian masalah / konseling wajib diisi');
@@ -254,17 +248,17 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
   ];
 
   return (
-    <div className={`fade-up space-y-5 ${selectedStudent ? 'print:hidden' : ''}`}>
+    <div className="space-y-4 fade-up">
       {/* Head */}
-      <div className="flex items-center justify-between gap-3">
-        <div>
-          <h1 className="text-[24px] sm:text-[28px] font-[750] text-text tracking-tight">
-            Data Siswa & Catatan Konseling
+      <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between sm:gap-4">
+        <div className="min-w-0">
+          <h1 className="text-[24px] sm:text-[28px] font-[750] text-text tracking-tight leading-tight">
+            Data Siswa &amp; Catatan Konseling
           </h1>
         </div>
 
         {/* Action Button Utama di Pojok Kanan Atas (Standar Seragam) */}
-        <div className="flex flex-wrap items-center gap-2 self-start sm:self-auto shrink-0">
+        <div className="flex items-center gap-2 flex-wrap">
           <button
             type="button"
             onClick={() => {
@@ -433,7 +427,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
             BUKU CATATAN PESERTA DIDIK {kelasFilter ? `( KELAS ${kelasFilter} )` : '( SEMUA KELAS )'}
           </h2>
           <p className="text-xs text-black/80 font-bold mt-0.5">
-            {settings.namaSekolah || 'SIM BK PRO'} Â· TAHUN AJARAN {settings.tahunAjaran || '2026/2027'}
+            {settings.namaSekolah || 'SIM BK PRO'} · TAHUN AJARAN {settings.tahunAjaran || '2026/2027'}
           </p>
         </div>
 

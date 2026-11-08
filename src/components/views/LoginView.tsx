@@ -43,7 +43,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onSuccess, onToast }) => {
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setErrorMessage(null);
     if (!email.trim() || !password) {

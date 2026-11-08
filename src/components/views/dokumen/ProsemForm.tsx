@@ -344,7 +344,7 @@ export const ProsemForm: React.FC<ProsemFormProps> = ({ onBack, onToast }) => {
         </div>
 
         <div className="overflow-x-auto border-t border-black">
-          <table className="w-full text-[12px] sm:text-[13px] border-collapse border border-black min-w-[900px]">
+          <table className="w-full text-[10px] sm:text-[12px] border-collapse border border-black min-w-[600px] sm:min-w-[760px]">
             <thead>
               <tr className="bg-gray-100 font-extrabold text-black uppercase">
                 <th className="border border-black px-2 py-2 text-center w-10">NO</th>
@@ -594,7 +594,7 @@ export const ProsemForm: React.FC<ProsemFormProps> = ({ onBack, onToast }) => {
           subjudul={`${settings.namaSekolah || 'SMP NEGERI 1 BINTANG'} · TAHUN AJARAN ${settings.tahunAjaran || '2026/2027'}`}
         />
 
-        <table className="w-full text-[10px] border-collapse border border-black mb-6">
+        <table className="w-full text-[10px] border-collapse border border-black mb-6 min-w-[600px]">
           <thead>
             <tr className="bg-gray-100 font-extrabold text-black uppercase">
               <th className="border border-black p-1 text-center w-8">No</th>

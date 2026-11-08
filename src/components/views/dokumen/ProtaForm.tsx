@@ -85,14 +85,12 @@ export const ProtaForm: React.FC<ProtaFormProps> = ({ onBack, onToast }) => {
       onToast(`Program kerja "${nama}" dihapus.`);
     }
   };
-
-  const handleSaveModal = (e: React.FormEvent) => {
+  const handleSaveModal = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!formData.jenis.trim()) {
-      onToast('Nama jenis layanan tidak boleh kosong');
+    if (!formData.komponen.trim() || !formData.jenis.trim() || !formData.sasaran.trim()) {
+      onToast('Semua field wajib diisi');
       return;
     }
-
     if (editingItem) {
       updateProtaItem(editingItem.id, formData);
       onToast('Program kerja diperbarui.');
@@ -100,9 +98,9 @@ export const ProtaForm: React.FC<ProtaFormProps> = ({ onBack, onToast }) => {
       addProtaItem(formData);
       onToast('Program kerja ditambahkan.');
     }
-
     setModalOpen(false);
   };
+
 
   const handleToggleMonth = (itemId: string, monthIdx: number) => {
     const item = protaList.find((p) => p.id === itemId);
@@ -326,7 +324,7 @@ export const ProtaForm: React.FC<ProtaFormProps> = ({ onBack, onToast }) => {
             MATRIKS PROGRAM TAHUNAN BIMBINGAN & KONSELING (PROTA)
           </h2>
           <p className="text-xs text-black/80 font-bold mt-0.5">
-            {settings.namaSekolah || 'SIM BK PRO'}, TAHUN AJARAN {settings.tahunAjaran || '2026/2027'} Â· TOTAL ALOKASI: {totalVolume} JAM
+            {settings.namaSekolah || 'SIM BK PRO'}, TAHUN AJARAN {settings.tahunAjaran || '2026/2027'} · TOTAL ALOKASI: {totalVolume} JAM
           </p>
         </div>
 
@@ -516,32 +514,33 @@ export const ProtaForm: React.FC<ProtaFormProps> = ({ onBack, onToast }) => {
         <KopSurat
           settings={settings}
           judul="MATRIKS PROGRAM TAHUNAN BIMBINGAN & KONSELING (PROTA)"
-          subjudul={`TAHUN AJARAN ${settings.tahunAjaran || '2026/2027'} Â· TOTAL ALOKASI: ${totalVolume} JAM`}
+          subjudul={`TAHUN AJARAN ${settings.tahunAjaran || '2026/2027'} · TOTAL ALOKASI: ${totalVolume} JAM`}
         />
 
-        <table className="w-full text-[10.5px] border-collapse border border-black mb-6">
-          <thead>
-            <tr className="bg-gray-100 font-extrabold text-black">
-              <th className="border border-black p-1 text-center w-8">NO</th>
-              <th className="border border-black p-1 text-left">JENIS LAYANAN</th>
-              <th className="border border-black p-1 text-center w-24">BIDANG</th>
-              <th className="border border-black p-1 text-center w-12">VOL</th>
-              <th className="border border-black p-1 text-left w-36">SASARAN</th>
-            </tr>
-          </thead>
-          <tbody>
-            {protaList.map((row, i) => (
-              <tr key={row.id}>
-                <td className="border border-black p-1 text-center font-bold">{i + 1}</td>
-                <td className="border border-black p-1">{row.jenis}</td>
-                <td className="border border-black p-1 text-center">{row.bidang}</td>
-                <td className="border border-black p-1 text-center font-bold">{row.volume}</td>
-                <td className="border border-black p-1">{row.sasaran || '-'}</td>
+        <div className="overflow-x-auto border-t border-black">
+          <table className="w-full text-[10.5px] border-collapse border border-black mb-6">
+            <thead>
+              <tr className="bg-gray-100 font-extrabold text-black">
+                <th className="border border-black p-1 text-center w-8">NO</th>
+                <th className="border border-black p-1 text-left">JENIS LAYANAN</th>
+                <th className="border border-black p-1 text-center w-24">BIDANG</th>
+                <th className="border border-black p-1 text-center w-12">VOL</th>
+                <th className="border border-black p-1 text-left w-36">SASARAN</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-
+            </thead>
+            <tbody>
+              {protaList.map((row, i) => (
+                <tr key={row.id}>
+                  <td className="border border-black p-1 text-center font-bold">{i + 1}</td>
+                  <td className="border border-black p-1">{row.jenis}</td>
+                  <td className="border border-black p-1 text-center">{row.bidang}</td>
+                  <td className="border border-black p-1 text-center font-bold">{row.volume}</td>
+                  <td className="border border-black p-1">{row.sasaran || '-'}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
         <div className="grid grid-cols-2 text-center text-xs pt-4">
           <div>
             <p>Mengetahui,</p>

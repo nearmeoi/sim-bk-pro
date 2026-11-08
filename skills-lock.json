@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "skills": {
+    "mobile-responsive": {
+      "source": "AsadSumbul/mobile-responsive",
+      "sourceType": "github",
+      "skillPath": "SKILL.md",
+      "computedHash": "4da55ac0543c1efbf75a06ceaa71d79c3595ad32f0d4f26646a1aa52cb1eccf4"
+    }
+  }
+}
