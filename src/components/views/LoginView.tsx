@@ -162,7 +162,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onSuccess, onToast }) => {
             className="w-full min-h-[48px] rounded-[14px] bg-primary text-white text-sm font-bold hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-sm cursor-pointer disabled:opacity-60"
           >
             <span>{loading === 'form' ? 'Memverifikasi...' : 'Masuk'}</span>
-            {loading !== 'form' && <ArrowRight size={16} />}
+            {loading !== 'form' && <ArrowRight size={20} />}
           </button>
         </form>
 
