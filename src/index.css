@@ -1,23 +1,22 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-::root {
-  --primary: #000000;
-  --primary-2: #000000;
-  --accent: #000000;
+:root {
+  --primary: #FFA36C;
+  --primary-2: #FF8A3D;
+  --accent: #E86A33;
   --alert: #B91C1C;
-  --primary-tint: #F2F2F2;
-  --accent-tint: #F2F2F2;
+  --primary-tint: #FFF5ED;
+  --accent-tint: #FFE8D9;
   --alert-tint: #FCE9E9;
-  --bg: #F5F5F5;
+  --bg: #FFFFFF;
   --surface: #FFFFFF;
   --border: #E8E8E8;
-  --text: #1A1A1A;
+  --text: #2D3748;
   --muted: #666666;
   --shadow: 0 1px 2px rgb(0 0 0 / 0.03), 0 4px 12px rgb(0 0 0 / 0.06);
-  --shadow-hero: 0 8px 24px rgb(0 0 0 / 0.15);
-  --shadow-fab: 0 4px 12px rgb(0 0 0 / 0.25), 0 0 0 5px #FFFFFF;
+  --shadow-hero: 0 8px 24px rgb(255 163 108 / 0.2);
+  --shadow-fab: 0 4px 12px rgb(255 163 108 / 0.3), 0 0 0 5px var(--bg);
   --shadow-bnav: 0 -4px 16px rgb(0 0 0 / 0.04);
   --rc: 20px;
   --rx: 14px;

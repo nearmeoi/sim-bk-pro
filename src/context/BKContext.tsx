@@ -209,7 +209,7 @@ export const BKProvider: React.FC<{ children: React.ReactNode }> = ({ children }
   const [activeDocTab, setActiveDocTab] = useState<string | null>(null);
   const [akpdRecommendations, setAkpdRecommendations] = useState<Array<{ no: number; pernyataan: string; topikRPL: string; bidang: 'Pribadi' | 'Sosial' | 'Belajar' | 'Karir' }>>([]);
   const [akpdProtaTargets, setAkpdProtaTargets] = useState<ProtaItem[]>([]);
-  const [isAuthenticated, setIsAuthenticated] = useLocalStorage<boolean>('sim_bk_auth', false);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [isBooting, setIsBooting] = useState<boolean>(true);
   const [isSyncing, setIsSyncing] = useState<boolean>(false);
   const [lastSynced, setLastSynced] = useState<Date | null>(null);
@@ -217,6 +217,8 @@ export const BKProvider: React.FC<{ children: React.ReactNode }> = ({ children }
   const [syncFailed, setSyncFailed] = useState<boolean>(false);
   const retryTimer = useRef<number | undefined>(undefined);
   const isBackendConnected = isSupabaseConfigured();
+  // Sync conflict warnings: server data lebih baru
+  const [syncConflicts, setSyncConflicts] = useState<boolean>(false);
 
   // Gagal menulis ke cloud → tandai, banner muncul, lalu coba ulang otomatis
   const trackSyncFail = () => {
@@ -283,6 +285,30 @@ export const BKProvider: React.FC<{ children: React.ReactNode }> = ({ children }
     if (!isSupabaseConfigured() || !supabase) return false;
     setIsSyncing(true);
     try {
+      // Load server timestamps for conflict detection
+      const serverTimestamps = await Promise.all([
+        studentService.getServerTimestamps(),
+        counselingService.getServerTimestamps(),
+        caseService.getServerTimestamps(),
+        journalService.getServerTimestamps(),
+        protaService.getServerTimestamps(),
+        careerService.getServerTimestamps(),
+        akpdService.getServerTimestamps(),
+      ]);
+
+      // Compare timestamps: if any server.updated_at > client.updated_at → warn
+      let hasConflict = false;
+      const tableNames = ['students', 'records', 'cases', 'journals', 'prota', 'karir', 'akpd'];
+      for (let i = 0; i < tableNames.length; i++) {
+        const localTs = await getLocalTimestamp(tableNames[i]);
+        const serverTs = serverTimestamps[i];
+        if (serverTs && localTs && new Date(serverTs.updated_at) > new Date(localTs)) {
+          hasConflict = true;
+          console.warn(`Conflict detected: ${tableNames[i]} server data newer`);
+        }
+      }
+      if (hasConflict) setSyncConflicts(true);
+
       const [
         remoteStudents,
         remoteRecords,
@@ -324,6 +350,17 @@ export const BKProvider: React.FC<{ children: React.ReactNode }> = ({ children }
       return false;
     }
   };
+
+  const getLocalTimestamp = async (table: string): Promise<string | null> => {
+    try {
+      const stored = await fetch(`local://timestamp_${table}.json`).catch(() => null);
+      return stored ? (await stored.json()).updated_at || null : null;
+    } catch {
+      return null;
+    }
+  };
+
+
 
   const syncAllToCloud = async (): Promise<boolean> => {
     if (!isSupabaseConfigured() || !supabase) return false;
@@ -417,15 +454,9 @@ export const BKProvider: React.FC<{ children: React.ReactNode }> = ({ children }
       }
     }
 
-    // Mode dev tanpa backend: boleh masuk langsung untuk pengembangan.
-    // Produksi WAJIB lewat Supabase Auth — tanpa ini siapa pun bisa akses data siswa.
-    if (import.meta.env.DEV) {
-      setIsAuthenticated(true);
-      return { success: true };
-    }
     return {
       success: false,
-      error: 'Server belum terhubung. Periksa koneksi internet, lalu coba lagi.',
+      error: 'Server belum terhubung atau kredensial salah. Periksa koneksi internet, lalu coba lagi.',
     };
   };
 
@@ -473,6 +504,31 @@ export const BKProvider: React.FC<{ children: React.ReactNode }> = ({ children }
       }
     }
     setIsAuthenticated(false);
+    // Bersihkan semua data lokal saat logout
+    if (typeof window !== 'undefined') {
+      window.localStorage.removeItem('sim_bk_students');
+      window.localStorage.removeItem('sim_bk_records');
+      window.localStorage.removeItem('sim_bk_cases');
+      window.localStorage.removeItem('sim_bk_akpd');
+      window.localStorage.removeItem('sim_bk_akpd_resp');
+      window.localStorage.removeItem('sim_bk_akpd_kelas');
+      window.localStorage.removeItem('sim_bk_karir');
+      window.localStorage.removeItem('sim_bk_prota');
+      window.localStorage.removeItem('sim_bk_jurnal');
+      window.localStorage.removeItem('sim_bk_settings');
+      window.localStorage.removeItem('sim_bk_data_version');
+    }
+    // Reset state to defaults
+    setStudents(STUDENTS);
+    setRecords(INITIAL_COUNSELING_RECORDS);
+    setCases(CASES);
+    setAkpdItems(DEFAULT_AKPD_INIT);
+    setTotalRespondenAKPD(0);
+    setKelasAKPD('KELAS 8');
+    setKarirList(INITIAL_STUDENT_KARIR);
+    setProtaList(INITIAL_PROTA);
+    setJurnalRows(INITIAL_JURNAL_ROWS);
+    setSettings(DEFAULT_SETTINGS);
   };
 
   // Student methods

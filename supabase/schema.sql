@@ -6,6 +6,8 @@
 
 -- ============================================================================
 -- BERSIHKAN TABEL LAMA (urutan terbalik karena foreign key)
+-- ⚠️ WARNING: DROP TABLE IF EXISTS CASCADE will delete all dependent data without recovery.
+-- Use only during development or intentional database reset. Never run in production without backup.
 -- ============================================================================
 DROP TABLE IF EXISTS public.akpd_tallies      CASCADE;
 DROP TABLE IF EXISTS public.career_surveys     CASCADE;

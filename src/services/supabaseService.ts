@@ -109,7 +109,20 @@ export const studentService = {
       updated_at: new Date().toISOString(),
     }));
     const { error } = await supabase.from('students').upsert(rows);
-    return !error;
+  return !error;
+  },
+  async getServerTimestamps(): Promise<{id: string, updated_at: string} | null> {
+    if (!isSupabaseConfigured() || !supabase) return null;
+    const { data, error } = await supabase
+      .from('students')
+      .select('id, updated_at')
+      .order('updated_at', { ascending: false })
+      .limit(1);
+    if (error) {
+      console.warn('Gagal memuat timestamp students:', error.message);
+      return null;
+    }
+    return data.length > 0 ? data[0] : null;
   },
 };
 
@@ -209,6 +222,19 @@ export const counselingService = {
     const { error } = await supabase.from('counseling_records').upsert(rows);
     return !error;
   },
+  async getServerTimestamps(): Promise<{id: string, updated_at: string} | null> {
+    if (!isSupabaseConfigured() || !supabase) return null;
+    const { data, error } = await supabase
+      .from('counseling_records')
+      .select('id, updated_at')
+      .order('updated_at', { ascending: false })
+      .limit(1);
+    if (error) {
+      console.warn('Gagal memuat timestamp counseling_records:', error.message);
+      return null;
+    }
+    return data.length > 0 ? data[0] : null;
+  },
 };
 
 // ============================================================================
@@ -280,6 +306,19 @@ export const caseService = {
     }));
     const { error } = await supabase.from('case_items').upsert(rows);
     return !error;
+  },
+  async getServerTimestamps(): Promise<{id: string, updated_at: string} | null> {
+    if (!isSupabaseConfigured() || !supabase) return null;
+    const { data, error } = await supabase
+      .from('case_items')
+      .select('id, updated_at')
+      .order('updated_at', { ascending: false })
+      .limit(1);
+    if (error) {
+      console.warn('Gagal memuat timestamp case_items:', error.message);
+      return null;
+    }
+    return data.length > 0 ? data[0] : null;
   },
 };
 
@@ -356,6 +395,19 @@ export const journalService = {
     }));
     const { error } = await supabase.from('daily_journals').upsert(payload);
     return !error;
+  },
+  async getServerTimestamps(): Promise<{id: string, updated_at: string} | null> {
+    if (!isSupabaseConfigured() || !supabase) return null;
+    const { data, error } = await supabase
+      .from('daily_journals')
+      .select('id, updated_at')
+      .order('updated_at', { ascending: false })
+      .limit(1);
+    if (error) {
+      console.warn('Gagal memuat timestamp daily_journals:', error.message);
+      return null;
+    }
+    return data.length > 0 ? data[0] : null;
   },
 };
 
@@ -490,6 +542,19 @@ export const protaService = {
     const { error } = await supabase.from('prota_items').upsert(rows);
     return !error;
   },
+  async getServerTimestamps(): Promise<{id: string, updated_at: string} | null> {
+    if (!isSupabaseConfigured() || !supabase) return null;
+    const { data, error } = await supabase
+      .from('prota_items')
+      .select('id, updated_at')
+      .order('updated_at', { ascending: false })
+      .limit(1);
+    if (error) {
+      console.warn('Gagal memuat timestamp prota_items:', error.message);
+      return null;
+    }
+    return data.length > 0 ? data[0] : null;
+  },
 };
 
 // ============================================================================
@@ -611,11 +676,23 @@ export const careerService = {
     const { error } = await supabase.from('career_surveys').upsert(rows);
     return !error;
   },
+  async getServerTimestamps(): Promise<{id: string, updated_at: string} | null> {
+    if (!isSupabaseConfigured() || !supabase) return null;
+    const { data, error } = await supabase
+      .from('career_surveys')
+      .select('id, updated_at')
+      .order('updated_at', { ascending: false })
+      .limit(1);
+    if (error) {
+      console.warn('Gagal memuat timestamp career_surveys:', error.message);
+      return null;
+    }
+    return data.length > 0 ? data[0] : null;
+  },
 };
 
 // ============================================================================
 // 8. AKPD TALLIES SERVICE
-// ============================================================================
 export const akpdService = {
   async getAll(kelas = 'KELAS 8'): Promise<{ items: AKPDStatement[]; totalResponden: number; kelas: string } | null> {
     if (!isSupabaseConfigured() || !supabase) return null;
@@ -666,5 +743,18 @@ export const akpdService = {
     });
     const { error } = await supabase.from('akpd_tallies').upsert(rows);
     return !error;
+  },
+  async getServerTimestamps(): Promise<{id: string, updated_at: string} | null> {
+    if (!isSupabaseConfigured() || !supabase) return null;
+    const { data, error } = await supabase
+      .from('akpd_tallies')
+      .select('id, updated_at')
+      .order('updated_at', { ascending: false })
+      .limit(1);
+    if (error) {
+      console.warn('Gagal memuat timestamp akpd_tallies:', error.message);
+      return null;
+    }
+    return data.length > 0 ? data[0] : null;
   },
 };
