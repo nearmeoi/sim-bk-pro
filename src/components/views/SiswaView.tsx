@@ -18,6 +18,7 @@ import {
 import PetunjukIbu from '../ui/PetunjukIbu';
 import KopSurat from '../ui/KopSurat';
 import HvsPreviewModal from '../ui/HvsPreviewModal';
+import { AppGlassButton } from '../ui/glass';
 import { SuratModal } from './siswa/SuratModal';
 import { useBK } from '../../context/BKContext';
 import { exportToCsv, parseCsv } from '../../lib/exportCsv';
@@ -260,8 +261,12 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
 
         {/* Action Button Utama di Pojok Kanan Atas (Standar Seragam) */}
         <div className="flex items-center gap-2 flex-wrap">
-          <button
+          <AppGlassButton
             type="button"
+            variant="ghost"
+            size="sm"
+            icon={<Download size={15} />}
+            title="Unduh seluruh data siswa ke format Excel"
             onClick={() => {
               const headers = ['Nama Siswa', 'NIS', 'NISN', 'Jenis Kelamin', 'Kelas', 'Status', 'Nama Wali', 'Kontak Wali', 'Alamat', 'Catatan Khusus'];
               const rows = filtered.map((s) => [
@@ -279,29 +284,28 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
               exportToCsv(`Data_Siswa_${formatNamaSekolah(settings.namaSekolah, 'Sekolah').replace(/\s+/g, '_')}_${new Date().toISOString().slice(0, 10)}`, headers, rows);
               onToast(`Data siswa berhasil diekspor (${rows.length} siswa).`);
             }}
-            className="min-h-[40px] px-3.5 rounded-[12px] bg-white border border-border text-text text-xs font-bold hover:bg-gray-50 active:scale-[0.98] transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
-            title="Unduh seluruh data siswa ke format Excel"
           >
-            <Download size={15} />
-            <span>Unduh Excel</span>
-          </button>
-          <button
+            Unduh Excel
+          </AppGlassButton>
+          <AppGlassButton
             type="button"
-            onClick={() => fileInputRef.current?.click()}
-            className="min-h-[40px] px-3.5 rounded-[12px] bg-white border border-border text-text text-xs font-bold hover:bg-gray-50 active:scale-[0.98] transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
+            variant="ghost"
+            size="sm"
+            icon={<Upload size={15} />}
             title="Impor daftar siswa dari berkas CSV / Excel"
+            onClick={() => fileInputRef.current?.click()}
           >
-            <Upload size={15} />
-            <span>Impor Excel</span>
-          </button>
-          <button
+            Impor Excel
+          </AppGlassButton>
+          <AppGlassButton
             type="button"
+            variant="neutral"
+            size="md"
+            icon={<Plus size={16} strokeWidth={2.5} />}
             onClick={() => setAddOpen(true)}
-            className="min-h-[40px] px-4 rounded-[12px] bg-black text-white font-bold text-xs hover:bg-neutral-800 active:scale-[0.98] transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
           >
-            <Plus size={16} strokeWidth={2.5} />
-            <span>Tambah Siswa</span>
-          </button>
+            Tambah Siswa
+          </AppGlassButton>
         </div>
       </div>
 
@@ -324,7 +328,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
           onChange={(e) => setQ(e.target.value)}
           type="search"
           placeholder="Cari nama siswa, NIS, atau kelas... (Klik nama siswa untuk membuka catatan)"
-          className="w-full min-h-[50px] pl-11 pr-4 rounded-[16px] bg-surface text-text text-[15px] shadow-[0_1px_2px_rgb(0_0_0/0.03),0_4px_12px_rgb(0_0_0/0.06)] border border-border/80 placeholder:text-muted/70 focus:outline-none focus:ring-2 focus:ring-black/10 focus:border-black transition-all"
+          className="w-full min-h-[50px] pl-11 pr-4 rounded-[16px] bg-white/70 backdrop-blur-md text-text text-[15px] shadow-[0_1px_2px_rgb(0_0_0/0.03),0_4px_12px_rgb(0_0_0/0.06)] border border-white/70 placeholder:text-muted/70 focus:outline-none focus:ring-2 focus:ring-black/10 focus:border-black transition-all"
         />
       </div>
 
@@ -700,7 +704,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                   <button
                     type="button"
                     onClick={() => handleOpenEdit(selectedStudent)}
-                    className="px-2.5 py-1 rounded-[8px] bg-white border border-black/30 hover:border-gray-600 text-xs font-bold text-gray-700 hover:bg-gray-50 transition-all flex items-center gap-1 cursor-pointer shadow-xs"
+                    className="px-2.5 py-1 rounded-[8px] bg-white/70 backdrop-blur-sm border border-black/30 hover:border-gray-600 text-xs font-bold text-gray-700 hover:bg-white transition-all flex items-center gap-1 cursor-pointer shadow-xs"
                     title="Ubah data master siswa dan nama orang tua"
                   >
                     <Edit2 size={13} />
@@ -962,7 +966,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
           onClick={() => setAddOpen(false)}
         >
           <div
-            className="w-full max-w-lg bg-surface rounded-[28px] p-6 sm:p-7 shadow-2xl fade-up max-h-[92vh] overflow-y-auto"
+            className="w-full max-w-lg glass-panel rounded-[28px] p-6 sm:p-7 shadow-2xl fade-up max-h-[92vh] overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between mb-5 border-b border-border pb-3">
@@ -1018,7 +1022,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                   <select
                     value={form.jk}
                     onChange={(e) => setForm((f) => ({ ...f, jk: e.target.value as 'L' | 'P' }))}
-                    className="w-full min-h-[48px] px-3.5 rounded-[12px] border border-border text-sm text-text bg-surface focus:outline-none focus:border-black"
+                    className="w-full min-h-[48px] px-3.5 rounded-[12px] border border-border text-sm text-text bg-white/60 backdrop-blur-sm focus:outline-none focus:border-black"
                   >
                     <option value="L">Laki-laki (L)</option>
                     <option value="P">Perempuan (P)</option>
@@ -1029,7 +1033,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                   <select
                     value={form.kelas}
                     onChange={(e) => setForm((f) => ({ ...f, kelas: e.target.value }))}
-                    className="w-full min-h-[48px] px-3.5 rounded-[12px] border border-border text-sm text-text bg-surface focus:outline-none focus:border-black"
+                    className="w-full min-h-[48px] px-3.5 rounded-[12px] border border-border text-sm text-text bg-white/60 backdrop-blur-sm focus:outline-none focus:border-black"
                   >
                     {['7A', '7B', '7C', '8A', '8B', '8C', '9A', '9B', '9C'].map((k) => (
                       <option key={k} value={k}>{k}</option>
@@ -1111,7 +1115,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
           onClick={() => setEditOpen(false)}
         >
           <div
-            className="w-full max-w-lg bg-surface rounded-[24px] p-6 sm:p-7 shadow-2xl fade-up max-h-[92vh] overflow-y-auto"
+            className="w-full max-w-lg glass-panel rounded-[24px] p-6 sm:p-7 shadow-2xl fade-up max-h-[92vh] overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between mb-4 border-b border-border pb-3">
@@ -1165,7 +1169,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                   <select
                     value={editForm.jk}
                     onChange={(e) => setEditForm((f) => ({ ...f, jk: e.target.value as 'L' | 'P' }))}
-                    className="w-full min-h-[46px] px-2.5 rounded-[12px] border border-border text-xs text-text bg-surface focus:outline-none focus:border-black"
+                    className="w-full min-h-[46px] px-2.5 rounded-[12px] border border-border text-xs text-text bg-white/60 backdrop-blur-sm focus:outline-none focus:border-black"
                   >
                     <option value="L">Laki-laki (L)</option>
                     <option value="P">Perempuan (P)</option>
@@ -1176,7 +1180,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                   <select
                     value={editForm.kelas}
                     onChange={(e) => setEditForm((f) => ({ ...f, kelas: e.target.value }))}
-                    className="w-full min-h-[46px] px-2.5 rounded-[12px] border border-border text-xs text-text bg-surface focus:outline-none focus:border-black"
+                    className="w-full min-h-[46px] px-2.5 rounded-[12px] border border-border text-xs text-text bg-white/60 backdrop-blur-sm focus:outline-none focus:border-black"
                   >
                     {['7A', '7B', '7C', '8A', '8B', '8C', '9A', '9B', '9C'].map((k) => (
                       <option key={k} value={k}>{k}</option>
@@ -1188,7 +1192,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                   <select
                     value={editForm.status}
                     onChange={(e) => setEditForm((f) => ({ ...f, status: e.target.value as 'Aktif' | 'Pindah' | 'Lulus' }))}
-                    className="w-full min-h-[46px] px-2.5 rounded-[12px] border border-border text-xs text-text bg-surface focus:outline-none focus:border-black"
+                    className="w-full min-h-[46px] px-2.5 rounded-[12px] border border-border text-xs text-text bg-white/60 backdrop-blur-sm focus:outline-none focus:border-black"
                   >
                     <option value="Aktif">Aktif</option>
                     <option value="Pindah">Pindah</option>

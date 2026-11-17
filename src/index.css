@@ -435,6 +435,13 @@ body {
   background: linear-gradient(100deg, rgb(238 240 250 / 0.9) 40%, rgb(247 248 253 / 0.9) 50%, rgb(238 240 250 / 0.9) 60%);
 }
 
+/* Semua elemen bg-surface (kartu, modal, input, toolbar) otomatis jadi liquid glass */
+.bg-surface {
+  background-color: var(--lg-fill);
+  -webkit-backdrop-filter: blur(var(--lg-blur)) saturate(var(--lg-saturate)) brightness(var(--lg-brightness));
+  backdrop-filter: blur(var(--lg-blur)) saturate(var(--lg-saturate)) brightness(var(--lg-brightness));
+}
+
 /* Aman cetak: kaca kembali jadi kertas putih solid tanpa blur */
 @media print {
   body {
@@ -442,6 +449,7 @@ body {
   }
   .glass,
   .glass-panel,
+  .bg-surface,
   .bk-card,
   .bk-row,
   .bk-tile,
