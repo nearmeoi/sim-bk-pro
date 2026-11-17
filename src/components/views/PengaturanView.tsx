@@ -306,7 +306,7 @@ export const PengaturanView: React.FC<PengaturanViewProps> = ({ onToast }) => {
               <button
                 type="button"
                 onClick={() => logoInputRef.current?.click()}
-                className="flex-1 min-h-[38px] px-3 rounded-[10px] bg-white border border-border text-text text-xs font-bold hover:bg-gray-50 flex items-center justify-center gap-1.5 shadow-xs transition-colors"
+                className="flex-1 min-h-[38px] px-3 rounded-[10px] bg-white/70 backdrop-blur-sm border border-border text-text text-xs font-bold hover:bg-white flex items-center justify-center gap-1.5 shadow-xs transition-colors"
               >
                 <Upload size={14} />
                 <span>{formSettings.logoUrl ? 'Ganti Logo Kiri' : 'Unggah Logo Kiri'}</span>
@@ -367,7 +367,7 @@ export const PengaturanView: React.FC<PengaturanViewProps> = ({ onToast }) => {
               <button
                 type="button"
                 onClick={() => logoKananInputRef.current?.click()}
-                className="flex-1 min-h-[38px] px-3 rounded-[10px] bg-white border border-border text-text text-xs font-bold hover:bg-gray-50 flex items-center justify-center gap-1.5 shadow-xs transition-colors"
+                className="flex-1 min-h-[38px] px-3 rounded-[10px] bg-white/70 backdrop-blur-sm border border-border text-text text-xs font-bold hover:bg-white flex items-center justify-center gap-1.5 shadow-xs transition-colors"
               >
                 <Upload size={14} />
                 <span>{formSettings.logoKananUrl ? 'Ganti Logo Kanan' : 'Unggah Logo Kanan'}</span>

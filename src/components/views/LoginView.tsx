@@ -105,7 +105,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onSuccess, onToast }) => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="nama@sekolah.sch.id"
-              className="w-full min-h-[46px] px-4 rounded-[12px] border border-border text-sm font-medium text-text bg-white focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/15 shadow-xs"
+              className="w-full min-h-[46px] px-4 rounded-[12px] border border-border text-sm font-medium text-text bg-white/60 backdrop-blur-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/15 shadow-xs"
             />
           </div>
 
@@ -125,7 +125,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onSuccess, onToast }) => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Kata sandi Anda"
-                className="w-full min-h-[46px] pl-10 pr-11 rounded-[12px] border border-border text-sm font-medium text-text bg-white focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/15 shadow-xs"
+                className="w-full min-h-[46px] pl-10 pr-11 rounded-[12px] border border-border text-sm font-medium text-text bg-white/60 backdrop-blur-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/15 shadow-xs"
               />
               <button
                 type="button"
@@ -159,7 +159,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onSuccess, onToast }) => {
           <button
             type="submit"
             disabled={loading !== null}
-            className="w-full min-h-[48px] rounded-[14px] bg-black text-white text-sm font-bold hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-sm cursor-pointer disabled:opacity-60"
+            className="w-full min-h-[48px] rounded-[14px] bg-black/90 backdrop-blur-md text-white text-sm font-bold hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-sm ring-1 ring-white/30 cursor-pointer disabled:opacity-60"
           >
             <span>{loading === 'form' ? 'Memverifikasi...' : 'Masuk'}</span>
             <ArrowRight size={20} className="text-white" />
@@ -177,7 +177,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onSuccess, onToast }) => {
           type="button"
           onClick={handleGoogle}
           disabled={loading !== null}
-          className="w-full min-h-[48px] rounded-[14px] bg-white border border-border text-sm font-bold text-text hover:bg-[#F7F8FC] active:scale-[0.98] transition-all flex items-center justify-center gap-2.5 cursor-pointer disabled:opacity-60"
+          className="w-full min-h-[48px] rounded-[14px] bg-white/70 backdrop-blur-md border border-white/80 text-sm font-bold text-text hover:bg-white active:scale-[0.98] transition-all flex items-center justify-center gap-2.5 cursor-pointer disabled:opacity-60 shadow-sm"
         >
           <GoogleIcon />
           <span>{loading === 'google' ? 'Mengalihkan ke Google...' : 'Masuk dengan Google'}</span>
