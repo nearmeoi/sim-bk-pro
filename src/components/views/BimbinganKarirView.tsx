@@ -288,13 +288,13 @@ export const BimbinganKarirView: React.FC<BimbinganKarirViewProps> = ({ onToast 
       />
       {/* BARIS 2: TAB NAVIGASI TAMPILAN */}
       <div className="print:hidden border-b border-border">
-        <div className="flex gap-1">
+        <div className="flex gap-1.5 py-1.5">
           <button
             onClick={() => setViewMode('angket')}
-            className={`px-5 py-3 text-xs sm:text-sm font-bold transition-all border-b-2 flex items-center gap-2 ${
+            className={`px-5 py-2.5 text-xs sm:text-sm font-bold transition-all rounded-full flex items-center gap-2 ${
               viewMode === 'angket'
-                ? 'border-black text-black bg-neutral-100 rounded-t-[10px]'
-                : 'border-transparent text-muted hover:text-text hover:bg-bg rounded-t-[10px]'
+                ? 'bg-neutral-900/90 backdrop-blur-md text-white ring-1 ring-white/40 shadow-[0_2px_10px_rgb(0_0_0/0.18)]'
+                : 'text-muted hover:text-text hover:bg-black/5'
             }`}
           >
             <FileText size={16} />
@@ -303,15 +303,15 @@ export const BimbinganKarirView: React.FC<BimbinganKarirViewProps> = ({ onToast 
 
           <button
             onClick={() => setViewMode('batch')}
-            className={`px-4 sm:px-5 py-3 text-xs sm:text-sm font-bold transition-all border-b-2 flex items-center gap-2 ${
+            className={`px-4 sm:px-5 py-2.5 text-xs sm:text-sm font-bold transition-all rounded-full flex items-center gap-2 ${
               viewMode === 'batch'
-                ? 'border-black text-black bg-neutral-100 rounded-t-[10px]'
-                : 'border-transparent text-muted hover:text-text hover:bg-bg rounded-t-[10px]'
+                ? 'bg-neutral-900/90 backdrop-blur-md text-white ring-1 ring-white/40 shadow-[0_2px_10px_rgb(0_0_0/0.18)]'
+                : 'text-muted hover:text-text hover:bg-black/5'
             }`}
           >
             <Table size={16} />
             <span>2. Rekap Kelas</span>
-            <span className="ml-1 text-[11px] px-2 py-0.5 rounded-full bg-neutral-200 text-neutral-800 font-bold">
+            <span className="ml-1 text-[11px] px-2 py-0.5 rounded-full bg-white/20 text-white font-bold ring-1 ring-white/30">
               {displayedStudents.length} Siswa
             </span>
           </button>
@@ -394,7 +394,7 @@ export const BimbinganKarirView: React.FC<BimbinganKarirViewProps> = ({ onToast 
             value={pasteText}
             onChange={(e) => setPasteText(e.target.value)}
             placeholder="Contoh:&#10;Ahmad Dahlan	SMAN 1 Bintang	MIPA	Dokter&#10;Nurul Hidayah	SMKN 2 Bintang	DKV	Desainer Grafis"
-            className="w-full p-2.5 bg-white border border-border rounded-[10px] text-xs font-mono text-text focus:outline-none focus:border-black resize-y"
+            className="w-full p-2.5 bg-white/60 backdrop-blur-sm border border-border rounded-[10px] text-xs font-mono text-text focus:outline-none focus:border-black resize-y"
           />
           <div className="flex justify-end gap-2">
             <button
@@ -576,7 +576,7 @@ export const BimbinganKarirView: React.FC<BimbinganKarirViewProps> = ({ onToast 
       {viewMode === 'angket' &&
         (studentList.length === 0 ? (
           <div className="bk-card py-14 text-center space-y-4">
-            <div className="w-12 h-12 mx-auto rounded-[14px] bg-neutral-100 flex items-center justify-center text-black">
+            <div className="w-12 h-12 mx-auto rounded-[14px] bg-white/70 backdrop-blur-sm ring-1 ring-white/70 flex items-center justify-center text-black shadow-xs">
               <Plus size={22} />
             </div>
             <div className="space-y-1">

@@ -116,7 +116,7 @@ export const ProfilView: React.FC<ProfilViewProps> = ({ onNav, onToast }) => {
           <h2 className="text-xs font-bold text-muted uppercase tracking-wider">
             Informasi Satuan Pendidikan
           </h2>
-          <div className="p-4 rounded-[16px] bg-white border border-border space-y-2.5 text-xs text-text">
+          <div className="p-4 rounded-[16px] bg-white/60 backdrop-blur-sm border border-border/60 space-y-2.5 text-xs text-text">
             <div className="flex justify-between border-b border-border/60 pb-2">
               <span className="text-muted font-medium">Satuan Pendidikan:</span>
               <span className="font-bold">{displaySetting(settings.namaSekolah)}</span>

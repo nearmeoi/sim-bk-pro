@@ -618,7 +618,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
             >
               â€¹ Sebelumnya
             </button>
-            <span className="px-3 py-1.5 rounded-full bg-neutral-100 text-neutral-800 text-xs font-bold whitespace-nowrap">
+            <span className="px-3 py-1.5 rounded-full bg-white/70 backdrop-blur-sm ring-1 ring-white/80 text-neutral-800 text-xs font-bold whitespace-nowrap shadow-xs">
               Halaman {page} dari {totalPages}
             </span>
             <button

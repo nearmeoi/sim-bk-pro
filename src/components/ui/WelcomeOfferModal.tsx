@@ -19,7 +19,7 @@ const WelcomeOfferModal: React.FC<WelcomeOfferModalProps> = ({ open, onClose }) 
         <span>Penawaran Awal</span>
       </div>
       {/* Placeholder kosong — diisi konten paket/harga nantinya */}
-      <div className="min-h-[140px] rounded-[16px] border-2 border-dashed border-border flex items-center justify-center text-center">
+      <div className="min-h-[140px] rounded-[16px] border-2 border-dashed border-border bg-white/50 backdrop-blur-sm flex items-center justify-center text-center">
         <p className="text-xs text-muted font-medium leading-relaxed px-6">
           Informasi paket &amp; harga belum tersedia.
           <br />

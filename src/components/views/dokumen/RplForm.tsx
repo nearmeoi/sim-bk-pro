@@ -100,7 +100,7 @@ export const RplForm: React.FC<RplFormProps> = ({ onBack, onToast }) => {
         <button onClick={onBack} className="bk-chip !min-h-[44px] text-xs font-bold">
           <ArrowLeft size={16} /> Kembali ke Dokumen
         </button>
-        <span className="text-xs bg-neutral-100 text-black font-bold px-3.5 py-1.5 rounded-full">
+        <span className="text-xs bg-white/70 backdrop-blur-sm text-black font-bold px-3.5 py-1.5 rounded-full ring-1 ring-white/80 shadow-xs">
           Format Baku 1-Lembar Kurikulum Merdeka
         </span>
       </div>
@@ -160,9 +160,9 @@ export const RplForm: React.FC<RplFormProps> = ({ onBack, onToast }) => {
                 key={`rec-${rec.no}`}
                 type="button"
                 onClick={() => handleApplyAkpd(rec)}
-                className="px-3 py-1.5 rounded-[10px] bg-white border border-neutral-300 hover:border-black text-xs font-bold text-text hover:text-black transition-all shadow-xs text-left"
+                className="px-3 py-1.5 rounded-[10px] bg-white/70 backdrop-blur-sm border border-white/90 hover:border-black text-xs font-bold text-text hover:text-black transition-all shadow-xs text-left"
               >
-                  <span className="text-[10px] font-extrabold uppercase px-1.5 py-0.5 rounded bg-neutral-200 text-neutral-800 mr-1.5">
+                  <span className="text-[10px] font-extrabold uppercase px-1.5 py-0.5 rounded bg-neutral-200/80 text-neutral-800 mr-1.5">
                   {rec.bidang} (#{rec.no})
                 </span>
                 {rec.topikRPL}
@@ -171,7 +171,7 @@ export const RplForm: React.FC<RplFormProps> = ({ onBack, onToast }) => {
             <button
               type="button"
               onClick={() => setAkpdRecommendations([])}
-              className="px-2 py-1.5 rounded-[10px] bg-white border border-neutral-300 text-xs font-bold text-neutral-800 hover:bg-neutral-50 transition-all shadow-xs"
+              className="px-2 py-1.5 rounded-[10px] bg-white/70 backdrop-blur-sm border border-white/90 text-xs font-bold text-neutral-800 hover:bg-white transition-all shadow-xs"
               title="Tutup rekomendasi dan gunakan template populer"
             >
               ✕ Tutup
@@ -181,7 +181,7 @@ export const RplForm: React.FC<RplFormProps> = ({ onBack, onToast }) => {
       )}
 
       {/* Template Cepat Populer - Hidden on Print */}
-      <div className="print:hidden p-4 rounded-[16px] bg-neutral-100 border border-neutral-300 space-y-2.5">
+      <div className="print:hidden p-4 rounded-[16px] bg-white/60 backdrop-blur-md border border-white/90 space-y-2.5">
         <span className="text-xs font-bold text-black flex items-center gap-1.5">
           <Sparkles size={15} /> Pilihan Contoh Topik Layanan:
         </span>
@@ -191,7 +191,7 @@ export const RplForm: React.FC<RplFormProps> = ({ onBack, onToast }) => {
               key={tmpl.topik}
               type="button"
               onClick={() => handleApplyTemplate(tmpl)}
-              className="px-3 py-1.5 rounded-[10px] bg-white border border-border/80 hover:border-black text-xs font-bold text-text hover:text-black transition-all shadow-xs text-left"
+              className="px-3 py-1.5 rounded-[10px] bg-white/80 backdrop-blur-sm border border-border/60 hover:border-black text-xs font-bold text-text hover:text-black transition-all shadow-xs text-left"
             >
               <span className="text-[10px] font-extrabold uppercase px-1.5 py-0.5 rounded bg-neutral-100 text-black mr-1.5">
                 {tmpl.bidang}

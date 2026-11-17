@@ -230,13 +230,13 @@ export default function AKPDView({ onNav, onToast }: AKPDViewProps) {
       {/* BARIS 2: TAB NAVIGASI TAMPILAN (STANDAR INDUSTRI)        */}
       {/* ======================================================== */}
       <div className="print:hidden border-b border-border">
-        <div className="flex gap-1">
+        <div className="flex gap-1.5 py-1.5">
           <button
             onClick={() => setViewMode('cetak')}
-            className={`px-4 sm:px-5 py-3 text-xs sm:text-sm font-bold transition-all border-b-2 flex items-center gap-2 ${
+            className={`px-4 sm:px-5 py-2.5 text-xs sm:text-sm font-bold transition-all rounded-full flex items-center gap-2 ${
               viewMode === 'cetak'
-                ? 'border-black text-black bg-neutral-100 rounded-t-[10px]'
-                : 'border-transparent text-muted hover:text-text hover:bg-bg rounded-t-[10px]'
+                ? 'bg-neutral-900/90 backdrop-blur-md text-white ring-1 ring-white/40 shadow-[0_2px_10px_rgb(0_0_0/0.18)]'
+                : 'text-muted hover:text-text hover:bg-black/5'
             }`}
           >
             <FileText size={16} />
@@ -244,10 +244,10 @@ export default function AKPDView({ onNav, onToast }: AKPDViewProps) {
           </button>
           <button
             onClick={() => setViewMode('batch')}
-            className={`px-4 sm:px-5 py-3 text-xs sm:text-sm font-bold transition-all border-b-2 flex items-center gap-2 ${
+            className={`px-4 sm:px-5 py-2.5 text-xs sm:text-sm font-bold transition-all rounded-full flex items-center gap-2 ${
               viewMode === 'batch'
-                ? 'border-black text-black bg-neutral-100 rounded-t-[10px]'
-                : 'border-transparent text-muted hover:text-text hover:bg-bg rounded-t-[10px]'
+                ? 'bg-neutral-900/90 backdrop-blur-md text-white ring-1 ring-white/40 shadow-[0_2px_10px_rgb(0_0_0/0.18)]'
+                : 'text-muted hover:text-text hover:bg-black/5'
             }`}
           >
             <Table size={16} />
@@ -255,10 +255,10 @@ export default function AKPDView({ onNav, onToast }: AKPDViewProps) {
           </button>
           <button
             onClick={() => setViewMode('analisis')}
-            className={`px-4 sm:px-5 py-3 text-xs sm:text-sm font-bold transition-all border-b-2 flex items-center gap-2 ${
+            className={`px-4 sm:px-5 py-2.5 text-xs sm:text-sm font-bold transition-all rounded-full flex items-center gap-2 ${
               viewMode === 'analisis'
-                ? 'border-black text-black bg-neutral-100 rounded-t-[10px]'
-                : 'border-transparent text-muted hover:text-text hover:bg-bg rounded-t-[10px]'
+                ? 'bg-neutral-900/90 backdrop-blur-md text-white ring-1 ring-white/40 shadow-[0_2px_10px_rgb(0_0_0/0.18)]'
+                : 'text-muted hover:text-text hover:bg-black/5'
             }`}
           >
             <TrendingUp size={16} />
@@ -302,7 +302,7 @@ export default function AKPDView({ onNav, onToast }: AKPDViewProps) {
           {viewMode === 'batch' && (
             <button
               onClick={() => setShowPasteBox(!showPasteBox)}
-              className="min-h-[38px] px-3 rounded-[10px] bg-neutral-50 text-neutral-800 text-xs font-bold hover:bg-neutral-100 transition-all flex items-center gap-1.5 border border-neutral-300"
+              className="min-h-[38px] px-3 rounded-[10px] bg-white/60 backdrop-blur-sm text-neutral-800 text-xs font-bold hover:bg-white transition-all flex items-center gap-1.5 border border-white/80 shadow-xs"
               title="Tempel deretan 50 angka sekaligus dari Excel"
             >
               <ClipboardPaste size={14} />

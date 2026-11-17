@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import {
   Home, Users, FileText, Settings, Plus,
   FileCheck2, Compass, ChevronDown, ChevronUp, Calendar, BookOpen, LogOut
@@ -114,7 +114,7 @@ export default function Sidebar({ current, onNav, onCatat }: SidebarProps) {
                 className={`w-full min-h-[36px] px-2.5 rounded-[10px] flex items-center gap-2 text-[13px] transition-all text-left cursor-pointer ${
                   current === 'dokumen' && !activeDocTab
                     ? 'text-neutral-900 font-extrabold bg-neutral-200/80'
-                    : 'text-muted hover:text-text hover:bg-neutral-100 font-medium'
+                    : 'text-muted hover:text-text hover:bg-white/40 font-medium'
                 }`}
               >
                 <span className="w-1.5 h-1.5 rounded-full bg-current opacity-70" />
@@ -130,7 +130,7 @@ export default function Sidebar({ current, onNav, onCatat }: SidebarProps) {
                 className={`w-full min-h-[36px] px-2.5 rounded-[10px] flex items-center gap-2 text-[13px] transition-all text-left cursor-pointer ${
                   current === 'dokumen' && activeDocTab === 'prota'
                     ? 'text-neutral-900 font-extrabold bg-neutral-200/80'
-                    : 'text-muted hover:text-text hover:bg-neutral-100 font-medium'
+                    : 'text-muted hover:text-text hover:bg-white/40 font-medium'
                 }`}
               >
                 <Calendar size={15} className="flex-none" />
@@ -146,7 +146,7 @@ export default function Sidebar({ current, onNav, onCatat }: SidebarProps) {
                 className={`w-full min-h-[36px] px-2.5 rounded-[10px] flex items-center gap-2 text-[13px] transition-all text-left cursor-pointer ${
                   current === 'dokumen' && activeDocTab === 'jurnal'
                     ? 'text-neutral-900 font-extrabold bg-neutral-200/80'
-                    : 'text-muted hover:text-text hover:bg-neutral-100 font-medium'
+                    : 'text-muted hover:text-text hover:bg-white/40 font-medium'
                 }`}
               >
                 <FileText size={15} className="flex-none" />
@@ -162,7 +162,7 @@ export default function Sidebar({ current, onNav, onCatat }: SidebarProps) {
                 className={`w-full min-h-[36px] px-2.5 rounded-[10px] flex items-center gap-2 text-[13px] transition-all text-left cursor-pointer ${
                   current === 'dokumen' && activeDocTab === 'rpl'
                     ? 'text-neutral-900 font-extrabold bg-neutral-200/80'
-                    : 'text-muted hover:text-text hover:bg-neutral-100 font-medium'
+                    : 'text-muted hover:text-text hover:bg-white/40 font-medium'
                 }`}
               >
                 <BookOpen size={15} className="flex-none" />
@@ -175,7 +175,7 @@ export default function Sidebar({ current, onNav, onCatat }: SidebarProps) {
                 className={`w-full min-h-[36px] px-2.5 rounded-[10px] flex items-center gap-2 text-[13px] transition-all text-left cursor-pointer ${
                   current === 'akpd'
                     ? 'text-neutral-900 font-extrabold bg-neutral-200/80'
-                    : 'text-muted hover:text-text hover:bg-neutral-100 font-medium'
+                    : 'text-muted hover:text-text hover:bg-white/40 font-medium'
                 }`}
               >
                 <FileCheck2 size={15} className="flex-none" />
@@ -191,7 +191,7 @@ export default function Sidebar({ current, onNav, onCatat }: SidebarProps) {
                 className={`w-full min-h-[36px] px-2.5 rounded-[10px] flex items-center gap-2 text-[13px] transition-all text-left cursor-pointer ${
                   current === 'karir' || current === 'shinro'
                     ? 'text-neutral-900 font-extrabold bg-neutral-200/80'
-                    : 'text-muted hover:text-text hover:bg-neutral-100 font-medium'
+                    : 'text-muted hover:text-text hover:bg-white/40 font-medium'
                 }`}
               >
                 <Compass size={15} className="flex-none" />
@@ -210,7 +210,7 @@ export default function Sidebar({ current, onNav, onCatat }: SidebarProps) {
                 className={`w-full min-h-[36px] px-2.5 rounded-[10px] flex items-center gap-2 text-[13px] transition-all text-left cursor-pointer ${
                   current === 'dokumen' && activeDocTab === 'prosem'
                     ? 'text-neutral-900 font-extrabold bg-neutral-200/80'
-                    : 'text-muted hover:text-text hover:bg-neutral-100 font-medium'
+                    : 'text-muted hover:text-text hover:bg-white/40 font-medium'
                 }`}
               >
                 <Calendar size={15} className="flex-none" />
@@ -226,7 +226,7 @@ export default function Sidebar({ current, onNav, onCatat }: SidebarProps) {
                 className={`w-full min-h-[36px] px-2.5 rounded-[10px] flex items-center gap-2 text-[13px] transition-all text-left cursor-pointer ${
                   current === 'dokumen' && activeDocTab === 'lapbul'
                     ? 'text-neutral-900 font-extrabold bg-neutral-200/80'
-                    : 'text-muted hover:text-text hover:bg-neutral-100 font-medium'
+                    : 'text-muted hover:text-text hover:bg-white/40 font-medium'
                 }`}
               >
                 <FileText size={15} className="flex-none" />
@@ -242,7 +242,7 @@ export default function Sidebar({ current, onNav, onCatat }: SidebarProps) {
                 className={`w-full min-h-[36px] px-2.5 rounded-[10px] flex items-center gap-2 text-[13px] transition-all text-left cursor-pointer ${
                   current === 'dokumen' && activeDocTab === 'lapsem'
                     ? 'text-neutral-900 font-extrabold bg-neutral-200/80'
-                    : 'text-muted hover:text-text hover:bg-neutral-100 font-medium'
+                    : 'text-muted hover:text-text hover:bg-white/40 font-medium'
                 }`}
               >
                 <FileText size={15} className="flex-none" />

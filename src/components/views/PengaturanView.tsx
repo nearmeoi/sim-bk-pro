@@ -153,7 +153,7 @@ export const PengaturanView: React.FC<PengaturanViewProps> = ({ onToast }) => {
           <button
             type="button"
             onClick={handleReset}
-            className="min-h-[40px] px-3.5 rounded-[12px] bg-white border border-alert/30 text-alert text-xs font-bold hover:bg-alert-tint active:scale-[0.98] transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
+            className="min-h-[40px] px-3.5 rounded-[12px] bg-alert-tint/80 backdrop-blur-sm border border-alert/30 text-alert text-xs font-bold hover:bg-alert-tint active:scale-[0.98] transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
             title="Kembalikan semua data ke setelan awal demo"
           >
             <RotateCcw size={15} />

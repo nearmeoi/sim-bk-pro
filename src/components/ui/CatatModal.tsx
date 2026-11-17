@@ -279,14 +279,14 @@ export default function CatatModal({ open, onClose, onSelect }: CatatModalProps)
                     type="button"
                     key={st}
                     onClick={() => setStatus(st)}
-                    className={`px-4 py-2 rounded-full text-xs font-bold transition-all border ${
+                    className={`px-4 py-2 rounded-full text-xs font-bold transition-all border backdrop-blur-sm ${
                       status === st
                         ? st === 'Selesai'
-                          ? 'bg-accent-700 text-white border-accent-700 shadow-sm'
+                          ? 'bg-accent-700/90 text-white border-accent-700 shadow-sm ring-1 ring-white/30'
                           : st === 'Menunggu'
-                            ? 'bg-primary text-white border-primary shadow-sm'
-                            : 'bg-primary text-white border-primary shadow-sm'
-                        : 'bg-surface text-muted border-border hover:bg-bg'
+                            ? 'bg-primary/90 text-white border-primary shadow-sm ring-1 ring-white/30'
+                            : 'bg-primary/90 text-white border-primary shadow-sm ring-1 ring-white/30'
+                        : 'bg-white/60 text-muted border-white/80 hover:bg-white shadow-xs'
                     }`}
                   >
                     {st === 'Proses' ? 'Sedang Diproses' : st === 'Selesai' ? 'Kasus Selesai' : 'Menunggu Tindak Lanjut'}
