@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { ArrowLeft, Download, Printer, Save, Eye, ChevronLeft, ChevronRight } from 'lucide-react';
 import KopSurat from '../../ui/KopSurat';
 import HvsPreviewModal from '../../ui/HvsPreviewModal';
+import { AppGlassButton } from '../../ui/glass';
 import { useBK } from '../../../context/BKContext';
 import { exportToCsv } from '../../../lib/exportCsv';
 import { formatKotaTanggal, formatNamaPejabat, formatNIP, formatNamaSekolah, formatTahunAjaran } from '../../../lib/documentFormat';
@@ -117,30 +118,30 @@ export const LapsemForm: React.FC<LapsemFormProps> = ({ onBack, onToast }) => {
         </div>
 
         <div className="flex items-center gap-2 print:hidden">
-          <button
-            type="button"
+          <AppGlassButton
+            size="sm"
+            variant="ghost"
+            icon={<Eye size={15} />}
             onClick={() => setPreviewHvsOpen(true)}
-            className="min-h-[40px] px-4 rounded-[12px] bg-gray-100 text-text text-xs font-bold hover:bg-gray-200 active:scale-[0.98] transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
           >
-            <Eye size={15} />
-            <span>Pratinjau</span>
-          </button>
-          <button
-            type="button"
+            Pratinjau
+          </AppGlassButton>
+          <AppGlassButton
+            size="sm"
+            variant="neutral"
+            icon={<Download size={15} />}
             onClick={handleExportCsv}
-            className="min-h-[40px] px-4 rounded-[12px] bg-black text-white text-xs font-bold hover:bg-neutral-800 active:scale-[0.98] transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
           >
-            <Download size={15} />
-            <span>Unduh Excel</span>
-          </button>
-          <button
-            type="button"
+            Unduh Excel
+          </AppGlassButton>
+          <AppGlassButton
+            size="sm"
+            variant="neutral"
+            icon={<Save size={15} />}
             onClick={() => onToast('Laporan semester disimpan.')}
-            className="min-h-[40px] px-4 rounded-[12px] bg-black text-white text-xs font-bold hover:bg-neutral-800 active:scale-[0.98] transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
           >
-            <Save size={15} />
-            <span>Simpan</span>
-          </button>
+            Simpan
+          </AppGlassButton>
         </div>
       </div>
 

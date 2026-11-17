@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { DoorOpen, MessageSquare, Folder, FileText, ChevronRight, ArrowLeft, Save } from "lucide-react";
+import { AppGlassButton } from './glass';
 import { useBK } from '../../context/BKContext';
 import type { QuickCatatPayload } from '../../types';
 interface CatatModalProps {
@@ -143,12 +144,14 @@ export default function CatatModal({ open, onClose, onSelect }: CatatModalProps)
               })}
             </div>
 
-            <button
+            <AppGlassButton
+              variant="ghost"
+              size="lg"
+              className="w-full mt-2"
               onClick={onClose}
-              className="bk-btn ghost w-full min-h-[48px] text-text mt-2"
             >
               Batal
-            </button>
+            </AppGlassButton>
           </div>
         ) : (
           /* Step 2: Form Pencatatan Luas & Nyaman */
@@ -294,20 +297,22 @@ export default function CatatModal({ open, onClose, onSelect }: CatatModalProps)
 
             {/* Tombol Simpan & Batal */}
             <div className="pt-4 border-t border-border flex gap-3 justify-end">
-              <button
+              <AppGlassButton
                 type="button"
+                variant="ghost"
+                size="lg"
                 onClick={() => setSelectedAction(null)}
-                className="bk-btn ghost min-h-[48px]"
               >
                 Ganti Jenis
-              </button>
-              <button
+              </AppGlassButton>
+              <AppGlassButton
                 type="submit"
-                className="min-h-[48px] px-7 rounded-[14px] bg-accent text-white font-bold text-sm hover:brightness-105 active:scale-[0.98] transition-all shadow-[0_6px_16px_rgb(232_106_51/0.25)] flex items-center gap-2"
+                variant="accent"
+                size="lg"
+                icon={<Save size={17} />}
               >
-                <Save size={17} />
-                <span>Simpan Catatan Layanan</span>
-              </button>
+                Simpan Catatan Layanan
+              </AppGlassButton>
             </div>
           </form>
         )}

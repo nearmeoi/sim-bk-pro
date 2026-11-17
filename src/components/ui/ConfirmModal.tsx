@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import BaseModal from './BaseModal';
+import { AppGlassButton } from './glass';
 
 export interface ConfirmOptions {
   title: string;
@@ -56,20 +57,22 @@ const ConfirmModal: React.FC = () => {
             )}
           </div>
           <div className="flex gap-2.5">
-            <button
+            <AppGlassButton
               type="button"
+              variant="ghost"
+              className="flex-1"
               onClick={() => finish(false)}
-              className="bk-btn ghost flex-1"
             >
               {pending.cancelLabel || 'Batal'}
-            </button>
-            <button
+            </AppGlassButton>
+            <AppGlassButton
               type="button"
+              variant={danger ? 'danger' : 'primary'}
+              className="flex-1"
               onClick={() => finish(true)}
-              className={`bk-btn flex-1 ${danger ? 'danger' : 'primary'}`}
             >
               {pending.confirmLabel || 'Ya, Lanjutkan'}
-            </button>
+            </AppGlassButton>
           </div>
         </div>
       )}

@@ -5,6 +5,7 @@ import {
 } from 'lucide-react';
 import { useBK } from '../../context/BKContext';
 import { confirmDialog } from '../ui/ConfirmModal';
+import { AppGlassButton } from '../ui/glass';
 import { NavView } from '../../types';
 interface SidebarProps {
   current: NavView;
@@ -58,13 +59,15 @@ export default function Sidebar({ current, onNav, onCatat }: SidebarProps) {
       </div>
 
       {/* CTA Button */}
-      <button
+      <AppGlassButton
+        variant="neutral"
+        size="lg"
+        className="w-full mb-4"
+        icon={<Plus size={19} strokeWidth={2.5} />}
         onClick={onCatat}
-        className="w-full min-h-[48px] rounded-[14px] bg-black hover:bg-neutral-800 text-white font-bold text-[15px] flex items-center justify-center gap-2 mb-4 shadow-sm active:scale-[0.98] transition-all cursor-pointer"
       >
-        <Plus size={19} strokeWidth={2.5} />
-        <span>Catat Layanan</span>
-      </button>
+        Catat Layanan
+      </AppGlassButton>
 
       {/* Navigation List */}
       <nav className="flex-1 space-y-1.5 overflow-y-auto no-scrollbar pt-1">
@@ -271,8 +274,12 @@ export default function Sidebar({ current, onNav, onCatat }: SidebarProps) {
           </div>
         </div>
 
-        <button
+        <AppGlassButton
           type="button"
+          variant="ghost"
+          size="sm"
+          icon={<LogOut size={16} />}
+          title="Keluar dari Aplikasi (Logout)"
           onClick={async (e) => {
             e.stopPropagation();
             const ok = await confirmDialog({
@@ -285,11 +292,7 @@ export default function Sidebar({ current, onNav, onCatat }: SidebarProps) {
               onNav('login');
             }
           }}
-          className="p-1.5 text-muted hover:text-alert hover:bg-alert-tint/60 rounded-lg transition-colors cursor-pointer flex-none"
-          title="Keluar dari Aplikasi (Logout)"
-        >
-          <LogOut size={16} />
-        </button>
+        />
       </div>
     </aside>
   );

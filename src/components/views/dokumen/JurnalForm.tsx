@@ -2,6 +2,7 @@
 import { Plus, Trash2, ArrowLeft, Download, Printer, Save, Eye } from 'lucide-react';
 import KopSurat from '../../ui/KopSurat';
 import HvsPreviewModal from '../../ui/HvsPreviewModal';
+import { AppGlassButton } from '../../ui/glass';
 import { useBK } from '../../../context/BKContext';
 import { exportToCsv } from '../../../lib/exportCsv';
 import { formatKotaTanggal, formatNamaPejabat, formatNIP, formatNamaSekolah, formatTahunAjaran } from '../../../lib/documentFormat';
@@ -90,51 +91,51 @@ export const JurnalForm: React.FC<JurnalFormProps> = ({ onBack, onToast }) => {
 
         {/* Action Button Utama di Pojok Kanan Atas (Standar Seragam) */}
         <div className="flex flex-wrap items-center gap-2 self-start sm:self-auto shrink-0">
-          <button
-            type="button"
-            onClick={() => setPreviewHvsOpen(true)}
-            className="min-h-[40px] px-3.5 rounded-[12px] bg-white border border-border text-text text-xs font-bold hover:bg-gray-50 active:scale-[0.98] transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
+          <AppGlassButton
+            size="sm"
+            variant="ghost"
+            icon={<Eye size={15} />}
             title="Lihat pratinjau lembar kertas HVS putih sebelum dicetak"
+            onClick={() => setPreviewHvsOpen(true)}
           >
-            <Eye size={15} />
-            <span>Preview HVS</span>
-          </button>
-          <button
-            type="button"
+            Preview HVS
+          </AppGlassButton>
+          <AppGlassButton
+            size="sm"
+            variant="ghost"
+            icon={<Printer size={15} />}
             onClick={() => {
               setPreviewHvsOpen(true);
               setTimeout(() => window.print(), 150);
             }}
-            className="min-h-[40px] px-3.5 rounded-[12px] bg-white border border-border text-text text-xs font-bold hover:bg-gray-50 active:scale-[0.98] transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
           >
-            <Printer size={15} />
-            <span>Cetak</span>
-          </button>
-          <button
-            type="button"
-            onClick={handleExportCsv}
-            className="min-h-[40px] px-3.5 rounded-[12px] bg-white border border-border text-text text-xs font-bold hover:bg-gray-50 active:scale-[0.98] transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
+            Cetak
+          </AppGlassButton>
+          <AppGlassButton
+            size="sm"
+            variant="ghost"
+            icon={<Download size={15} />}
             title="Unduh jurnal harian ke file Excel"
+            onClick={handleExportCsv}
           >
-            <Download size={15} />
-            <span>Unduh Excel</span>
-          </button>
-          <button
-            type="button"
+            Unduh Excel
+          </AppGlassButton>
+          <AppGlassButton
+            size="sm"
+            variant="neutral"
+            icon={<Save size={15} />}
             onClick={() => onToast('Jurnal harian berhasil disimpan.')}
-            className="min-h-[40px] px-4 rounded-[12px] bg-black text-white text-xs font-bold hover:bg-neutral-800 active:scale-[0.98] transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
           >
-            <Save size={15} />
-            <span>Simpan</span>
-          </button>
-          <button
-            type="button"
+            Simpan
+          </AppGlassButton>
+          <AppGlassButton
+            size="sm"
+            variant="neutral"
+            icon={<Plus size={15} strokeWidth={2.5} />}
             onClick={handleAddRow}
-            className="min-h-[40px] px-4 rounded-[12px] bg-black text-white font-bold text-xs hover:bg-neutral-800 active:scale-[0.98] transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
           >
-            <Plus size={15} strokeWidth={2.5} />
-            <span>Tambah Entri</span>
-          </button>
+            Tambah Entri
+          </AppGlassButton>
         </div>
       </div>
 

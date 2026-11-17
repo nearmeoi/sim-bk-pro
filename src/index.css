@@ -28,6 +28,7 @@
   /* ============================================================ */
   --lg-accent: #E86A33;
   --lg-ring: rgb(232 106 51 / 0.5);
+  --lg-font: 'Poppins', system-ui, -apple-system, sans-serif;
   --lg-fill: rgb(255 255 255 / 0.66);
   --lg-fill-pressed: rgb(255 255 255 / 0.92);
   --lg-panel-fill: rgb(255 255 255 / 0.62);

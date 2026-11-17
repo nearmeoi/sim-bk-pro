@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Plus, Trash2, Edit2, X, Save, ArrowLeft, Download, Printer, Eye, TrendingUp } from 'lucide-react';
 import KopSurat from '../../ui/KopSurat';
 import HvsPreviewModal from '../../ui/HvsPreviewModal';
+import { AppGlassButton } from '../../ui/glass';
 import { useBK } from '../../../context/BKContext';
 import { exportToCsv } from '../../../lib/exportCsv';
 import { formatKotaTanggal, formatNamaPejabat, formatNIP, formatNamaSekolah, formatTahunAjaran } from '../../../lib/documentFormat';
@@ -177,51 +178,51 @@ export const ProtaForm: React.FC<ProtaFormProps> = ({ onBack, onToast }) => {
 
         {/* Action Button Utama di Pojok Kanan Atas (Standar Seragam) */}
         <div className="flex flex-wrap items-center gap-2 self-start sm:self-auto shrink-0">
-          <button
-            type="button"
-            onClick={() => setPreviewHvsOpen(true)}
-            className="min-h-[40px] px-3.5 rounded-[12px] bg-white border border-border text-text text-xs font-bold hover:bg-gray-50 active:scale-[0.98] transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
+          <AppGlassButton
+            size="sm"
+            variant="ghost"
+            icon={<Eye size={15} />}
             title="Lihat pratinjau lembar kertas HVS putih sebelum dicetak"
+            onClick={() => setPreviewHvsOpen(true)}
           >
-            <Eye size={15} />
-            <span>Preview HVS</span>
-          </button>
-          <button
-            type="button"
+            Preview HVS
+          </AppGlassButton>
+          <AppGlassButton
+            size="sm"
+            variant="ghost"
+            icon={<Printer size={15} />}
             onClick={() => {
               setPreviewHvsOpen(true);
               setTimeout(() => window.print(), 150);
             }}
-            className="min-h-[40px] px-3.5 rounded-[12px] bg-white border border-border text-text text-xs font-bold hover:bg-gray-50 active:scale-[0.98] transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
           >
-            <Printer size={15} />
-            <span>Cetak</span>
-          </button>
-          <button
-            type="button"
-            onClick={handleExportCsv}
-            className="min-h-[40px] px-3.5 rounded-[12px] bg-white border border-border text-text text-xs font-bold hover:bg-gray-50 active:scale-[0.98] transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
+            Cetak
+          </AppGlassButton>
+          <AppGlassButton
+            size="sm"
+            variant="ghost"
+            icon={<Download size={15} />}
             title="Unduh matriks Prota ke file Excel"
+            onClick={handleExportCsv}
           >
-            <Download size={15} />
-            <span>Unduh Excel</span>
-          </button>
-          <button
-            type="button"
+            Unduh Excel
+          </AppGlassButton>
+          <AppGlassButton
+            size="sm"
+            variant="neutral"
+            icon={<Save size={15} />}
             onClick={() => onToast('Perubahan Program Tahunan disimpan.')}
-            className="min-h-[40px] px-4 rounded-[12px] bg-black text-white text-xs font-bold hover:bg-neutral-800 active:scale-[0.98] transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
           >
-            <Save size={15} />
-            <span>Simpan</span>
-          </button>
-          <button
-            type="button"
+            Simpan
+          </AppGlassButton>
+          <AppGlassButton
+            size="sm"
+            variant="neutral"
+            icon={<Plus size={15} strokeWidth={2.5} />}
             onClick={handleOpenAdd}
-            className="min-h-[40px] px-4 rounded-[12px] bg-black text-white text-xs font-bold hover:bg-neutral-800 active:scale-[0.98] transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
           >
-            <Plus size={15} strokeWidth={2.5} />
-            <span>Tambah Program</span>
-          </button>
+            Tambah Program
+          </AppGlassButton>
         </div>
       </div>
 
@@ -677,19 +678,12 @@ export const ProtaForm: React.FC<ProtaFormProps> = ({ onBack, onToast }) => {
               </div>
 
               <div className="flex gap-3 pt-3 border-t border-border mt-5">
-                <button
-                  type="button"
-                  onClick={() => setModalOpen(false)}
-                  className="bk-btn ghost flex-1"
-                >
+                <AppGlassButton type="button" size="md" variant="ghost" className="flex-1" onClick={() => setModalOpen(false)}>
                   Batal
-                </button>
-                <button
-                  type="submit"
-                  className="bk-btn primary flex-1"
-                >
+                </AppGlassButton>
+                <AppGlassButton type="submit" size="md" variant="primary" className="flex-1">
                   {editingItem ? 'Simpan Perubahan' : 'Tambah ke Matriks'}
-                </button>
+                </AppGlassButton>
               </div>
             </form>
           </div>

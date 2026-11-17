@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { X, Printer, Eye } from 'lucide-react';
+import { AppGlassButton } from './glass';
 
 interface HvsPreviewModalProps {
   open: boolean;
@@ -74,22 +75,23 @@ export const HvsPreviewModal: React.FC<HvsPreviewModalProps> = ({
         </div>
 
         <div className="flex items-center gap-2 flex-shrink-0">
-          <button
+          <AppGlassButton
             type="button"
+            size="sm"
+            variant="neutral"
+            icon={<Printer size={15} />}
             onClick={() => window.print()}
-            className="min-h-[38px] px-4 rounded-[10px] bg-black text-white text-xs font-bold hover:bg-neutral-800 active:scale-[0.98] transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
           >
-            <Printer size={15} />
-            <span>Cetak Kertas Ini</span>
-          </button>
-          <button
+            Cetak Kertas Ini
+          </AppGlassButton>
+          <AppGlassButton
             type="button"
+            size="sm"
+            variant="ghost"
+            icon={<X size={17} />}
             onClick={onClose}
-            className="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 text-muted hover:text-text flex items-center justify-center transition-colors cursor-pointer"
             aria-label="Tutup Pratinjau"
-          >
-            <X size={17} />
-          </button>
+          />
         </div>
       </div>
 

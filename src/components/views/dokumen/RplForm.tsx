@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { ArrowLeft, Printer, Save, Sparkles, BookOpen, Eye } from 'lucide-react';
 import KopSurat from '../../ui/KopSurat';
 import HvsPreviewModal from '../../ui/HvsPreviewModal';
+import { AppGlassButton } from '../../ui/glass';
 import { formatKotaTanggal, formatNamaPejabat, formatNIP, formatNamaSekolah, formatTahunAjaran } from '../../../lib/documentFormat';
 import { useBK } from '../../../context/BKContext';
 interface RplFormProps {
@@ -116,34 +117,34 @@ export const RplForm: React.FC<RplFormProps> = ({ onBack, onToast }) => {
 
         {/* Action Button Utama di Pojok Kanan Atas (Standar Seragam) */}
         <div className="flex flex-wrap items-center gap-2 self-start sm:self-auto shrink-0">
-          <button
-            type="button"
-            onClick={() => setPreviewHvsOpen(true)}
-            className="min-h-[40px] px-3.5 rounded-[12px] bg-white border border-border text-text text-xs font-bold hover:bg-gray-50 active:scale-[0.98] transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
+          <AppGlassButton
+            size="sm"
+            variant="ghost"
+            icon={<Eye size={15} />}
             title="Lihat pratinjau lembar kertas HVS putih sebelum dicetak"
+            onClick={() => setPreviewHvsOpen(true)}
           >
-            <Eye size={15} />
-            <span>Preview HVS</span>
-          </button>
-          <button
-            type="button"
+            Preview HVS
+          </AppGlassButton>
+          <AppGlassButton
+            size="sm"
+            variant="ghost"
+            icon={<Printer size={15} />}
             onClick={() => {
               setPreviewHvsOpen(true);
               setTimeout(() => window.print(), 150);
             }}
-            className="min-h-[40px] px-3.5 rounded-[12px] bg-white border border-border text-text text-xs font-bold hover:bg-gray-50 active:scale-[0.98] transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
           >
-            <Printer size={15} />
-            <span>Cetak</span>
-          </button>
-          <button
-            type="button"
+            Cetak
+          </AppGlassButton>
+          <AppGlassButton
+            size="sm"
+            variant="neutral"
+            icon={<Save size={15} />}
             onClick={handleSave}
-            className="min-h-[40px] px-4 rounded-[12px] bg-black text-white text-xs font-bold hover:bg-neutral-800 active:scale-[0.98] transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
           >
-            <Save size={15} />
-            <span>Simpan</span>
-          </button>
+            Simpan
+          </AppGlassButton>
         </div>
       </div>
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Home, Users, FileCheck2, FileText, Plus } from 'lucide-react';
 import { NavView } from '../../types';
+import { AppGlassButton } from '../ui/glass';
 
 interface BottomNavProps {
   current: NavView;
@@ -40,18 +41,19 @@ export default function BottomNav({ current, onNav, onCatat }: BottomNavProps) {
       {tab('siswa', 'Siswa', Users)}
 
       {/* Elevated FAB Center */}
-      <button
-        onClick={onCatat}
-        className="flex-1 min-h-[68px] flex flex-col items-center justify-center select-none"
-        aria-label="Catat Layanan"
-      >
-        <span className="w-14 h-14 rounded-full bg-black text-white flex items-center justify-center -mt-6 shadow-lg ring-4 ring-bg active:scale-90 transition-transform">
-          <Plus size={24} strokeWidth={2.75} />
-        </span>
+      <div className="flex-1 flex flex-col items-center justify-center select-none">
+        <AppGlassButton
+          variant="neutral"
+          size="lg"
+          icon={<Plus size={24} strokeWidth={2.75} />}
+          aria-label="Catat Layanan"
+          onClick={onCatat}
+          className="!w-14 !h-14 -mt-6 shadow-lg"
+        />
         <span className="text-[12px] font-bold text-neutral-900 mt-1 leading-none">
           Catat
         </span>
-      </button>
+      </div>
 
       {tab('akpd', 'AKPD', FileCheck2)}
       {tab('dokumen', 'Dokumen', FileText)}

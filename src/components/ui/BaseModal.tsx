@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { X } from 'lucide-react';
+import { AppGlassButton } from './glass';
 
 interface BaseModalProps {
   open: boolean;
@@ -49,14 +50,14 @@ export const BaseModal: React.FC<BaseModalProps> = ({
               {title && <h3 className="font-extrabold text-[18px] sm:text-[20px] text-text">{title}</h3>}
               {subtitle && <p className="text-xs text-muted mt-0.5">{subtitle}</p>}
             </div>
-            <button
+            <AppGlassButton
               type="button"
+              variant="ghost"
+              size="sm"
+              icon={<X size={18} />}
               onClick={onClose}
-              className="w-9 h-9 rounded-full bg-gray-100 hover:bg-gray-200 text-muted hover:text-text flex items-center justify-center transition-colors"
               aria-label="Tutup"
-            >
-              <X size={18} />
-            </button>
+            />
           </div>
         )}
         <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-4">{children}</div>
