@@ -24,7 +24,7 @@ export const TextareaField: React.FC<TextareaFieldProps> = ({
       )}
       <textarea
         rows={rows}
-        className={`w-full p-3.5 rounded-[14px] border border-border bg-surface text-[15px] font-medium leading-relaxed text-text placeholder:text-muted/60 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition resize-y shadow-sm ${
+        className={`w-full p-3.5 rounded-[14px] border border-border bg-white/60 backdrop-blur-sm text-[15px] font-medium leading-relaxed text-text placeholder:text-muted/60 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition resize-y shadow-sm ${
           error ? 'border-alert focus:border-alert focus:ring-alert/10' : ''
         } ${className}`}
         {...props}

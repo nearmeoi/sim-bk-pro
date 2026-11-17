@@ -31,7 +31,7 @@ export const InputField: React.FC<InputFieldProps> = ({
           </div>
         )}
         <input
-          className={`w-full min-h-[48px] px-4 rounded-[14px] border border-border bg-surface text-[15px] font-medium text-text placeholder:text-muted/60 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition shadow-sm ${
+          className={`w-full min-h-[48px] px-4 rounded-[14px] border border-border bg-white/60 backdrop-blur-sm text-[15px] font-medium text-text placeholder:text-muted/60 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition shadow-sm ${
             Icon ? 'pl-11' : ''
           } ${error ? 'border-alert focus:border-alert focus:ring-alert/10' : ''} ${className}`}
           {...props}

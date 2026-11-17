@@ -99,7 +99,7 @@ export default function CatatModal({ open, onClose, onSelect }: CatatModalProps)
       <div
         className={`w-full ${
           selectedAction ? 'max-w-2xl' : 'max-w-[480px]'
-        } bg-surface rounded-t-[28px] sm:rounded-[28px] p-5 sm:p-7 shadow-2xl slide-up max-h-[92vh] overflow-y-auto`}
+        } glass-panel rounded-t-[28px] sm:rounded-[28px] p-5 sm:p-7 shadow-2xl slide-up max-h-[92vh] overflow-y-auto`}
         style={{ paddingBottom: 'calc(24px + env(safe-area-inset-bottom, 0px))' }}
         onClick={(e) => e.stopPropagation()}
       >
@@ -203,7 +203,7 @@ export default function CatatModal({ open, onClose, onSelect }: CatatModalProps)
                 <select
                   value={kelas}
                   onChange={(e) => setKelas(e.target.value)}
-                  className="w-full min-h-[48px] px-3.5 rounded-[12px] border border-border text-sm text-text bg-surface focus:outline-none focus:border-primary"
+                  className="w-full min-h-[48px] px-3.5 rounded-[12px] border border-border text-sm text-text bg-white/60 backdrop-blur-sm focus:outline-none focus:border-primary"
                 >
                   {['7A', '7B', '7C', '8A', '8B', '8C', '9A', '9B', '9C', 'Umum'].map((k) => (
                     <option key={k} value={k}>{k}</option>
@@ -219,7 +219,7 @@ export default function CatatModal({ open, onClose, onSelect }: CatatModalProps)
                   type="date"
                   value={tanggal}
                   onChange={(e) => setTanggal(e.target.value)}
-                  className="w-full min-h-[48px] px-3.5 rounded-[12px] border border-border text-sm text-text bg-surface focus:outline-none focus:border-primary"
+                  className="w-full min-h-[48px] px-3.5 rounded-[12px] border border-border text-sm text-text bg-white/60 backdrop-blur-sm focus:outline-none focus:border-primary"
                 />
               </div>
               <div>
@@ -228,7 +228,7 @@ export default function CatatModal({ open, onClose, onSelect }: CatatModalProps)
                   type="time"
                   value={waktu}
                   onChange={(e) => setWaktu(e.target.value)}
-                  className="w-full min-h-[48px] px-3.5 rounded-[12px] border border-border text-sm text-text bg-surface focus:outline-none focus:border-primary"
+                  className="w-full min-h-[48px] px-3.5 rounded-[12px] border border-border text-sm text-text bg-white/60 backdrop-blur-sm focus:outline-none focus:border-primary"
                 />
               </div>
             </div>

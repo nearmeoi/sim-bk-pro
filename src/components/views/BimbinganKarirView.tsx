@@ -15,6 +15,7 @@ import HvsPreviewModal from '../ui/HvsPreviewModal';
 import { useBK } from '../../context/BKContext';
 import { newId } from '../../lib/id';
 import { exportToCsv } from '../../lib/exportCsv';
+import { formatNamaSekolah, formatTahunAjaran } from '../../lib/documentFormat';
 import type { IndividualKarirAngket, NavView } from '../../types';
 import KarirAngketForm from './karir/KarirAngketForm';
 
@@ -208,11 +209,11 @@ export const BimbinganKarirView: React.FC<BimbinganKarirViewProps> = ({ onToast 
       s.rekomendasiBK,
     ]);
     exportToCsv(
-      `Pemetaan_Karir_${settings.namaSekolah.replace(/\s+/g, '_')}_${new Date().toISOString().slice(0, 10)}`,
+      `Pemetaan_Karir_${formatNamaSekolah(settings.namaSekolah, 'Sekolah').replace(/\s+/g, '_')}_${new Date().toISOString().slice(0, 10)}`,
       headers,
       rows
     );
-    onToast(`âœ“ Berhasil mengekspor ${studentList.length} data pemetaan karir ke CSV!`);
+    onToast(`✓ Berhasil mengekspor ${studentList.length} data pemetaan karir ke CSV!`);
   };
 
   const handlePrint = () => {
@@ -415,7 +416,7 @@ export const BimbinganKarirView: React.FC<BimbinganKarirViewProps> = ({ onToast 
               TABULASI PEMETAAN PILIHAN SEKOLAH LANJUTAN ( {kelasFilter.toUpperCase()} )
             </h2>
             <p className="text-xs text-black/80 font-bold mt-0.5">
-              {settings.namaSekolah || 'SIM BK PRO'}, TAHUN AJARAN {settings.tahunAjaran || '2026/2027'}
+              {formatNamaSekolah(settings.namaSekolah, 'SIM-BK')}, TAHUN AJARAN {formatTahunAjaran(settings.tahunAjaran)}
             </p>
           </div>
 
@@ -561,7 +562,7 @@ export const BimbinganKarirView: React.FC<BimbinganKarirViewProps> = ({ onToast 
 
           <div className="mt-5 pt-3 border-t border-black/30 text-[11px] text-muted flex justify-between items-center print:text-black">
             <p>Total: {displayedStudents.length} siswa terdata.</p>
-            <p className="font-semibold">{settings.namaSekolah || 'SIM BK PRO'}</p>
+            <p className="font-semibold">{formatNamaSekolah(settings.namaSekolah, 'SIM-BK')}</p>
           </div>
         </div>
       )}

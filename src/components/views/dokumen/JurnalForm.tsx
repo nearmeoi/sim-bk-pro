@@ -4,6 +4,7 @@ import KopSurat from '../../ui/KopSurat';
 import HvsPreviewModal from '../../ui/HvsPreviewModal';
 import { useBK } from '../../../context/BKContext';
 import { exportToCsv } from '../../../lib/exportCsv';
+import { formatKotaTanggal, formatNamaPejabat, formatNIP, formatNamaSekolah, formatTahunAjaran } from '../../../lib/documentFormat';
 import type { JurnalRow } from '../../../types';
 
 interface JurnalFormProps {
@@ -58,7 +59,7 @@ export const JurnalForm: React.FC<JurnalFormProps> = ({ onBack, onToast }) => {
       r.keterangan,
     ]);
     exportToCsv(
-      `Jurnal_Harian_BK_${settings.namaSekolah.replace(/\s+/g, '_')}_${new Date().toISOString().slice(0, 10)}`,
+      `Jurnal_Harian_BK_${formatNamaSekolah(settings.namaSekolah, 'Sekolah').replace(/\s+/g, '_')}_${new Date().toISOString().slice(0, 10)}`,
       headers,
       exportRows
     );
@@ -255,7 +256,7 @@ export const JurnalForm: React.FC<JurnalFormProps> = ({ onBack, onToast }) => {
 
         <div className="mt-4 pt-3 border-t border-black/30 text-[11px] text-muted flex justify-between items-center">
           <p>Total: {rows.length} Kegiatan Tercatat</p>
-          <p className="font-semibold text-text">{settings.namaSekolah || 'SIM BK PRO'}</p>
+          <p className="font-semibold text-text">{formatNamaSekolah(settings.namaSekolah, 'SIM-BK')}</p>
         </div>
 
         {/* Lembar Tanda Tangan Cetak Jurnal */}
@@ -264,16 +265,16 @@ export const JurnalForm: React.FC<JurnalFormProps> = ({ onBack, onToast }) => {
             <p>Mengetahui,</p>
             <p className="font-bold">Kepala Sekolah</p>
             <div className="mt-14">
-              <p className="font-bold underline text-[11px]">{settings.kepalaSekolah || 'Kepala Sekolah'}</p>
-              <p className="text-[9.5px]">NIP. {settings.nipKepala || '-'}</p>
+              <p className="font-bold underline text-[11px]">{formatNamaPejabat(settings.kepalaSekolah)}</p>
+              <p className="text-[9.5px]">{formatNIP(settings.nipKepala)}</p>
             </div>
           </div>
           <div>
-            <p>{settings.kotaSurat || 'diisi di Pengaturan'}, {new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
+            <p>{formatKotaTanggal(settings.kotaSurat)}</p>
             <p className="font-bold">Guru BK / Konselor</p>
             <div className="mt-14">
-              <p className="font-bold underline text-[11px]">{settings.guruBK || 'Guru BK'}</p>
-              <p className="text-[9.5px]">NIP. {settings.nipGuruBK || '-'}</p>
+              <p className="font-bold underline text-[11px]">{formatNamaPejabat(settings.guruBK, 'Guru BK / Konselor')}</p>
+              <p className="text-[9.5px]">{formatNIP(settings.nipGuruBK)}</p>
             </div>
           </div>
         </div>
@@ -288,7 +289,7 @@ export const JurnalForm: React.FC<JurnalFormProps> = ({ onBack, onToast }) => {
         <KopSurat
           settings={settings}
           judul="JURNAL HARIAN KEGIATAN BIMBINGAN & KONSELING"
-          subjudul={`TAHUN AJARAN ${settings.tahunAjaran || '2026/2027'}`}
+        subjudul={`TAHUN AJARAN ${formatTahunAjaran(settings.tahunAjaran)}`}
         />
         <div className="overflow-x-auto border-t border-black">
           <table className="w-full text-[10.5px] border-collapse border border-black mb-6 min-w-[500px]">
@@ -322,16 +323,16 @@ export const JurnalForm: React.FC<JurnalFormProps> = ({ onBack, onToast }) => {
             <p>Mengetahui,</p>
             <p className="font-bold">Kepala Sekolah</p>
             <div className="mt-16">
-              <p className="font-bold underline">{settings.kepalaSekolah || 'Belum Diisi di Pengaturan'}</p>
-              <p>NIP. {settings.nipKepala || '19750101 200003 1 001'}</p>
+              <p className="font-bold underline">{formatNamaPejabat(settings.kepalaSekolah)}</p>
+              <p>{formatNIP(settings.nipKepala)}</p>
             </div>
           </div>
           <div>
-            <p>{settings.kotaSurat || 'diisi di Pengaturan'}, {new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
+            <p>{formatKotaTanggal(settings.kotaSurat)}</p>
             <p className="font-bold">Guru BK / Konselor</p>
             <div className="mt-16">
-              <p className="font-bold underline">{settings.guruBK || 'Belum Diisi di Pengaturan'}</p>
-              <p>NIP. {settings.nipGuruBK || '19880512 201402 2 003'}</p>
+              <p className="font-bold underline">{formatNamaPejabat(settings.guruBK, 'Guru BK / Konselor')}</p>
+              <p>{formatNIP(settings.nipGuruBK)}</p>
             </div>
           </div>
         </div>

@@ -224,7 +224,7 @@ export const BerandaView: React.FC<BerandaViewProps> = ({ onNav, onCatat }) => {
                 {cases.filter((c) => c.status === 'Proses').length === 0 ? (
                   <tr>
                     <td colSpan={7} className="border border-black p-4 text-center text-xs text-gray-500 italic">
-                      âœ“ Tidak ada kasus mendesak yang sedang berjalan saat ini. Semua tertangani dengan baik.
+                      ✓ Tidak ada kasus mendesak yang sedang berjalan saat ini. Semua tertangani dengan baik.
                     </td>
                   </tr>
                 ) : (

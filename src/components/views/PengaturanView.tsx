@@ -8,7 +8,7 @@ import KopSurat, { TutWuriEmblem } from '../ui/KopSurat';
 import { confirmDialog } from '../ui/ConfirmModal';
 import { useBK } from '../../context/BKContext';
 import type { SchoolSettings } from '../../types';
-
+import { formatKotaTanggal, formatNamaPejabat, formatNIP } from '../../lib/documentFormat';
 interface PengaturanViewProps {
   onToast: (msg: string) => void;
 }
@@ -290,7 +290,7 @@ export const PengaturanView: React.FC<PengaturanViewProps> = ({ onToast }) => {
                 <p className="text-[11px] text-muted mt-0.5 leading-snug">
                   {formSettings.logoUrl
                     ? 'Logo kiri khusus aktif (JPG/PNG)'
-                    : 'Default: Lambang Pemda Makassar'}
+                    : 'Default: Lambang Standar'}
                 </p>
               </div>
             </div>
@@ -400,8 +400,7 @@ export const PengaturanView: React.FC<PengaturanViewProps> = ({ onToast }) => {
               type="text"
               value={formSettings.instansiAtas || ''}
               onChange={(e) => setFormSettings((s) => ({ ...s, instansiAtas: e.target.value }))}
-              placeholder="Contoh: PEMERINTAH KOTA MAKASSAR"
-              className="w-full min-h-[48px] px-4 rounded-[12px] border border-border text-sm font-medium text-text placeholder:text-muted/60 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition shadow-sm"
+              placeholder="Contoh: PEMERINTAH DAERAH / DINAS PENDIDIKAN"
             />
           </div>
 
@@ -417,8 +416,7 @@ export const PengaturanView: React.FC<PengaturanViewProps> = ({ onToast }) => {
               type="text"
               value={formSettings.namaSekolah}
               onChange={(e) => setFormSettings((s) => ({ ...s, namaSekolah: e.target.value }))}
-              placeholder="Contoh: UPT SPF NAMA SEKOLAH Ibu"
-              className="w-full min-h-[48px] px-4 rounded-[12px] border border-border text-sm font-bold text-text placeholder:text-muted/60 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition shadow-sm"
+              placeholder="Contoh: SMP NEGERI 1 CONTOH"
             />
           </div>
 
@@ -450,8 +448,7 @@ export const PengaturanView: React.FC<PengaturanViewProps> = ({ onToast }) => {
                 type="text"
                 value={formSettings.kotaSurat || ''}
                 onChange={(e) => setFormSettings((s) => ({ ...s, kotaSurat: e.target.value }))}
-                placeholder="Makassar"
-                className="w-full min-h-[48px] px-4 rounded-[12px] border border-border text-sm font-medium text-text placeholder:text-muted/60 focus:outline-none focus:border-primary shadow-sm"
+                placeholder="Contoh: Jakarta / Surabaya / Makassar"
               />
             </div>
           </div>
@@ -466,8 +463,7 @@ export const PengaturanView: React.FC<PengaturanViewProps> = ({ onToast }) => {
               rows={2}
               value={formSettings.alamat}
               onChange={(e) => setFormSettings((s) => ({ ...s, alamat: e.target.value }))}
-              placeholder="Contoh: Jl. Jend. A. Yani No. 25 Makassar RT/RW: 002/002 Kec. Ujung Pandang Kota Makassar"
-              className="w-full p-3.5 rounded-[12px] border border-border text-sm leading-relaxed text-text placeholder:text-muted/60 focus:outline-none focus:border-primary resize-y shadow-sm"
+              placeholder="Contoh: Jl. Pendidikan No. 10, Kel. Sukamaju, Kec. Cilandak, Kota ..."
             />
           </div>
 
@@ -479,8 +475,7 @@ export const PengaturanView: React.FC<PengaturanViewProps> = ({ onToast }) => {
                 type="text"
                 value={formSettings.teleponSekolah || ''}
                 onChange={(e) => setFormSettings((s) => ({ ...s, teleponSekolah: e.target.value }))}
-                placeholder="Contoh: Telp.04118941314 Fax.04113617626"
-                className="w-full min-h-[48px] px-4 rounded-[12px] border border-border text-sm font-medium text-text placeholder:text-muted/60 focus:outline-none focus:border-primary shadow-sm"
+                placeholder="Contoh: Telp. (021) 1234567"
               />
             </div>
             <div>
@@ -489,8 +484,7 @@ export const PengaturanView: React.FC<PengaturanViewProps> = ({ onToast }) => {
                 type="text"
                 value={formSettings.emailSekolah || ''}
                 onChange={(e) => setFormSettings((s) => ({ ...s, emailSekolah: e.target.value }))}
-                placeholder="Contoh: smpn06.mks@gmail.com"
-                className="w-full min-h-[48px] px-4 rounded-[12px] border border-border text-sm font-medium text-text placeholder:text-muted/60 focus:outline-none focus:border-primary shadow-sm"
+                placeholder="Contoh: sekolah@gmail.com"
               />
             </div>
           </div>
@@ -519,8 +513,7 @@ export const PengaturanView: React.FC<PengaturanViewProps> = ({ onToast }) => {
                 type="text"
                 value={formSettings.kepalaSekolah}
                 onChange={(e) => setFormSettings((s) => ({ ...s, kepalaSekolah: e.target.value }))}
-                placeholder="Contoh: Belum Diisi di Pengaturan"
-                className="w-full min-h-[48px] px-4 rounded-[12px] border border-border text-sm font-medium text-text focus:outline-none focus:border-primary shadow-sm"
+                placeholder="Contoh: Drs. H. Ahmad, M.Pd."
               />
             </div>
             <div>
@@ -544,8 +537,7 @@ export const PengaturanView: React.FC<PengaturanViewProps> = ({ onToast }) => {
                 type="text"
                 value={formSettings.guruBK}
                 onChange={(e) => setFormSettings((s) => ({ ...s, guruBK: e.target.value }))}
-                placeholder="Contoh: Belum Diisi di Pengaturan"
-                className="w-full min-h-[48px] px-4 rounded-[12px] border border-border text-sm font-medium text-text focus:outline-none focus:border-primary shadow-sm"
+                placeholder="Contoh: Siti Rahma, S.Pd., M.Kons."
               />
             </div>
             <div>
@@ -582,7 +574,7 @@ export const PengaturanView: React.FC<PengaturanViewProps> = ({ onToast }) => {
           <KopSurat
             settings={formSettings}
             judul="SURAT KETERANGAN"
-            nomorSurat="423.10/620/SMPN.6/VI/2026"
+            nomorSurat={`423.10/001/BK/${new Date().getFullYear()}`}
           />
 
           <div className="p-3 my-4 bg-gray-50 border border-gray-200 rounded text-center text-xs text-gray-600 italic">
@@ -596,26 +588,25 @@ export const PengaturanView: React.FC<PengaturanViewProps> = ({ onToast }) => {
               <p className="font-bold text-black mt-0.5">Kepala Sekolah</p>
               <div className="mt-16">
                 <p className="font-bold text-black underline underline-offset-4 text-[13px]">
-                  {formSettings.kepalaSekolah || 'Belum Diisi di Pengaturan'}
+                  {formatNamaPejabat(formSettings.kepalaSekolah)}
                 </p>
                 <p className="text-gray-700 mt-1 text-[11px]">
-                  NIP. {formSettings.nipKepala || '19750101 200003 1 001'}
+                  {formatNIP(formSettings.nipKepala)}
                 </p>
               </div>
             </div>
 
             <div>
               <p className="text-gray-700">
-                {formSettings.kotaSurat || 'diisi di Pengaturan'},{' '}
-                {new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}
+                {formatKotaTanggal(formSettings.kotaSurat)}
               </p>
               <p className="font-bold text-black mt-0.5">Guru BK / Konselor</p>
               <div className="mt-16">
                 <p className="font-bold text-black underline underline-offset-4 text-[13px]">
-                  {formSettings.guruBK || 'Belum Diisi di Pengaturan'}
+                  {formatNamaPejabat(formSettings.guruBK, 'Guru BK / Konselor')}
                 </p>
                 <p className="text-gray-700 mt-1 text-[11px]">
-                  NIP. {formSettings.nipGuruBK || '19880512 201402 2 003'}
+                  {formatNIP(formSettings.nipGuruBK)}
                 </p>
               </div>
             </div>

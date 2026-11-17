@@ -4,7 +4,7 @@ import KopSurat from '../../ui/KopSurat';
 import HvsPreviewModal from '../../ui/HvsPreviewModal';
 import { useBK } from '../../../context/BKContext';
 import { exportToCsv } from '../../../lib/exportCsv';
-
+import { formatKotaTanggal, formatNamaPejabat, formatNIP, formatNamaSekolah } from '../../../lib/documentFormat';
 interface LapbulFormProps {
   onBack: () => void;
   onToast: (msg: string) => void;
@@ -87,7 +87,7 @@ export const LapbulForm: React.FC<LapbulFormProps> = ({ onBack, onToast }) => {
       ['Bidang Karir', BULAN_OPTIONS[selectedBulan], String(selectedTahun), String(bidangStats.karir), 'Kasus'],
     ];
     exportToCsv(
-      `Laporan_Bulanan_BK_${BULAN_OPTIONS[selectedBulan]}_${selectedTahun}_${settings.namaSekolah.replace(/\s+/g, '_')}`,
+      `Laporan_Bulanan_BK_${BULAN_OPTIONS[selectedBulan]}_${selectedTahun}_${formatNamaSekolah(settings.namaSekolah, 'Sekolah').replace(/\s+/g, '_')}`,
       headers,
       exportRows
     );
@@ -183,7 +183,7 @@ export const LapbulForm: React.FC<LapbulFormProps> = ({ onBack, onToast }) => {
             BULAN {BULAN_OPTIONS[selectedBulan].toUpperCase()} TAHUN {selectedTahun}
           </p>
           <p className="text-[11px] text-black/70 font-medium mt-0.5">
-            {settings.namaSekolah || 'SMP NEGERI 1 BINTANG'}
+            {formatNamaSekolah(settings.namaSekolah, 'Bimbingan & Konseling')}
           </p>
         </div>
 
@@ -318,16 +318,16 @@ export const LapbulForm: React.FC<LapbulFormProps> = ({ onBack, onToast }) => {
             <p>Mengetahui,</p>
             <p className="font-bold">Kepala Sekolah</p>
             <div className="mt-16">
-              <p className="font-bold underline">{settings.kepalaSekolah || 'Drs. H. Mulyadi Kusuma, M.Pd.'}</p>
-              <p>NIP. {settings.nipKepala || '19750101 200003 1 001'}</p>
+              <p className="font-bold underline">{formatNamaPejabat(settings.kepalaSekolah)}</p>
+              <p>{formatNIP(settings.nipKepala)}</p>
             </div>
           </div>
           <div>
-            <p>{settings.kotaSurat || 'Makassar'}, {new Date().getDate()} {BULAN_OPTIONS[new Date().getMonth()]} {new Date().getFullYear()}</p>
+            <p>{formatKotaTanggal(settings.kotaSurat)}</p>
             <p className="font-bold">Guru Bimbingan & Konseling</p>
             <div className="mt-16">
-              <p className="font-bold underline">{settings.guruBK || 'Siti Rahmawati, S.Pd., M.Kons., Gr.'}</p>
-              <p>NIP. {settings.nipGuruBK || '19880512 201402 2 003'}</p>
+              <p className="font-bold underline">{formatNamaPejabat(settings.guruBK, 'Guru BK / Konselor')}</p>
+              <p>{formatNIP(settings.nipGuruBK)}</p>
             </div>
           </div>
         </div>
@@ -436,16 +436,16 @@ export const LapbulForm: React.FC<LapbulFormProps> = ({ onBack, onToast }) => {
             <p>Mengetahui,</p>
             <p className="font-bold">Kepala Sekolah</p>
             <div className="mt-16">
-              <p className="font-bold underline">{settings.kepalaSekolah || 'Drs. H. Mulyadi Kusuma, M.Pd.'}</p>
-              <p>NIP. {settings.nipKepala || '19750101 200003 1 001'}</p>
+              <p className="font-bold underline">{formatNamaPejabat(settings.kepalaSekolah)}</p>
+              <p>{formatNIP(settings.nipKepala)}</p>
             </div>
           </div>
           <div>
-            <p>{settings.kotaSurat || 'Makassar'}, {new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
+            <p>{formatKotaTanggal(settings.kotaSurat)}</p>
             <p className="font-bold">Guru BK / Konselor</p>
             <div className="mt-16">
-              <p className="font-bold underline">{settings.guruBK || 'Siti Rahmawati, S.Pd., M.Kons., Gr.'}</p>
-              <p>NIP. {settings.nipGuruBK || '19880512 201402 2 003'}</p>
+              <p className="font-bold underline">{formatNamaPejabat(settings.guruBK, 'Guru BK / Konselor')}</p>
+              <p>{formatNIP(settings.nipGuruBK)}</p>
             </div>
           </div>
         </div>

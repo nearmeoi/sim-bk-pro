@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.tsx'
 import './index.css'
+import '@zakisheriff/liquid-glass/styles.css'
 import { registerSW } from 'virtual:pwa-register'
 
 // PWA: daftarkan service worker agar aplikasi bisa dipasang ke layar utama HP

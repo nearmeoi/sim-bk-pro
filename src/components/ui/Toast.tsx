@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { GlassCard } from '@zakisheriff/liquid-glass';
 
 interface ToastProps {
   message: string | null;
@@ -31,9 +32,15 @@ export default function Toast({ message }: ToastProps) {
         'lg:!top-auto lg:!bottom-8 lg:max-w-md'
       }
     >
-      <div className="bg-[#1B2236] text-white text-[14px] sm:text-[15px] font-semibold px-5 py-3.5 rounded-[16px] shadow-2xl text-center leading-relaxed border border-white/15 ring-1 ring-black/10">
+      <GlassCard
+        padding="0px"
+        radius="16px"
+        tint="rgb(27 34 54 / 0.92)"
+        className="text-[14px] sm:text-[15px] font-semibold px-5 py-3.5 shadow-2xl text-center leading-relaxed"
+        style={{ color: '#fff' }}
+      >
         {message}
-      </div>
+      </GlassCard>
     </div>
   );
 }

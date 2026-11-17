@@ -75,14 +75,13 @@ export const KopSurat: React.FC<KopSuratProps> = ({
   className = '',
   compact = false,
 }) => {
-  const instansi = settings.instansiAtas || 'PEMERINTAH KOTA MAKASSAR';
-  const namaSekolah = settings.namaSekolah || 'UPT SPF NAMA SEKOLAH Ibu';
-  const alamat = settings.alamat || 'Jl. Jend. A. Yani No. 25 Makassar RT/RW: 002/002 Kec. Ujung Pandang Kota Makassar';
+  const instansi = settings.instansiAtas?.trim() || '';
+  const namaSekolah = settings.namaSekolah?.trim() || 'NAMA SATUAN PENDIDIKAN';
+  const alamat = settings.alamat?.trim() || '';
   const npsn = settings.npsn ? `NPSN: ${settings.npsn}` : '';
   const kontak = [settings.teleponSekolah || '', settings.emailSekolah ? `Email: ${settings.emailSekolah}` : '']
     .filter(Boolean)
     .join(' ');
-
   return (
     <div className={`text-black font-sans ${className}`}>
       {/* ======================================================== */}
@@ -99,15 +98,15 @@ export const KopSurat: React.FC<KopSuratProps> = ({
                 className="max-w-full max-h-full object-contain"
               />
             ) : (
-              <div className="w-full h-full flex flex-col items-center justify-center p-1 border border-black/60 rounded-xs bg-gray-50 text-center font-sans">
-                <div className="w-8 h-8 rounded-full border-2 border-alert bg-alert-tint flex items-center justify-center text-alert font-black text-xs">
-                  MKS
+              <div className="w-full h-full flex flex-col items-center justify-center p-1 border border-black/40 rounded-xs bg-gray-50 text-center font-sans">
+                <div className="w-8 h-8 rounded-full border-2 border-neutral-700 bg-neutral-100 flex items-center justify-center text-neutral-800 font-black text-xs">
+                  BK
                 </div>
-                <span className="text-[7.5px] font-black uppercase tracking-tight text-black mt-1 leading-none">
-                  PEMDA
+                <span className="text-[7.5px] font-bold uppercase tracking-tight text-black mt-1 leading-none">
+                  LOGO
                 </span>
-                <span className="text-[6.5px] text-gray-700 font-bold leading-none mt-0.5">
-                  KOTA MAKASSAR
+                <span className="text-[6.5px] text-gray-600 font-medium leading-none mt-0.5">
+                  SEKOLAH
                 </span>
               </div>
             )}
@@ -115,16 +114,17 @@ export const KopSurat: React.FC<KopSuratProps> = ({
 
           {/* 2. TENGAH: IDENTITAS LENGKAP SEKOLAH */}
           <div className="flex-1 text-center min-w-0 px-1 sm:px-2">
-            {/* Baris 1: Instansi Atas (PEMERINTAH KOTA MAKASSAR) */}
-            <h3
-              className={`font-bold uppercase tracking-wide text-black ${
-                compact ? 'text-[11px] sm:text-xs' : 'text-xs sm:text-[14px]'
-              }`}
-            >
-              {instansi}
-            </h3>
-
-            {/* Baris 2: Nama Lengkap Sekolah (UPT SPF NAMA SEKOLAH Ibu) */}
+            {/* Baris 1: Instansi Pembina / Atas */}
+            {instansi && (
+              <h3
+                className={`font-bold uppercase tracking-wide text-black ${
+                  compact ? 'text-[11px] sm:text-xs' : 'text-xs sm:text-[14px]'
+                }`}
+              >
+                {instansi}
+              </h3>
+            )}
+            {/* Baris 2: Nama Lengkap Sekolah */}
             <h1
               className={`font-black uppercase tracking-tight text-black leading-tight mt-0.5 ${
                 compact ? 'text-sm sm:text-lg' : 'text-base sm:text-[22px]'
@@ -134,14 +134,15 @@ export const KopSurat: React.FC<KopSuratProps> = ({
             </h1>
 
             {/* Baris 3: NPSN & Alamat Lengkap */}
-            <p
-              className={`text-black mt-1 leading-tight ${
-                compact ? 'text-[9.5px] sm:text-[10.5px]' : 'text-[10px] sm:text-[11.5px]'
-              }`}
-            >
-              {npsn ? `${npsn}, ` : ''}{alamat}
-            </p>
-
+            {(npsn || alamat) && (
+              <p
+                className={`text-black mt-1 leading-tight ${
+                  compact ? 'text-[9.5px] sm:text-[10.5px]' : 'text-[10px] sm:text-[11.5px]'
+                }`}
+              >
+                {npsn ? `${npsn}${alamat ? ', ' : ''}` : ''}{alamat}
+              </p>
+            )}
             {/* Baris 4: Telepon, Fax, dan Email */}
             {kontak && (
               <p

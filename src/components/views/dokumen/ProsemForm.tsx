@@ -4,8 +4,8 @@ import KopSurat from '../../ui/KopSurat';
 import HvsPreviewModal from '../../ui/HvsPreviewModal';
 import { useBK } from '../../../context/BKContext';
 import { exportToCsv } from '../../../lib/exportCsv';
+import { formatKotaTanggal, formatNamaPejabat, formatNIP, formatNamaSekolah, formatTahunAjaran } from '../../../lib/documentFormat';
 import type { ProsemItem } from '../../../types';
-
 interface ProsemFormProps {
   onBack: () => void;
   onToast: (msg: string) => void;
@@ -262,7 +262,7 @@ export const ProsemForm: React.FC<ProsemFormProps> = ({ onBack, onToast }) => {
       item.keterangan,
     ]);
     exportToCsv(
-      `Program_Semester_BK_${settings.namaSekolah.replace(/\s+/g, '_')}_${new Date().toISOString().slice(0, 10)}`,
+      `Program_Semester_BK_${formatNamaSekolah(settings.namaSekolah, 'Sekolah').replace(/\s+/g, '_')}_${new Date().toISOString().slice(0, 10)}`,
       headers,
       exportRows
     );
@@ -338,8 +338,8 @@ export const ProsemForm: React.FC<ProsemFormProps> = ({ onBack, onToast }) => {
             PROGRAM SEMESTER (PROSEM) BIMBINGAN & KONSELING
           </h2>
           <p className="text-xs text-black/80 font-bold mt-0.5">
-            {settings.namaSekolah || 'SMP NEGERI 1 BINTANG'}, TAHUN AJARAN{' '}
-            {settings.tahunAjaran || '2026/2027'}
+            {formatNamaSekolah(settings.namaSekolah, 'Bimbingan & Konseling')}, TAHUN AJARAN{' '}
+            {formatTahunAjaran(settings.tahunAjaran)}
           </p>
         </div>
 
@@ -435,15 +435,34 @@ export const ProsemForm: React.FC<ProsemFormProps> = ({ onBack, onToast }) => {
           </table>
         </div>
 
-        <div className="border-t border-black pt-4 mt-4 text-[11px] text-black flex justify-between items-center">
-          <p>Dokumen Program Semester BK – {settings.tahunAjaran || '2026/2027'}</p>
+        <div className="border-t border-black pt-4 mt-4 text-[11px] text-black flex justify-between items-center print:hidden">
+          <p>Dokumen Program Semester BK – {formatTahunAjaran(settings.tahunAjaran)}</p>
           <p className="font-bold">
-            {settings.guruBK || 'Guru Bimbingan & Konseling'} –{' '}
-            {settings.namaSekolah || 'SMP Negeri 1 Bintang'}
+            {formatNamaPejabat(settings.guruBK, 'Guru Bimbingan & Konseling')} –{' '}
+            {formatNamaSekolah(settings.namaSekolah, 'Satuan Pendidikan')}
           </p>
         </div>
-      </div>
 
+        {/* Lembar Tanda Tangan Cetak Prosem */}
+        <div className="hidden print:grid grid-cols-2 text-center text-xs pt-6 print:break-inside-avoid">
+          <div>
+            <p>Mengetahui,</p>
+            <p className="font-bold">Kepala Sekolah</p>
+            <div className="mt-14">
+              <p className="font-bold underline text-[11px]">{formatNamaPejabat(settings.kepalaSekolah)}</p>
+              <p className="text-[9.5px]">{formatNIP(settings.nipKepala)}</p>
+            </div>
+          </div>
+          <div>
+            <p>{formatKotaTanggal(settings.kotaSurat)}</p>
+            <p className="font-bold">Guru BK / Konselor</p>
+            <div className="mt-14">
+              <p className="font-bold underline text-[11px]">{formatNamaPejabat(settings.guruBK, 'Guru BK / Konselor')}</p>
+              <p className="text-[9.5px]">{formatNIP(settings.nipGuruBK)}</p>
+            </div>
+          </div>
+        </div>
+      </div>
       {/* Modal Tambah/Edit */}
       {modalOpen && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
@@ -591,7 +610,7 @@ export const ProsemForm: React.FC<ProsemFormProps> = ({ onBack, onToast }) => {
         <KopSurat
           settings={settings}
           judul="PROGRAM SEMESTER (PROSEM) BIMBINGAN & KONSELING"
-          subjudul={`${settings.namaSekolah || 'SMP NEGERI 1 BINTANG'} · TAHUN AJARAN ${settings.tahunAjaran || '2026/2027'}`}
+          subjudul={`${formatNamaSekolah(settings.namaSekolah, 'Bimbingan & Konseling')} · TAHUN AJARAN ${formatTahunAjaran(settings.tahunAjaran)}`}
         />
 
         <table className="w-full text-[10px] border-collapse border border-black mb-6 min-w-[600px]">
@@ -627,16 +646,16 @@ export const ProsemForm: React.FC<ProsemFormProps> = ({ onBack, onToast }) => {
             <p>Mengetahui,</p>
             <p className="font-bold">Kepala Sekolah</p>
             <div className="mt-16">
-              <p className="font-bold underline">{settings.kepalaSekolah || 'Drs. H. Mulyadi Kusuma, M.Pd.'}</p>
-              <p>NIP. {settings.nipKepala || '19750101 200003 1 001'}</p>
+              <p className="font-bold underline">{formatNamaPejabat(settings.kepalaSekolah)}</p>
+              <p>{formatNIP(settings.nipKepala)}</p>
             </div>
           </div>
           <div>
-            <p>{settings.kotaSurat || 'Makassar'}, {new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
+            <p>{formatKotaTanggal(settings.kotaSurat)}</p>
             <p className="font-bold">Guru BK / Konselor</p>
             <div className="mt-16">
-              <p className="font-bold underline">{settings.guruBK || 'Siti Rahmawati, S.Pd., M.Kons., Gr.'}</p>
-              <p>NIP. {settings.nipGuruBK || '19880512 201402 2 003'}</p>
+              <p className="font-bold underline">{formatNamaPejabat(settings.guruBK, 'Guru BK / Konselor')}</p>
+              <p>{formatNIP(settings.nipGuruBK)}</p>
             </div>
           </div>
         </div>

@@ -21,6 +21,18 @@
   --rc: 20px;
   --rx: 14px;
   --tap: 48px;
+
+  /* ============================================================ */
+  /* LIQUID GLASS THEME — bridge token @zakisheriff/liquid-glass   */
+  /* Kaca mengikuti palet oranye app (accent #E86A33)             */
+  /* ============================================================ */
+  --lg-accent: #E86A33;
+  --lg-ring: rgb(232 106 51 / 0.5);
+  --lg-fill: rgb(255 255 255 / 0.66);
+  --lg-fill-pressed: rgb(255 255 255 / 0.92);
+  --lg-panel-fill: rgb(255 255 255 / 0.62);
+  --lg-panel-blur: 28px;
+  --lg-glow: rgb(255 163 108 / 0.35);
 }
 
 html {
@@ -333,6 +345,104 @@ body {
 .no-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+
+/* ============================================================ */
+/* LIQUID GLASS SURFACES                                        */
+/* Nilai fill/blur/saturate/brightness mengikuti base.css        */
+/* @zakisheriff/liquid-glass agar seragam dengan komponen Glass* */
+/* ============================================================ */
+body {
+  background:
+    radial-gradient(640px 420px at 8% -4%, rgb(255 163 108 / 0.16), transparent 68%),
+    radial-gradient(560px 380px at 96% 4%, rgb(255 138 61 / 0.12), transparent 70%),
+    radial-gradient(700px 520px at 50% 108%, rgb(255 229 204 / 0.32), transparent 72%),
+    var(--bg);
+  background-attachment: fixed;
+}
+
+.glass {
+  background: var(--lg-fill);
+  -webkit-backdrop-filter: blur(var(--lg-blur)) saturate(var(--lg-saturate)) brightness(var(--lg-brightness));
+  backdrop-filter: blur(var(--lg-blur)) saturate(var(--lg-saturate)) brightness(var(--lg-brightness));
+  border: 1px solid var(--lg-edge);
+  box-shadow: var(--lg-shadow);
+}
+
+.glass-panel {
+  background: var(--lg-panel-fill);
+  -webkit-backdrop-filter: blur(var(--lg-panel-blur)) saturate(var(--lg-saturate)) brightness(var(--lg-brightness));
+  backdrop-filter: blur(var(--lg-panel-blur)) saturate(var(--lg-saturate)) brightness(var(--lg-brightness));
+  border: 1px solid var(--lg-edge);
+  box-shadow: var(--lg-shadow);
+}
+
+/* Cards & rows: dari surface solid menjadi liquid glass */
+.bk-card {
+  background: var(--lg-fill);
+  -webkit-backdrop-filter: blur(var(--lg-blur)) saturate(var(--lg-saturate)) brightness(var(--lg-brightness));
+  backdrop-filter: blur(var(--lg-blur)) saturate(var(--lg-saturate)) brightness(var(--lg-brightness));
+  border: 1px solid var(--lg-edge);
+  box-shadow: var(--lg-shadow);
+}
+
+.bk-row {
+  background: var(--lg-fill);
+  -webkit-backdrop-filter: blur(var(--lg-blur)) saturate(var(--lg-saturate)) brightness(var(--lg-brightness));
+  backdrop-filter: blur(var(--lg-blur)) saturate(var(--lg-saturate)) brightness(var(--lg-brightness));
+  border: 1px solid var(--lg-edge);
+  box-shadow: var(--lg-shadow);
+}
+
+.bk-row:active {
+  background: var(--lg-fill-pressed);
+}
+
+.bk-tile {
+  background: var(--lg-fill);
+  -webkit-backdrop-filter: blur(var(--lg-blur)) saturate(var(--lg-saturate)) brightness(var(--lg-brightness));
+  backdrop-filter: blur(var(--lg-blur)) saturate(var(--lg-saturate)) brightness(var(--lg-brightness));
+  border: 1px solid var(--lg-edge);
+}
+
+.bk-chip {
+  background: var(--lg-fill);
+  -webkit-backdrop-filter: blur(var(--lg-blur)) saturate(var(--lg-saturate)) brightness(var(--lg-brightness));
+  backdrop-filter: blur(var(--lg-blur)) saturate(var(--lg-saturate)) brightness(var(--lg-brightness));
+  border: 1px solid var(--lg-edge);
+}
+
+/* Tombol sekunder (ghost) ikut jadi kaca */
+.bk-btn.ghost {
+  background: var(--lg-fill);
+  -webkit-backdrop-filter: blur(var(--lg-blur)) saturate(var(--lg-saturate)) brightness(var(--lg-brightness));
+  backdrop-filter: blur(var(--lg-blur)) saturate(var(--lg-saturate)) brightness(var(--lg-brightness));
+  border: 1px solid var(--lg-edge);
+}
+
+/* Skeleton tetap terbaca di atas kaca */
+.skeleton {
+  background: linear-gradient(100deg, rgb(238 240 250 / 0.9) 40%, rgb(247 248 253 / 0.9) 50%, rgb(238 240 250 / 0.9) 60%);
+}
+
+/* Aman cetak: kaca kembali jadi kertas putih solid tanpa blur */
+@media print {
+  body {
+    background: #ffffff !important;
+  }
+  .glass,
+  .glass-panel,
+  .bk-card,
+  .bk-row,
+  .bk-tile,
+  .bk-chip,
+  .bk-btn.ghost {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+    background: #ffffff !important;
+    border-color: #000 !important;
+    box-shadow: none !important;
+  }
 }
 
 /* ======================================================== */

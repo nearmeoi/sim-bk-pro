@@ -56,7 +56,7 @@ export const ProfilView: React.FC<ProfilViewProps> = ({ onNav, onToast }) => {
       <div className="bk-card p-6 sm:p-8 space-y-6">
         <div className="flex flex-col sm:flex-row items-center sm:items-start gap-5 text-center sm:text-left border-b border-border pb-6">
           <div className="w-20 h-20 rounded-full bg-primary text-white flex items-center justify-center font-extrabold text-3xl shadow-md shrink-0">
-            {settings.guruBK.trim().charAt(0) || 'G'}
+            {settings.guruBK?.trim()?.charAt(0) || 'G'}
           </div>
 
           <div className="space-y-1 flex-1">

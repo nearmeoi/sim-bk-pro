@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { ArrowLeft, Printer, Save, Sparkles, BookOpen, Eye } from 'lucide-react';
 import KopSurat from '../../ui/KopSurat';
 import HvsPreviewModal from '../../ui/HvsPreviewModal';
+import { formatKotaTanggal, formatNamaPejabat, formatNIP, formatNamaSekolah, formatTahunAjaran } from '../../../lib/documentFormat';
 import { useBK } from '../../../context/BKContext';
 interface RplFormProps {
   onBack: () => void;
@@ -109,7 +110,7 @@ export const RplForm: React.FC<RplFormProps> = ({ onBack, onToast }) => {
             RPL 1-Lembar (Bimbingan Klasikal)
           </h1>
           <p className="text-sm text-muted mt-0.5">
-            {settings.namaSekolah}
+            {formatNamaSekolah(settings.namaSekolah, 'Bimbingan & Konseling')}
           </p>
         </div>
 
@@ -289,7 +290,7 @@ export const RplForm: React.FC<RplFormProps> = ({ onBack, onToast }) => {
             RENCANA PELAKSANAAN LAYANAN (RPL) BIMBINGAN KLASIKAL
           </h2>
           <p className="text-[10px] font-bold text-gray-800">
-            SEMESTER GANJIL / GENAP · TAHUN AJARAN {settings.tahunAjaran || '2026/2027'}
+            SEMESTER GANJIL / GENAP · TAHUN AJARAN {formatTahunAjaran(settings.tahunAjaran)}
           </p>
         </div>
 
@@ -396,20 +397,20 @@ export const RplForm: React.FC<RplFormProps> = ({ onBack, onToast }) => {
             <p className="font-bold">Kepala Sekolah</p>
             <div className="mt-12">
               <p className="font-bold underline text-[11px]">
-                {settings.kepalaSekolah || 'Belum Diisi di Pengaturan'}
+                {formatNamaPejabat(settings.kepalaSekolah)}
               </p>
-              <p className="text-[9.5px]">NIP. {settings.nipKepala || '19750101 200003 1 001'}</p>
+              <p className="text-[9.5px]">{formatNIP(settings.nipKepala)}</p>
             </div>
           </div>
 
           <div>
-            <p>{settings.kotaSurat || 'diisi di Pengaturan'}, {new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
+            <p>{formatKotaTanggal(settings.kotaSurat)}</p>
             <p className="font-bold">Guru Bimbingan dan Konseling</p>
             <div className="mt-12">
               <p className="font-bold underline text-[11px]">
-                {settings.guruBK || 'Belum Diisi di Pengaturan'}
+                {formatNamaPejabat(settings.guruBK, 'Guru BK / Konselor')}
               </p>
-              <p className="text-[9.5px]">NIP. {settings.nipGuruBK || '19880512 201402 2 003'}</p>
+              <p className="text-[9.5px]">{formatNIP(settings.nipGuruBK)}</p>
             </div>
           </div>
         </div>
@@ -432,7 +433,7 @@ export const RplForm: React.FC<RplFormProps> = ({ onBack, onToast }) => {
             RENCANA PELAKSANAAN LAYANAN (RPL) BIMBINGAN KLASIKAL
           </h2>
           <p className="text-[10.5px] font-bold text-gray-800">
-            SEMESTER GANJIL / GENAP · TAHUN AJARAN {settings.tahunAjaran || '2026/2027'}
+            SEMESTER GANJIL / GENAP · TAHUN AJARAN {formatTahunAjaran(settings.tahunAjaran)}
           </p>
         </div>
         <div className="overflow-x-auto border-t border-black">
@@ -488,16 +489,16 @@ export const RplForm: React.FC<RplFormProps> = ({ onBack, onToast }) => {
             <p>Mengetahui,</p>
             <p className="font-bold">Kepala Sekolah</p>
             <div className="mt-14">
-              <p className="font-bold underline text-[11px]">{settings.kepalaSekolah || 'Kepala Sekolah'}</p>
-              <p className="text-[9.5px]">NIP. {settings.nipKepala || '-'}</p>
+              <p className="font-bold underline text-[11px]">{formatNamaPejabat(settings.kepalaSekolah)}</p>
+              <p className="text-[9.5px]">{formatNIP(settings.nipKepala)}</p>
             </div>
           </div>
           <div>
-            <p>{settings.kotaSurat || 'diisi di Pengaturan'}, {new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
+            <p>{formatKotaTanggal(settings.kotaSurat)}</p>
             <p className="font-bold">Guru BK / Konselor</p>
             <div className="mt-14">
-              <p className="font-bold underline text-[11px]">{settings.guruBK || 'Guru BK'}</p>
-              <p className="text-[9.5px]">NIP. {settings.nipGuruBK || '-'}</p>
+              <p className="font-bold underline text-[11px]">{formatNamaPejabat(settings.guruBK, 'Guru BK / Konselor')}</p>
+              <p className="text-[9.5px]">{formatNIP(settings.nipGuruBK)}</p>
             </div>
           </div>
         </div>

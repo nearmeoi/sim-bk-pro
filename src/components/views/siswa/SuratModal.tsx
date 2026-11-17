@@ -2,6 +2,7 @@
 import { createPortal } from 'react-dom';
 import { X, Printer, FileText } from "lucide-react";
 import KopSurat from '../../ui/KopSurat';
+import { formatKotaTanggal, formatNamaPejabat, formatNIP } from '../../../lib/documentFormat';
 import type { Student, SchoolSettings } from '../../../types';
 
 interface SuratModalProps {
@@ -22,8 +23,10 @@ export const SuratModal: React.FC<SuratModalProps> = ({
   const isPanggilan = type === 'panggilan';
 
   // Form parameters
-  const [nomorSurat, setNomorSurat] = useState('421.3 / 085 / SMP-BK / 2026');
-  const [hariTanggal, setHariTanggal] = useState('Senin, 10 November 2026');
+  const [nomorSurat, setNomorSurat] = useState(`421.3 / 001 / BK / ${new Date().getFullYear()}`);
+  const [hariTanggal, setHariTanggal] = useState(
+    new Date().toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })
+  );
   const [waktu, setWaktu] = useState('09:00 WIB');
   const [tempat, setTempat] = useState('Ruang Bimbingan & Konseling (BK)');
   const [keperluan, setKeperluan] = useState(
@@ -175,7 +178,7 @@ export const SuratModal: React.FC<SuratModalProps> = ({
               </p>
             </div>
             <div className="text-right">
-              <p>{settings.kotaSurat || 'diisi di Pengaturan'}, {new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
+              <p>{formatKotaTanggal(settings.kotaSurat)}</p>
             </div>
           </div>
 
@@ -273,13 +276,13 @@ export const SuratModal: React.FC<SuratModalProps> = ({
             </div>
 
             <div>
-              <p>{settings.kotaSurat || 'diisi di Pengaturan'}, {new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
+              <p>{formatKotaTanggal(settings.kotaSurat)}</p>
               <p className="font-bold mt-0.5">Guru BK</p>
               <div className="mt-12 sm:mt-14">
                 <p className="font-bold underline text-[12.5px]">
-                  {settings.guruBK || 'Belum Diisi di Pengaturan'}
+                  {formatNamaPejabat(settings.guruBK, 'Guru BK / Konselor')}
                 </p>
-                <p className="text-[10.5px] text-gray-700 mt-0.5">NIP. {settings.nipGuruBK || '19880512 201402 2 003'}</p>
+                <p className="text-[10.5px] text-gray-700 mt-0.5">{formatNIP(settings.nipGuruBK)}</p>
               </div>
             </div>
 
@@ -288,9 +291,9 @@ export const SuratModal: React.FC<SuratModalProps> = ({
               <p className="font-bold mt-0.5">Kepala Sekolah</p>
               <div className="mt-12 sm:mt-14">
                 <p className="font-bold underline text-[12.5px]">
-                  {settings.kepalaSekolah || 'Belum Diisi di Pengaturan'}
+                  {formatNamaPejabat(settings.kepalaSekolah)}
                 </p>
-                <p className="text-[10.5px] text-gray-700 mt-0.5">NIP. {settings.nipKepala || '19750101 200003 1 001'}</p>
+                <p className="text-[10.5px] text-gray-700 mt-0.5">{formatNIP(settings.nipKepala)}</p>
               </div>
             </div>
           </div>

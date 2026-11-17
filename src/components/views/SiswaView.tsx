@@ -21,6 +21,7 @@ import HvsPreviewModal from '../ui/HvsPreviewModal';
 import { SuratModal } from './siswa/SuratModal';
 import { useBK } from '../../context/BKContext';
 import { exportToCsv, parseCsv } from '../../lib/exportCsv';
+import { formatKotaTanggal, formatNamaPejabat, formatNIP, formatNamaSekolah, formatTahunAjaran } from '../../lib/documentFormat';
 import { ListSkeleton } from '../ui/Skeleton';
 import type { Student, CounselingRecord } from '../../types';
 interface SiswaViewProps {
@@ -275,7 +276,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                 s.alamat || '-',
                 s.catatanKhusus || '-',
               ]);
-              exportToCsv(`Data_Siswa_${settings.namaSekolah.replace(/\s+/g, '_')}_${new Date().toISOString().slice(0, 10)}`, headers, rows);
+              exportToCsv(`Data_Siswa_${formatNamaSekolah(settings.namaSekolah, 'Sekolah').replace(/\s+/g, '_')}_${new Date().toISOString().slice(0, 10)}`, headers, rows);
               onToast(`Data siswa berhasil diekspor (${rows.length} siswa).`);
             }}
             className="min-h-[40px] px-3.5 rounded-[12px] bg-white border border-border text-text text-xs font-bold hover:bg-gray-50 active:scale-[0.98] transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
@@ -408,7 +409,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                 s.alamat || '-',
                 s.catatanKhusus || '-',
               ]);
-              exportToCsv(`Data_Siswa_${settings.namaSekolah.replace(/\s+/g, '_')}_${new Date().toISOString().slice(0, 10)}`, headers, rows);
+              exportToCsv(`Data_Siswa_${formatNamaSekolah(settings.namaSekolah, 'Sekolah').replace(/\s+/g, '_')}_${new Date().toISOString().slice(0, 10)}`, headers, rows);
               onToast(`Data siswa berhasil diekspor (${rows.length} siswa).`);
             }}
             className="bk-chip"
@@ -427,7 +428,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
             BUKU CATATAN PESERTA DIDIK {kelasFilter ? `( KELAS ${kelasFilter} )` : '( SEMUA KELAS )'}
           </h2>
           <p className="text-xs text-black/80 font-bold mt-0.5">
-            {settings.namaSekolah || 'SIM BK PRO'} · TAHUN AJARAN {settings.tahunAjaran || '2026/2027'}
+            {formatNamaSekolah(settings.namaSekolah, 'SIM-BK')} · TAHUN AJARAN {formatTahunAjaran(settings.tahunAjaran)}
           </p>
         </div>
 
@@ -630,7 +631,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
         {/* Table Footer */}
         <div className="mt-4 pt-3 border-t border-black/30 text-[11px] text-muted flex justify-between items-center">
           <p>Total: {filtered.length} siswa terdata. Klik "Buka" untuk melihat catatan konseling.</p>
-          <p className="font-semibold text-text">{settings.namaSekolah || 'SIM BK PRO'}</p>
+          <p className="font-semibold text-text">{formatNamaSekolah(settings.namaSekolah, 'SIM-BK')}</p>
         </div>
       </div>
 
@@ -1277,7 +1278,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
           <KopSurat
             settings={settings}
             judul="KARTU KONSELING PESERTA DIDIK"
-            subjudul={`TAHUN AJARAN ${settings.tahunAjaran || '2026/2027'}`}
+            subjudul={`TAHUN AJARAN ${formatTahunAjaran(settings.tahunAjaran)}`}
           />
 
           <div className="grid grid-cols-2 gap-2 text-xs mb-4 border border-black p-3">
@@ -1331,16 +1332,16 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
               <p>Mengetahui,</p>
               <p className="font-bold">Kepala Sekolah</p>
               <div className="mt-16">
-                <p className="font-bold underline">{settings.kepalaSekolah || 'Belum Diisi di Pengaturan'}</p>
-                <p>NIP. {settings.nipKepala || '19750101 200003 1 001'}</p>
+                <p className="font-bold underline">{formatNamaPejabat(settings.kepalaSekolah)}</p>
+                <p>{formatNIP(settings.nipKepala)}</p>
               </div>
             </div>
             <div>
-              <p>{settings.kotaSurat || 'diisi di Pengaturan'}, {new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
+              <p>{formatKotaTanggal(settings.kotaSurat)}</p>
               <p className="font-bold mt-0.5">Guru BK / Konselor</p>
               <div className="mt-20">
-                <p className="font-bold underline">{settings.guruBK || 'Belum Diisi di Pengaturan'}</p>
-                <p>NIP. {settings.nipGuruBK || '19880512 201402 2 003'}</p>
+                <p className="font-bold underline">{formatNamaPejabat(settings.guruBK, 'Guru BK / Konselor')}</p>
+                <p>{formatNIP(settings.nipGuruBK)}</p>
               </div>
             </div>
           </div>
@@ -1366,7 +1367,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
           <KopSurat
             settings={settings}
             judul="KARTU KONSELING PESERTA DIDIK"
-            subjudul={`TAHUN AJARAN ${settings.tahunAjaran || '2026/2027'}`}
+            subjudul={`TAHUN AJARAN ${formatTahunAjaran(settings.tahunAjaran)}`}
           />
 
           <div className="grid grid-cols-2 gap-2 text-xs mb-4 border border-black p-3 bg-gray-50">
@@ -1420,16 +1421,16 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
               <p>Mengetahui,</p>
               <p className="font-bold">Kepala Sekolah</p>
               <div className="mt-14">
-                <p className="font-bold underline">{settings.kepalaSekolah || 'Belum Diisi di Pengaturan'}</p>
-                <p>NIP. {settings.nipKepala || '-'}</p>
+                <p className="font-bold underline">{formatNamaPejabat(settings.kepalaSekolah)}</p>
+                <p>{formatNIP(settings.nipKepala)}</p>
               </div>
             </div>
             <div>
-              <p>{settings.kotaSurat || 'diisi di Pengaturan'}, {new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
+              <p>{formatKotaTanggal(settings.kotaSurat)}</p>
               <p className="font-bold">Guru BK / Konselor</p>
               <div className="mt-14">
-                <p className="font-bold underline">{settings.guruBK || 'Belum Diisi di Pengaturan'}</p>
-                <p>NIP. {settings.nipGuruBK || '-'}</p>
+                <p className="font-bold underline">{formatNamaPejabat(settings.guruBK, 'Guru BK / Konselor')}</p>
+                <p>{formatNIP(settings.nipGuruBK)}</p>
               </div>
             </div>
           </div>

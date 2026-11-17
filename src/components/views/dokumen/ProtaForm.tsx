@@ -4,6 +4,7 @@ import KopSurat from '../../ui/KopSurat';
 import HvsPreviewModal from '../../ui/HvsPreviewModal';
 import { useBK } from '../../../context/BKContext';
 import { exportToCsv } from '../../../lib/exportCsv';
+import { formatKotaTanggal, formatNamaPejabat, formatNIP, formatNamaSekolah, formatTahunAjaran } from '../../../lib/documentFormat';
 import { confirmDialog } from '../../ui/ConfirmModal';
 import type { ProtaItem } from '../../../types';
 
@@ -142,7 +143,7 @@ export const ProtaForm: React.FC<ProtaFormProps> = ({ onBack, onToast }) => {
       row.sasaran,
     ]);
     exportToCsv(
-      `Prota_BK_${settings.namaSekolah.replace(/\s+/g, '_')}_${settings.tahunAjaran.replace(/\//g, '-')}`,
+      `Prota_BK_${formatNamaSekolah(settings.namaSekolah, 'Sekolah').replace(/\s+/g, '_')}_${formatTahunAjaran(settings.tahunAjaran).replace(/\//g, '-')}`,
       headers,
       rows
     );
@@ -413,25 +414,24 @@ export const ProtaForm: React.FC<ProtaFormProps> = ({ onBack, onToast }) => {
 
         <div className="mt-4 pt-3 border-t border-black/30 text-[11px] text-muted flex justify-between items-center">
           <p>Total: {protaList.length} Program Kerja Terjadwal</p>
-          <p className="font-semibold text-text">{settings.namaSekolah || 'SIM BK PRO'}</p>
+          <p className="font-semibold text-text">{formatNamaSekolah(settings.namaSekolah, 'SIM-BK')}</p>
         </div>
-
         {/* Lembar Tanda Tangan Cetak Prota */}
         <div className="hidden print:grid grid-cols-2 text-center text-xs pt-6 print:break-inside-avoid">
           <div>
             <p>Mengetahui,</p>
             <p className="font-bold">Kepala Sekolah</p>
             <div className="mt-14">
-              <p className="font-bold underline text-[11px]">{settings.kepalaSekolah || 'Kepala Sekolah'}</p>
-              <p className="text-[9.5px]">NIP. {settings.nipKepala || '-'}</p>
+              <p className="font-bold underline text-[11px]">{formatNamaPejabat(settings.kepalaSekolah)}</p>
+              <p className="text-[9.5px]">{formatNIP(settings.nipKepala)}</p>
             </div>
           </div>
           <div>
-            <p>{settings.kotaSurat || 'diisi di Pengaturan'}, {new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
+            <p>{formatKotaTanggal(settings.kotaSurat)}</p>
             <p className="font-bold">Guru BK / Konselor</p>
             <div className="mt-14">
-              <p className="font-bold underline text-[11px]">{settings.guruBK || 'Guru BK'}</p>
-              <p className="text-[9.5px]">NIP. {settings.nipGuruBK || '-'}</p>
+              <p className="font-bold underline text-[11px]">{formatNamaPejabat(settings.guruBK, 'Guru BK / Konselor')}</p>
+              <p className="text-[9.5px]">{formatNIP(settings.nipGuruBK)}</p>
             </div>
           </div>
         </div>
@@ -514,7 +514,7 @@ export const ProtaForm: React.FC<ProtaFormProps> = ({ onBack, onToast }) => {
         <KopSurat
           settings={settings}
           judul="MATRIKS PROGRAM TAHUNAN BIMBINGAN & KONSELING (PROTA)"
-          subjudul={`TAHUN AJARAN ${settings.tahunAjaran || '2026/2027'} · TOTAL ALOKASI: ${totalVolume} JAM`}
+          subjudul={`TAHUN AJARAN ${formatTahunAjaran(settings.tahunAjaran)} · TOTAL ALOKASI: ${totalVolume} JAM`}
         />
 
         <div className="overflow-x-auto border-t border-black">
@@ -546,16 +546,16 @@ export const ProtaForm: React.FC<ProtaFormProps> = ({ onBack, onToast }) => {
             <p>Mengetahui,</p>
             <p className="font-bold">Kepala Sekolah</p>
             <div className="mt-16">
-              <p className="font-bold underline">{settings.kepalaSekolah || 'Belum Diisi di Pengaturan'}</p>
-              <p>NIP. {settings.nipKepala || '19750101 200003 1 001'}</p>
+              <p className="font-bold underline">{formatNamaPejabat(settings.kepalaSekolah)}</p>
+              <p>{formatNIP(settings.nipKepala)}</p>
             </div>
           </div>
           <div>
-            <p>{settings.kotaSurat || 'diisi di Pengaturan'}, {new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
+            <p>{formatKotaTanggal(settings.kotaSurat)}</p>
             <p className="font-bold">Guru BK / Konselor</p>
             <div className="mt-16">
-              <p className="font-bold underline">{settings.guruBK || 'Belum Diisi di Pengaturan'}</p>
-              <p>NIP. {settings.nipGuruBK || '19880512 201402 2 003'}</p>
+              <p className="font-bold underline">{formatNamaPejabat(settings.guruBK, 'Guru BK / Konselor')}</p>
+              <p>{formatNIP(settings.nipGuruBK)}</p>
             </div>
           </div>
         </div>
@@ -670,7 +670,7 @@ export const ProtaForm: React.FC<ProtaFormProps> = ({ onBack, onToast }) => {
                       }`}
                     >
                       <span>{m}</span>
-                      <span className="text-[10px] opacity-80">{formData.months[idx] ? 'âœ“' : '-'}</span>
+                      <span className="text-[10px] opacity-80">{formData.months[idx] ? '✓' : '-'}</span>
                     </button>
                   ))}
                 </div>

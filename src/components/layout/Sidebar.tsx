@@ -41,7 +41,7 @@ export default function Sidebar({ current, onNav, onCatat }: SidebarProps) {
   };
 
   return (
-    <aside className="hidden lg:flex flex-col fixed inset-y-0 left-0 w-[248px] bg-surface border-r border-border p-5 z-20">
+    <aside className="hidden lg:flex flex-col fixed inset-y-0 left-0 w-[248px] glass-panel border-r border-border p-5 z-20">
       {/* Brand */}
       <div className="flex items-center gap-3 px-2 pb-5">
         <div className="w-10 h-10 rounded-[12px] bg-black text-white flex items-center justify-center font-black text-[15px] shadow-sm flex-none">

@@ -6,6 +6,7 @@ import PetunjukIbu from '../ui/PetunjukIbu';
 import { useBK } from '../../context/BKContext';
 import { DOCUMENTS } from '../../data/dummy';
 import { exportToCsv } from '../../lib/exportCsv';
+import { formatNamaSekolah } from '../../lib/documentFormat';
 import type { DocumentMeta, NavView } from '../../types';
 import ProtaForm from './dokumen/ProtaForm';
 import JurnalForm from './dokumen/JurnalForm';
@@ -56,7 +57,7 @@ export const DokumenView: React.FC<DokumenViewProps> = ({ onNav, onToast }) => {
     ]);
 
     exportToCsv(
-      `Arsip_Administrasi_BK_${settings.namaSekolah.replace(/\s+/g, '_')}_${new Date().toISOString().slice(0, 10)}`,
+      `Arsip_Administrasi_BK_${formatNamaSekolah(settings.namaSekolah, 'Sekolah').replace(/\s+/g, '_')}_${new Date().toISOString().slice(0, 10)}`,
       headers,
       [...protaRows, ...jurnalSummaryRows]
     );
@@ -78,7 +79,7 @@ export const DokumenView: React.FC<DokumenViewProps> = ({ onNav, onToast }) => {
           'Klik "Program Semester" untuk penjabaran agenda bimbingan per semester ganjil & genap dengan matriks 12 bulan.',
           'Klik "Laporan Bulanan" untuk rekapitulasi statistik layanan per bulan (otomatis dari data catatan) siap cetak untuk tanda tangan Kepsek.',
           'Klik "Laporan Semester" untuk evaluasi ketercapaian program semesteran: statistik layanan, distribusi bidang, dan rencana tindak lanjut.',
-          'Gunakan tombol hijau di bagian bawah untuk mengekspor bundel rekapitulasi seluruh administrasi ke Excel.'
+          'Gunakan tombol unduh di bagian bawah untuk mengekspor bundel rekapitulasi seluruh administrasi ke Excel.'
         ]}
       />
       {/* List of Documents as Elevated Rows */}

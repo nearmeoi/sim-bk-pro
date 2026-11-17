@@ -40,7 +40,7 @@ export const BaseModal: React.FC<BaseModalProps> = ({
       onClick={onClose}
     >
       <div
-        className={`w-full ${maxWidth} max-h-[92vh] flex flex-col bg-surface rounded-[24px] sm:rounded-[28px] shadow-2xl border border-border overflow-hidden fade-up`}
+        className={`w-full ${maxWidth} max-h-[92vh] flex flex-col glass-panel rounded-[24px] sm:rounded-[28px] shadow-2xl border border-border overflow-hidden fade-up`}
         onClick={(e) => e.stopPropagation()}
       >
         {(title || subtitle) && (

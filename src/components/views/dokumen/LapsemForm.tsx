@@ -4,7 +4,7 @@ import KopSurat from '../../ui/KopSurat';
 import HvsPreviewModal from '../../ui/HvsPreviewModal';
 import { useBK } from '../../../context/BKContext';
 import { exportToCsv } from '../../../lib/exportCsv';
-
+import { formatKotaTanggal, formatNamaPejabat, formatNIP, formatNamaSekolah, formatTahunAjaran } from '../../../lib/documentFormat';
 interface LapsemFormProps {
   onBack: () => void;
   onToast: (msg: string) => void;
@@ -87,7 +87,7 @@ export const LapsemForm: React.FC<LapsemFormProps> = ({ onBack, onToast }) => {
       ['Total Kasus', selectedSemester === '1' ? 'Ganjil' : 'Genap', selectedTahunAjaran, String(kasusStats.total), 'Kasus'],
     ];
     exportToCsv(
-      `Laporan_Semester_${selectedSemester === '1' ? 'Ganjil' : 'Genap'}_${selectedTahunAjaran}_${settings.namaSekolah.replace(/\s+/g, '_')}`,
+      `Laporan_Semester_${selectedSemester === '1' ? 'Ganjil' : 'Genap'}_${selectedTahunAjaran}_${formatNamaSekolah(settings.namaSekolah, 'Sekolah').replace(/\s+/g, '_')}`,
       headers,
       exportRows
     );
@@ -177,7 +177,7 @@ export const LapsemForm: React.FC<LapsemFormProps> = ({ onBack, onToast }) => {
             {' '}TAHUN AJARAN {selectedTahunAjaran}
           </p>
           <p className="text-[11px] text-black/70 font-medium mt-0.5">
-            {settings.namaSekolah || 'SMP NEGERI 1 BINTANG'}
+            {formatNamaSekolah(settings.namaSekolah, 'Bimbingan & Konseling')}
           </p>
         </div>
 
@@ -367,16 +367,16 @@ export const LapsemForm: React.FC<LapsemFormProps> = ({ onBack, onToast }) => {
                 <p>Mengetahui,</p>
                 <p className="font-bold">Kepala Sekolah</p>
                 <div className="mt-16">
-                  <p className="font-bold underline">{settings.kepalaSekolah || 'Drs. H. Mulyadi Kusuma, M.Pd.'}</p>
-                  <p>NIP. {settings.nipKepala || '19750101 200003 1 001'}</p>
+                  <p className="font-bold underline">{formatNamaPejabat(settings.kepalaSekolah)}</p>
+                  <p>{formatNIP(settings.nipKepala)}</p>
                 </div>
               </div>
               <div>
-                <p>{settings.kotaSurat || 'Makassar'}, {new Date().getDate()} {new Date().toLocaleString('id-ID', { month: 'long' })} {new Date().getFullYear()}</p>
+                <p>{formatKotaTanggal(settings.kotaSurat)}</p>
                 <p className="font-bold">Guru Bimbingan & Konseling</p>
                 <div className="mt-16">
-                  <p className="font-bold underline">{settings.guruBK || 'Siti Rahmawati, S.Pd., M.Kons., Gr.'}</p>
-                  <p>NIP. {settings.nipGuruBK || '19880512 201402 2 003'}</p>
+                  <p className="font-bold underline">{formatNamaPejabat(settings.guruBK, 'Guru BK / Konselor')}</p>
+                  <p>{formatNIP(settings.nipGuruBK)}</p>
                 </div>
               </div>
             </div>
@@ -498,16 +498,16 @@ export const LapsemForm: React.FC<LapsemFormProps> = ({ onBack, onToast }) => {
                 <p>Mengetahui,</p>
                 <p className="font-bold">Kepala Sekolah</p>
                 <div className="mt-16">
-                  <p className="font-bold underline">{settings.kepalaSekolah || 'Drs. H. Mulyadi Kusuma, M.Pd.'}</p>
-                  <p>NIP. {settings.nipKepala || '19750101 200003 1 001'}</p>
+                  <p className="font-bold underline">{formatNamaPejabat(settings.kepalaSekolah)}</p>
+                  <p>{formatNIP(settings.nipKepala)}</p>
                 </div>
               </div>
               <div>
-                <p>{settings.kotaSurat || 'Makassar'}, {new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
+                <p>{formatKotaTanggal(settings.kotaSurat)}</p>
                 <p className="font-bold">Guru BK / Konselor</p>
                 <div className="mt-16">
-                  <p className="font-bold underline">{settings.guruBK || 'Siti Rahmawati, S.Pd., M.Kons., Gr.'}</p>
-                  <p>NIP. {settings.nipGuruBK || '19880512 201402 2 003'}</p>
+                  <p className="font-bold underline">{formatNamaPejabat(settings.guruBK, 'Guru BK / Konselor')}</p>
+                  <p>{formatNIP(settings.nipGuruBK)}</p>
                 </div>
               </div>
             </div>

@@ -60,7 +60,7 @@ export const HvsPreviewModal: React.FC<HvsPreviewModalProps> = ({
     >
       {/* Top Floating Toolbar */}
       <div
-        className="w-full max-w-4xl mx-auto mb-3 bg-surface rounded-[16px] p-3 sm:px-5 flex items-center justify-between shadow-xl border border-border print:hidden flex-shrink-0"
+        className="w-full max-w-4xl mx-auto mb-3 glass rounded-[16px] p-3 sm:px-5 flex items-center justify-between shadow-xl border border-border print:hidden flex-shrink-0"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center gap-2.5 min-w-0">

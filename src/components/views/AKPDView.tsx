@@ -19,6 +19,7 @@ import KopSurat from '../ui/KopSurat';
 import HvsPreviewModal from '../ui/HvsPreviewModal';
 import { useBK } from '../../context/BKContext';
 import { exportToCsv } from '../../lib/exportCsv';
+import { formatKotaTanggal, formatNamaPejabat, formatNIP, formatNamaSekolah, formatTahunAjaran } from '../../lib/documentFormat';
 import type { AKPDStatement, NavView } from '../../types';
 
 interface AKPDViewProps {
@@ -101,7 +102,7 @@ export default function AKPDView({ onNav, onToast }: AKPDViewProps) {
       return [item.no, item.pernyataan, item.jumlahPemilih, totalRespondenKelas, `${pct}%`, prioritas];
     });
     exportToCsv(`Rekap_AKPD_${kelas.replace(/\s+/g, '_')}_${new Date().toISOString().slice(0, 10)}`, headers, rows);
-    onToast(`âœ“ Berhasil mengekspor 50 butir AKPD ${kelas} ke CSV!`);
+    onToast(`✓ Berhasil mengekspor 50 butir AKPD ${kelas} ke CSV!`);
   };
   const handleAddQuickNumbers = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -476,7 +477,7 @@ export default function AKPDView({ onNav, onToast }: AKPDViewProps) {
           </div>
 
           <div className="mt-5 pt-3 border-t border-black/30 text-xs text-muted flex justify-between items-center">
-            <p>Rekap Tabulasi ({settings.namaSekolah || 'SIM BK PRO'})</p>
+            <p>Rekap Tabulasi ({formatNamaSekolah(settings.namaSekolah, 'SIM-BK')})</p>
             <p className="font-semibold">{kelas} (50 Butir)</p>
           </div>
         </div>
@@ -489,7 +490,7 @@ export default function AKPDView({ onNav, onToast }: AKPDViewProps) {
           <KopSurat
             settings={settings}
             judul={`ANGKET KEBUTUHAN PESERTA DIDIK (AKPD) · ${kelas}`}
-            subjudul={`TAHUN AJARAN ${settings.tahunAjaran || '2026/2027'}`}
+            subjudul={`TAHUN AJARAN ${formatTahunAjaran(settings.tahunAjaran)}`}
           />
 
           {/* Identitas Siswa */}
@@ -543,10 +544,10 @@ export default function AKPDView({ onNav, onToast }: AKPDViewProps) {
                     <td className="border border-black px-1.5 py-1 text-center">{item.no}</td>
                     <td className="border border-black px-2 py-1">{item.pernyataan}</td>
                     <td className="border border-black px-1 py-1 text-center font-bold">
-                      {item.jawaban === 'ya' ? 'âœ“' : ''}
+                      {item.jawaban === 'ya' ? '✓' : ''}
                     </td>
                     <td className="border border-black px-1 py-1 text-center font-bold">
-                      {item.jawaban === 'tidak' ? 'âœ“' : ''}
+                      {item.jawaban === 'tidak' ? '✓' : ''}
                     </td>
                   </tr>
                 ))}
@@ -556,7 +557,7 @@ export default function AKPDView({ onNav, onToast }: AKPDViewProps) {
 
           <div className="mt-6 pt-4 text-xs text-muted print:text-black flex justify-between items-center">
             <p>Angket Kebutuhan Peserta Didik (50 Butir)</p>
-            <p className="font-semibold">{kelas}, {settings.namaSekolah || 'SIM BK PRO'}</p>
+            <p className="font-semibold">{kelas}, {formatNamaSekolah(settings.namaSekolah, 'SIM-BK')}</p>
           </div>
         </div>
       )}
@@ -569,7 +570,7 @@ export default function AKPDView({ onNav, onToast }: AKPDViewProps) {
             <KopSurat
               settings={settings}
               judul={`HASIL ANALISIS KEBUTUHAN PESERTA DIDIK (AKPD) · ${kelas}`}
-              subjudul={`TAHUN AJARAN ${settings.tahunAjaran || '2026/2027'}`}
+              subjudul={`TAHUN AJARAN ${formatTahunAjaran(settings.tahunAjaran)}`}
             />
           </div>
 
@@ -580,7 +581,7 @@ export default function AKPDView({ onNav, onToast }: AKPDViewProps) {
                 REKAPITULASI & ANALISIS KEBUTUHAN PESERTA DIDIK (AKPD)
               </h2>
               <p className="text-xs text-black/80 font-bold mt-0.5">
-                {kelas} · {settings.namaSekolah || 'SIM BK PRO'} · TAHUN AJARAN {settings.tahunAjaran || '2026/2027'} ({totalRespondenKelas} Siswa)
+                {kelas} · {formatNamaSekolah(settings.namaSekolah, 'SIM-BK')} · TAHUN AJARAN {formatTahunAjaran(settings.tahunAjaran)} ({totalRespondenKelas} Siswa)
               </p>
             </div>
 
@@ -751,7 +752,7 @@ export default function AKPDView({ onNav, onToast }: AKPDViewProps) {
             {/* Footer Table Card */}
             <div className="pt-2 border-t border-black/30 text-[11px] text-muted flex justify-between items-center print:text-black">
               <p>Rekapitulasi Kebutuhan Peserta Didik (50 Butir)</p>
-              <p className="font-semibold text-text">{settings.namaSekolah || 'SIM BK PRO'}</p>
+              <p className="font-semibold text-text">{formatNamaSekolah(settings.namaSekolah, 'SIM-BK')}</p>
             </div>
           </div>
           {/* Lembar Tanda Tangan Cetak */}
@@ -760,15 +761,15 @@ export default function AKPDView({ onNav, onToast }: AKPDViewProps) {
               <p>Mengetahui,</p>
               <p className="font-bold">Kepala Sekolah</p>
               <div className="mt-16">
-                <p className="font-bold underline">{settings.kepalaSekolah || 'Belum Diisi di Pengaturan'}</p>
-                <p>NIP. {settings.nipKepala || '19750101 200003 1 001'}</p>
+                <p className="font-bold underline">{formatNamaPejabat(settings.kepalaSekolah)}</p>
+                <p>{formatNIP(settings.nipKepala)}</p>
               </div>
             </div>
             <div>
-              <p>{settings.kotaSurat || 'diisi di Pengaturan'}, {new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
+              <p>{formatKotaTanggal(settings.kotaSurat)}</p>
               <div className="mt-20">
-                <p className="font-bold underline">{settings.guruBK || 'Belum Diisi di Pengaturan'}</p>
-                <p>NIP. {settings.nipGuruBK || '19880512 201402 2 003'}</p>
+                <p className="font-bold underline">{formatNamaPejabat(settings.guruBK, 'Guru BK / Konselor')}</p>
+                <p>{formatNIP(settings.nipGuruBK)}</p>
               </div>
             </div>
           </div>
@@ -784,7 +785,7 @@ export default function AKPDView({ onNav, onToast }: AKPDViewProps) {
         <KopSurat
           settings={settings}
           judul={`ANGKET KEBUTUHAN PESERTA DIDIK (AKPD) · ${kelas}`}
-          subjudul={`TAHUN AJARAN ${settings.tahunAjaran || '2026/2027'}`}
+          subjudul={`TAHUN AJARAN ${formatTahunAjaran(settings.tahunAjaran)}`}
         />
 
         <div className="mb-4 text-xs font-bold text-black flex justify-between border border-black p-2 bg-gray-50">
@@ -808,10 +809,10 @@ export default function AKPDView({ onNav, onToast }: AKPDViewProps) {
                   <td className="border border-black px-1.5 py-1 text-center">{item.no}</td>
                   <td className="border border-black px-2 py-1">{item.pernyataan}</td>
                   <td className="border border-black px-1 py-1 text-center font-bold">
-                    {item.jawaban === 'ya' ? 'âœ“' : ''}
+                    {item.jawaban === 'ya' ? '✓' : ''}
                   </td>
                   <td className="border border-black px-1 py-1 text-center font-bold">
-                    {item.jawaban === 'tidak' ? 'âœ“' : ''}
+                    {item.jawaban === 'tidak' ? '✓' : ''}
                   </td>
                 </tr>
               ))}

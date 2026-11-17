@@ -1,5 +1,6 @@
 ﻿import React from 'react';
 import KopSurat from '../../ui/KopSurat';
+import { formatKotaTanggal, formatNamaPejabat, formatNIP, formatNamaSekolah, formatTahunAjaran } from '../../../lib/documentFormat';
 import type { IndividualKarirAngket, SchoolSettings } from '../../../types';
 interface KarirAngketFormProps {
   current: IndividualKarirAngket;
@@ -20,7 +21,7 @@ export const KarirAngketForm: React.FC<KarirAngketFormProps> = ({
         settings={settings}
         compact
         judul="ANGKET PEMETAAN JALUR PENDIDIKAN LANJUTAN & KARIR SISWA"
-        subjudul={`KELAS 9 · TAHUN AJARAN ${settings.tahunAjaran || '2026/2027'}`}
+        subjudul={`KELAS 9 · TAHUN AJARAN ${formatTahunAjaran(settings.tahunAjaran)}`}
       />
 
       {/* Identitas Peserta Didik */}
@@ -398,7 +399,7 @@ export const KarirAngketForm: React.FC<KarirAngketFormProps> = ({
         </div>
 
         <div>
-          <p>{settings.kotaSurat || 'diisi di Pengaturan'}, {new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
+          <p>{formatKotaTanggal(settings.kotaSurat)}</p>
           <p className="font-bold mt-0.5">Peserta Didik</p>
           <div className="mt-12">
             <p className="font-extrabold underline underline-offset-4 text-[12px]">
@@ -413,16 +414,16 @@ export const KarirAngketForm: React.FC<KarirAngketFormProps> = ({
           <p className="font-bold mt-0.5">Guru BK / Konselor</p>
           <div className="mt-12">
             <p className="font-extrabold underline underline-offset-4 text-[12px]">
-              {settings.guruBK || 'Belum Diisi di Pengaturan'}
+              {formatNamaPejabat(settings.guruBK, 'Guru BK / Konselor')}
             </p>
-            <p className="mt-1 text-[10.5px] text-black/70">NIP. {settings.nipGuruBK || '-'}</p>
+            <p className="mt-1 text-[10.5px] text-black/70">{formatNIP(settings.nipGuruBK)}</p>
           </div>
         </div>
       </div>
 
       <div className="mt-4 pt-2 border-t border-black/40 text-[10px] text-black/70 flex justify-between items-center">
         <p>SIM-BK · Formulir Pilihan Jalur Lanjutan Siswa</p>
-        <p className="font-bold">Halaman 1 dari 1 · {settings.namaSekolah || 'SIM BK PRO'}</p>
+        <p className="font-bold">Halaman 1 dari 1 · {formatNamaSekolah(settings.namaSekolah, 'SIM-BK')}</p>
       </div>
     </div>
   );
