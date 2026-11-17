@@ -26,8 +26,8 @@ export default function Sidebar({ current, onNav, onCatat }: SidebarProps) {
         onClick={() => onNav(id)}
         className={`w-full min-h-[48px] px-3.5 rounded-[14px] flex items-center gap-3 text-[15px] transition-all text-left cursor-pointer ${
           active
-            ? 'bg-neutral-900 text-white font-bold shadow-sm'
-            : 'text-muted hover:bg-neutral-100 hover:text-text font-medium'
+            ? 'bg-neutral-900/90 backdrop-blur-md text-white font-bold shadow-sm ring-1 ring-white/40'
+            : 'text-muted hover:bg-white/50 hover:text-text font-medium'
         }`}
       >
         <Icon size={20} strokeWidth={active ? 2.25 : 1.75} className="flex-none" />
@@ -78,8 +78,8 @@ export default function Sidebar({ current, onNav, onCatat }: SidebarProps) {
           <div
             className={`w-full min-h-[48px] px-3.5 rounded-[14px] flex items-center gap-3 text-[15px] transition-all text-left cursor-pointer ${
               isDokumenActive
-                ? 'bg-neutral-900 text-white font-bold shadow-sm'
-                : 'text-muted hover:bg-neutral-100 hover:text-text font-medium'
+                ? 'bg-neutral-900/90 backdrop-blur-md text-white font-bold shadow-sm ring-1 ring-white/40'
+                : 'text-muted hover:bg-white/50 hover:text-text font-medium'
             }`}
             onClick={() => {
               setDokumenCollapsed(false);

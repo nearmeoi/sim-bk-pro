@@ -22,7 +22,7 @@ export default function BottomNav({ current, onNav, onCatat }: BottomNavProps) {
       >
         <span
           className={`w-12 h-7 rounded-[15px] flex items-center justify-center transition-all ${
-            active ? 'bg-neutral-900 text-white' : 'text-muted'
+            active ? 'bg-neutral-900/90 backdrop-blur-md text-white ring-1 ring-white/40' : 'text-muted'
           }`}
         >
           <Icon size={19} strokeWidth={active ? 2.25 : 1.75} />

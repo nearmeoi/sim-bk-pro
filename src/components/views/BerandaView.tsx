@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import PetunjukIbu from '../ui/PetunjukIbu';
 import Skeleton from '../ui/Skeleton';
+import { AppGlassButton } from '../ui/glass';
 import { greeting, DOCUMENTS } from '../../data/dummy';
 import { useBK } from '../../context/BKContext';
 import { NavView } from '../../types';
@@ -77,7 +78,7 @@ export const BerandaView: React.FC<BerandaViewProps> = ({ onNav, onCatat }) => {
 
           <button
             onClick={onCatat}
-            className="w-full sm:w-auto min-h-[48px] px-6 rounded-[14px] bg-white text-black font-black text-sm shadow-md hover:bg-white/95 active:scale-[0.98] transition-all flex items-center justify-center gap-2 shrink-0 cursor-pointer"
+            className="w-full sm:w-auto min-h-[48px] px-6 rounded-[14px] bg-white/90 backdrop-blur-md text-black font-black text-sm shadow-md hover:bg-white active:scale-[0.98] transition-all flex items-center justify-center gap-2 shrink-0 cursor-pointer ring-1 ring-white/60"
           >
             <Plus size={18} strokeWidth={2.5} className="text-accent" />
             <span>Catat Layanan</span>
@@ -107,11 +108,11 @@ export const BerandaView: React.FC<BerandaViewProps> = ({ onNav, onCatat }) => {
             <button
               key={label}
               onClick={action}
-              className={`min-h-[58px] sm:min-h-[62px] px-3.5 py-2.5 rounded-[16px] bg-surface border border-border/80 hover:border-border shadow-xs hover:shadow-sm active:scale-[0.98] transition-all flex items-center gap-3 text-left group cursor-pointer ${
+              className={`glass min-h-[58px] sm:min-h-[62px] px-3.5 py-2.5 rounded-[16px] hover:shadow-md active:scale-[0.98] active:bg-white/90 transition-all flex items-center gap-3 text-left group cursor-pointer ${
                 idx === quickActions.length - 1 ? 'col-span-2 sm:col-span-1' : ''
               }`}
             >
-              <div className="w-10 h-10 rounded-[12px] bg-black text-white flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+              <div className="w-10 h-10 rounded-[12px] bg-black/85 backdrop-blur-sm text-white flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
                 <Icon size={20} strokeWidth={2.2} />
               </div>
               <div className="min-w-0 flex-1">
@@ -206,7 +207,7 @@ export const BerandaView: React.FC<BerandaViewProps> = ({ onNav, onCatat }) => {
           </button>
         </div>
 
-        <div className="bg-white border border-black rounded-none p-4 sm:p-5 shadow-sm text-black">
+        <div className="glass rounded-[16px] p-4 sm:p-5 text-black">
           <div className="overflow-x-auto border-t border-black">
             <table className="w-full text-[12px] sm:text-[13px] border-collapse border border-black min-w-[640px]">
               <thead>
@@ -253,14 +254,15 @@ export const BerandaView: React.FC<BerandaViewProps> = ({ onNav, onCatat }) => {
                           </span>
                         </td>
                         <td className="border border-black px-2 py-1.5 text-center">
-                          <button
+                          <AppGlassButton
                             type="button"
+                            variant="neutral"
+                            size="sm"
                             onClick={() => onNav('siswa')}
-                            className="px-3 py-1 rounded-[8px] bg-black text-white text-xs font-bold hover:brightness-105 active:scale-95 transition-all shadow-xs"
                             title="Buka catatan siswa"
                           >
                             Buka
-                          </button>
+                          </AppGlassButton>
                         </td>
                       </tr>
                     ))
@@ -309,9 +311,9 @@ export const BerandaView: React.FC<BerandaViewProps> = ({ onNav, onCatat }) => {
                     else if (doc.id === 'karir') onNav('karir');
                     else onNav('dokumen');
                   }}
-                  className="w-full p-3 rounded-[14px] bg-[#FFFFFF] hover:bg-gray-50 border border-border/80 hover:border-border transition-all flex items-center gap-3 text-left group cursor-pointer"
+                  className="glass w-full p-3 rounded-[14px] hover:shadow-md transition-all flex items-center gap-3 text-left group cursor-pointer"
                 >
-                  <div className="w-9 h-9 rounded-xl bg-white border border-border/80 text-muted flex items-center justify-center shrink-0 shadow-2xs group-hover:scale-105 transition-transform">
+                  <div className="w-9 h-9 rounded-xl bg-white/70 backdrop-blur-sm border border-white/60 text-muted flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
                     <Icon size={18} strokeWidth={2.2} />
                   </div>
                   <div className="flex-1 min-w-0">
@@ -342,18 +344,20 @@ export const BerandaView: React.FC<BerandaViewProps> = ({ onNav, onCatat }) => {
           </div>
 
           {/* Tombol See More / Collapse */}
-          <button
+          <AppGlassButton
             type="button"
+            variant="ghost"
+            size="md"
+            className="w-full mt-1"
             onClick={() => setShowAllDocs(!showAllDocs)}
-            className="w-full py-2.5 px-4 rounded-[12px] bg-bg hover:bg-gray-200/80 text-xs font-bold text-text flex items-center justify-center gap-1.5 transition-colors border border-border/60 cursor-pointer mt-1"
           >
-            <span>
+            <span className="flex items-center gap-1.5">
               {showAllDocs
                 ? 'Tutup Dokumen Lainnya'
                 : `Lihat ${DOCUMENTS.length - 3} Dokumen Lainnya`}
+              {showAllDocs ? <ChevronUp size={15} /> : <ChevronDown size={15} />}
             </span>
-            {showAllDocs ? <ChevronUp size={15} /> : <ChevronDown size={15} />}
-          </button>
+          </AppGlassButton>
         </div>
       </section>
 
