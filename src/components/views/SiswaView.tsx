@@ -1,4 +1,4 @@
-﻿import { useState, useMemo, useEffect, useRef } from 'react';
+import { useState, useMemo, useEffect, useRef } from 'react';
 import {
   Search,
   Plus,
@@ -536,7 +536,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                     <ArrowUpDown size={12} className={sortKey === 'nis' ? 'text-gray-900 font-black' : 'opacity-40'} />
                   </div>
                 </th>
-                <th className="hidden border border-black px-2 py-2 text-center w-28 xl:table-cell">NISN</th>
+                <th className="lg:hidden border border-black px-2 py-2 text-center w-28 xl:table-cell">NISN</th>
                 <th className="border border-black px-1.5 py-2 text-center w-12">L/P</th>
                 <th
                   onClick={() => toggleSort('kelas')}
@@ -547,7 +547,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                     <ArrowUpDown size={12} className={sortKey === 'kelas' ? 'text-gray-900 font-black' : 'opacity-40'} />
                   </div>
                 </th>
-                <th className="hidden border border-black px-2 py-2 text-center w-28 xl:table-cell">RIWAYAT KASUS</th>
+                <th className="lg:hidden border border-black px-2 py-2 text-center w-28 xl:table-cell">RIWAYAT KASUS</th>
                 <th
                   onClick={() => toggleSort('status')}
                   className="border border-black px-2 py-2 text-center w-20 cursor-pointer hover:bg-gray-200 select-none"
@@ -615,7 +615,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                       <td className="border border-black px-2 py-2 text-center font-medium whitespace-nowrap">
                         {s.nis}
                       </td>
-                      <td className="hidden border border-black px-2 py-2 text-center text-gray-700 whitespace-nowrap xl:table-cell">
+                      <td className="lg:hidden border border-black px-2 py-2 text-center text-gray-700 whitespace-nowrap xl:table-cell">
                         {s.nisn}
                       </td>
                       <td className="border border-black px-1.5 py-2 text-center font-bold whitespace-nowrap">
@@ -624,7 +624,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                       <td className="border border-black px-2 py-2 text-center font-bold text-gray-700 whitespace-nowrap">
                         {s.kelas}
                       </td>
-                      <td className="hidden border border-black px-2 py-2 text-center whitespace-nowrap xl:table-cell">
+                      <td className="lg:hidden border border-black px-2 py-2 text-center whitespace-nowrap xl:table-cell">
                         {sRecords.length > 0 ? (
                           <span
                             className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-bold ${

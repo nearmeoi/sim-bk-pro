@@ -343,7 +343,7 @@ export default function GuruView({ onToast }: GuruViewProps) {
                   <tr className="border-b border-border bg-bg/60 text-left text-[10px] font-extrabold uppercase tracking-wide text-muted">
                     <th className="px-4 py-2.5">Guru</th>
                     <th className="px-3 py-2.5">Peran</th>
-                    <th className="hidden px-3 py-2.5 xl:table-cell">Email</th>
+                    <th className="lg:hidden px-3 py-2.5 xl:table-cell">Email</th>
                     <th className="px-3 py-2.5">Kelas diampu</th>
                     <th className="px-3 py-2.5">Status</th>
                     <th className="px-4 py-2.5 text-right">Aksi</th>
@@ -379,7 +379,7 @@ export default function GuruView({ onToast }: GuruViewProps) {
                           {ROLE_LABEL[member.role]}
                         </span>
                       </td>
-                      <td className="hidden max-w-[200px] px-3 py-3 xl:table-cell">
+                      <td className="lg:hidden max-w-[200px] px-3 py-3 xl:table-cell">
                         <span className="block truncate text-[11px] text-muted">
                           {member.email || '—'}
                         </span>

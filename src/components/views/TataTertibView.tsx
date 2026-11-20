@@ -614,7 +614,7 @@ export default function TataTertibView({ onToast }: TataTertibViewProps) {
                         <th className="px-3 py-2 font-extrabold">Siswa</th>
                         <th className="px-3 py-2 font-extrabold">Kelas</th>
                         <th className="px-3 py-2 text-right font-extrabold">Poin semester</th>
-                        <th className="hidden px-3 py-2 text-right font-extrabold xl:table-cell">Sisa poin</th>
+                        <th className="lg:hidden px-3 py-2 text-right font-extrabold xl:table-cell">Sisa poin</th>
                         <th className="px-3 py-2 font-extrabold">Status</th>
                       </tr>
                     </thead>
@@ -639,7 +639,7 @@ export default function TataTertibView({ onToast }: TataTertibViewProps) {
                             <td className="px-3 py-2.5 text-right font-extrabold tabular-nums text-alert">
                               +{row.points}
                             </td>
-                            <td className="hidden px-3 py-2.5 text-right tabular-nums text-muted xl:table-cell">
+                            <td className="lg:hidden px-3 py-2.5 text-right tabular-nums text-muted xl:table-cell">
                               {summary ? summary.balance : '-'}
                             </td>
                             <td className="px-3 py-2.5">
@@ -848,7 +848,7 @@ export default function TataTertibView({ onToast }: TataTertibViewProps) {
                         <th className="px-3 py-2 font-extrabold">Kelas</th>
                         <th className="px-3 py-2 text-right font-extrabold">Pelanggaran</th>
                         <th className="px-3 py-2 text-right font-extrabold">Poin</th>
-                        <th className="hidden px-3 py-2 text-right font-extrabold xl:table-cell">Poin buku</th>
+                        <th className="lg:hidden px-3 py-2 text-right font-extrabold xl:table-cell">Poin buku</th>
                         <th className="px-3 py-2 font-extrabold">Terakhir</th>
                       </tr>
                     </thead>
@@ -869,7 +869,7 @@ export default function TataTertibView({ onToast }: TataTertibViewProps) {
                           <td className="px-3 py-2.5 text-right font-extrabold tabular-nums text-alert">
                             +{row.points}
                           </td>
-                          <td className="hidden px-3 py-2.5 text-right tabular-nums text-muted xl:table-cell">
+                          <td className="lg:hidden px-3 py-2.5 text-right tabular-nums text-muted xl:table-cell">
                             {row.guidebookPoints}
                           </td>
                           <td className="px-3 py-2.5 text-[10.5px] text-muted">
@@ -976,7 +976,7 @@ export default function TataTertibView({ onToast }: TataTertibViewProps) {
                     <th className="px-3 py-2.5">Tanggal</th>
                     <th className="px-3 py-2.5">Siswa</th>
                     <th className="px-3 py-2.5">Aturan</th>
-                    <th className="hidden px-3 py-2.5 text-center xl:table-cell">Kategori</th>
+                    <th className="lg:hidden px-3 py-2.5 text-center xl:table-cell">Kategori</th>
                     <th className="px-3 py-2.5 text-right">Poin</th>
                     <th className="px-3 py-2.5 text-center">Status</th>
                     <th className="px-3 py-2.5 text-right">Aksi</th>
@@ -1010,7 +1010,7 @@ export default function TataTertibView({ onToast }: TataTertibViewProps) {
                             {row.location ? ` · ${row.location}` : ''}
                           </p>
                         </td>
-                        <td className="hidden px-3 py-2.5 text-center xl:table-cell">
+                        <td className="lg:hidden px-3 py-2.5 text-center xl:table-cell">
                           <span
                             className={`inline-flex rounded-full border px-1.5 py-0.5 text-[9px] font-extrabold uppercase ${CATEGORY_STYLES[row.ruleCategory]}`}
                           >
