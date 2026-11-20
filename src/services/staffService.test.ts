@@ -40,6 +40,68 @@ describe('staffService', () => {
     });
   });
 
+  it('memetakan hasil pindai kartu siswa', async () => {
+    fake.rpc.mockResolvedValueOnce({
+      data: [
+        {
+          card_id: 'card-1',
+          student_id: 'S001',
+          school_id: 'school',
+          nama: 'SISWA A',
+          nis: '2210001',
+          nisn: '0090000001',
+          jk: 'P',
+          kelas: '7A',
+          class_id: 'class-1',
+          student_status: 'Aktif',
+          point_scale: 1000,
+          total_points: 260,
+          total_guidebook_points: 26,
+          semester_points: 260,
+          year_points: 260,
+          balance: 740,
+          status: 'sp1',
+          last_violation_at: '2026-11-18T02:00:00.000Z',
+        },
+      ],
+      error: null,
+    });
+
+    const result = await staffService.resolveCard('SIMBK1:abc');
+
+    expect(fake.rpc).toHaveBeenCalledWith('resolve_student_card', {
+      p_token: 'SIMBK1:abc',
+    });
+    expect(result).toMatchObject({
+      cardId: 'card-1',
+      studentId: 'S001',
+      nama: 'SISWA A',
+      jk: 'P',
+      kelas: '7A',
+      totalPoints: 260,
+      balance: 740,
+      status: 'sp1',
+    });
+  });
+
+  it('menampilkan pesan RPC saat kartu tidak valid', async () => {
+    fake.rpc.mockResolvedValueOnce({
+      data: null,
+      error: {
+        message: 'Kartu tidak dikenali atau sudah dicabut.',
+        context: {
+          json: async () => ({
+            message: 'Kartu tidak dikenali atau sudah dicabut.',
+          }),
+        },
+      },
+    });
+
+    await expect(staffService.resolveCard('SIMBK1:abc')).rejects.toThrow(
+      'Kartu tidak dikenali atau sudah dicabut.',
+    );
+  });
+
   it('memetakan respons pembuatan akun dari Edge Function', async () => {
     fake.invoke.mockResolvedValueOnce({
       data: {

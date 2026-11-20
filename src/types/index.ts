@@ -422,6 +422,28 @@ export interface StudentCard {
   revokedReason: string | null;
 }
 
+/** Hasil pindai kartu oleh guru BK/wali kelas (tanpa PIN). */
+export interface CardScanResult {
+  cardId: string;
+  studentId: string;
+  schoolId: string;
+  nama: string;
+  nis: string;
+  nisn: string;
+  jk: 'L' | 'P';
+  kelas: string;
+  classId: string | null;
+  studentStatus: string;
+  pointScale: number;
+  totalPoints: number;
+  totalGuidebookPoints: number;
+  semesterPoints: number;
+  yearPoints: number;
+  balance: number;
+  status: PointStatus;
+  lastViolationAt: string | null;
+}
+
 export interface RecordViolationPayload {
   studentId: string;
   ruleId: string;

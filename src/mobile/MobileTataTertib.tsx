@@ -6,6 +6,7 @@ import {
   FileSignature,
   FileText,
   Plus,
+  ScanLine,
   Search,
   ShieldAlert,
   Trophy,
@@ -14,6 +15,8 @@ import { useBK } from '../context/BKContext';
 import { useDiscipline } from '../context/DisciplineContext';
 import { DetailBar, PageHeader, SectionTitle, EmptyState } from './ui';
 import MobileViolationSheet from './MobileViolationSheet';
+import MobileCardScanSheet from './MobileCardScanSheet';
+import { resolveScannedStudent } from '../lib/cardScan';
 import SpDocumentModal from '../components/discipline/SpDocumentModal';
 import StudentPicker from '../components/ui/StudentPicker';
 import DatePicker from '../components/ui/DatePicker';
@@ -66,6 +69,7 @@ function suggestedNumber(letter: SpLetter): string {
 export default function MobileTataTertib({ onBack, onToast }: MobileTataTertibProps) {
   const { students } = useBK();
   const {
+    available,
     loading,
     error,
     membership,
@@ -97,6 +101,8 @@ export default function MobileTataTertib({ onBack, onToast }: MobileTataTertibPr
   const [periodError, setPeriodError] = useState<string | null>(null);
   const [periodVisible, setPeriodVisible] = useState(20);
   const [recordOpen, setRecordOpen] = useState(false);
+  const [recordStudent, setRecordStudent] = useState<Student | null>(null);
+  const [scanOpen, setScanOpen] = useState(false);
   const [issueTarget, setIssueTarget] = useState<SpLetter | null>(null);
   const [cancelTarget, setCancelTarget] = useState<SpLetter | null>(null);
   const [manualOpen, setManualOpen] = useState(false);
@@ -196,14 +202,32 @@ export default function MobileTataTertib({ onBack, onToast }: MobileTataTertibPr
         title="Tata Tertib"
         subtitle="Poin permanen, laporan per semester, dan SP"
         right={
-          canManage ? (
-            <button
-              type="button"
-              onClick={() => setRecordOpen(true)}
-              className="flex min-h-[42px] items-center gap-1.5 rounded-[12px] bg-accent px-3 text-xs font-bold text-white shadow-sm active:scale-[0.98]"
-            >
-              <Plus size={15} /> Catat
-            </button>
+          available || canManage ? (
+            <div className="flex items-center gap-2">
+              {available && (
+                <button
+                  type="button"
+                  onClick={() => setScanOpen(true)}
+                  aria-label="Scan kartu siswa"
+                  title="Scan kartu siswa"
+                  className="grid h-[42px] w-[42px] place-items-center rounded-[12px] border border-border bg-white text-text shadow-sm active:scale-[0.98]"
+                >
+                  <ScanLine size={18} />
+                </button>
+              )}
+              {canManage && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setRecordStudent(null);
+                    setRecordOpen(true);
+                  }}
+                  className="flex min-h-[42px] items-center gap-1.5 rounded-[12px] bg-accent px-3 text-xs font-bold text-white shadow-sm active:scale-[0.98]"
+                >
+                  <Plus size={15} /> Catat
+                </button>
+              )}
+            </div>
           ) : undefined
         }
       />
@@ -875,9 +899,26 @@ export default function MobileTataTertib({ onBack, onToast }: MobileTataTertibPr
         </div>
       )}
 
+      {scanOpen && (
+        <MobileCardScanSheet
+          open={scanOpen}
+          canRecord={canManage}
+          onClose={() => setScanOpen(false)}
+          onRecord={(result) => {
+            setScanOpen(false);
+            setRecordStudent(resolveScannedStudent(result, students));
+            setRecordOpen(true);
+          }}
+        />
+      )}
+
       {recordOpen && (
         <MobileViolationSheet
-          onClose={() => setRecordOpen(false)}
+          student={recordStudent}
+          onClose={() => {
+            setRecordOpen(false);
+            setRecordStudent(null);
+          }}
           onSaved={(message) => onToast(message)}
         />
       )}

@@ -8,6 +8,7 @@
 
 import { supabase, isSupabaseConfigured } from '../lib/supabaseClient';
 import type {
+  CardScanResult,
   CreatedStaffAccount,
   SchoolClassOption,
   StaffMember,
@@ -39,6 +40,29 @@ function mapClass(row: Record<string, unknown>): SchoolClassOption {
     name: row.name as string,
     level: row.level == null ? null : Number(row.level),
     homeroomMemberId: (row.homeroom_member_id as string) || null,
+  };
+}
+
+function mapCardScan(row: Record<string, unknown>): CardScanResult {
+  return {
+    cardId: row.card_id as string,
+    studentId: row.student_id as string,
+    schoolId: row.school_id as string,
+    nama: (row.nama as string) || '',
+    nis: (row.nis as string) || '',
+    nisn: (row.nisn as string) || '',
+    jk: row.jk === 'P' ? 'P' : 'L',
+    kelas: (row.kelas as string) || '',
+    classId: (row.class_id as string) || null,
+    studentStatus: (row.student_status as string) || 'Aktif',
+    pointScale: Number(row.point_scale ?? 1000),
+    totalPoints: Number(row.total_points ?? 0),
+    totalGuidebookPoints: Number(row.total_guidebook_points ?? 0),
+    semesterPoints: Number(row.semester_points ?? 0),
+    yearPoints: Number(row.year_points ?? 0),
+    balance: Number(row.balance ?? 0),
+    status: (row.status as CardScanResult['status']) || 'aman',
+    lastViolationAt: (row.last_violation_at as string) || null,
   };
 }
 
@@ -84,6 +108,18 @@ export const staffService = {
       .order('name', { ascending: true });
     if (error) throw new Error(error.message);
     return (data || []).map(mapClass);
+  },
+
+  async resolveCard(token: string): Promise<CardScanResult> {
+    const sb = client();
+    if (!sb) throw new Error('Pemindaian kartu membutuhkan koneksi Supabase.');
+    const { data, error } = await sb.rpc('resolve_student_card', {
+      p_token: token,
+    });
+    if (error) throw new Error(await rpcError(error));
+    const row = Array.isArray(data) ? data[0] : data;
+    if (!row) throw new Error('Kartu tidak dikenali atau sudah dicabut.');
+    return mapCardScan(row as Record<string, unknown>);
   },
 
   async assignHomeroom(classId: string, memberId: string): Promise<void> {

@@ -337,9 +337,24 @@ mengakhiri sesi di perangkat. Sesi juga dapat dicabut dari server lewat logout.
 
 Scan kartu siswa membuka profil siswa langsung di aplikasi guru:
 
-- BK: bisa mencatat pelanggaran.
-- Wali kelas: hanya melihat siswa di kelasnya.
-- Scan dicatat di `audit_log`.
+- BK: bisa mencatat pelanggaran untuk semua siswa di sekolahnya.
+- Wali kelas: hanya bisa membuka siswa di kelas yang diampu; tombol catat
+  tidak muncul karena pencatatan pelanggaran tetap khusus BK.
+- Scan dicatat di `audit_log` dengan aksi `card.scanned`.
+- Guru tidak perlu meminta PIN siswa. PIN hanya untuk portal siswa; akses guru
+  tetap memerlukan login staf aktif dan dibatasi sekolah/kelas oleh RPC.
+
+Alur UI (PC dan mobile sama):
+
+1. Tombol **Scan Kartu** di header Tata Tertib (BK dan wali kelas).
+2. Kamera belakang memindai QR terus-menerus; jika kamera tidak tersedia,
+   guru dapat mengunggah foto QR atau menempel kode kartu/URL.
+3. Hasil pindai menampilkan nama, kelas, NIS, status poin, total poin,
+   sisa poin, poin semester, dan poin buku panduan.
+4. BK dapat langsung membuka **Catat Pelanggaran** dengan siswa terisi;
+   wali kelas hanya melihat ringkasan lalu menutup panel.
+5. Token tidak valid, kartu dicabut, kartu sekolah lain, dan siswa di luar
+   kelas wali ditolak dengan pesan yang jelas.
 
 ### 7.5 Implementasi
 
@@ -350,12 +365,23 @@ Scan kartu siswa membuka profil siswa langsung di aplikasi guru:
     `student_portal_logout(session)`,
   - RLS aktif tanpa policy; `anon`/`authenticated` tidak punya akses,
   - hanya `service_role` yang boleh mengeksekusi RPC.
+- Migrasi `20261120190000_staff_card_scan.sql`:
+  - RPC `resolve_student_card(token)` untuk staf terautentikasi,
+  - menerima token mentah, query `?card=`, atau URL kartu penuh,
+  - memvalidasi kartu aktif, sekolah staf, dan kelas wali,
+  - mengembalikan ringkasan siswa + poin tanpa hash/PIN,
+  - menulis `audit_log` `card.scanned` dengan siswa, anggota, dan role,
+  - `anon` dan `service_role` tidak boleh mengeksekusi; hanya `authenticated`.
 - Edge Function `supabase/functions/student-portal/index.ts`:
   - `POST /login` body `{ token, pin }` → `session_token`, `expires_at`,
   - `POST /me` dan `POST /logout` dengan header `Authorization: Bearer <sesi>`,
   - memanggil RPC service-role; PIN dan hash tidak pernah keluar dari server.
 - Klien portal: `src/mobile/portal/portalApi.ts` + `StudentPortal.tsx`
   (`/m/?card=<token>`), memakai `sessionStorage` dan tampilan mobile yang sama.
+- Pemindai guru: `CardScanPanel.tsx` (kamera `getUserMedia` + `jsQR`,
+  unggah foto, input manual), `CardScanModal.tsx` untuk PC, dan
+  `MobileCardScanSheet.tsx` untuk mobile. Normalisasi token dipakai bersama
+  lewat `src/lib/cardToken.ts`.
 - Deploy:
   ```bash
   supabase functions deploy student-portal --no-verify-jwt
@@ -499,7 +525,8 @@ label. Menu bisa bernama “Kasus & Pelanggaran” dengan dua tab.
   `00000000-0000-4000-8000-000000000034`.
 - Pemilik data lama otomatis menjadi BK.
 - Siswa otomatis dipetakan ke kelas berdasarkan kolom `kelas`.
-- Wali kelas belum ditugaskan; assign lewat SQL atau UI Fase 4.
+- Wali kelas belum ditugaskan otomatis; assign lewat menu **Guru** (khusus BK)
+  atau SQL.
 
 ### 10.4 Perubahan frontend yang menyertai Fase 1
 
@@ -546,10 +573,10 @@ where school_id = '00000000-0000-4000-8000-000000000034'
 | **1** | Schema SaaS, role, RLS, migrasi data lama | SQL + verifikasi selesai; belum diterapkan ke staging/production |
 | **2** | Master aturan, catat pelanggaran, ledger, tab siswa | Selesai; lolos harness PGlite |
 | **3** | SP1–3, berita acara, preview/cetak/Word, rekap | Selesai; cetak final perlu uji staging |
-| **4** | Manajemen user, portal wali, kartu QR + PIN, laporan periode | Akun staf + penugasan wali kelas, kartu QR, portal siswa, dan laporan periode selesai; pemindai kartu guru belum |
+| **4** | Manajemen user, portal wali, kartu QR + PIN, laporan periode, pemindai kartu guru | Selesai; termasuk akun staf, penugasan wali, kartu QR, portal siswa, laporan periode, dan pemindai kartu guru |
 | **5** | Mobile parity, `wa.me`, audit, testing 320–430 | Parity mobile + audit selesai; `wa.me` ditunda |
 
-MVP yang layak dipakai: **Fase 1–4** (tanpa pemindai kartu guru).
+MVP yang layak dipakai: **Fase 1–5** (tanpa `wa.me`).
 
 ---
 
@@ -589,7 +616,7 @@ MVP yang layak dipakai: **Fase 1–4** (tanpa pemindai kartu guru).
 - [ ] Login QR + PIN berhasil.
 - [ ] Kartu hilang bisa dicabut.
 - [ ] PIN salah berulang terkunci.
-- [ ] Scan guru membuka siswa yang benar. **(belum: belum ada pemindai/RPC resolusi token)**
+- [x] Scan guru membuka siswa yang benar.
 - [x] BK dapat membuat akun guru dan mereset kata sandi sementara.
 - [x] BK dapat menugaskan satu guru ke satu kelas per tahun ajaran.
 - [x] Akun nonaktif kehilangan akses dan penugasan wali kelasnya dilepas.
@@ -600,12 +627,14 @@ MVP yang layak dipakai: **Fase 1–4** (tanpa pemindai kartu guru).
 ## 13. Pengujian
 
 - **SQL/RLS**: tiga user uji (BK, wali 7A, wali 7B) + satu user sekolah lain.
-- **Unit**: perhitungan sisa poin, ambang SP, idempotensi SP, koreksi ledger.
+- **Unit**: perhitungan sisa poin, ambang SP, idempotensi SP, koreksi ledger,
+  normalisasi token kartu, dan resolusi pindai kartu.
 - **UI**: 320/360/390/430 px untuk mobile; 1280/1440 untuk PC.
 - **Dokumen**: cetak A4, PDF, Word, tanda tangan tidak terpotong.
 - **Migrasi**: bandingkan jumlah baris sebelum/sesudah, cek sampel 10 siswa.
-- **Keamanan**: token kartu tidak bisa dipakai tanpa PIN; tidak ada kebocoran
-  nama siswa di portal siswa.
+- **Keamanan**: portal siswa mensyaratkan QR + PIN; scan guru mensyaratkan
+  staf aktif, dibatasi sekolah/kelas, dan diaudit. Hash/PIN tidak pernah
+  dikembalikan ke klien.
 
 ---
 
@@ -617,7 +646,7 @@ MVP yang layak dipakai: **Fase 1–4** (tanpa pemindai kartu guru).
 | Aplikasi lama berhenti menulis | `school_id` default + trigger kelas |
 | Wali kelas melihat data sensitif | RLS ketat; kasus tetap BK-only |
 | Siswa saling melihat poin | Portal hanya data sendiri; tidak ada daftar nama |
-| Kartu difoto orang lain | QR + PIN, rate limit, revoke |
+| Kartu difoto orang lain | Portal QR + PIN; scan guru wajib login staf aktif, dibatasi sekolah/kelas, dan diaudit; kartu bisa dicabut |
 | SP dobel | Idempotensi + unique index |
 | Poin diedit manual | Ledger immutable + audit log |
 | Aturan buku tidak konsisten | Master data editable + verifikasi sekolah |

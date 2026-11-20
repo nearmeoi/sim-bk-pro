@@ -10,6 +10,7 @@ import {
   Lock,
   Pencil,
   Plus,
+  ScanLine,
   Search,
   ShieldAlert,
   Trophy,
@@ -32,6 +33,8 @@ import {
   suggestSanction,
 } from '../../lib/discipline';
 import RecordViolationModal from '../discipline/RecordViolationModal';
+import CardScanModal from '../discipline/CardScanModal';
+import { resolveScannedStudent } from '../../lib/cardScan';
 import ReasonModal from '../discipline/ReasonModal';
 import RuleModal from '../discipline/RuleModal';
 import { IssueSpModal, ManualSpModal } from '../discipline/SpModals';
@@ -95,6 +98,7 @@ export default function TataTertibView({ onToast }: TataTertibViewProps) {
   const [tab, setTab] = useState<Tab>('ringkasan');
   const [recordOpen, setRecordOpen] = useState(false);
   const [recordStudent, setRecordStudent] = useState<Student | null>(null);
+  const [scanOpen, setScanOpen] = useState(false);
   const [search, setSearch] = useState('');
   const [kelasFilter, setKelasFilter] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('');
@@ -256,22 +260,35 @@ export default function TataTertibView({ onToast }: TataTertibViewProps) {
             Poin pelanggaran bersifat permanen. Laporan dapat dilihat per semester dan tahun ajaran.
           </p>
         </div>
-        {canManage && (
+        {(available || canManage) && (
           <div className="flex flex-wrap items-center gap-2">
-            <button
-              type="button"
-              onClick={() => setManualSpOpen(true)}
-              className="flex min-h-[40px] items-center gap-1.5 rounded-[12px] border border-border bg-white px-3.5 text-xs font-bold text-text shadow-sm transition-all hover:bg-gray-50 active:scale-[0.98]"
-            >
-              <FileText size={15} /> SP Manual
-            </button>
-            <button
-              type="button"
-              onClick={() => openRecord()}
-              className="flex min-h-[40px] items-center gap-1.5 rounded-[12px] bg-black px-4 text-xs font-bold text-white shadow-sm transition-all hover:bg-neutral-800 active:scale-[0.98]"
-            >
-              <Plus size={16} strokeWidth={2.5} /> Catat Pelanggaran
-            </button>
+            {available && (
+              <button
+                type="button"
+                onClick={() => setScanOpen(true)}
+                className="flex min-h-[40px] items-center gap-1.5 rounded-[12px] border border-border bg-white px-3.5 text-xs font-bold text-text shadow-sm transition-all hover:bg-gray-50 active:scale-[0.98]"
+              >
+                <ScanLine size={15} /> Scan Kartu
+              </button>
+            )}
+            {canManage && (
+              <>
+                <button
+                  type="button"
+                  onClick={() => setManualSpOpen(true)}
+                  className="flex min-h-[40px] items-center gap-1.5 rounded-[12px] border border-border bg-white px-3.5 text-xs font-bold text-text shadow-sm transition-all hover:bg-gray-50 active:scale-[0.98]"
+                >
+                  <FileText size={15} /> SP Manual
+                </button>
+                <button
+                  type="button"
+                  onClick={() => openRecord()}
+                  className="flex min-h-[40px] items-center gap-1.5 rounded-[12px] bg-black px-4 text-xs font-bold text-white shadow-sm transition-all hover:bg-neutral-800 active:scale-[0.98]"
+                >
+                  <Plus size={16} strokeWidth={2.5} /> Catat Pelanggaran
+                </button>
+              </>
+            )}
           </div>
         )}
       </div>
@@ -1406,6 +1423,13 @@ export default function TataTertibView({ onToast }: TataTertibViewProps) {
           </div>
         </div>
       )}
+
+      <CardScanModal
+        open={scanOpen}
+        canRecord={canManage}
+        onClose={() => setScanOpen(false)}
+        onRecord={(result) => openRecord(resolveScannedStudent(result, students))}
+      />
 
       <RecordViolationModal
         open={recordOpen}
