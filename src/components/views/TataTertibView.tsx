@@ -12,6 +12,7 @@ import {
   Plus,
   ScanLine,
   Search,
+  MessageCircle,
   ShieldAlert,
   Trophy,
   Users,
@@ -34,7 +35,9 @@ import {
 } from '../../lib/discipline';
 import RecordViolationModal from '../discipline/RecordViolationModal';
 import CardScanModal from '../discipline/CardScanModal';
+import WhatsAppModal from '../discipline/WhatsAppModal';
 import { resolveScannedStudent } from '../../lib/cardScan';
+import { buildSpNoticeMessage } from '../../lib/whatsapp';
 import ReasonModal from '../discipline/ReasonModal';
 import RuleModal from '../discipline/RuleModal';
 import { IssueSpModal, ManualSpModal } from '../discipline/SpModals';
@@ -69,7 +72,7 @@ const TABS: { id: Tab; label: string }[] = [
 const numberFormat = new Intl.NumberFormat('id-ID');
 
 export default function TataTertibView({ onToast }: TataTertibViewProps) {
-  const { students } = useBK();
+  const { students, settings } = useBK();
   const {
     available,
     loading,
@@ -99,6 +102,7 @@ export default function TataTertibView({ onToast }: TataTertibViewProps) {
   const [recordOpen, setRecordOpen] = useState(false);
   const [recordStudent, setRecordStudent] = useState<Student | null>(null);
   const [scanOpen, setScanOpen] = useState(false);
+  const [waLetter, setWaLetter] = useState<SpLetter | null>(null);
   const [search, setSearch] = useState('');
   const [kelasFilter, setKelasFilter] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('');
@@ -131,6 +135,21 @@ export default function TataTertibView({ onToast }: TataTertibViewProps) {
   });
 
   const canManage = membership?.role === 'bk';
+  const waStudent = waLetter
+    ? students.find((row) => row.id === waLetter.studentId)
+    : undefined;
+  const waMessage = waLetter
+    ? buildSpNoticeMessage({
+        schoolName: settings?.namaSekolah,
+        guardianName: waStudent?.namaWali,
+        studentName: waLetter.nama,
+        className: waLetter.kelas,
+        spLabel: SP_TYPE_LABELS[waLetter.type],
+        spNumber: waLetter.number,
+        totalPoints: waLetter.totalPoints,
+        meetingAt: waLetter.meetingAt,
+      })
+    : '';
 
   const attention = useMemo(
     () =>
@@ -1188,6 +1207,16 @@ export default function TataTertibView({ onToast }: TataTertibViewProps) {
                         </td>
                         <td className="px-3 py-2.5">
                           <div className="flex justify-end gap-1">
+                            {canManage && (
+                              <button
+                                type="button"
+                                onClick={() => setWaLetter(letter)}
+                                className="rounded-md border border-[#128C7E]/30 bg-white p-1.5 text-[#128C7E] hover:bg-emerald-50"
+                                title="Kirim WhatsApp ke orang tua"
+                              >
+                                <MessageCircle size={13} />
+                              </button>
+                            )}
                             <button
                               type="button"
                               onClick={() => setPreview({ letter, kind: 'sp' })}
@@ -1429,6 +1458,16 @@ export default function TataTertibView({ onToast }: TataTertibViewProps) {
         canRecord={canManage}
         onClose={() => setScanOpen(false)}
         onRecord={(result) => openRecord(resolveScannedStudent(result, students))}
+      />
+
+      <WhatsAppModal
+        open={Boolean(waLetter)}
+        onClose={() => setWaLetter(null)}
+        defaultPhone={waStudent?.kontakWali || ''}
+        defaultMessage={waMessage}
+        studentName={waLetter?.nama || ''}
+        guardianName={waStudent?.namaWali}
+        onToast={onToast}
       />
 
       <RecordViolationModal

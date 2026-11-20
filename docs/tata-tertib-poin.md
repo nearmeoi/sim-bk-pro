@@ -32,7 +32,7 @@ dengan banyak pengguna**:
 | Kasus vs Pelanggaran | **Tetap terpisah**, ditampilkan dalam satu timeline profil |
 | Reset poin | **Tidak pernah reset**; riwayat per semester/tahun |
 | SP | Otomatis draft + manual, tidak pernah terkirim sendiri |
-| WhatsApp | Ditunda; nanti memakai tautan `wa.me` |
+| WhatsApp | Tautan `wa.me` manual (Fase 5); tidak ada API atau pengiriman otomatis |
 
 ---
 
@@ -228,7 +228,8 @@ Detail UI BK:
 4. Pratinjau dampak: total sebelum → sesudah, status, sanksi.
 5. Simpan.
 6. Jika ambang tercapai: tampil “SP1 draft dibuat” dengan tombol review.
-7. BK bisa mengirim tautan `wa.me` ke orang tua (Fase 5).
+7. BK bisa membuka tautan `wa.me` ke orang tua dari profil siswa atau SP;
+   pesan tetap dikirim manual (lihat §5.1).
 
 Aturan idempotensi SP:
 
@@ -236,6 +237,28 @@ Aturan idempotensi SP:
 - Membuat SP draft berulang tidak boleh menghasilkan duplikat.
 - SP manual selalu boleh, tetapi diberi tanda `manual = true`.
 - SP tidak pernah dikirim otomatis.
+
+### 5.1 Notifikasi WhatsApp
+
+BK dapat mengirim tautan `wa.me` ke orang tua/wali dari profil siswa atau
+riwayat SP. Alurnya sengaja manual:
+
+1. BK menekan **WhatsApp** pada profil siswa atau ikon WhatsApp di baris SP.
+2. Nomor wali terisi otomatis dari `students.kontak_wali`; BK bisa
+   mengubahnya.
+3. Pesan ringkas sudah disusun: nama siswa, kelas, total/sisa poin, status,
+   pelanggaran terakhir, atau detail SP (jenis, nomor, jadwal pertemuan).
+4. BK dapat menyunting pesan dan menyalinnya.
+5. Tombol **Buka WhatsApp** membuka `https://wa.me/<nomor>?text=...` di tab
+   baru. Pesan tetap harus dikirim manual di aplikasi WhatsApp.
+
+Ketentuan:
+
+- Nomor dinormalisasi ke format `62…` (`08…`, `8…`, `+62…`, `62…`).
+  Nomor non-seluler seperti `0411…` ditolak.
+- Tidak ada WhatsApp API, token, atau status pengiriman di database.
+- Hanya BK yang melihat tombol ini; wali kelas tetap read-only.
+- Pesan tidak memuat PIN, token kartu, atau tautan portal siswa.
 
 ---
 
@@ -574,9 +597,9 @@ where school_id = '00000000-0000-4000-8000-000000000034'
 | **2** | Master aturan, catat pelanggaran, ledger, tab siswa | Selesai; lolos harness PGlite |
 | **3** | SP1–3, berita acara, preview/cetak/Word, rekap | Selesai; cetak final perlu uji staging |
 | **4** | Manajemen user, portal wali, kartu QR + PIN, laporan periode, pemindai kartu guru | Selesai; termasuk akun staf, penugasan wali, kartu QR, portal siswa, laporan periode, dan pemindai kartu guru |
-| **5** | Mobile parity, `wa.me`, audit, testing 320–430 | Parity mobile + audit selesai; `wa.me` ditunda |
+| **5** | Mobile parity, `wa.me`, audit, testing 320–430 | Selesai; parity, audit, dan tautan `wa.me` manual. Tanpa WhatsApp API |
 
-MVP yang layak dipakai: **Fase 1–5** (tanpa `wa.me`).
+MVP yang layak dipakai: **Fase 1–5** (tanpa WhatsApp API).
 
 ---
 
@@ -622,13 +645,24 @@ MVP yang layak dipakai: **Fase 1–5** (tanpa `wa.me`).
 - [x] Akun nonaktif kehilangan akses dan penugasan wali kelasnya dilepas.
 - [x] Sekolah tidak bisa kehilangan BK aktif terakhir.
 
+### Fase 5
+
+- [x] Tautan `wa.me` tersedia dari profil siswa dan riwayat SP.
+- [x] Nomor wali dinormalisasi ke format `62…`; nomor non-seluler ditolak.
+- [x] Pesan dapat disunting dan disalin sebelum dikirim.
+- [x] Tidak ada pengiriman otomatis atau penyimpanan status kirim.
+- [x] Tombol WhatsApp hanya muncul untuk BK.
+- [x] Tampilan PC dan mobile memakai alur pesan yang sama.
+- [ ] Uji kirim di perangkat dengan nomor wali nyata.
+
 ---
 
 ## 13. Pengujian
 
 - **SQL/RLS**: tiga user uji (BK, wali 7A, wali 7B) + satu user sekolah lain.
 - **Unit**: perhitungan sisa poin, ambang SP, idempotensi SP, koreksi ledger,
-  normalisasi token kartu, dan resolusi pindai kartu.
+  normalisasi token kartu, resolusi pindai kartu, normalisasi nomor WhatsApp,
+  dan penyusunan pesan orang tua.
 - **UI**: 320/360/390/430 px untuk mobile; 1280/1440 untuk PC.
 - **Dokumen**: cetak A4, PDF, Word, tanda tangan tidak terpotong.
 - **Migrasi**: bandingkan jumlah baris sebelum/sesudah, cek sampel 10 siswa.
@@ -647,6 +681,7 @@ MVP yang layak dipakai: **Fase 1–5** (tanpa `wa.me`).
 | Wali kelas melihat data sensitif | RLS ketat; kasus tetap BK-only |
 | Siswa saling melihat poin | Portal hanya data sendiri; tidak ada daftar nama |
 | Kartu difoto orang lain | Portal QR + PIN; scan guru wajib login staf aktif, dibatasi sekolah/kelas, dan diaudit; kartu bisa dicabut |
+| Pesan WhatsApp salah nomor/isi | Nomor dan pesan dapat disunting, ada pratinjau, dan pengiriman tetap manual di WhatsApp |
 | SP dobel | Idempotensi + unique index |
 | Poin diedit manual | Ledger immutable + audit log |
 | Aturan buku tidak konsisten | Master data editable + verifikasi sekolah |

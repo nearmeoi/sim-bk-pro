@@ -5,6 +5,7 @@ import {
   Eye,
   FileSignature,
   FileText,
+  MessageCircle,
   Plus,
   ScanLine,
   Search,
@@ -16,7 +17,9 @@ import { useDiscipline } from '../context/DisciplineContext';
 import { DetailBar, PageHeader, SectionTitle, EmptyState } from './ui';
 import MobileViolationSheet from './MobileViolationSheet';
 import MobileCardScanSheet from './MobileCardScanSheet';
+import MobileWhatsAppSheet from './MobileWhatsAppSheet';
 import { resolveScannedStudent } from '../lib/cardScan';
+import { buildSpNoticeMessage } from '../lib/whatsapp';
 import SpDocumentModal from '../components/discipline/SpDocumentModal';
 import StudentPicker from '../components/ui/StudentPicker';
 import DatePicker from '../components/ui/DatePicker';
@@ -67,7 +70,7 @@ function suggestedNumber(letter: SpLetter): string {
 }
 
 export default function MobileTataTertib({ onBack, onToast }: MobileTataTertibProps) {
-  const { students } = useBK();
+  const { students, settings } = useBK();
   const {
     available,
     loading,
@@ -103,6 +106,7 @@ export default function MobileTataTertib({ onBack, onToast }: MobileTataTertibPr
   const [recordOpen, setRecordOpen] = useState(false);
   const [recordStudent, setRecordStudent] = useState<Student | null>(null);
   const [scanOpen, setScanOpen] = useState(false);
+  const [waLetter, setWaLetter] = useState<SpLetter | null>(null);
   const [issueTarget, setIssueTarget] = useState<SpLetter | null>(null);
   const [cancelTarget, setCancelTarget] = useState<SpLetter | null>(null);
   const [manualOpen, setManualOpen] = useState(false);
@@ -112,6 +116,21 @@ export default function MobileTataTertib({ onBack, onToast }: MobileTataTertibPr
   } | null>(null);
 
   const canManage = membership?.role === 'bk';
+  const waStudent = waLetter
+    ? students.find((row) => row.id === waLetter.studentId)
+    : undefined;
+  const waMessage = waLetter
+    ? buildSpNoticeMessage({
+        schoolName: settings?.namaSekolah,
+        guardianName: waStudent?.namaWali,
+        studentName: waLetter.nama,
+        className: waLetter.kelas,
+        spLabel: SP_TYPE_LABELS[waLetter.type],
+        spNumber: waLetter.number,
+        totalPoints: waLetter.totalPoints,
+        meetingAt: waLetter.meetingAt,
+      })
+    : '';
 
   const attention = useMemo(
     () =>
@@ -812,6 +831,15 @@ export default function MobileTataTertib({ onBack, onToast }: MobileTataTertibPr
                       </p>
                     )}
                     <div className="mt-1.5 flex justify-end gap-1.5">
+                      {canManage && (
+                        <button
+                          type="button"
+                          onClick={() => setWaLetter(letter)}
+                          className="inline-flex items-center gap-1 rounded-md border border-[#128C7E]/30 bg-white px-2 py-1 text-[10px] font-bold text-[#128C7E] active:bg-emerald-50"
+                        >
+                          <MessageCircle size={11} /> WhatsApp
+                        </button>
+                      )}
                       <button
                         type="button"
                         onClick={() => setPreview({ letter, kind: 'sp' })}
@@ -952,6 +980,18 @@ export default function MobileTataTertib({ onBack, onToast }: MobileTataTertibPr
           students={students}
           onCreate={createManualSp}
           onSaved={(message) => onToast(message)}
+        />
+      )}
+
+      {waLetter && (
+        <MobileWhatsAppSheet
+          open={Boolean(waLetter)}
+          onClose={() => setWaLetter(null)}
+          defaultPhone={waStudent?.kontakWali || ''}
+          defaultMessage={waMessage}
+          studentName={waLetter.nama}
+          guardianName={waStudent?.namaWali}
+          onToast={onToast}
         />
       )}
 

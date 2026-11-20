@@ -1,7 +1,10 @@
 import { useState } from 'react';
-import { FileText, Plus, ShieldAlert, X, Eye } from 'lucide-react';
+import { FileText, MessageCircle, Plus, ShieldAlert, X, Eye } from 'lucide-react';
+import { useBK } from '../../context/BKContext';
 import { useDiscipline } from '../../context/DisciplineContext';
 import SpDocumentModal from './SpDocumentModal';
+import WhatsAppModal from './WhatsAppModal';
+import { buildPointNoticeMessage } from '../../lib/whatsapp';
 import {
   CATEGORY_STYLES,
   POINT_STATUS_LABELS,
@@ -25,11 +28,13 @@ export default function StudentDisciplinePanel({
   onRecord,
   onToast,
 }: StudentDisciplinePanelProps) {
+  const { settings } = useBK();
   const { membership, pointScale, pointsByStudent, feed, spLetters, voidViolation } = useDiscipline();
   const [voidingId, setVoidingId] = useState<string | null>(null);
   const [voidReason, setVoidReason] = useState('');
   const [saving, setSaving] = useState(false);
   const [previewLetter, setPreviewLetter] = useState<SpLetter | null>(null);
+  const [waOpen, setWaOpen] = useState(false);
 
   const summary = pointsByStudent[student.id];
   const scale = summary?.pointScale ?? pointScale;
@@ -40,6 +45,25 @@ export default function StudentDisciplinePanel({
   const history = feed.filter((row) => row.studentId === student.id);
   const letters = spLetters.filter((row) => row.studentId === student.id);
   const canRecord = membership?.role === 'bk';
+  const latestViolation = history
+    .filter((row) => row.status !== 'void')
+    .sort((a, b) => b.occurredAt.localeCompare(a.occurredAt))[0];
+  const statusLabel = POINT_STATUS_LABELS[status];
+  const suggestion = suggestSanction(status);
+  const noticeMessage = buildPointNoticeMessage({
+    schoolName: settings?.namaSekolah,
+    guardianName: student.namaWali,
+    studentName: student.nama,
+    className: student.kelas,
+    statusLabel,
+    totalPoints: total,
+    balance,
+    pointScale: scale,
+    suggestion: status === 'aman' ? undefined : suggestion,
+    lastViolation: latestViolation
+      ? { name: latestViolation.ruleName, occurredAt: latestViolation.occurredAt }
+      : null,
+  });
 
   const handleVoid = async (recordId: string) => {
     if (!voidReason.trim()) return;
@@ -66,13 +90,22 @@ export default function StudentDisciplinePanel({
           </p>
         </div>
         {canRecord && (
-          <button
-            type="button"
-            onClick={onRecord}
-            className="bk-chip !min-h-[38px] !text-xs font-bold text-alert hover:bg-alert-tint"
-          >
-            <Plus size={14} /> Catat Pelanggaran
-          </button>
+          <div className="flex flex-wrap items-center gap-1.5">
+            <button
+              type="button"
+              onClick={() => setWaOpen(true)}
+              className="inline-flex min-h-[38px] items-center gap-1.5 rounded-[10px] border border-[#128C7E]/30 bg-white px-3 text-[11px] font-bold text-[#128C7E] transition-colors hover:bg-emerald-50"
+            >
+              <MessageCircle size={14} /> WhatsApp
+            </button>
+            <button
+              type="button"
+              onClick={onRecord}
+              className="bk-chip !min-h-[38px] !text-xs font-bold text-alert hover:bg-alert-tint"
+            >
+              <Plus size={14} /> Catat Pelanggaran
+            </button>
+          </div>
         )}
       </div>
 
@@ -269,6 +302,16 @@ export default function StudentDisciplinePanel({
       )}
 
       <SpDocumentModal letter={previewLetter} onClose={() => setPreviewLetter(null)} />
+
+      <WhatsAppModal
+        open={waOpen}
+        onClose={() => setWaOpen(false)}
+        defaultPhone={student.kontakWali || ''}
+        defaultMessage={noticeMessage}
+        studentName={student.nama}
+        guardianName={student.namaWali}
+        onToast={onToast}
+      />
     </div>
   );
 }

@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import {
   ArrowLeft,
   CalendarDays,
+  MessageCircle,
   Phone,
   MapPin,
   NotebookPen,
@@ -17,8 +18,11 @@ import {
   POINT_STATUS_LABELS,
   POINT_STATUS_STYLES,
   formatDateTime,
+  suggestSanction,
 } from '../lib/discipline';
+import { buildPointNoticeMessage } from '../lib/whatsapp';
 import MobileViolationSheet from './MobileViolationSheet';
+import MobileWhatsAppSheet from './MobileWhatsAppSheet';
 import type { Student } from '../types';
 
 interface MobileStudentSheetProps {
@@ -43,9 +47,10 @@ export default function MobileStudentSheet({
   onCatat,
   onToast,
 }: MobileStudentSheetProps) {
-  const { records } = useBK();
+  const { records, settings } = useBK();
   const { membership, pointScale, pointsByStudent, feed } = useDiscipline();
   const [violationOpen, setViolationOpen] = useState(false);
+  const [waOpen, setWaOpen] = useState(false);
 
   const summary = student ? pointsByStudent[student.id] : undefined;
   const pointHistory = useMemo(
@@ -57,6 +62,22 @@ export default function MobileStudentSheet({
   );
   const canRecord = membership?.role === 'bk';
   const scale = summary?.pointScale ?? pointScale;
+  const latestViolation = pointHistory.find((row) => row.status !== 'void');
+  const status = summary?.status ?? 'aman';
+  const noticeMessage = buildPointNoticeMessage({
+    schoolName: settings?.namaSekolah,
+    guardianName: student?.namaWali,
+    studentName: student?.nama || '',
+    className: student?.kelas || '',
+    statusLabel: POINT_STATUS_LABELS[status],
+    totalPoints: summary?.totalPoints ?? 0,
+    balance: summary?.balance ?? scale,
+    pointScale: scale,
+    suggestion: status === 'aman' ? undefined : suggestSanction(status),
+    lastViolation: latestViolation
+      ? { name: latestViolation.ruleName, occurredAt: latestViolation.occurredAt }
+      : null,
+  });
 
   useEffect(() => {
     if (!student) return;
@@ -69,6 +90,11 @@ export default function MobileStudentSheet({
       document.body.style.overflow = prev;
     };
   }, [student, onClose]);
+
+  useEffect(() => {
+    setViolationOpen(false);
+    setWaOpen(false);
+  }, [student?.id]);
 
   const studentRecords = useMemo(
     () =>
@@ -315,13 +341,22 @@ export default function MobileStudentSheet({
 
         <div className="space-y-2 border-t border-border bg-surface px-4 py-3">
           {canRecord && (
-            <button
-              type="button"
-              onClick={() => setViolationOpen(true)}
-              className="flex min-h-[46px] w-full items-center justify-center gap-2 rounded-[14px] border border-red-200 bg-red-50 text-sm font-bold text-red-700 transition-all active:scale-[0.98]"
-            >
-              <ShieldAlert size={16} /> Catat Pelanggaran
-            </button>
+            <div className="grid grid-cols-2 gap-2">
+              <button
+                type="button"
+                onClick={() => setWaOpen(true)}
+                className="flex min-h-[46px] items-center justify-center gap-1.5 rounded-[14px] border border-[#128C7E]/30 bg-white text-xs font-bold text-[#128C7E] transition-all active:scale-[0.98]"
+              >
+                <MessageCircle size={15} /> WhatsApp
+              </button>
+              <button
+                type="button"
+                onClick={() => setViolationOpen(true)}
+                className="flex min-h-[46px] items-center justify-center gap-1.5 rounded-[14px] border border-red-200 bg-red-50 text-xs font-bold text-red-700 transition-all active:scale-[0.98]"
+              >
+                <ShieldAlert size={15} /> Pelanggaran
+              </button>
+            </div>
           )}
           <button
             type="button"
@@ -341,6 +376,16 @@ export default function MobileStudentSheet({
           onSaved={(message) => onToast(message)}
         />
       )}
+
+      <MobileWhatsAppSheet
+        open={waOpen}
+        onClose={() => setWaOpen(false)}
+        defaultPhone={student.kontakWali || ''}
+        defaultMessage={noticeMessage}
+        studentName={student.nama}
+        guardianName={student.namaWali}
+        onToast={onToast}
+      />
     </div>
   );
 }
