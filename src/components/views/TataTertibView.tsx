@@ -2,14 +2,17 @@ import { useMemo, useState } from 'react';
 import {
   AlertTriangle,
   BarChart3,
+  BookOpen,
   CheckCircle2,
   Eye,
   FileSignature,
   FileText,
   IdCard,
+  LayoutDashboard,
   Lock,
   Pencil,
   Plus,
+  QrCode,
   ScanLine,
   Search,
   MessageCircle,
@@ -60,13 +63,13 @@ interface TataTertibViewProps {
 
 type Tab = 'ringkasan' | 'pelanggaran' | 'peringkat' | 'sp' | 'aturan' | 'kartu';
 
-const TABS: { id: Tab; label: string }[] = [
-  { id: 'ringkasan', label: 'Ringkasan' },
-  { id: 'pelanggaran', label: 'Pelanggaran' },
-  { id: 'peringkat', label: 'Peringkat' },
-  { id: 'sp', label: 'Surat Peringatan' },
-  { id: 'aturan', label: 'Aturan Poin' },
-  { id: 'kartu', label: 'Kartu QR' },
+const TABS: { id: Tab; label: string; icon: typeof LayoutDashboard }[] = [
+  { id: 'ringkasan', label: 'Ringkasan', icon: LayoutDashboard },
+  { id: 'pelanggaran', label: 'Pelanggaran', icon: ShieldAlert },
+  { id: 'peringkat', label: 'Peringkat', icon: Trophy },
+  { id: 'sp', label: 'Surat Peringatan', icon: FileSignature },
+  { id: 'aturan', label: 'Aturan Poin', icon: BookOpen },
+  { id: 'kartu', label: 'Kartu QR', icon: QrCode },
 ];
 
 const numberFormat = new Intl.NumberFormat('id-ID');
@@ -338,26 +341,37 @@ export default function TataTertibView({ onToast }: TataTertibViewProps) {
         </div>
       )}
 
-      <div className="flex items-center gap-1.5 overflow-x-auto border-b border-border pb-2 no-scrollbar lg:flex-wrap lg:overflow-visible">
+      <nav
+        aria-label="Bagian tata tertib"
+        className="no-scrollbar flex items-stretch gap-0.5 overflow-x-auto border-b border-border"
+      >
         {TABS.map((item) => {
           if (item.id === 'kartu' && !canManage) return null;
+          const Icon = item.icon;
+          const active = tab === item.id;
           return (
             <button
               key={item.id}
               type="button"
               onClick={() => setTab(item.id)}
-              className={`bk-chip !min-h-[36px] !text-xs lg:!px-3 ${tab === item.id ? 'on' : ''}`}
+              aria-current={active ? 'page' : undefined}
+              className={`flex flex-none items-center gap-1.5 whitespace-nowrap border-b-2 px-3 pb-2 pt-1 text-[11.5px] font-bold transition-colors ${
+                active
+                  ? 'border-black text-text'
+                  : 'border-transparent text-muted hover:border-neutral-300 hover:text-text'
+              }`}
             >
+              <Icon size={14} strokeWidth={active ? 2.4 : 2} className="flex-none" />
               {item.label}
               {item.id === 'sp' && draftLetters.length > 0 && (
-                <span className="ml-1 rounded-full bg-alert px-1.5 py-0.5 text-[9px] font-extrabold text-white">
+                <span className="ml-0.5 rounded-full bg-alert px-1.5 py-0.5 text-[9px] font-extrabold leading-none text-white">
                   {draftLetters.length}
                 </span>
               )}
             </button>
           );
         })}
-      </div>
+      </nav>
 
       {loading && points.length === 0 && (
         <div className="rounded-[18px] border border-border bg-white p-6 text-center">
