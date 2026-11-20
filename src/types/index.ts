@@ -339,6 +339,39 @@ export interface ClassPointSummary {
   rank: number;
 }
 
+export interface AcademicYearOption {
+  id: string;
+  name: string;
+  startsOn: string | null;
+  endsOn: string | null;
+  isActive: boolean;
+}
+
+export interface SemesterOption {
+  id: string;
+  academicYearId: string;
+  name: 'Ganjil' | 'Genap';
+  startsOn: string | null;
+  endsOn: string | null;
+  isActive: boolean;
+}
+
+export interface PeriodStudentPoints {
+  schoolId: string;
+  studentId: string;
+  nama: string;
+  nis: string;
+  nisn: string;
+  kelas: string;
+  classId: string | null;
+  academicYearId: string;
+  semesterId: string;
+  points: number;
+  guidebookPoints: number;
+  violationCount: number;
+  lastViolationAt: string | null;
+}
+
 export interface SchoolMembership {
   memberId: string;
   schoolId: string;

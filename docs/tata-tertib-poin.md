@@ -400,6 +400,19 @@ Aturan:
 - Siswa tidak pernah melihat papan ini; portal siswa hanya menampilkan data
   miliknya sendiri.
 
+### 8.2 Laporan periode
+
+- `v_period_student_points` mengagregasi `point_ledger` per siswa, semester,
+  dan tahun ajaran. View memakai `security_invoker = true`, jadi RLS tetap
+  berlaku: BK melihat sekolahnya, wali kelas hanya kelasnya.
+- PC dan mobile punya kartu **Laporan Periode** di tab Peringkat: pilih tahun
+  ajaran + semester, lalu muat laporan. Peringkat utama tetap semester berjalan.
+- Laporan menampilkan jumlah siswa tercatat, total poin, jumlah catatan, poin
+  buku, dan tanggal pelanggaran terakhir.
+- Migrasi `20261120170000_period_reports.sql` hanya menambah view; rollback
+  menghapus view tanpa menyentuh data Fase 1–3.
+- Verifikasi: `supabase/verify/phase4.sql`.
+
 ---
 
 ## 9. Kasus vs Pelanggaran
@@ -500,7 +513,7 @@ where school_id = '00000000-0000-4000-8000-000000000034'
 | **1** | Schema SaaS, role, RLS, migrasi data lama | SQL + verifikasi selesai; belum diterapkan ke staging/production |
 | **2** | Master aturan, catat pelanggaran, ledger, tab siswa | Selesai; lolos harness PGlite |
 | **3** | SP1–3, berita acara, preview/cetak/Word, rekap | Selesai; cetak final perlu uji staging |
-| **4** | Manajemen user, portal wali, kartu QR + PIN | Kartu QR + portal siswa selesai; UI penugasan wali kelas belum |
+| **4** | Manajemen user, portal wali, kartu QR + PIN, laporan periode | Kartu QR, portal siswa, dan laporan periode selesai; UI penugasan wali kelas belum |
 | **5** | Mobile parity, `wa.me`, audit, testing 320–430 | Parity mobile + audit selesai; `wa.me` ditunda |
 
 MVP yang layak dipakai: **Fase 1–3**.

@@ -2,6 +2,27 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import TataTertibView from './TataTertibView';
 
+const periodMock = vi.hoisted(() => {
+  const rows = [
+    {
+      schoolId: 'school',
+      studentId: 's9',
+      nama: 'RIZKY LAMA',
+      nis: '2110009',
+      nisn: '0099999999',
+      kelas: '9A',
+      classId: 'c9',
+      academicYearId: 'year-1',
+      semesterId: 'sem-1',
+      points: 120,
+      guidebookPoints: 12,
+      violationCount: 3,
+      lastViolationAt: '2026-09-10T02:00:00.000Z',
+    },
+  ];
+  return { rows, getPeriodPoints: vi.fn(async () => rows) };
+});
+
 const points = [
   {
     schoolId: 'school',
@@ -90,6 +111,26 @@ vi.mock('../../context/DisciplineContext', () => ({
     ],
     cards: [],
     rules: [],
+    academicYears: [
+      {
+        id: 'year-1',
+        name: '2026/2027',
+        startsOn: '2026-07-01',
+        endsOn: '2027-06-30',
+        isActive: true,
+      },
+    ],
+    semesters: [
+      {
+        id: 'sem-1',
+        academicYearId: 'year-1',
+        name: 'Ganjil',
+        startsOn: '2026-07-01',
+        endsOn: '2026-12-31',
+        isActive: true,
+      },
+    ],
+    getPeriodPoints: periodMock.getPeriodPoints,
     leaderboard: [
       {
         schoolId: 'school',
@@ -140,8 +181,20 @@ describe('TataTertibView peringkat', () => {
     expect(screen.getAllByText('ADI SAPUTRA').length).toBeGreaterThan(0);
     expect(screen.getByText('Kelas Paling Tertib')).toBeInTheDocument();
     expect(screen.getByText('Juara: 7A')).toBeInTheDocument();
+    expect(screen.getByText('Laporan Periode')).toBeInTheDocument();
     expect(
       screen.getByText(/Wali kelas melihat kelasnya sendiri/i),
     ).toBeInTheDocument();
+  });
+
+  it('memuat laporan periode yang dipilih', async () => {
+    render(<TataTertibView onToast={() => {}} />);
+
+    fireEvent.click(screen.getByRole('button', { name: 'Peringkat' }));
+    fireEvent.click(await screen.findByRole('button', { name: 'Muat laporan' }));
+
+    expect(await screen.findByText('RIZKY LAMA')).toBeInTheDocument();
+    expect(periodMock.getPeriodPoints).toHaveBeenCalledWith('year-1', 'sem-1');
+    expect(screen.getByText('Siswa tercatat')).toBeInTheDocument();
   });
 });

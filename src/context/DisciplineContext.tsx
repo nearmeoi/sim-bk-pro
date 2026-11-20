@@ -2,10 +2,13 @@ import React, { createContext, useCallback, useContext, useEffect, useMemo, useS
 import { useBK } from './BKContext';
 import { disciplineService } from '../services/disciplineService';
 import type {
+  AcademicYearOption,
   ClassPointSummary,
   LeaderboardEntry,
+  PeriodStudentPoints,
   RecordViolationPayload,
   SchoolMembership,
+  SemesterOption,
   SpLetter,
   SpType,
   StudentCard,
@@ -27,10 +30,16 @@ interface DisciplineContextType {
   spLetters: SpLetter[];
   leaderboard: LeaderboardEntry[];
   classPoints: ClassPointSummary[];
+  academicYears: AcademicYearOption[];
+  semesters: SemesterOption[];
   cards: StudentCard[];
   pointsByStudent: Record<string, StudentPointSummary>;
   ruleById: Record<string, ViolationRule>;
   refresh: () => Promise<void>;
+  getPeriodPoints: (
+    academicYearId: string,
+    semesterId: string
+  ) => Promise<PeriodStudentPoints[]>;
   recordViolation: (payload: RecordViolationPayload) => Promise<{ recordId: string; spDraft: SpLetter | null }>;
   voidViolation: (recordId: string, reason: string) => Promise<void>;
   createManualSp: (studentId: string, type: SpType, reason: string) => Promise<string>;
@@ -74,6 +83,8 @@ export const DisciplineProvider: React.FC<{ children: React.ReactNode }> = ({ ch
   const [spLetters, setSpLetters] = useState<SpLetter[]>([]);
   const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([]);
   const [classPoints, setClassPoints] = useState<ClassPointSummary[]>([]);
+  const [academicYears, setAcademicYears] = useState<AcademicYearOption[]>([]);
+  const [semesters, setSemesters] = useState<SemesterOption[]>([]);
   const [cards, setCards] = useState<StudentCard[]>([]);
 
   const refresh = useCallback(async () => {
@@ -87,6 +98,8 @@ export const DisciplineProvider: React.FC<{ children: React.ReactNode }> = ({ ch
       setSpLetters([]);
       setLeaderboard([]);
       setClassPoints([]);
+      setAcademicYears([]);
+      setSemesters([]);
       setCards([]);
       setError(null);
       return;
@@ -104,6 +117,8 @@ export const DisciplineProvider: React.FC<{ children: React.ReactNode }> = ({ ch
         nextLetters,
         nextLeaderboard,
         nextClasses,
+        nextAcademicYears,
+        nextSemesters,
         nextCards,
       ] = await Promise.all([
         disciplineService.getRules(),
@@ -112,6 +127,8 @@ export const DisciplineProvider: React.FC<{ children: React.ReactNode }> = ({ ch
         disciplineService.getSpLetters(),
         disciplineService.getLeaderboard(),
         disciplineService.getClassPoints(),
+        disciplineService.getAcademicYears(),
+        disciplineService.getSemesters(),
         disciplineService.getStudentCards(),
       ]);
       setMembership(nextMembership);
@@ -125,6 +142,8 @@ export const DisciplineProvider: React.FC<{ children: React.ReactNode }> = ({ ch
       setSpLetters(nextLetters);
       setLeaderboard(nextLeaderboard);
       setClassPoints(nextClasses);
+      setAcademicYears(nextAcademicYears);
+      setSemesters(nextSemesters);
       setCards(nextCards);
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Gagal memuat data tata tertib.';
@@ -237,6 +256,12 @@ export const DisciplineProvider: React.FC<{ children: React.ReactNode }> = ({ ch
     [refresh]
   );
 
+  const getPeriodPoints = useCallback(
+    (academicYearId: string, semesterId: string) =>
+      disciplineService.getPeriodStudentPoints(academicYearId, semesterId),
+    []
+  );
+
   const pointsByStudent = useMemo(() => {
     const map: Record<string, StudentPointSummary> = {};
     points.forEach((row) => {
@@ -268,10 +293,13 @@ export const DisciplineProvider: React.FC<{ children: React.ReactNode }> = ({ ch
         spLetters,
         leaderboard,
         classPoints,
+        academicYears,
+        semesters,
         cards,
         pointsByStudent,
         ruleById,
         refresh,
+        getPeriodPoints,
         recordViolation,
         voidViolation,
         createManualSp,

@@ -7,10 +7,13 @@
 
 import { supabase, isSupabaseConfigured } from '../lib/supabaseClient';
 import type {
+  AcademicYearOption,
   ClassPointSummary,
   LeaderboardEntry,
+  PeriodStudentPoints,
   RecordViolationPayload,
   SchoolMembership,
+  SemesterOption,
   SpLetter,
   SpType,
   StudentCard,
@@ -285,6 +288,74 @@ export const disciplineService = {
       .order('rank', { ascending: true });
     if (error) throw new Error(error.message);
     return (data || []).map(mapClassPoints);
+  },
+
+  async getAcademicYears(): Promise<AcademicYearOption[]> {
+    const sb = client();
+    if (!sb) return [];
+    const { data, error } = await sb
+      .from('academic_years')
+      .select('id, name, starts_on, ends_on, is_active')
+      .order('starts_on', { ascending: false, nullsFirst: false })
+      .order('name', { ascending: false });
+    if (error) throw new Error(error.message);
+    return (data || []).map((row) => ({
+      id: row.id as string,
+      name: row.name as string,
+      startsOn: (row.starts_on as string) || null,
+      endsOn: (row.ends_on as string) || null,
+      isActive: Boolean(row.is_active),
+    }));
+  },
+
+  async getSemesters(academicYearId?: string): Promise<SemesterOption[]> {
+    const sb = client();
+    if (!sb) return [];
+    let query = sb
+      .from('semesters')
+      .select('id, academic_year_id, name, starts_on, ends_on, is_active')
+      .order('starts_on', { ascending: true, nullsFirst: false });
+    if (academicYearId) query = query.eq('academic_year_id', academicYearId);
+    const { data, error } = await query;
+    if (error) throw new Error(error.message);
+    return (data || []).map((row) => ({
+      id: row.id as string,
+      academicYearId: row.academic_year_id as string,
+      name: row.name === 'Genap' ? 'Genap' : 'Ganjil',
+      startsOn: (row.starts_on as string) || null,
+      endsOn: (row.ends_on as string) || null,
+      isActive: Boolean(row.is_active),
+    }));
+  },
+
+  async getPeriodStudentPoints(
+    academicYearId: string,
+    semesterId: string
+  ): Promise<PeriodStudentPoints[]> {
+    const sb = client();
+    if (!sb) return [];
+    const { data, error } = await sb
+      .from('v_period_student_points')
+      .select('*')
+      .eq('academic_year_id', academicYearId)
+      .eq('semester_id', semesterId)
+      .order('points', { ascending: false });
+    if (error) throw new Error(error.message);
+    return (data || []).map((row) => ({
+      schoolId: row.school_id as string,
+      studentId: row.student_id as string,
+      nama: row.nama as string,
+      nis: (row.nis as string) || '',
+      nisn: (row.nisn as string) || '',
+      kelas: (row.kelas as string) || '',
+      classId: (row.class_id as string) || null,
+      academicYearId: row.academic_year_id as string,
+      semesterId: row.semester_id as string,
+      points: Number(row.points || 0),
+      guidebookPoints: Number(row.guidebook_points || 0),
+      violationCount: Number(row.violation_count || 0),
+      lastViolationAt: (row.last_violation_at as string) || null,
+    }));
   },
 
   async getStudentCards(): Promise<StudentCard[]> {

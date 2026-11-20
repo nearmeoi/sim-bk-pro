@@ -31,7 +31,7 @@ import {
   formatDate,
   formatDateTime,
 } from '../lib/discipline';
-import type { SpLetter, SpType, Student } from '../types';
+import type { PeriodStudentPoints, SpLetter, SpType, Student } from '../types';
 
 interface MobileTataTertibProps {
   onBack: () => void;
@@ -76,7 +76,10 @@ export default function MobileTataTertib({ onBack, onToast }: MobileTataTertibPr
     rules,
     pointScale,
     leaderboard,
+    academicYears,
+    semesters,
     pointsByStudent,
+    getPeriodPoints,
     issueSp,
     cancelSp,
     createManualSp,
@@ -87,6 +90,12 @@ export default function MobileTataTertib({ onBack, onToast }: MobileTataTertibPr
   const [kelas, setKelas] = useState('');
   const [visible, setVisible] = useState(40);
   const [rankVisible, setRankVisible] = useState(20);
+  const [periodYearId, setPeriodYearId] = useState('');
+  const [periodSemesterId, setPeriodSemesterId] = useState('');
+  const [periodRows, setPeriodRows] = useState<PeriodStudentPoints[] | null>(null);
+  const [periodLoading, setPeriodLoading] = useState(false);
+  const [periodError, setPeriodError] = useState<string | null>(null);
+  const [periodVisible, setPeriodVisible] = useState(20);
   const [recordOpen, setRecordOpen] = useState(false);
   const [issueTarget, setIssueTarget] = useState<SpLetter | null>(null);
   const [cancelTarget, setCancelTarget] = useState<SpLetter | null>(null);
@@ -123,6 +132,34 @@ export default function MobileTataTertib({ onBack, onToast }: MobileTataTertibPr
   const rankOf = (row: (typeof rankRows)[number]) => (isBk ? row.schoolRank : row.classRank);
   const rankTotalOf = (row: (typeof rankRows)[number]) =>
     isBk ? row.schoolStudents : row.classStudents;
+
+  const activeYear = academicYears.find((row) => row.isActive) || academicYears[0] || null;
+  const selectedYearId = periodYearId || activeYear?.id || '';
+  const yearSemesters = semesters.filter((row) => row.academicYearId === selectedYearId);
+  const activeSemester = yearSemesters.find((row) => row.isActive) || yearSemesters[0] || null;
+  const selectedSemesterId = periodSemesterId || activeSemester?.id || '';
+  const periodTotals = useMemo(() => {
+    const rows = periodRows || [];
+    return {
+      students: rows.length,
+      points: rows.reduce((sum, row) => sum + row.points, 0),
+      violations: rows.reduce((sum, row) => sum + row.violationCount, 0),
+    };
+  }, [periodRows]);
+
+  const loadPeriodReport = async (yearId: string, semesterId: string) => {
+    if (!yearId || !semesterId) return;
+    setPeriodLoading(true);
+    setPeriodError(null);
+    try {
+      setPeriodRows(await getPeriodPoints(yearId, semesterId));
+    } catch (err) {
+      setPeriodRows([]);
+      setPeriodError(err instanceof Error ? err.message : 'Gagal memuat laporan periode.');
+    } finally {
+      setPeriodLoading(false);
+    }
+  };
 
   const issuedLetters = useMemo(
     () => spLetters.filter((row) => row.status !== 'draft'),
@@ -485,6 +522,158 @@ export default function MobileTataTertib({ onBack, onToast }: MobileTataTertibPr
                   </li>
                 ))}
               </ul>
+            )}
+          </section>
+
+          <section className="bk-card overflow-hidden !p-0">
+            <div className="border-b border-border px-4 py-3">
+              <SectionTitle>Laporan Periode</SectionTitle>
+              <p className="mt-0.5 text-[10.5px] leading-relaxed text-muted">
+                Poin tidak pernah direset. Pilih semester lama untuk melihat riwayatnya.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-2 gap-2 border-b border-border px-4 py-3">
+              <label className="block text-[9px] font-extrabold uppercase tracking-wide text-muted">
+                Tahun ajaran
+                <select
+                  value={selectedYearId}
+                  onChange={(e) => {
+                    setPeriodYearId(e.target.value);
+                    setPeriodSemesterId('');
+                    setPeriodRows(null);
+                    setPeriodError(null);
+                  }}
+                  className="mt-1 min-h-[38px] w-full rounded-[9px] border border-border bg-surface px-1.5 text-[11px] font-bold text-text focus:border-black focus:outline-none"
+                >
+                  {academicYears.length === 0 && <option value="">Belum ada</option>}
+                  {academicYears.map((row) => (
+                    <option key={row.id} value={row.id}>
+                      {row.name}
+                      {row.isActive ? ' · aktif' : ''}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label className="block text-[9px] font-extrabold uppercase tracking-wide text-muted">
+                Semester
+                <select
+                  value={selectedSemesterId}
+                  onChange={(e) => {
+                    setPeriodSemesterId(e.target.value);
+                    setPeriodRows(null);
+                    setPeriodError(null);
+                  }}
+                  className="mt-1 min-h-[38px] w-full rounded-[9px] border border-border bg-surface px-1.5 text-[11px] font-bold text-text focus:border-black focus:outline-none"
+                >
+                  {yearSemesters.length === 0 && <option value="">Belum ada</option>}
+                  {yearSemesters.map((row) => (
+                    <option key={row.id} value={row.id}>
+                      {row.name}
+                      {row.isActive ? ' · aktif' : ''}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <button
+                type="button"
+                disabled={!selectedYearId || !selectedSemesterId || periodLoading}
+                onClick={() => void loadPeriodReport(selectedYearId, selectedSemesterId)}
+                className="col-span-2 min-h-[42px] rounded-[10px] bg-black text-[11px] font-extrabold text-white disabled:opacity-40"
+              >
+                {periodLoading ? 'Memuat…' : 'Muat laporan'}
+              </button>
+            </div>
+
+            {periodError && (
+              <p className="mx-4 my-3 rounded-[9px] border border-red-200 bg-red-50 px-3 py-2 text-[10.5px] font-semibold text-red-700">
+                {periodError}
+              </p>
+            )}
+
+            {!periodError && periodRows === null && (
+              <p className="px-4 py-4 text-[10.5px] leading-relaxed text-muted">
+                Peringkat di atas selalu memakai semester berjalan. Laporan ini untuk semester lama.
+              </p>
+            )}
+
+            {!periodError && periodRows !== null && periodRows.length === 0 && (
+              <div className="p-4">
+                <EmptyState icon={<FileText size={22} />}>
+                  Tidak ada pelanggaran pada periode ini.
+                </EmptyState>
+              </div>
+            )}
+
+            {!periodError && periodRows !== null && periodRows.length > 0 && (
+              <>
+                <div className="grid grid-cols-3 divide-x divide-border border-b border-border">
+                  <div className="px-2 py-2.5 text-center">
+                    <p className="text-[8.5px] font-extrabold uppercase tracking-wide text-muted">
+                      Siswa
+                    </p>
+                    <p className="mt-0.5 text-[13px] font-extrabold tabular-nums text-text">
+                      {periodTotals.students}
+                    </p>
+                  </div>
+                  <div className="px-2 py-2.5 text-center">
+                    <p className="text-[8.5px] font-extrabold uppercase tracking-wide text-muted">
+                      Poin
+                    </p>
+                    <p className="mt-0.5 text-[13px] font-extrabold tabular-nums text-alert">
+                      {periodTotals.points}
+                    </p>
+                  </div>
+                  <div className="px-2 py-2.5 text-center">
+                    <p className="text-[8.5px] font-extrabold uppercase tracking-wide text-muted">
+                      Catatan
+                    </p>
+                    <p className="mt-0.5 text-[13px] font-extrabold tabular-nums text-text">
+                      {periodTotals.violations}
+                    </p>
+                  </div>
+                </div>
+
+                <ul className="divide-y divide-border/70">
+                  {periodRows.slice(0, periodVisible).map((row, index) => (
+                    <li key={`${row.studentId}-${row.semesterId}`} className="flex items-center gap-2.5 px-4 py-2.5">
+                      <span className="grid h-7 w-7 flex-none place-items-center rounded-full bg-neutral-100 text-[10px] font-extrabold tabular-nums text-neutral-600">
+                        {index + 1}
+                      </span>
+                      <div className="min-w-0 flex-1">
+                        <p className="truncate text-[12.5px] font-bold text-text">{row.nama}</p>
+                        <p className="text-[10px] text-muted">
+                          Kelas {row.kelas || '-'} · {row.violationCount} catatan
+                        </p>
+                      </div>
+                      <div className="flex-none text-right">
+                        <p className="text-[12px] font-extrabold tabular-nums text-alert">
+                          +{row.points}
+                        </p>
+                        <p className="text-[9px] text-muted">
+                          {row.lastViolationAt ? formatDate(row.lastViolationAt) : '-'}
+                        </p>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+
+                {periodRows.length > 20 && (
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setPeriodVisible(
+                        periodVisible >= periodRows.length ? 20 : periodRows.length,
+                      )
+                    }
+                    className="min-h-[42px] w-full border-t border-border text-[11px] font-bold text-text"
+                  >
+                    {periodVisible >= periodRows.length
+                      ? 'Tampilkan lebih sedikit'
+                      : `Muat semua (${periodRows.length} siswa)`}
+                  </button>
+                )}
+              </>
             )}
           </section>
 

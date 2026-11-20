@@ -52,6 +52,26 @@ vi.mock('../context/DisciplineContext', () => ({
     ],
     cards: [],
     rules: [],
+    academicYears: [
+      {
+        id: 'year-1',
+        name: '2026/2027',
+        startsOn: '2026-07-01',
+        endsOn: '2027-06-30',
+        isActive: true,
+      },
+    ],
+    semesters: [
+      {
+        id: 'sem-1',
+        academicYearId: 'year-1',
+        name: 'Ganjil',
+        startsOn: '2026-07-01',
+        endsOn: '2026-12-31',
+        isActive: true,
+      },
+    ],
+    getPeriodPoints: vi.fn(async () => []),
     leaderboard: [
       {
         schoolId: 'school',
@@ -88,5 +108,6 @@ describe('MobileTataTertib peringkat', () => {
     expect(screen.getAllByText('NURUL AULIA').length).toBeGreaterThan(0);
     expect(screen.getByText('Kelas Paling Tertib')).toBeInTheDocument();
     expect(screen.getByText(/1 dari 1 siswa/)).toBeInTheDocument();
+    expect(screen.getByText('Laporan Periode')).toBeInTheDocument();
   });
 });

@@ -39,6 +39,7 @@ import SpDocumentModal from '../discipline/SpDocumentModal';
 import StudentCardModal from '../discipline/StudentCardModal';
 import type {
   LeaderboardEntry,
+  PeriodStudentPoints,
   SpLetter,
   Student,
   StudentCard,
@@ -78,7 +79,10 @@ export default function TataTertibView({ onToast }: TataTertibViewProps) {
     cards,
     rules,
     leaderboard,
+    academicYears,
+    semesters,
     pointsByStudent,
+    getPeriodPoints,
     voidViolation,
     cancelSp,
     issueSp,
@@ -107,6 +111,11 @@ export default function TataTertibView({ onToast }: TataTertibViewProps) {
   const [cardQuery, setCardQuery] = useState('');
   const [cardVisible, setCardVisible] = useState(40);
   const [rankVisible, setRankVisible] = useState(20);
+  const [periodYearId, setPeriodYearId] = useState('');
+  const [periodSemesterId, setPeriodSemesterId] = useState('');
+  const [periodRows, setPeriodRows] = useState<PeriodStudentPoints[] | null>(null);
+  const [periodLoading, setPeriodLoading] = useState(false);
+  const [periodError, setPeriodError] = useState<string | null>(null);
   const [revokeCardTarget, setRevokeCardTarget] = useState<{
     card: StudentCard;
     student: Student;
@@ -158,6 +167,35 @@ export default function TataTertibView({ onToast }: TataTertibViewProps) {
   const rankOf = (row: LeaderboardEntry) => (isBk ? row.schoolRank : row.classRank);
   const rankTotalOf = (row: LeaderboardEntry) =>
     isBk ? row.schoolStudents : row.classStudents;
+
+  const activeYear = academicYears.find((row) => row.isActive) || academicYears[0] || null;
+  const selectedYearId = periodYearId || activeYear?.id || '';
+  const yearSemesters = semesters.filter((row) => row.academicYearId === selectedYearId);
+  const activeSemester = yearSemesters.find((row) => row.isActive) || yearSemesters[0] || null;
+  const selectedSemesterId = periodSemesterId || activeSemester?.id || '';
+
+  const periodTotals = useMemo(() => {
+    const rows = periodRows || [];
+    return {
+      students: rows.length,
+      points: rows.reduce((sum, row) => sum + row.points, 0),
+      violations: rows.reduce((sum, row) => sum + row.violationCount, 0),
+    };
+  }, [periodRows]);
+
+  const loadPeriodReport = async (yearId: string, semesterId: string) => {
+    if (!yearId || !semesterId) return;
+    setPeriodLoading(true);
+    setPeriodError(null);
+    try {
+      setPeriodRows(await getPeriodPoints(yearId, semesterId));
+    } catch (err) {
+      setPeriodRows([]);
+      setPeriodError(err instanceof Error ? err.message : 'Gagal memuat laporan periode.');
+    } finally {
+      setPeriodLoading(false);
+    }
+  };
 
   const activeCardByStudent = useMemo(() => {
     const map: Record<string, StudentCard> = {};
@@ -652,6 +690,161 @@ export default function TataTertibView({ onToast }: TataTertibViewProps) {
                   </tbody>
                 </table>
               </div>
+            )}
+          </section>
+
+          <section className="overflow-hidden rounded-[18px] border border-border bg-white">
+            <div className="border-b border-border px-4 py-3">
+              <h2 className="text-sm font-extrabold text-text">Laporan Periode</h2>
+              <p className="mt-0.5 text-[11px] leading-relaxed text-muted">
+                Rekap poin per semester. Poin tidak pernah direset; pilih semester lama untuk
+                membuka riwayatnya.
+              </p>
+            </div>
+
+            <div className="flex flex-col gap-2.5 border-b border-border px-4 py-3 sm:flex-row sm:items-end">
+              <label className="flex-1 text-[10px] font-extrabold uppercase tracking-wide text-muted">
+                Tahun ajaran
+                <select
+                  value={selectedYearId}
+                  onChange={(e) => {
+                    setPeriodYearId(e.target.value);
+                    setPeriodSemesterId('');
+                    setPeriodRows(null);
+                    setPeriodError(null);
+                  }}
+                  className="mt-1 min-h-[40px] w-full rounded-[10px] border border-border bg-surface px-2.5 text-xs font-bold text-text focus:border-black focus:outline-none"
+                >
+                  {academicYears.length === 0 && <option value="">Belum ada tahun ajaran</option>}
+                  {academicYears.map((row) => (
+                    <option key={row.id} value={row.id}>
+                      {row.name}
+                      {row.isActive ? ' · aktif' : ''}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label className="flex-1 text-[10px] font-extrabold uppercase tracking-wide text-muted">
+                Semester
+                <select
+                  value={selectedSemesterId}
+                  onChange={(e) => {
+                    setPeriodSemesterId(e.target.value);
+                    setPeriodRows(null);
+                    setPeriodError(null);
+                  }}
+                  className="mt-1 min-h-[40px] w-full rounded-[10px] border border-border bg-surface px-2.5 text-xs font-bold text-text focus:border-black focus:outline-none"
+                >
+                  {yearSemesters.length === 0 && <option value="">Belum ada semester</option>}
+                  {yearSemesters.map((row) => (
+                    <option key={row.id} value={row.id}>
+                      Semester {row.name}
+                      {row.isActive ? ' · aktif' : ''}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <button
+                type="button"
+                disabled={!selectedYearId || !selectedSemesterId || periodLoading}
+                onClick={() => void loadPeriodReport(selectedYearId, selectedSemesterId)}
+                className="min-h-[40px] flex-none rounded-[10px] bg-black px-4 text-[11px] font-extrabold text-white hover:bg-neutral-800 disabled:cursor-not-allowed disabled:opacity-40"
+              >
+                {periodLoading ? 'Memuat…' : 'Muat laporan'}
+              </button>
+            </div>
+
+            {periodError && (
+              <p className="mx-4 my-3 rounded-[10px] border border-red-200 bg-red-50 px-3 py-2 text-[11px] font-semibold text-red-700">
+                {periodError}
+              </p>
+            )}
+
+            {!periodError && periodRows === null && (
+              <div className="flex items-start gap-2.5 px-4 py-5 text-[11px] leading-relaxed text-muted">
+                <BarChart3 size={15} className="mt-0.5 flex-none text-text" />
+                <p>
+                  Pilih tahun ajaran dan semester, lalu muat laporan. Peringkat di atas selalu
+                  memakai semester berjalan.
+                </p>
+              </div>
+            )}
+
+            {!periodError && periodRows !== null && periodRows.length === 0 && (
+              <EmptyState icon={FileText} text="Tidak ada pelanggaran pada periode ini." />
+            )}
+
+            {!periodError && periodRows !== null && periodRows.length > 0 && (
+              <>
+                <div className="grid gap-2 px-4 py-3 sm:grid-cols-3">
+                  <div className="rounded-[12px] border border-border bg-bg/60 px-3 py-2.5">
+                    <p className="text-[9.5px] font-extrabold uppercase tracking-wide text-muted">
+                      Siswa tercatat
+                    </p>
+                    <p className="mt-1 text-lg font-extrabold tabular-nums text-text">
+                      {periodTotals.students}
+                    </p>
+                  </div>
+                  <div className="rounded-[12px] border border-border bg-bg/60 px-3 py-2.5">
+                    <p className="text-[9.5px] font-extrabold uppercase tracking-wide text-muted">
+                      Total poin
+                    </p>
+                    <p className="mt-1 text-lg font-extrabold tabular-nums text-alert">
+                      {numberFormat.format(periodTotals.points)}
+                    </p>
+                  </div>
+                  <div className="rounded-[12px] border border-border bg-bg/60 px-3 py-2.5">
+                    <p className="text-[9.5px] font-extrabold uppercase tracking-wide text-muted">
+                      Catatan pelanggaran
+                    </p>
+                    <p className="mt-1 text-lg font-extrabold tabular-nums text-text">
+                      {numberFormat.format(periodTotals.violations)}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="overflow-x-auto border-t border-border">
+                  <table className="w-full min-w-[760px] border-collapse text-[12px]">
+                    <thead>
+                      <tr className="bg-gray-50/80 text-left text-[10px] uppercase tracking-wide text-muted">
+                        <th className="px-4 py-2 font-extrabold">Peringkat</th>
+                        <th className="px-3 py-2 font-extrabold">Siswa</th>
+                        <th className="px-3 py-2 font-extrabold">Kelas</th>
+                        <th className="px-3 py-2 text-right font-extrabold">Pelanggaran</th>
+                        <th className="px-3 py-2 text-right font-extrabold">Poin</th>
+                        <th className="px-3 py-2 text-right font-extrabold">Poin buku</th>
+                        <th className="px-3 py-2 font-extrabold">Terakhir</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-border/70">
+                      {periodRows.map((row, index) => (
+                        <tr key={`${row.studentId}-${row.semesterId}`} className="hover:bg-gray-50/60">
+                          <td className="px-4 py-2.5 font-extrabold tabular-nums text-text">
+                            #{index + 1}
+                          </td>
+                          <td className="px-3 py-2.5">
+                            <p className="font-bold text-text">{row.nama}</p>
+                            <p className="text-[10px] text-muted">NIS {row.nis || '-'}</p>
+                          </td>
+                          <td className="px-3 py-2.5 text-muted">{row.kelas || '-'}</td>
+                          <td className="px-3 py-2.5 text-right tabular-nums text-muted">
+                            {row.violationCount}
+                          </td>
+                          <td className="px-3 py-2.5 text-right font-extrabold tabular-nums text-alert">
+                            +{row.points}
+                          </td>
+                          <td className="px-3 py-2.5 text-right tabular-nums text-muted">
+                            {row.guidebookPoints}
+                          </td>
+                          <td className="px-3 py-2.5 text-[10.5px] text-muted">
+                            {row.lastViolationAt ? formatDate(row.lastViolationAt) : '-'}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </>
             )}
           </section>
 
