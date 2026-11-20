@@ -338,12 +338,12 @@ export default function GuruView({ onToast }: GuruViewProps) {
             </p>
           ) : (
             <div className="overflow-x-auto">
-              <table className="w-full min-w-[860px] border-collapse text-[12px]">
+              <table className="w-full min-w-[700px] border-collapse text-[12px] xl:min-w-[860px]">
                 <thead>
                   <tr className="border-b border-border bg-bg/60 text-left text-[10px] font-extrabold uppercase tracking-wide text-muted">
                     <th className="px-4 py-2.5">Guru</th>
                     <th className="px-3 py-2.5">Peran</th>
-                    <th className="px-3 py-2.5">Email</th>
+                    <th className="hidden px-3 py-2.5 xl:table-cell">Email</th>
                     <th className="px-3 py-2.5">Kelas diampu</th>
                     <th className="px-3 py-2.5">Status</th>
                     <th className="px-4 py-2.5 text-right">Aksi</th>
@@ -379,7 +379,7 @@ export default function GuruView({ onToast }: GuruViewProps) {
                           {ROLE_LABEL[member.role]}
                         </span>
                       </td>
-                      <td className="max-w-[200px] px-3 py-3">
+                      <td className="hidden max-w-[200px] px-3 py-3 xl:table-cell">
                         <span className="block truncate text-[11px] text-muted">
                           {member.email || '—'}
                         </span>
@@ -409,22 +409,29 @@ export default function GuruView({ onToast }: GuruViewProps) {
                           <button
                             type="button"
                             onClick={() => setForm({ mode: 'edit', member })}
+                            title="Edit akun"
+                            aria-label="Edit akun"
                             className="inline-flex min-h-[32px] items-center gap-1 rounded-[9px] border border-border bg-white px-2.5 text-[10px] font-bold text-text hover:bg-gray-50"
                           >
-                            <Pencil size={12} /> Edit
+                            <Pencil size={12} /> <span className="hidden xl:inline">Edit</span>
                           </button>
                           {member.isActive && (
                             <button
                               type="button"
                               onClick={() => void resetPassword(member)}
+                              title="Reset sandi"
+                              aria-label="Reset sandi"
                               className="inline-flex min-h-[32px] items-center gap-1 rounded-[9px] border border-border bg-white px-2.5 text-[10px] font-bold text-text hover:bg-gray-50"
                             >
-                              <KeyRound size={12} /> Reset sandi
+                              <KeyRound size={12} />{' '}
+                              <span className="hidden xl:inline">Reset sandi</span>
                             </button>
                           )}
                           <button
                             type="button"
                             onClick={() => void toggleActive(member)}
+                            title={member.isActive ? 'Nonaktifkan akun' : 'Aktifkan akun'}
+                            aria-label={member.isActive ? 'Nonaktifkan akun' : 'Aktifkan akun'}
                             className={`inline-flex min-h-[32px] items-center gap-1 rounded-[9px] border px-2.5 text-[10px] font-bold ${
                               member.isActive
                                 ? 'border-red-200 bg-red-50 text-red-700 hover:bg-red-100'
@@ -432,7 +439,9 @@ export default function GuruView({ onToast }: GuruViewProps) {
                             }`}
                           >
                             {member.isActive ? <UserMinus size={12} /> : <UserPlus size={12} />}
-                            {member.isActive ? 'Nonaktifkan' : 'Aktifkan'}
+                            <span className="hidden xl:inline">
+                              {member.isActive ? 'Nonaktifkan' : 'Aktifkan'}
+                            </span>
                           </button>
                         </div>
                       </td>

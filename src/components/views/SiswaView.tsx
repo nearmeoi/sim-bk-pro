@@ -382,7 +382,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
       </div>
 
       {/* Chips Filter Row */}
-      <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-1">
+      <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-1 lg:flex-wrap lg:overflow-visible">
         {CLASS_FILTERS.map((f) => (
           <button
             key={f.key}
@@ -475,7 +475,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
 
       {/* Sub-filter rombel: muncul setelah tingkat kelas (7/8/9) dipilih */}
       {kelasFilter && rombelFilters.length > 0 && (
-        <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-1">
+        <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-1 lg:flex-wrap lg:overflow-visible">
           <span className="text-[11px] font-bold uppercase tracking-wide text-muted shrink-0 pl-1">
             Rombel
           </span>
@@ -514,7 +514,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
         </div>
 
         <div className="overflow-x-auto border-t border-black">
-          <table className="w-full text-[12px] sm:text-[13px] border-collapse border border-black min-w-[760px]">
+          <table className="w-full text-[12px] sm:text-[13px] border-collapse border border-black min-w-[680px] xl:min-w-[760px]">
             <thead>
               <tr className="bg-gray-100 font-extrabold text-black uppercase">
                 <th className="border border-black px-2 py-2 text-center w-10">NO</th>
@@ -536,7 +536,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                     <ArrowUpDown size={12} className={sortKey === 'nis' ? 'text-gray-900 font-black' : 'opacity-40'} />
                   </div>
                 </th>
-                <th className="border border-black px-2 py-2 text-center w-28">NISN</th>
+                <th className="hidden border border-black px-2 py-2 text-center w-28 xl:table-cell">NISN</th>
                 <th className="border border-black px-1.5 py-2 text-center w-12">L/P</th>
                 <th
                   onClick={() => toggleSort('kelas')}
@@ -547,7 +547,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                     <ArrowUpDown size={12} className={sortKey === 'kelas' ? 'text-gray-900 font-black' : 'opacity-40'} />
                   </div>
                 </th>
-                <th className="border border-black px-2 py-2 text-center w-28">RIWAYAT KASUS</th>
+                <th className="hidden border border-black px-2 py-2 text-center w-28 xl:table-cell">RIWAYAT KASUS</th>
                 <th
                   onClick={() => toggleSort('status')}
                   className="border border-black px-2 py-2 text-center w-20 cursor-pointer hover:bg-gray-200 select-none"
@@ -557,7 +557,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                     <ArrowUpDown size={12} className={sortKey === 'status' ? 'text-gray-900 font-black' : 'opacity-40'} />
                   </div>
                 </th>
-                <th className="border border-black px-2 py-2 text-center w-20">AKSI</th>
+                <th className="border border-black px-2 py-2 text-center w-24">AKSI</th>
               </tr>
             </thead>
             <tbody>
@@ -615,7 +615,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                       <td className="border border-black px-2 py-2 text-center font-medium whitespace-nowrap">
                         {s.nis}
                       </td>
-                      <td className="border border-black px-2 py-2 text-center text-gray-700 whitespace-nowrap">
+                      <td className="hidden border border-black px-2 py-2 text-center text-gray-700 whitespace-nowrap xl:table-cell">
                         {s.nisn}
                       </td>
                       <td className="border border-black px-1.5 py-2 text-center font-bold whitespace-nowrap">
@@ -624,7 +624,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                       <td className="border border-black px-2 py-2 text-center font-bold text-gray-700 whitespace-nowrap">
                         {s.kelas}
                       </td>
-                      <td className="border border-black px-2 py-2 text-center whitespace-nowrap">
+                      <td className="hidden border border-black px-2 py-2 text-center whitespace-nowrap xl:table-cell">
                         {sRecords.length > 0 ? (
                           <span
                             className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-bold ${
@@ -660,7 +660,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                               e.stopPropagation();
                               setSelectedStudent(s);
                             }}
-                            className="px-2.5 py-1 rounded-[8px] bg-black text-white text-xs font-bold hover:bg-neutral-800 active:scale-95 transition-all shadow-xs"
+                            className="shrink-0 px-2.5 py-1 rounded-[8px] bg-black text-white text-xs font-bold hover:bg-neutral-800 active:scale-95 transition-all shadow-xs"
                             title="Buka Catatan Siswa"
                           >
                             Buka
@@ -671,7 +671,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                               e.stopPropagation();
                               handleOpenEdit(s);
                             }}
-                            className="p-1 rounded-[8px] text-muted hover:text-text hover:bg-gray-100 transition-colors"
+                            className="shrink-0 p-1 rounded-[8px] text-muted hover:text-text hover:bg-gray-100 transition-colors"
                             title="Ubah Data Siswa & Nama Orang Tua"
                           >
                             <Edit2 size={14} />
@@ -825,7 +825,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
               <div className="flex flex-wrap items-center justify-between gap-2 border-b border-black/20 pb-1.5">
                 <div>
                   <span className="font-bold">Wali Murid / Orang Tua : </span>
-                  <span className="font-bold text-text">{selectedStudent.namaWali || '(Belum diisi â€” tekan Edit Data di atas)'}</span>
+                  <span className="font-bold text-text">{selectedStudent.namaWali || '(Belum diisi — tekan Edit Data di atas)'}</span>
                   {selectedStudent.kontakWali && (
                     <span className="ml-1 text-muted">({selectedStudent.kontakWali})</span>
                   )}

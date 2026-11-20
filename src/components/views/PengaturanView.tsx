@@ -166,7 +166,7 @@ export const PengaturanView: React.FC<PengaturanViewProps> = ({ onToast }) => {
         tips={[
           'Ibu bisa mengunggah foto/file Logo Asli Sekolah agar langsung muncul di pojok kiri atas setiap surat.',
           'Kop surat ini otomatis dipakai di Surat Panggilan Orang Tua, Home Visit, RPL 1-Lembar, Angket AKPD, dan Buku Siswa.',
-          'Setelah mengubah identitas sekolah, tombol "Simpan" akan muncul mengambang di bawah layar â€” cukup ditekan sekali untuk menyimpan.'
+          'Setelah mengubah identitas sekolah, tombol "Simpan" akan muncul mengambang di bawah layar — cukup ditekan sekali untuk menyimpan.'
         ]}
       />
 

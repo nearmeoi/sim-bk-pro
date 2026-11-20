@@ -338,7 +338,7 @@ export default function TataTertibView({ onToast }: TataTertibViewProps) {
         </div>
       )}
 
-      <div className="flex items-center gap-1.5 overflow-x-auto border-b border-border pb-2 no-scrollbar">
+      <div className="flex items-center gap-1.5 overflow-x-auto border-b border-border pb-2 no-scrollbar lg:flex-wrap lg:overflow-visible">
         {TABS.map((item) => {
           if (item.id === 'kartu' && !canManage) return null;
           return (
@@ -346,7 +346,7 @@ export default function TataTertibView({ onToast }: TataTertibViewProps) {
               key={item.id}
               type="button"
               onClick={() => setTab(item.id)}
-              className={`bk-chip !min-h-[36px] !text-xs ${tab === item.id ? 'on' : ''}`}
+              className={`bk-chip !min-h-[36px] !text-xs lg:!px-3 ${tab === item.id ? 'on' : ''}`}
             >
               {item.label}
               {item.id === 'sp' && draftLetters.length > 0 && (
@@ -607,14 +607,14 @@ export default function TataTertibView({ onToast }: TataTertibViewProps) {
                 </div>
 
                 <div className="overflow-x-auto border-t border-border">
-                  <table className="w-full min-w-[780px] border-collapse text-[12px]">
+                  <table className="w-full min-w-[700px] border-collapse text-[12px] xl:min-w-[780px]">
                     <thead>
                       <tr className="bg-gray-50/80 text-left text-[10px] uppercase tracking-wide text-muted">
                         <th className="px-4 py-2 font-extrabold">Peringkat</th>
                         <th className="px-3 py-2 font-extrabold">Siswa</th>
                         <th className="px-3 py-2 font-extrabold">Kelas</th>
                         <th className="px-3 py-2 text-right font-extrabold">Poin semester</th>
-                        <th className="px-3 py-2 text-right font-extrabold">Sisa poin</th>
+                        <th className="hidden px-3 py-2 text-right font-extrabold xl:table-cell">Sisa poin</th>
                         <th className="px-3 py-2 font-extrabold">Status</th>
                       </tr>
                     </thead>
@@ -639,7 +639,7 @@ export default function TataTertibView({ onToast }: TataTertibViewProps) {
                             <td className="px-3 py-2.5 text-right font-extrabold tabular-nums text-alert">
                               +{row.points}
                             </td>
-                            <td className="px-3 py-2.5 text-right tabular-nums text-muted">
+                            <td className="hidden px-3 py-2.5 text-right tabular-nums text-muted xl:table-cell">
                               {summary ? summary.balance : '-'}
                             </td>
                             <td className="px-3 py-2.5">
@@ -840,7 +840,7 @@ export default function TataTertibView({ onToast }: TataTertibViewProps) {
                 </div>
 
                 <div className="overflow-x-auto border-t border-border">
-                  <table className="w-full min-w-[760px] border-collapse text-[12px]">
+                  <table className="w-full min-w-[690px] border-collapse text-[12px] xl:min-w-[760px]">
                     <thead>
                       <tr className="bg-gray-50/80 text-left text-[10px] uppercase tracking-wide text-muted">
                         <th className="px-4 py-2 font-extrabold">Peringkat</th>
@@ -848,7 +848,7 @@ export default function TataTertibView({ onToast }: TataTertibViewProps) {
                         <th className="px-3 py-2 font-extrabold">Kelas</th>
                         <th className="px-3 py-2 text-right font-extrabold">Pelanggaran</th>
                         <th className="px-3 py-2 text-right font-extrabold">Poin</th>
-                        <th className="px-3 py-2 text-right font-extrabold">Poin buku</th>
+                        <th className="hidden px-3 py-2 text-right font-extrabold xl:table-cell">Poin buku</th>
                         <th className="px-3 py-2 font-extrabold">Terakhir</th>
                       </tr>
                     </thead>
@@ -869,7 +869,7 @@ export default function TataTertibView({ onToast }: TataTertibViewProps) {
                           <td className="px-3 py-2.5 text-right font-extrabold tabular-nums text-alert">
                             +{row.points}
                           </td>
-                          <td className="px-3 py-2.5 text-right tabular-nums text-muted">
+                          <td className="hidden px-3 py-2.5 text-right tabular-nums text-muted xl:table-cell">
                             {row.guidebookPoints}
                           </td>
                           <td className="px-3 py-2.5 text-[10.5px] text-muted">
@@ -970,13 +970,13 @@ export default function TataTertibView({ onToast }: TataTertibViewProps) {
 
           <div className="overflow-hidden rounded-[18px] border border-border bg-white">
             <div className="overflow-x-auto">
-              <table className="w-full min-w-[820px] border-collapse text-[12px]">
+              <table className="w-full min-w-[700px] border-collapse text-[12px] xl:min-w-[820px]">
                 <thead>
                   <tr className="bg-bg/70 text-left text-[10px] font-extrabold uppercase tracking-wide text-muted">
                     <th className="px-3 py-2.5">Tanggal</th>
                     <th className="px-3 py-2.5">Siswa</th>
                     <th className="px-3 py-2.5">Aturan</th>
-                    <th className="px-3 py-2.5 text-center">Kategori</th>
+                    <th className="hidden px-3 py-2.5 text-center xl:table-cell">Kategori</th>
                     <th className="px-3 py-2.5 text-right">Poin</th>
                     <th className="px-3 py-2.5 text-center">Status</th>
                     <th className="px-3 py-2.5 text-right">Aksi</th>
@@ -1010,7 +1010,7 @@ export default function TataTertibView({ onToast }: TataTertibViewProps) {
                             {row.location ? ` · ${row.location}` : ''}
                           </p>
                         </td>
-                        <td className="px-3 py-2.5 text-center">
+                        <td className="hidden px-3 py-2.5 text-center xl:table-cell">
                           <span
                             className={`inline-flex rounded-full border px-1.5 py-0.5 text-[9px] font-extrabold uppercase ${CATEGORY_STYLES[row.ruleCategory]}`}
                           >
@@ -1044,7 +1044,8 @@ export default function TataTertibView({ onToast }: TataTertibViewProps) {
                               onClick={() => setVoidTarget(row)}
                               className="rounded-[8px] border border-red-200 bg-red-50 px-2 py-1 text-[10px] font-bold text-red-700 hover:bg-red-100"
                             >
-                              Batalkan
+                              <span className="xl:hidden">Batal</span>
+                              <span className="hidden xl:inline">Batalkan</span>
                             </button>
                           ) : (
                             <span className="text-[10px] text-muted">—</span>
@@ -1162,7 +1163,7 @@ export default function TataTertibView({ onToast }: TataTertibViewProps) {
               </p>
             </div>
             <div className="overflow-x-auto">
-              <table className="w-full min-w-[720px] border-collapse text-[12px]">
+              <table className="w-full min-w-[700px] border-collapse text-[12px] xl:min-w-[720px]">
                 <thead>
                   <tr className="bg-bg/70 text-left text-[10px] font-extrabold uppercase tracking-wide text-muted">
                     <th className="px-3 py-2.5">Nomor</th>
