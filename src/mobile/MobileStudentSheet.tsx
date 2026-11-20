@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
   ArrowLeft,
   CalendarDays,
@@ -6,16 +6,26 @@ import {
   MapPin,
   NotebookPen,
   Plus,
+  ShieldAlert,
   User,
 } from 'lucide-react';
 import { useBK } from '../context/BKContext';
+import { useDiscipline } from '../context/DisciplineContext';
 import { statusStyle } from '../lib/statusStyles';
+import {
+  CATEGORY_STYLES,
+  POINT_STATUS_LABELS,
+  POINT_STATUS_STYLES,
+  formatDateTime,
+} from '../lib/discipline';
+import MobileViolationSheet from './MobileViolationSheet';
 import type { Student } from '../types';
 
 interface MobileStudentSheetProps {
   student: Student | null;
   onClose: () => void;
   onCatat: (student: Student) => void;
+  onToast: (message: string) => void;
 }
 
 const inisial = (nama: string) =>
@@ -27,8 +37,26 @@ const inisial = (nama: string) =>
     .join('')
     .toUpperCase();
 
-export default function MobileStudentSheet({ student, onClose, onCatat }: MobileStudentSheetProps) {
+export default function MobileStudentSheet({
+  student,
+  onClose,
+  onCatat,
+  onToast,
+}: MobileStudentSheetProps) {
   const { records } = useBK();
+  const { membership, pointScale, pointsByStudent, feed } = useDiscipline();
+  const [violationOpen, setViolationOpen] = useState(false);
+
+  const summary = student ? pointsByStudent[student.id] : undefined;
+  const pointHistory = useMemo(
+    () =>
+      feed
+        .filter((row) => row.studentId === student?.id)
+        .sort((a, b) => b.occurredAt.localeCompare(a.occurredAt)),
+    [feed, student],
+  );
+  const canRecord = membership?.role === 'bk';
+  const scale = summary?.pointScale ?? pointScale;
 
   useEffect(() => {
     if (!student) return;
@@ -151,6 +179,92 @@ export default function MobileStudentSheet({ student, onClose, onCatat }: Mobile
             </dl>
           </div>
 
+          {/* Ringkasan poin tata tertib */}
+          <div className="bk-card mt-3 !p-3.5">
+            <div className="flex items-center justify-between gap-2">
+              <div className="flex items-center gap-1.5">
+                <ShieldAlert size={15} className="text-muted" />
+                <p className="text-[12px] font-extrabold text-text">Poin Tata Tertib</p>
+              </div>
+              <span
+                className={`rounded-full border px-2 py-0.5 text-[9.5px] font-extrabold uppercase ${
+                  POINT_STATUS_STYLES[summary?.status ?? 'aman']
+                }`}
+              >
+                {POINT_STATUS_LABELS[summary?.status ?? 'aman']}
+              </span>
+            </div>
+            <div className="mt-2.5 grid grid-cols-3 gap-2 text-center">
+              <div className="rounded-[10px] bg-black px-1.5 py-2 text-white">
+                <p className="text-[9px] font-bold uppercase tracking-wide text-white/60">Sisa</p>
+                <p className="mt-0.5 text-[16px] font-extrabold leading-none tabular-nums">
+                  {summary?.balance ?? scale}
+                </p>
+                <p className="mt-0.5 text-[9px] text-white/50">dari {scale}</p>
+              </div>
+              <div className="rounded-[10px] bg-bg px-1.5 py-2">
+                <p className="text-[9px] font-bold uppercase tracking-wide text-muted">Semester</p>
+                <p className="mt-0.5 text-[16px] font-extrabold leading-none tabular-nums">
+                  {summary?.semesterPoints ?? 0}
+                </p>
+                <p className="mt-0.5 text-[9px] text-muted">poin</p>
+              </div>
+              <div className="rounded-[10px] bg-bg px-1.5 py-2">
+                <p className="text-[9px] font-bold uppercase tracking-wide text-muted">Total</p>
+                <p className="mt-0.5 text-[16px] font-extrabold leading-none tabular-nums">
+                  {summary?.totalPoints ?? 0}
+                </p>
+                <p className="mt-0.5 text-[9px] text-muted">kumulatif</p>
+              </div>
+            </div>
+          </div>
+
+          {pointHistory.length > 0 && (
+            <>
+              <div className="mb-2 mt-5 flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <h2 className="text-[15px] font-[750] text-text">Riwayat Pelanggaran</h2>
+                  <span className="bk-pill">{pointHistory.length}</span>
+                </div>
+              </div>
+              <div className="space-y-2">
+                {pointHistory.slice(0, 8).map((row) => (
+                  <div key={row.id} className="bk-card !p-3">
+                    <div className="flex items-start gap-2">
+                      <span
+                        className={`mt-0.5 inline-flex flex-none rounded-full border px-1.5 py-0.5 text-[9px] font-extrabold uppercase ${CATEGORY_STYLES[row.ruleCategory]}`}
+                      >
+                        {row.ruleCode}
+                      </span>
+                      <div className="min-w-0 flex-1">
+                        <p
+                          className={`text-[12px] font-bold leading-snug ${
+                            row.status === 'void' ? 'text-muted line-through' : 'text-text'
+                          }`}
+                        >
+                          {row.ruleName}
+                        </p>
+                        <p className="mt-0.5 text-[10px] text-muted">
+                          {formatDateTime(row.occurredAt)}
+                          {row.location ? ` · ${row.location}` : ''}
+                          {row.status === 'void' ? ' · dibatalkan' : ''}
+                        </p>
+                      </div>
+                      <span className="flex-none text-[12px] font-extrabold tabular-nums text-alert">
+                        +{row.rulePoints}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+                {pointHistory.length > 8 && (
+                  <p className="text-center text-[10.5px] text-muted">
+                    +{pointHistory.length - 8} catatan lainnya — buka menu Tata Tertib.
+                  </p>
+                )}
+              </div>
+            </>
+          )}
+
           {/* Riwayat */}
           <div className="mb-3 mt-6 flex items-center justify-between">
             <div className="flex items-center gap-2">
@@ -199,7 +313,16 @@ export default function MobileStudentSheet({ student, onClose, onCatat }: Mobile
           </p>
         </div>
 
-        <div className="border-t border-border bg-surface px-4 py-3">
+        <div className="space-y-2 border-t border-border bg-surface px-4 py-3">
+          {canRecord && (
+            <button
+              type="button"
+              onClick={() => setViolationOpen(true)}
+              className="flex min-h-[46px] w-full items-center justify-center gap-2 rounded-[14px] border border-red-200 bg-red-50 text-sm font-bold text-red-700 transition-all active:scale-[0.98]"
+            >
+              <ShieldAlert size={16} /> Catat Pelanggaran
+            </button>
+          )}
           <button
             type="button"
             onClick={() => onCatat(student)}
@@ -210,6 +333,14 @@ export default function MobileStudentSheet({ student, onClose, onCatat }: Mobile
           </button>
         </div>
       </div>
+
+      {violationOpen && (
+        <MobileViolationSheet
+          student={student}
+          onClose={() => setViolationOpen(false)}
+          onSaved={(message) => onToast(message)}
+        />
+      )}
     </div>
   );
 }

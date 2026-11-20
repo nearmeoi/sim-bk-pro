@@ -18,11 +18,14 @@ import {
   ChevronRight,
   ChevronsLeft,
   ChevronsRight,
+  ShieldAlert,
 } from "lucide-react";
 import PetunjukIbu from '../ui/PetunjukIbu';
 import KopSurat from '../ui/KopSurat';
 import HvsPreviewModal from '../ui/HvsPreviewModal';
 import { SuratModal } from './siswa/SuratModal';
+import StudentDisciplinePanel from '../discipline/StudentDisciplinePanel';
+import RecordViolationModal from '../discipline/RecordViolationModal';
 import { statusStyle } from '../../lib/statusStyles';
 import { useBK } from '../../context/BKContext';
 import { exportToCsv, parseCsv } from '../../lib/exportCsv';
@@ -115,6 +118,8 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
   // Drawer / Modal Buku Pribadi Siswa
   // Drawer / Modal Buku Pribadi Siswa
   const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
+  const [drawerTab, setDrawerTab] = useState<'konseling' | 'tata-tertib'>('konseling');
+  const [disciplineModalOpen, setDisciplineModalOpen] = useState(false);
   const [suratModalOpen, setSuratModalOpen] = useState(false);
   const [previewHvsOpen, setPreviewHvsOpen] = useState(false);
   const [suratType, setSuratType] = useState<'panggilan' | 'home_visit'>('panggilan');
@@ -283,6 +288,11 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
   const studentRecords = selectedStudent
     ? records.filter((r) => r.studentId === selectedStudent.id)
     : [];
+
+  // Setiap kali siswa dibuka, mulai dari tab konseling.
+  useEffect(() => {
+    setDrawerTab('konseling');
+  }, [selectedStudent?.id]);
 
   const CLASS_FILTERS = [
     { key: '', label: 'Semua Siswa' },
@@ -849,7 +859,31 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
               )}
             </div>
 
-            {/* Riwayat Konseling & Kasus */}
+            {/* Tab isi buku siswa: konseling atau tata tertib */}
+            <div className="flex items-center gap-1.5 overflow-x-auto border-b border-border pb-2 no-scrollbar">
+              <button
+                type="button"
+                onClick={() => setDrawerTab('konseling')}
+                className={`bk-chip !min-h-[36px] !text-xs ${drawerTab === 'konseling' ? 'on' : ''}`}
+              >
+                Konseling
+              </button>
+              <button
+                type="button"
+                onClick={() => setDrawerTab('tata-tertib')}
+                className={`bk-chip !min-h-[36px] !text-xs ${drawerTab === 'tata-tertib' ? 'on' : ''}`}
+              >
+                <ShieldAlert size={14} /> Tata Tertib
+              </button>
+            </div>
+
+            {drawerTab === 'tata-tertib' ? (
+              <StudentDisciplinePanel
+                student={selectedStudent}
+                onRecord={() => setDisciplineModalOpen(true)}
+                onToast={onToast}
+              />
+            ) : (
             <div className="space-y-3 pt-1">
               <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border pb-2.5">
                 <h4 className="font-extrabold text-[15px] text-text">
@@ -1066,6 +1100,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                 </table>
               </div>
             </div>
+            )}
 
             <div className="pt-2 border-t border-border flex justify-end">
               <button
@@ -1559,6 +1594,15 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
             </div>
           </div>
         </HvsPreviewModal>
+      )}
+
+      {disciplineModalOpen && (
+        <RecordViolationModal
+          open
+          onClose={() => setDisciplineModalOpen(false)}
+          defaultStudent={selectedStudent}
+          onSaved={(message) => onToast(message)}
+        />
       )}
     </div>
   );

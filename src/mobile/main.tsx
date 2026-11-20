@@ -4,6 +4,7 @@ import '../index.css';
 import { registerSW } from 'virtual:pwa-register';
 import MobileApp from './MobileApp';
 import { BKProvider } from '../context/BKContext';
+import { DisciplineProvider } from '../context/DisciplineContext';
 import ErrorBoundary from '../components/ui/ErrorBoundary';
 import ConfirmModal from '../components/ui/ConfirmModal';
 import { ThemeProvider, applyTheme, loadThemePrefs } from './theme';
@@ -22,8 +23,10 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     <ErrorBoundary>
       <ThemeProvider>
         <BKProvider>
-          <MobileApp />
-          <ConfirmModal />
+          <DisciplineProvider>
+            <MobileApp />
+            <ConfirmModal />
+          </DisciplineProvider>
         </BKProvider>
       </ThemeProvider>
     </ErrorBoundary>

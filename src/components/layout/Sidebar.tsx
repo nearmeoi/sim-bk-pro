@@ -1,7 +1,7 @@
 ﻿import React, { useState } from 'react';
 import {
   Home, Users, FileText, Settings, Plus,
-  FileCheck2, Compass, ChevronDown, ChevronUp, Calendar, BookOpen, LogOut
+  FileCheck2, Compass, ChevronDown, ChevronUp, Calendar, BookOpen, LogOut, ShieldAlert
 } from 'lucide-react';
 import { useBK } from '../../context/BKContext';
 import { confirmDialog } from '../ui/ConfirmModal';
@@ -70,6 +70,7 @@ export default function Sidebar({ current, onNav, onCatat }: SidebarProps) {
       <nav className="flex-1 space-y-1.5 overflow-y-auto no-scrollbar pt-1">
         {navBtn('beranda', 'Beranda', Home)}
         {navBtn('siswa', 'Data Siswa', Users)}
+        {navBtn('tata-tertib', 'Tata Tertib', ShieldAlert)}
         {/* Dokumen BK (Induk dengan Sub-menu Collapsible: AKPD & Karir) */}
         <div className="space-y-1">
           <div

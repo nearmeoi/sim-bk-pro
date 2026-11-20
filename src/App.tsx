@@ -7,6 +7,7 @@ import WelcomeOfferModal from './components/ui/WelcomeOfferModal';
 import ConfirmModal from './components/ui/ConfirmModal';
 import BerandaView from './components/views/BerandaView';
 import SiswaView from './components/views/SiswaView';
+import TataTertibView from './components/views/TataTertibView';
 import AKPDView from './components/views/AKPDView';
 import BimbinganKarirView from './components/views/BimbinganKarirView';
 import DokumenView from './components/views/DokumenView';
@@ -17,12 +18,14 @@ import ResetPasswordView from './components/views/ResetPasswordView';
 import SyncBanner from './components/ui/SyncBanner';
 import NotFoundView from './components/views/NotFoundView';
 import { BKProvider, useBK } from './context/BKContext';
+import { DisciplineProvider } from './context/DisciplineContext';
 import ErrorBoundary from './components/ui/ErrorBoundary';
 import { NavView } from './types';
 
 const VALID_VIEWS: NavView[] = [
   'beranda',
   'siswa',
+  'tata-tertib',
   'akpd',
   'karir',
   'shinro',
@@ -143,6 +146,7 @@ function AppContent() {
             <BerandaView onNav={navigate} onCatat={() => setCatatOpen(true)} onToast={showToast} />
           )}
           {view === 'siswa' && <SiswaView onToast={showToast} />}
+          {view === 'tata-tertib' && <TataTertibView onToast={showToast} />}
           {view === 'akpd' && <AKPDView onNav={navigate} onToast={showToast} />}
           {(view === 'karir' || view === 'shinro') && (
             <BimbinganKarirView onNav={navigate} onToast={showToast} />
@@ -174,8 +178,10 @@ export default function App() {
   return (
     <ErrorBoundary>
       <BKProvider>
-        <AppContent />
-        <ConfirmModal />
+        <DisciplineProvider>
+          <AppContent />
+          <ConfirmModal />
+        </DisciplineProvider>
       </BKProvider>
     </ErrorBoundary>
   );

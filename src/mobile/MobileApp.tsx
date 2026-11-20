@@ -11,6 +11,7 @@ import MobileDokumen from './MobileDokumen';
 import MobileAKPD from './MobileAKPD';
 import MobileKarir from './MobileKarir';
 import MobilePengaturan from './MobilePengaturan';
+import MobileTataTertib from './MobileTataTertib';
 import MobileProta from './docs/MobileProta';
 import MobileJurnal from './docs/MobileJurnal';
 import MobileRpl from './docs/MobileRpl';
@@ -24,6 +25,7 @@ import type { Student } from '../types';
 export type MobileRoute =
   | 'beranda'
   | 'siswa'
+  | 'tata-tertib'
   | 'dokumen'
   | 'akpd'
   | 'karir'
@@ -230,6 +232,8 @@ export default function MobileApp() {
         );
       case 'siswa':
         return <MobileSiswa onOpenStudent={setSelected} onCatat={(p) => setCatat(p ?? {})} />;
+      case 'tata-tertib':
+        return <MobileTataTertib onBack={() => navigate('beranda')} onToast={showToast} />;
       case 'dokumen':
         return <MobileDokumen onOpen={navigate} />;
       case 'akpd':
@@ -314,6 +318,7 @@ export default function MobileApp() {
         <MobileStudentSheet
           student={selected}
           onClose={() => setSelected(null)}
+          onToast={showToast}
           onCatat={(s) => {
             setSelected(null);
             setCatat({ nama: s.nama, kelas: s.kelas });

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Home, Users, FileCheck2, FileText, Plus } from 'lucide-react';
+import { Home, Users, FileCheck2, FileText, Plus, ShieldAlert } from 'lucide-react';
 import { NavView } from '../../types';
 
 interface BottomNavProps {
@@ -53,6 +53,7 @@ export default function BottomNav({ current, onNav, onCatat }: BottomNavProps) {
         </span>
       </button>
 
+      {tab('tata-tertib', 'Tertib', ShieldAlert)}
       {tab('akpd', 'AKPD', FileCheck2)}
       {tab('dokumen', 'Dokumen', FileText)}
     </nav>

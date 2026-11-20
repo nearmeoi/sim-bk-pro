@@ -1059,3 +1059,51 @@ html[data-m-app] .bk-btn {
     display: table-header-group;
   }
 }
+
+/* ======================================================== */
+/* CETAK KARTU SISWA (QR + PIN)                             */
+/* ======================================================== */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 12mm;
+  }
+
+  html:has(body.card-print-open),
+  body.card-print-open {
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+    background: #ffffff !important;
+  }
+
+  body.card-print-open > #root {
+    display: none !important;
+  }
+
+  body.card-print-open .card-print-overlay {
+    position: static !important;
+    inset: auto !important;
+    display: block !important;
+    background: #ffffff !important;
+    padding: 0 !important;
+    backdrop-filter: none !important;
+  }
+
+  body.card-print-open .card-print-toolbar {
+    display: none !important;
+  }
+
+  body.card-print-open .card-print-scroll {
+    overflow: visible !important;
+    padding: 0 !important;
+  }
+
+  body.card-print-open .card-print-sheet {
+    box-shadow: none !important;
+    border: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #ffffff !important;
+  }
+}

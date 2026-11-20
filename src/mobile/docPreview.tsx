@@ -39,6 +39,10 @@ export interface DocSpec {
   sections: DocSection[];
   notes?: DocNote[];
   signature?: boolean;
+  /** 'standard' = kepala sekolah + guru BK; 'sp' = 3 kolom + terima orang tua. */
+  signatureMode?: 'standard' | 'sp';
+  /** Teks latar (mis. DRAFT) yang ikut tercetak sebagai penanda. */
+  watermark?: string;
   landscape?: boolean;
 }
 
@@ -137,20 +141,37 @@ export function DocPreview({ open, onClose, spec, settings }: DocPreviewProps) {
 
       {/* Kertas */}
       <div className="m-doc-scroll flex-1 overflow-y-auto p-2.5">
-        <div className="m-doc-sheet mx-auto w-full max-w-[820px] bg-white p-4 text-black shadow-2xl sm:p-8">
-          <KopSurat settings={settings} judul={spec.title} subjudul={spec.subtitle} compact />
-
-          {spec.meta && spec.meta.length > 0 && (
-            <div className="mb-2 space-y-0.5 text-center text-[10px] font-semibold text-black/80">
-              {spec.meta.map((line) => (
-                <p key={line}>{line}</p>
-              ))}
+        <div className="m-doc-sheet relative mx-auto w-full max-w-[820px] bg-white p-4 text-black shadow-2xl sm:p-8">
+          {spec.watermark && (
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-0 z-0 grid place-items-center overflow-hidden"
+            >
+              <span className="-rotate-12 text-[64px] font-black uppercase tracking-[0.2em] text-black/[0.07] sm:text-[110px]">
+                {spec.watermark}
+              </span>
             </div>
           )}
+          <div className="relative z-[1]">
+            <KopSurat settings={settings} judul={spec.title} subjudul={spec.subtitle} compact />
 
-          <DocBody spec={spec} />
+            {spec.meta && spec.meta.length > 0 && (
+              <div className="mb-2 space-y-0.5 text-center text-[10px] font-semibold text-black/80">
+                {spec.meta.map((line) => (
+                  <p key={line}>{line}</p>
+                ))}
+              </div>
+            )}
 
-          {spec.signature !== false && <SignatureBlock settings={settings} />}
+            <DocBody spec={spec} />
+
+            {spec.signature !== false &&
+              (spec.signatureMode === 'sp' ? (
+                <SpSignatureBlock settings={settings} />
+              ) : (
+                <SignatureBlock settings={settings} />
+              ))}
+          </div>
         </div>
       </div>
     </div>,
@@ -310,6 +331,48 @@ function SignatureBlock({ settings }: { settings: SchoolSettings }) {
   );
 }
 
+function SpSignatureBlock({ settings }: { settings: SchoolSettings }) {
+  return (
+    <div className="mt-8 text-[10px] text-black">
+      <p className="mb-4 leading-relaxed">
+        Surat peringatan ini disampaikan kepada orang tua/wali. Kehadiran dan kerja sama Bapak/Ibu
+        sangat diharapkan. Mohon menandatangani kolom penerimaan di bawah sebagai bukti surat telah
+        diterima.
+      </p>
+      <div className="grid grid-cols-3 gap-3 text-center">
+        <div>
+          <p>Mengetahui,</p>
+          <p className="font-bold">Kepala Sekolah</p>
+          <div className="mt-12">
+            <p className="font-bold underline">
+              {settings.kepalaSekolah || '..........................'}
+            </p>
+            <p>NIP. {settings.nipKepala || '-'}</p>
+          </div>
+        </div>
+        <div>
+          <p>
+            {settings.kotaSurat || '.....................'}, {signatureDate()}
+          </p>
+          <p className="font-bold">Guru Bimbingan &amp; Konseling</p>
+          <div className="mt-12">
+            <p className="font-bold underline">{settings.guruBK || '..........................'}</p>
+            <p>NIP. {settings.nipGuruBK || '-'}</p>
+          </div>
+        </div>
+        <div>
+          <p>Penerima,</p>
+          <p className="font-bold">Orang Tua / Wali</p>
+          <div className="mt-12">
+            <p className="font-bold underline">..........................</p>
+            <p>Nama jelas &amp; tanda tangan</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 /* ------------------------------------------------------------------ */
 /* Ekspor Word (.doc) — dokumen asli, bukan tangkapan layar           */
 /* ------------------------------------------------------------------ */
@@ -438,6 +501,33 @@ function wordSignature(settings: SchoolSettings): string {
   </table>`;
 }
 
+function wordSignatureSp(settings: SchoolSettings): string {
+  return `
+  <p style="margin:14pt 0 6pt;font-size:9pt;">Surat peringatan ini disampaikan kepada orang tua/wali. Mohon menandatangani kolom penerimaan sebagai bukti surat telah diterima.</p>
+  <table style="width:100%;border:none;margin-top:8pt;font-size:10pt;text-align:center;">
+    <tr>
+      <td style="border:none;width:33%;">
+        <p style="margin:0;">Mengetahui,</p>
+        <p style="margin:0;font-weight:bold;">Kepala Sekolah</p>
+        <p style="margin:34pt 0 0;font-weight:bold;text-decoration:underline;">${escapeHtml(settings.kepalaSekolah || '..........................')}</p>
+        <p style="margin:0;">NIP. ${escapeHtml(settings.nipKepala || '-')}</p>
+      </td>
+      <td style="border:none;width:33%;">
+        <p style="margin:0;">${escapeHtml(settings.kotaSurat || '.....................')}, ${escapeHtml(signatureDate())}</p>
+        <p style="margin:0;font-weight:bold;">Guru Bimbingan &amp; Konseling</p>
+        <p style="margin:34pt 0 0;font-weight:bold;text-decoration:underline;">${escapeHtml(settings.guruBK || '..........................')}</p>
+        <p style="margin:0;">NIP. ${escapeHtml(settings.nipGuruBK || '-')}</p>
+      </td>
+      <td style="border:none;width:33%;">
+        <p style="margin:0;">Penerima,</p>
+        <p style="margin:0;font-weight:bold;">Orang Tua / Wali</p>
+        <p style="margin:34pt 0 0;font-weight:bold;text-decoration:underline;">..........................</p>
+        <p style="margin:0;">Nama jelas &amp; tanda tangan</p>
+      </td>
+    </tr>
+  </table>`;
+}
+
 export function buildWordHtml(spec: DocSpec, settings: SchoolSettings): string {
   const orientation = spec.landscape ? 'landscape' : 'portrait';
   const size = spec.landscape ? '29.7cm 21cm' : '21cm 29.7cm';
@@ -473,13 +563,18 @@ export function buildWordHtml(spec: DocSpec, settings: SchoolSettings): string {
 </head>
 <body>
   <div class="WordSection1">
+    ${spec.watermark ? `<p style="margin:0;text-align:center;font-size:16pt;font-weight:bold;color:#b91c1c;letter-spacing:4pt;">${escapeHtml(spec.watermark)}</p>` : ''}
     ${wordKop(settings)}
     <p style="margin:0;text-align:center;font-size:12pt;font-weight:bold;text-transform:uppercase;text-decoration:underline;">${escapeHtml(spec.title)}</p>
     ${spec.subtitle ? `<p style="margin:2pt 0 0;text-align:center;font-size:9pt;font-weight:bold;">${escapeHtml(spec.subtitle)}</p>` : ''}
     ${meta ? `<div style="text-align:center;margin-top:2pt;">${meta}</div>` : ''}
     ${spec.sections.map(wordSection).join('')}
     ${notes}
-    ${spec.signature !== false ? wordSignature(settings) : ''}
+    ${spec.signature !== false
+      ? spec.signatureMode === 'sp'
+        ? wordSignatureSp(settings)
+        : wordSignature(settings)
+      : ''}
   </div>
 </body>
 </html>`;

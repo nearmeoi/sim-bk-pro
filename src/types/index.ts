@@ -1,4 +1,4 @@
-export type NavView = 'beranda' | 'siswa' | 'akpd' | 'karir' | 'shinro' | 'dokumen' | 'pengaturan' | 'profil' | 'login' | '404';
+export type NavView = 'beranda' | 'siswa' | 'tata-tertib' | 'akpd' | 'karir' | 'shinro' | 'dokumen' | 'pengaturan' | 'profil' | 'login' | '404';
 
 export interface Student {
   id: string;
@@ -156,6 +156,164 @@ export interface IndividualKarirAngket {
   rataRapor: string;
   rekomendasiBK: string;
   tindakLanjutBK: 'Rekomendasi Aman' | 'Konseling Karir Lanjutan' | 'Pemanggilan Orang Tua';
+}
+
+// ============================================================================
+// TATA TERTIB & POIN
+// ============================================================================
+
+export type ViolationCategory =
+  | 'kewajiban'
+  | 'ringan'
+  | 'sedang'
+  | 'berat'
+  | 'sangat_berat';
+
+export type PointStatus =
+  | 'aman'
+  | 'pembinaan'
+  | 'sp1'
+  | 'sp2'
+  | 'sp3'
+  | 'pleno';
+
+export type SpType = 'sp1' | 'sp2' | 'sp3' | 'pleno';
+export type SpStatus = 'draft' | 'issued' | 'cancelled';
+
+export interface ViolationRule {
+  id: string;
+  code: string;
+  category: ViolationCategory;
+  name: string;
+  description: string;
+  points: number;
+  guidebookPoints: number;
+  defaultSanction: string;
+  sanctionTiers: unknown[];
+  spOverride: number | null;
+  isExpulsion: boolean;
+  isActive: boolean;
+  sortOrder: number;
+}
+
+export interface StudentPointSummary {
+  schoolId: string;
+  studentId: string;
+  nama: string;
+  nis: string;
+  nisn: string;
+  jk: 'L' | 'P';
+  kelas: string;
+  classId: string | null;
+  studentStatus: string;
+  pointScale: number;
+  totalPoints: number;
+  totalGuidebookPoints: number;
+  semesterPoints: number;
+  yearPoints: number;
+  balance: number;
+  status: PointStatus;
+  lastViolationAt: string | null;
+}
+
+export interface ViolationFeedItem {
+  id: string;
+  schoolId: string;
+  studentId: string;
+  nama: string;
+  kelas: string;
+  classId: string | null;
+  ruleId: string;
+  ruleCode: string;
+  ruleName: string;
+  ruleCategory: ViolationCategory;
+  rulePoints: number;
+  ruleGuidebookPoints: number;
+  occurredAt: string;
+  academicYearId: string;
+  semesterId: string;
+  location: string;
+  chronology: string;
+  evidencePaths: string[];
+  reportedByName: string;
+  status: 'recorded' | 'verified' | 'void';
+  createdAt: string;
+}
+
+export interface SpLetter {
+  id: string;
+  schoolId: string;
+  studentId: string;
+  nama: string;
+  kelas: string;
+  classId: string | null;
+  type: SpType;
+  sequence: number;
+  number: string | null;
+  status: SpStatus;
+  isManual: boolean;
+  isOverride: boolean;
+  thresholdPoints: number;
+  totalPoints: number;
+  totalGuidebookPoints: number;
+  meetingAt: string | null;
+  triggerRecordId: string | null;
+  createdAt: string;
+  issuedAt: string | null;
+  acknowledgedAt: string | null;
+}
+
+export interface LeaderboardEntry {
+  schoolId: string;
+  studentId: string;
+  nama: string;
+  nis: string;
+  kelas: string;
+  classId: string | null;
+  points: number;
+  schoolRank: number;
+  classRank: number;
+  schoolStudents: number;
+  classStudents: number;
+}
+
+export interface ClassPointSummary {
+  schoolId: string;
+  classId: string;
+  kelas: string;
+  studentCount: number;
+  semesterPoints: number;
+  averagePoints: number;
+  rank: number;
+}
+
+export interface SchoolMembership {
+  memberId: string;
+  schoolId: string;
+  role: 'bk' | 'wali_kelas';
+  displayName: string;
+}
+
+export interface StudentCard {
+  id: string;
+  schoolId: string;
+  studentId: string;
+  status: 'active' | 'revoked';
+  failedAttempts: number;
+  lockedUntil: string | null;
+  lastUsedAt: string | null;
+  issuedAt: string;
+  revokedAt: string | null;
+  revokedReason: string | null;
+}
+
+export interface RecordViolationPayload {
+  studentId: string;
+  ruleId: string;
+  occurredAt: string;
+  location?: string;
+  chronology?: string;
+  evidencePaths?: string[];
 }
 
 export interface QuickCatatPayload {

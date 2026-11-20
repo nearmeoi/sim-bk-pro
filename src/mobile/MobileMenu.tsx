@@ -1,4 +1,4 @@
-import { LogOut, Settings, UserRound } from 'lucide-react';
+import { LogOut, Settings, ShieldAlert, UserRound } from 'lucide-react';
 import { useBK } from '../context/BKContext';
 import { confirmDialog } from '../components/ui/ConfirmModal';
 import { Sheet } from './ui';
@@ -57,6 +57,9 @@ export default function MobileMenu({ open, onClose, onNavigate, onToast }: Mobil
   return (
     <Sheet open={open} onClose={onClose} title="Menu Aplikasi">
       <div className="space-y-2.5">
+        {item('Tata Tertib', 'Poin siswa, pelanggaran, dan surat peringatan', ShieldAlert, () =>
+          go('tata-tertib'),
+        )}
         {item('Pengaturan', 'Kop surat, identitas sekolah, dan data', Settings, () =>
           go('pengaturan'),
         )}
