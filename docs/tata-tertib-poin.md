@@ -1,6 +1,6 @@
 # Rencana Tata Tertib & Sistem Poin — SIM BK PRO
 
-Status: **disetujui, Fase 1 sedang disiapkan**
+Status: **disetujui; Fase 1–3 selesai secara lokal, menunggu penerapan staging**
 Branch: `feat/tata-tertib-poin`
 Baseline mobile: `dc9d3b4` di `main`
 Tanggal: 20 November 2026
@@ -389,6 +389,17 @@ Aturan:
 - Data anak termasuk data pribadi; sekolah perlu kebijakan tertulis dan
   persetujuan orang tua sebelum publikasi.
 
+### 8.1 Implementasi
+
+- Tab **Peringkat** di PC (`TataTertibView`) dan mobile (`MobileTataTertib`).
+- BK melihat peringkat tingkat sekolah; wali kelas hanya kelasnya. Pembatasan
+  utama tetap di RLS, bukan hanya di UI.
+- Peringkat siswa memakai `v_violation_leaderboard` (poin semester berjalan).
+- Papan kelas memakai `v_class_points`; rata-rata poin terendah menempati
+  peringkat pertama agar framing-nya positif (“Kelas Paling Tertib”).
+- Siswa tidak pernah melihat papan ini; portal siswa hanya menampilkan data
+  miliknya sendiri.
+
 ---
 
 ## 9. Kasus vs Pelanggaran
@@ -485,12 +496,12 @@ where school_id = '00000000-0000-4000-8000-000000000034'
 
 | Fase | Isi | Status |
 |---|---|---|
-| **0** | Commit mobile baseline, branch, backup/staging | Selesai untuk commit + branch |
-| **1** | Schema SaaS, role, RLS, migrasi data lama | SQL ditulis, belum diterapkan |
-| **2** | Master aturan, catat pelanggaran, ledger, tab siswa | Belum |
-| **3** | SP1–3, berita acara, preview/cetak/Word, rekap | Belum |
-| **4** | Manajemen user, portal wali, kartu QR + PIN | Belum |
-| **5** | Mobile parity, `wa.me`, audit, testing 320–430 | Belum |
+| **0** | Commit mobile baseline, branch, backup/staging | Selesai untuk commit + branch; backup/staging belum |
+| **1** | Schema SaaS, role, RLS, migrasi data lama | SQL + verifikasi selesai; belum diterapkan ke staging/production |
+| **2** | Master aturan, catat pelanggaran, ledger, tab siswa | Selesai; lolos harness PGlite |
+| **3** | SP1–3, berita acara, preview/cetak/Word, rekap | Selesai; cetak final perlu uji staging |
+| **4** | Manajemen user, portal wali, kartu QR + PIN | Kartu QR + portal siswa selesai; UI penugasan wali kelas belum |
+| **5** | Mobile parity, `wa.me`, audit, testing 320–430 | Parity mobile + audit selesai; `wa.me` ditunda |
 
 MVP yang layak dipakai: **Fase 1–3**.
 

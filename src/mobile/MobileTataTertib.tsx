@@ -38,11 +38,12 @@ interface MobileTataTertibProps {
   onToast: (message: string) => void;
 }
 
-type Tab = 'pelanggaran' | 'sp' | 'aturan';
+type Tab = 'pelanggaran' | 'peringkat' | 'sp' | 'aturan';
 
 const TABS: { id: Tab; label: string }[] = [
   { id: 'pelanggaran', label: 'Pelanggaran' },
-  { id: 'sp', label: 'Surat Peringatan' },
+  { id: 'peringkat', label: 'Peringkat' },
+  { id: 'sp', label: 'SP' },
   { id: 'aturan', label: 'Aturan' },
 ];
 
@@ -74,6 +75,8 @@ export default function MobileTataTertib({ onBack, onToast }: MobileTataTertibPr
     classPoints,
     rules,
     pointScale,
+    leaderboard,
+    pointsByStudent,
     issueSp,
     cancelSp,
     createManualSp,
@@ -83,6 +86,7 @@ export default function MobileTataTertib({ onBack, onToast }: MobileTataTertibPr
   const [search, setSearch] = useState('');
   const [kelas, setKelas] = useState('');
   const [visible, setVisible] = useState(40);
+  const [rankVisible, setRankVisible] = useState(20);
   const [recordOpen, setRecordOpen] = useState(false);
   const [issueTarget, setIssueTarget] = useState<SpLetter | null>(null);
   const [cancelTarget, setCancelTarget] = useState<SpLetter | null>(null);
@@ -106,6 +110,19 @@ export default function MobileTataTertib({ onBack, onToast }: MobileTataTertibPr
     () => spLetters.filter((row) => row.status === 'draft'),
     [spLetters],
   );
+
+  const isBk = membership?.role === 'bk';
+  const rankRows = useMemo(
+    () =>
+      leaderboard
+        .slice()
+        .sort((a, b) => b.points - a.points || a.nama.localeCompare(b.nama, 'id')),
+    [leaderboard],
+  );
+  const visibleRankRows = rankRows.slice(0, rankVisible);
+  const rankOf = (row: (typeof rankRows)[number]) => (isBk ? row.schoolRank : row.classRank);
+  const rankTotalOf = (row: (typeof rankRows)[number]) =>
+    isBk ? row.schoolStudents : row.classStudents;
 
   const issuedLetters = useMemo(
     () => spLetters.filter((row) => row.status !== 'draft'),
@@ -351,6 +368,133 @@ export default function MobileTataTertib({ onBack, onToast }: MobileTataTertibPr
               )}
             </div>
           )}
+        </div>
+      )}
+
+      {tab === 'peringkat' && (
+        <div className="space-y-3">
+          <section className="bk-card overflow-hidden !p-0">
+            <div className="flex items-start justify-between gap-2 border-b border-border px-4 py-3">
+              <div>
+                <SectionTitle>Peringkat Pelanggaran</SectionTitle>
+                <p className="mt-0.5 text-[10.5px] leading-relaxed text-muted">
+                  Poin semester berjalan. Hanya staf yang dapat melihat.
+                </p>
+              </div>
+              <span className="flex-none rounded-full border border-amber-300 bg-amber-50 px-2 py-1 text-[9.5px] font-extrabold text-amber-800">
+                {isBk ? 'Sekolah' : 'Kelas saya'}
+              </span>
+            </div>
+
+            {rankRows.length === 0 ? (
+              <div className="p-4">
+                <EmptyState icon={<CheckCircle2 size={22} />}>
+                  Belum ada poin pelanggaran semester ini.
+                </EmptyState>
+              </div>
+            ) : (
+              <>
+                <ul className="divide-y divide-border/70">
+                  {visibleRankRows.map((row) => {
+                    const rank = rankOf(row);
+                    const summary = pointsByStudent[row.studentId];
+                    const rankTone =
+                      rank === 1
+                        ? 'bg-amber-400 text-amber-950'
+                        : rank === 2
+                          ? 'bg-neutral-300 text-neutral-800'
+                          : rank === 3
+                            ? 'bg-orange-300 text-orange-950'
+                            : 'bg-neutral-100 text-neutral-600';
+                    return (
+                      <li key={row.studentId} className="flex items-center gap-2.5 px-4 py-2.5">
+                        <span
+                          className={`grid h-7 w-7 flex-none place-items-center rounded-full text-[10px] font-extrabold tabular-nums ${rankTone}`}
+                        >
+                          {rank}
+                        </span>
+                        <div className="min-w-0 flex-1">
+                          <p className="truncate text-[12.5px] font-bold text-text">{row.nama}</p>
+                          <p className="text-[10px] text-muted">
+                            Kelas {row.kelas} · {rank} dari {rankTotalOf(row)} siswa
+                          </p>
+                        </div>
+                        <div className="flex flex-none flex-col items-end gap-0.5">
+                          <span className="text-[12px] font-extrabold tabular-nums text-alert">
+                            +{row.points}
+                          </span>
+                          {summary && (
+                            <span
+                              className={`rounded-full border px-1 py-0.5 text-[8.5px] font-extrabold uppercase ${POINT_STATUS_STYLES[summary.status]}`}
+                            >
+                              {POINT_STATUS_LABELS[summary.status]}
+                            </span>
+                          )}
+                        </div>
+                      </li>
+                    );
+                  })}
+                </ul>
+
+                {rankRows.length > 20 && (
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setRankVisible(rankVisible >= rankRows.length ? 20 : rankRows.length)
+                    }
+                    className="min-h-[42px] w-full border-t border-border text-[11px] font-bold text-text"
+                  >
+                    {rankVisible >= rankRows.length
+                      ? 'Tampilkan lebih sedikit'
+                      : `Muat semua (${rankRows.length} siswa)`}
+                  </button>
+                )}
+              </>
+            )}
+          </section>
+
+          <section className="bk-card overflow-hidden !p-0">
+            <div className="flex items-center justify-between gap-2 border-b border-border px-4 py-3">
+              <div>
+                <SectionTitle>Kelas Paling Tertib</SectionTitle>
+                <p className="mt-0.5 text-[10.5px] text-muted">Rata-rata terendah di atas</p>
+              </div>
+              <Trophy size={16} className="flex-none text-amber-600" />
+            </div>
+            {classPoints.length === 0 ? (
+              <div className="p-4">
+                <EmptyState icon={<Trophy size={22} />}>Belum ada data kelas.</EmptyState>
+              </div>
+            ) : (
+              <ul className="divide-y divide-border/70">
+                {classPoints.slice(0, 10).map((row) => (
+                  <li key={row.classId} className="flex items-center gap-2.5 px-4 py-2.5">
+                    <span className="grid h-7 w-7 flex-none place-items-center rounded-full bg-neutral-100 text-[10px] font-extrabold tabular-nums text-neutral-600">
+                      {row.rank}
+                    </span>
+                    <div className="min-w-0 flex-1">
+                      <p className="truncate text-[12.5px] font-bold text-text">{row.kelas}</p>
+                      <p className="text-[10px] text-muted">{row.studentCount} siswa</p>
+                    </div>
+                    <div className="flex-none text-right">
+                      <p className="text-[12px] font-extrabold tabular-nums text-text">
+                        {row.averagePoints}
+                      </p>
+                      <p className="text-[9px] text-muted">rata-rata</p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </section>
+
+          <div className="flex items-start gap-2 rounded-[12px] border border-border bg-white/70 px-3.5 py-3 text-[10px] leading-relaxed text-muted">
+            <Eye size={14} className="mt-0.5 flex-none text-text" />
+            <p>
+              Papan ini hanya untuk BK dan wali kelas. Wali kelas melihat kelasnya sendiri; siswa
+              tidak melihat nama atau poin siswa lain.
+            </p>
+          </div>
         </div>
       )}
 

@@ -38,6 +38,7 @@ import { IssueSpModal, ManualSpModal } from '../discipline/SpModals';
 import SpDocumentModal from '../discipline/SpDocumentModal';
 import StudentCardModal from '../discipline/StudentCardModal';
 import type {
+  LeaderboardEntry,
   SpLetter,
   Student,
   StudentCard,
@@ -50,11 +51,12 @@ interface TataTertibViewProps {
   onToast: (message: string) => void;
 }
 
-type Tab = 'ringkasan' | 'pelanggaran' | 'sp' | 'aturan' | 'kartu';
+type Tab = 'ringkasan' | 'pelanggaran' | 'peringkat' | 'sp' | 'aturan' | 'kartu';
 
 const TABS: { id: Tab; label: string }[] = [
   { id: 'ringkasan', label: 'Ringkasan' },
   { id: 'pelanggaran', label: 'Pelanggaran' },
+  { id: 'peringkat', label: 'Peringkat' },
   { id: 'sp', label: 'Surat Peringatan' },
   { id: 'aturan', label: 'Aturan Poin' },
   { id: 'kartu', label: 'Kartu QR' },
@@ -75,6 +77,8 @@ export default function TataTertibView({ onToast }: TataTertibViewProps) {
     classPoints,
     cards,
     rules,
+    leaderboard,
+    pointsByStudent,
     voidViolation,
     cancelSp,
     issueSp,
@@ -102,6 +106,7 @@ export default function TataTertibView({ onToast }: TataTertibViewProps) {
   const [cardStudent, setCardStudent] = useState<Student | null>(null);
   const [cardQuery, setCardQuery] = useState('');
   const [cardVisible, setCardVisible] = useState(40);
+  const [rankVisible, setRankVisible] = useState(20);
   const [revokeCardTarget, setRevokeCardTarget] = useState<{
     card: StudentCard;
     student: Student;
@@ -138,6 +143,21 @@ export default function TataTertibView({ onToast }: TataTertibViewProps) {
   );
 
   const bestClass = classPoints[0] || null;
+  const isBk = membership?.role === 'bk';
+
+  const rankRows = useMemo(
+    () =>
+      leaderboard
+        .slice()
+        .sort((a, b) => b.points - a.points || a.nama.localeCompare(b.nama, 'id')),
+    [leaderboard]
+  );
+
+  const visibleRankRows = rankRows.slice(0, rankVisible);
+  const podium = rankRows.slice(0, 3);
+  const rankOf = (row: LeaderboardEntry) => (isBk ? row.schoolRank : row.classRank);
+  const rankTotalOf = (row: LeaderboardEntry) =>
+    isBk ? row.schoolStudents : row.classStudents;
 
   const activeCardByStudent = useMemo(() => {
     const map: Record<string, StudentCard> = {};
@@ -438,6 +458,210 @@ export default function TataTertibView({ onToast }: TataTertibViewProps) {
               </ul>
             )}
           </section>
+        </div>
+      )}
+
+      {tab === 'peringkat' && (
+        <div className="space-y-3">
+          <section className="overflow-hidden rounded-[18px] border border-border bg-white">
+            <div className="flex flex-wrap items-start justify-between gap-2 border-b border-border px-4 py-3">
+              <div>
+                <h2 className="text-sm font-extrabold text-text">Peringkat Pelanggaran</h2>
+                <p className="mt-0.5 text-[11px] leading-relaxed text-muted">
+                  Poin semester berjalan. Hanya BK dan wali kelas yang dapat melihat papan ini.
+                </p>
+              </div>
+              <span className="flex-none rounded-full border border-amber-300 bg-amber-50 px-2.5 py-1 text-[10px] font-extrabold text-amber-800">
+                {isBk ? 'Tingkat sekolah' : 'Kelas saya'} · {rankRows.length} siswa
+              </span>
+            </div>
+
+            {rankRows.length === 0 ? (
+              <EmptyState
+                icon={CheckCircle2}
+                text="Belum ada poin pelanggaran pada semester ini."
+              />
+            ) : (
+              <>
+                <div className="grid gap-2.5 p-4 sm:grid-cols-3">
+                  {podium.map((row) => {
+                    const rank = rankOf(row);
+                    const summary = pointsByStudent[row.studentId];
+                    const tone =
+                      rank === 1
+                        ? 'border-amber-300 bg-amber-50'
+                        : rank === 2
+                          ? 'border-neutral-300 bg-neutral-50'
+                          : 'border-orange-200 bg-orange-50';
+                    return (
+                      <div key={row.studentId} className={`rounded-[14px] border p-3 ${tone}`}>
+                        <div className="flex items-center justify-between">
+                          <span className="rounded-full bg-white/80 px-2 py-0.5 text-[10px] font-extrabold text-text">
+                            #{rank}
+                          </span>
+                          <Trophy
+                            size={15}
+                            className={
+                              rank === 1
+                                ? 'text-amber-600'
+                                : rank === 2
+                                  ? 'text-neutral-500'
+                                  : 'text-orange-500'
+                            }
+                          />
+                        </div>
+                        <p className="mt-2 truncate text-[13px] font-extrabold text-text">
+                          {row.nama}
+                        </p>
+                        <p className="truncate text-[10.5px] text-muted">
+                          Kelas {row.kelas} · NIS {row.nis}
+                        </p>
+                        <p className="mt-2 flex items-end gap-1">
+                          <span className="text-[22px] font-extrabold leading-none tabular-nums text-text">
+                            {row.points}
+                          </span>
+                          <span className="pb-0.5 text-[10px] font-bold text-muted">
+                            poin semester
+                          </span>
+                        </p>
+                        <p className="mt-1 text-[10px] text-muted">
+                          {summary ? `Sisa ${summary.balance} poin` : 'Ringkasan belum termuat'}
+                        </p>
+                      </div>
+                    );
+                  })}
+                </div>
+
+                <div className="overflow-x-auto border-t border-border">
+                  <table className="w-full min-w-[780px] border-collapse text-[12px]">
+                    <thead>
+                      <tr className="bg-gray-50/80 text-left text-[10px] uppercase tracking-wide text-muted">
+                        <th className="px-4 py-2 font-extrabold">Peringkat</th>
+                        <th className="px-3 py-2 font-extrabold">Siswa</th>
+                        <th className="px-3 py-2 font-extrabold">Kelas</th>
+                        <th className="px-3 py-2 text-right font-extrabold">Poin semester</th>
+                        <th className="px-3 py-2 text-right font-extrabold">Sisa poin</th>
+                        <th className="px-3 py-2 font-extrabold">Status</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-border/70">
+                      {visibleRankRows.map((row) => {
+                        const rank = rankOf(row);
+                        const totalStudents = rankTotalOf(row);
+                        const summary = pointsByStudent[row.studentId];
+                        return (
+                          <tr key={row.studentId} className="hover:bg-gray-50/60">
+                            <td className="px-4 py-2.5 font-extrabold tabular-nums text-text">
+                              #{rank}
+                              <span className="ml-1 text-[9.5px] font-semibold text-muted">
+                                /{totalStudents}
+                              </span>
+                            </td>
+                            <td className="px-3 py-2.5">
+                              <p className="font-bold text-text">{row.nama}</p>
+                              <p className="text-[10px] text-muted">NIS {row.nis}</p>
+                            </td>
+                            <td className="px-3 py-2.5 text-muted">{row.kelas}</td>
+                            <td className="px-3 py-2.5 text-right font-extrabold tabular-nums text-alert">
+                              +{row.points}
+                            </td>
+                            <td className="px-3 py-2.5 text-right tabular-nums text-muted">
+                              {summary ? summary.balance : '-'}
+                            </td>
+                            <td className="px-3 py-2.5">
+                              {summary ? (
+                                <span
+                                  className={`inline-block rounded-full border px-1.5 py-0.5 text-[9px] font-extrabold uppercase ${POINT_STATUS_STYLES[summary.status]}`}
+                                >
+                                  {POINT_STATUS_LABELS[summary.status]}
+                                </span>
+                              ) : (
+                                <span className="text-[10px] text-muted">-</span>
+                              )}
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+
+                {rankRows.length > 20 && (
+                  <div className="border-t border-border px-4 py-3 text-center">
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setRankVisible(rankVisible >= rankRows.length ? 20 : rankRows.length)
+                      }
+                      className="min-h-[36px] rounded-[10px] border border-border bg-white px-4 text-[11px] font-bold text-text hover:bg-gray-50"
+                    >
+                      {rankVisible >= rankRows.length
+                        ? 'Tampilkan lebih sedikit'
+                        : `Tampilkan semua (${rankRows.length})`}
+                    </button>
+                  </div>
+                )}
+              </>
+            )}
+          </section>
+
+          <section className="overflow-hidden rounded-[18px] border border-border bg-white">
+            <div className="flex flex-wrap items-start justify-between gap-2 border-b border-border px-4 py-3">
+              <div>
+                <h2 className="text-sm font-extrabold text-text">Kelas Paling Tertib</h2>
+                <p className="mt-0.5 text-[11px] text-muted">
+                  Rata-rata poin semester terendah menempati peringkat pertama.
+                </p>
+              </div>
+              <span className="flex-none rounded-full border border-emerald-300 bg-emerald-50 px-2.5 py-1 text-[10px] font-extrabold text-emerald-700">
+                {bestClass?.kelas ? `Juara: ${bestClass.kelas}` : 'Belum ada data'}
+              </span>
+            </div>
+            {classPoints.length === 0 ? (
+              <EmptyState icon={Trophy} text="Belum ada data kelas pada semester ini." />
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="w-full min-w-[620px] border-collapse text-[12px]">
+                  <thead>
+                    <tr className="bg-gray-50/80 text-left text-[10px] uppercase tracking-wide text-muted">
+                      <th className="px-4 py-2 font-extrabold">Rank</th>
+                      <th className="px-3 py-2 font-extrabold">Kelas</th>
+                      <th className="px-3 py-2 text-right font-extrabold">Siswa</th>
+                      <th className="px-3 py-2 text-right font-extrabold">Rata-rata</th>
+                      <th className="px-3 py-2 text-right font-extrabold">Total semester</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-border/70">
+                    {classPoints.map((row) => (
+                      <tr key={row.classId} className="hover:bg-gray-50/60">
+                        <td className="px-4 py-2.5 font-extrabold tabular-nums text-text">
+                          #{row.rank}
+                        </td>
+                        <td className="px-3 py-2.5 font-bold text-text">{row.kelas}</td>
+                        <td className="px-3 py-2.5 text-right tabular-nums text-muted">
+                          {row.studentCount}
+                        </td>
+                        <td className="px-3 py-2.5 text-right font-extrabold tabular-nums text-text">
+                          {row.averagePoints}
+                        </td>
+                        <td className="px-3 py-2.5 text-right tabular-nums text-muted">
+                          {row.semesterPoints}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </section>
+
+          <div className="flex items-start gap-2.5 rounded-[14px] border border-border bg-white px-4 py-3 text-[11px] leading-relaxed text-muted">
+            <Eye size={15} className="mt-0.5 flex-none text-text" />
+            <p>
+              Papan ini hanya untuk BK dan wali kelas. Wali kelas melihat kelasnya sendiri; siswa
+              tidak pernah melihat nama atau poin siswa lain.
+            </p>
+          </div>
         </div>
       )}
 
