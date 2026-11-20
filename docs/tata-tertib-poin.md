@@ -310,21 +310,28 @@ Yang perlu ditambahkan:
 
 ### 7.2 Token QR
 
-- Isi QR: `SIMBK1:<random 128-bit>`, bukan NIS/nama/PIN.
+- Isi QR: URL portal `https://<domain>/m/?card=SIMBK1:<random 128-bit>`,
+  bukan NIS/nama/PIN. URL dipakai agar kamera ponsel langsung membuka portal.
+- Token mentah tetap `SIMBK1:<random 128-bit>`; portal menerima token mentah,
+  query `?card=`, atau URL kartu penuh (lihat `extractCardToken`).
 - Database menyimpan SHA-256 dari token, bukan token asli.
 - Token bisa dicabut dan dibuat ulang.
 - Satu siswa bisa punya satu kartu aktif; kartu lama otomatis `revoked`.
 
 ### 7.3 Login siswa
 
-1. Scan QR → portal `/s/<token>`.
+1. Scan QR → portal `/m/?card=<token>` (atau tempel token manual).
 2. Masukkan PIN 6 digit.
-3. Sesi berlaku 30–60 menit.
+3. Sesi berlaku 45 menit; token sesi acak 32 byte, disimpan sebagai SHA-256.
 4. Salah PIN 5× → terkunci 15 menit.
-5. BK bisa mencabut kartu atau mereset PIN.
+5. BK bisa mencabut kartu atau mereset PIN. Mencabut kartu langsung
+   membatalkan semua sesi portal siswa tersebut.
 
 QR saja tidak cukup karena kartu bisa difoto. QR + PIN adalah keseimbangan
 antara keamanan dan kemudahan.
+
+Sesi disimpan di `sessionStorage`, bukan `localStorage`, sehingga menutup tab
+mengakhiri sesi di perangkat. Sesi juga dapat dicabut dari server lewat logout.
 
 ### 7.4 Pemakaian oleh guru
 
@@ -337,12 +344,28 @@ Scan kartu siswa membuka profil siswa langsung di aplikasi guru:
 ### 7.5 Implementasi
 
 - Tidak membuat 500 akun Supabase Auth.
-- Edge Function `student-portal`:
-  - verifikasi token + PIN,
-  - rate limit,
-  - kembalikan hanya data siswa tersebut,
-  - tanda tangan sesi singkat.
-- Tabel `student_cards` disiapkan di Fase 2.
+- Migrasi `20261120160000_student_portal.sql`:
+  - tabel `student_portal_sessions` (hash token, siswa, kedaluwarsa, revoked),
+  - RPC `student_portal_login(token, pin)`, `student_portal_data(session)`,
+    `student_portal_logout(session)`,
+  - RLS aktif tanpa policy; `anon`/`authenticated` tidak punya akses,
+  - hanya `service_role` yang boleh mengeksekusi RPC.
+- Edge Function `supabase/functions/student-portal/index.ts`:
+  - `POST /login` body `{ token, pin }` → `session_token`, `expires_at`,
+  - `POST /me` dan `POST /logout` dengan header `Authorization: Bearer <sesi>`,
+  - memanggil RPC service-role; PIN dan hash tidak pernah keluar dari server.
+- Klien portal: `src/mobile/portal/portalApi.ts` + `StudentPortal.tsx`
+  (`/m/?card=<token>`), memakai `sessionStorage` dan tampilan mobile yang sama.
+- Deploy:
+  ```bash
+  supabase functions deploy student-portal --no-verify-jwt
+  ```
+  `--no-verify-jwt` diperlukan karena siswa tidak punya akun Supabase Auth;
+  Edge Function tetap memverifikasi token kartu + PIN sendiri.
+- Env opsional di frontend: `VITE_STUDENT_PORTAL_URL` (default
+  `<VITE_SUPABASE_URL>/functions/v1/student-portal`).
+- Tabel `student_cards` disiapkan di Fase 2; `verify_student_card` sudah
+  menangani lockout PIN, sehingga login portal membungkus fungsi tersebut.
 
 ---
 

@@ -10,7 +10,8 @@
     "test": "vitest --config vite.config.vitest.ts",
     "test:ui": "vitest --config vite.config.vitest.ts --ui",
     "test:e2e": "playwright test",
-    "shots": "node scripts/shots.mjs"
+    "shots": "node scripts/shots.mjs",
+    "shots:portal": "node scripts/portal-shots.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.119.0",

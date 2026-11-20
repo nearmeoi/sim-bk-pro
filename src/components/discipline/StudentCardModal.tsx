@@ -3,6 +3,7 @@ import { AlertTriangle, Check, Copy, IdCard, Printer, X } from 'lucide-react';
 import QRCode from 'qrcode';
 import { useBK } from '../../context/BKContext';
 import { useDiscipline } from '../../context/DisciplineContext';
+import { buildStudentPortalUrl } from '../../mobile/portal/portalApi';
 import type { Student } from '../../types';
 
 interface StudentCardModalProps {
@@ -36,7 +37,7 @@ export default function StudentCardModal({ student, onClose, onToast }: StudentC
       return;
     }
     let cancelled = false;
-    void QRCode.toDataURL(credential.token, {
+    void QRCode.toDataURL(buildStudentPortalUrl(credential.token), {
       margin: 1,
       width: 640,
       errorCorrectionLevel: 'M',

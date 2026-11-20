@@ -12,6 +12,7 @@ import MobileAKPD from './MobileAKPD';
 import MobileKarir from './MobileKarir';
 import MobilePengaturan from './MobilePengaturan';
 import MobileTataTertib from './MobileTataTertib';
+import StudentPortal from './portal/StudentPortal';
 import MobileProta from './docs/MobileProta';
 import MobileJurnal from './docs/MobileJurnal';
 import MobileRpl from './docs/MobileRpl';
@@ -118,6 +119,10 @@ export default function MobileApp() {
   const [toast, setToast] = useState<string | null>(null);
   const [catat, setCatat] = useState<CatatPrefill | null>(null);
   const [selected, setSelected] = useState<Student | null>(null);
+  const [portalCard] = useState(() => {
+    if (typeof window === 'undefined') return '';
+    return new URLSearchParams(window.location.search).get('card') ?? '';
+  });
 
   // Navigasi memakai backdrop-filter native (live, tanpa snapshot).
   const navRef = useRef<HTMLElement | null>(null);
@@ -198,6 +203,11 @@ export default function MobileApp() {
       </button>
     );
   };
+
+  // Kartu QR membuka portal siswa, tanpa melewati login staf.
+  if (portalCard) {
+    return <StudentPortal initialToken={portalCard} />;
+  }
 
   if (isBooting) {
     return (

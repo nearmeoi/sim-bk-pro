@@ -263,6 +263,58 @@ export interface SpLetter {
   acknowledgedAt: string | null;
 }
 
+export interface StudentPortalViolation {
+  id: string;
+  occurredAt: string;
+  ruleCode: string;
+  ruleName: string;
+  category: ViolationCategory;
+  points: number;
+  guidebookPoints: number;
+  location: string;
+  status: 'recorded' | 'verified' | 'void';
+}
+
+export interface StudentPortalSpLetter {
+  id: string;
+  type: SpType;
+  number: string | null;
+  status: SpStatus;
+  totalPoints: number;
+  totalGuidebookPoints: number;
+  issuedAt: string | null;
+  meetingAt: string | null;
+}
+
+export interface StudentPortalData {
+  student: {
+    nama: string;
+    nis: string;
+    nisn: string;
+    kelas: string;
+  };
+  school: {
+    nama: string;
+    npsn: string | null;
+  };
+  points: {
+    pointScale: number;
+    totalPoints: number;
+    totalGuidebookPoints: number;
+    balance: number;
+    semesterPoints: number;
+    yearPoints: number;
+    status: PointStatus;
+    lastViolationAt: string | null;
+  };
+  thresholds: number[];
+  nextThreshold: number | null;
+  nextType: SpType | null;
+  violations: StudentPortalViolation[];
+  spLetters: StudentPortalSpLetter[];
+  serverTime: string;
+}
+
 export interface LeaderboardEntry {
   schoolId: string;
   studentId: string;
