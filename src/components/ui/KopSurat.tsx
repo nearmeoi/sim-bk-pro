@@ -91,7 +91,7 @@ export const KopSurat: React.FC<KopSuratProps> = ({
       <div className={compact ? 'pb-1' : 'pb-1.5'}>
         <div className="flex items-center justify-between gap-2 sm:gap-3 pl-1 pr-2 sm:pl-2 sm:pr-3">
           {/* 1. SISI KIRI: LOGO DAERAH / SEKOLAH (DAPAT DI-UPLOAD) */}
-          <div className="w-16 h-18 sm:w-20 sm:h-22 shrink-0 flex items-center justify-center ml-0.5 sm:ml-1">
+          <div className="kop-logo w-16 h-18 sm:w-20 sm:h-22 shrink-0 flex items-center justify-center ml-0.5 sm:ml-1">
             {settings.logoUrl ? (
               <img
                 src={settings.logoUrl}
@@ -155,7 +155,7 @@ export const KopSurat: React.FC<KopSuratProps> = ({
           </div>
 
           {/* 3. SISI KANAN: LOGO TUT WURI HANDAYANI RESMI KEMENDIKBUD */}
-          <div className="w-16 h-18 sm:w-20 sm:h-22 shrink-0 flex items-center justify-center mr-1 sm:mr-2">
+          <div className="kop-logo w-16 h-18 sm:w-20 sm:h-22 shrink-0 flex items-center justify-center mr-1 sm:mr-2">
             {settings.logoKananUrl ? (
               <img
                 src={settings.logoKananUrl}

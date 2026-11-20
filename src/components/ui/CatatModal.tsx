@@ -1,6 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { DoorOpen, MessageSquare, Folder, FileText, ChevronRight, ArrowLeft, Save } from "lucide-react";
 import { useBK } from '../../context/BKContext';
+import StudentPicker from './StudentPicker';
+import DatePicker from './DatePicker';
+import TimePicker from './TimePicker';
+import { STATUS_STYLES } from '../../lib/statusStyles';
 import type { QuickCatatPayload } from '../../types';
 interface CatatModalProps {
   open: boolean;
@@ -47,6 +51,19 @@ export default function CatatModal({ open, onClose, onSelect }: CatatModalProps)
   const [uraianMasalah, setUraianMasalah] = useState('');
   const [tindakLanjut, setTindakLanjut] = useState('');
   const [status, setStatus] = useState<'Proses' | 'Selesai' | 'Menunggu'>('Proses');
+
+  // Rombel mengikuti data siswa yang benar-benar ada
+  const kelasOptions = useMemo(() => {
+    const set = new Set(students.map((s) => s.kelas).filter(Boolean));
+    if (set.size === 0) {
+      ['7A', '7B', '7C', '8A', '8B', '8C', '9A', '9B', '9C'].forEach((k) => set.add(k));
+    }
+    return [
+      ...Array.from(set).sort((a, b) => a.localeCompare(b, 'id', { numeric: true })),
+      'Umum',
+    ];
+  }, [students]);
+
   useEffect(() => {
     if (!open) {
       setSelectedAction(null);
@@ -178,22 +195,13 @@ export default function CatatModal({ open, onClose, onSelect }: CatatModalProps)
                 <label className="block text-xs font-bold text-text mb-1.5">
                   Nama Peserta Didik / Pihak Terlibat *
                 </label>
-                <input
-                  type="text"
-                  required
-                  list="registered-students"
+                <StudentPicker
                   value={namaSiswa}
-                  onChange={(e) => setNamaSiswa(e.target.value)}
-                  placeholder="Pilih atau ketik nama siswa..."
-                  className="w-full min-h-[48px] px-4 rounded-[12px] border border-border text-sm text-text focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition shadow-sm"
+                  onChange={setNamaSiswa}
+                  onPick={(s) => setKelas(s.kelas)}
+                  students={students}
+                  required
                 />
-                <datalist id="registered-students">
-                  {students.map((s) => (
-                    <option key={s.id} value={s.nama}>
-                      {s.nama} ({s.kelas}) - NIS {s.nis}
-                    </option>
-                  ))}
-                </datalist>
               </div>
 
               <div>
@@ -203,9 +211,9 @@ export default function CatatModal({ open, onClose, onSelect }: CatatModalProps)
                 <select
                   value={kelas}
                   onChange={(e) => setKelas(e.target.value)}
-                  className="w-full min-h-[48px] px-3.5 rounded-[12px] border border-border text-sm text-text bg-surface focus:outline-none focus:border-primary"
+                  className="w-full min-h-[48px] px-3.5 rounded-[12px] border border-border text-sm text-text bg-surface focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition shadow-sm"
                 >
-                  {['7A', '7B', '7C', '8A', '8B', '8C', '9A', '9B', '9C', 'Umum'].map((k) => (
+                  {kelasOptions.map((k) => (
                     <option key={k} value={k}>{k}</option>
                   ))}
                 </select>
@@ -215,21 +223,11 @@ export default function CatatModal({ open, onClose, onSelect }: CatatModalProps)
             <div className="grid sm:grid-cols-2 gap-3.5">
               <div>
                 <label className="block text-xs font-bold text-text mb-1.5">Tanggal Pelaksanaan</label>
-                <input
-                  type="date"
-                  value={tanggal}
-                  onChange={(e) => setTanggal(e.target.value)}
-                  className="w-full min-h-[48px] px-3.5 rounded-[12px] border border-border text-sm text-text bg-surface focus:outline-none focus:border-primary"
-                />
+                <DatePicker value={tanggal} onChange={setTanggal} />
               </div>
               <div>
                 <label className="block text-xs font-bold text-text mb-1.5">Waktu / Pukul</label>
-                <input
-                  type="time"
-                  value={waktu}
-                  onChange={(e) => setWaktu(e.target.value)}
-                  className="w-full min-h-[48px] px-3.5 rounded-[12px] border border-border text-sm text-text bg-surface focus:outline-none focus:border-primary"
-                />
+                <TimePicker value={waktu} onChange={setWaktu} />
               </div>
             </div>
 
@@ -270,25 +268,31 @@ export default function CatatModal({ open, onClose, onSelect }: CatatModalProps)
             {/* Status Layanan Pills */}
             <div>
               <label className="block text-xs font-bold text-text mb-2">Status Penanganan</label>
-              <div className="flex gap-2">
-                {(['Proses', 'Selesai', 'Menunggu'] as const).map((st) => (
-                  <button
-                    type="button"
-                    key={st}
-                    onClick={() => setStatus(st)}
-                    className={`px-4 py-2 rounded-full text-xs font-bold transition-all border ${
-                      status === st
-                        ? st === 'Selesai'
-                          ? 'bg-accent-700 text-white border-accent-700 shadow-sm'
-                          : st === 'Menunggu'
-                            ? 'bg-primary text-white border-primary shadow-sm'
-                            : 'bg-primary text-white border-primary shadow-sm'
-                        : 'bg-surface text-muted border-border hover:bg-bg'
-                    }`}
-                  >
-                    {st === 'Proses' ? 'Sedang Diproses' : st === 'Selesai' ? 'Kasus Selesai' : 'Menunggu Tindak Lanjut'}
-                  </button>
-                ))}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                {(['Proses', 'Selesai', 'Menunggu'] as const).map((st) => {
+                  const meta = STATUS_STYLES[st];
+                  const active = status === st;
+                  return (
+                    <button
+                      type="button"
+                      key={st}
+                      onClick={() => setStatus(st)}
+                      aria-pressed={active}
+                      className={`min-h-[46px] px-3 rounded-[12px] border text-xs font-bold inline-flex items-center justify-center gap-2 transition-all ${
+                        active
+                          ? `${meta.solid} scale-[1.01]`
+                          : `${meta.soft} hover:brightness-[0.98]`
+                      }`}
+                    >
+                      <span
+                        className={`w-2 h-2 rounded-full flex-none ${
+                          active ? 'bg-current opacity-90' : meta.dot
+                        }`}
+                      />
+                      {meta.label}
+                    </button>
+                  );
+                })}
               </div>
             </div>
 

@@ -1,4 +1,5 @@
 import { defineConfig } from 'vite'
+import { fileURLToPath } from 'node:url'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
 
@@ -38,6 +39,12 @@ export default defineConfig({
   ],
   build: {
     rollupOptions: {
+      // Dua entry terpisah: "/" untuk PC, "/m/" untuk ponsel.
+      // Bundel PC tidak memuat kode mobile, dan sebaliknya.
+      input: {
+        main: fileURLToPath(new URL('./index.html', import.meta.url)),
+        mobile: fileURLToPath(new URL('./m/index.html', import.meta.url)),
+      },
       output: {
         manualChunks: {
           react: ['react', 'react-dom'],

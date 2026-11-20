@@ -17,6 +17,7 @@ import Skeleton from '../ui/Skeleton';
 import { greeting, DOCUMENTS } from '../../data/dummy';
 import { useBK } from '../../context/BKContext';
 import { NavView } from '../../types';
+import { statusStyle } from '../../lib/statusStyles';
 
 interface BerandaViewProps {
   onNav: (v: NavView) => void;
@@ -248,7 +249,10 @@ export const BerandaView: React.FC<BerandaViewProps> = ({ onNav, onCatat }) => {
                           {c.tanggal}
                         </td>
                         <td className="border border-black px-2 py-2 text-center">
-                          <span className="px-2 py-0.5 rounded-full text-[11px] font-bold bg-alert-tint text-alert whitespace-nowrap">
+                          <span
+                            className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full border text-[11px] font-bold whitespace-nowrap ${statusStyle(c.status).soft}`}
+                          >
+                            <span className={`w-1.5 h-1.5 rounded-full flex-none ${statusStyle(c.status).dot}`} />
                             {c.status}
                           </span>
                         </td>

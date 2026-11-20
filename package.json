@@ -7,9 +7,10 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "test": "vitest",
-    "test:ui": "vitest --ui",
-    "test:e2e": "playwright test"
+    "test": "vitest --config vite.config.vitest.ts",
+    "test:ui": "vitest --config vite.config.vitest.ts --ui",
+    "test:e2e": "playwright test",
+    "shots": "node scripts/shots.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.119.0",

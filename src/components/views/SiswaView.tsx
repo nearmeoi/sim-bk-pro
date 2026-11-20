@@ -14,11 +14,16 @@ import {
   Mail,
   Eye,
   Edit2,
+  ChevronLeft,
+  ChevronRight,
+  ChevronsLeft,
+  ChevronsRight,
 } from "lucide-react";
 import PetunjukIbu from '../ui/PetunjukIbu';
 import KopSurat from '../ui/KopSurat';
 import HvsPreviewModal from '../ui/HvsPreviewModal';
 import { SuratModal } from './siswa/SuratModal';
+import { statusStyle } from '../../lib/statusStyles';
 import { useBK } from '../../context/BKContext';
 import { exportToCsv, parseCsv } from '../../lib/exportCsv';
 import { ListSkeleton } from '../ui/Skeleton';
@@ -28,6 +33,9 @@ interface SiswaViewProps {
 }
 
 type SortKey = keyof Pick<Student, 'nama' | 'nis' | 'kelas' | 'status'>;
+
+/** "7 a" / "7A" / "9G" -> "7A" supaya filter rombel tidak meleset karena spasi. */
+const normalizeKelas = (kelas: string) => kelas.toUpperCase().replace(/[^0-9A-Z]/g, '');
 
 export default function SiswaView({ onToast }: SiswaViewProps) {
   const { students, records, addStudent, updateStudent, addCounselingRecord, settings, isBooting } = useBK();
@@ -132,7 +140,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
   const filtered = useMemo(() => {
     return students
       .filter((s) => {
-        if (kelasFilter && !s.kelas.startsWith(kelasFilter)) return false;
+        if (kelasFilter && !normalizeKelas(s.kelas).startsWith(kelasFilter)) return false;
         if (!q) return true;
         const lq = q.toLowerCase();
         return (
@@ -147,11 +155,47 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
       });
   }, [students, q, kelasFilter, sortKey, sortAsc]);
 
+  // Rombel (A, B, C, ...) yang benar-benar ada di tingkat terpilih
+  const rombelFilters = useMemo(() => {
+    if (!kelasFilter) return [] as { key: string; label: string }[];
+    const tingkat = kelasFilter.charAt(0);
+    const seen = new Set<string>();
+    const list: { key: string; label: string }[] = [];
+    students.forEach((s) => {
+      const m = normalizeKelas(s.kelas).match(/^(\d)([A-Z]+)$/);
+      if (!m || m[1] !== tingkat) return;
+      const key = `${m[1]}${m[2]}`;
+      if (seen.has(key)) return;
+      seen.add(key);
+      list.push({ key, label: m[2] });
+    });
+    return list.sort((a, b) => a.label.localeCompare(b.label, 'id'));
+  }, [students, kelasFilter]);
+
   // Pagination tabel siswa: 20 baris/halaman agar tetap ringan di HP
   const PAGE_SIZE = 20;
   const [page, setPage] = useState(1);
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
   const pageRows = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+  const startIdx = filtered.length === 0 ? 0 : (page - 1) * PAGE_SIZE + 1;
+  const endIdx = Math.min(page * PAGE_SIZE, filtered.length);
+
+  // Nomor halaman ringkas: 1 … 4 5 6 … 28
+  const pageNumbers = useMemo(() => {
+    const items: (number | 'gap')[] = [];
+    if (totalPages <= 7) {
+      for (let i = 1; i <= totalPages; i++) items.push(i);
+      return items;
+    }
+    items.push(1);
+    const start = Math.max(2, page - 1);
+    const end = Math.min(totalPages - 1, page + 1);
+    if (start > 2) items.push('gap');
+    for (let i = start; i <= end; i++) items.push(i);
+    if (end < totalPages - 1) items.push('gap');
+    items.push(totalPages);
+    return items;
+  }, [page, totalPages]);
 
   // Kembali ke halaman 1 saat pencarian/filter berubah, dan jaga page tetap valid
   useEffect(() => {
@@ -308,7 +352,7 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
         tips={[
           'Klik baris nama siswa untuk membuka Buku Catatan Siswa, menambah sesi konseling, atau mencetak Kartu Konseling.',
           'Bila siswa membutuhkan pembinaan khusus bersama keluarga, klik nama siswa lalu gunakan tombol "Surat Panggilan" atau "Home Visit" untuk mencetak surat resmi ber-kop sekolah.',
-          'Ibu juga bisa menyaring siswa berdasarkan tingkat kelas (7, 8, atau 9) dan mencari nama siswa dengan cepat lewat kolom pencarian.'
+          'Ibu juga bisa menyaring siswa berdasarkan tingkat kelas (7, 8, atau 9). Setelah tingkat dipilih, muncul pilihan rombel (A, B, C, ...) untuk melihat satu kelas saja.'
         ]}
       />
       {/* Floating Search Bar */}
@@ -418,6 +462,34 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
           </button>
         </div>
       </div>
+
+      {/* Sub-filter rombel: muncul setelah tingkat kelas (7/8/9) dipilih */}
+      {kelasFilter && rombelFilters.length > 0 && (
+        <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-1">
+          <span className="text-[11px] font-bold uppercase tracking-wide text-muted shrink-0 pl-1">
+            Rombel
+          </span>
+          <button
+            onClick={() => setKelasFilter(kelasFilter.charAt(0))}
+            aria-pressed={kelasFilter.length === 1}
+            className={`bk-chip ${kelasFilter.length === 1 ? 'on' : ''}`}
+            title={`Tampilkan seluruh kelas ${kelasFilter.charAt(0)}`}
+          >
+            Semua {kelasFilter.charAt(0)}
+          </button>
+          {rombelFilters.map((r) => (
+            <button
+              key={r.key}
+              onClick={() => setKelasFilter(r.key)}
+              aria-pressed={kelasFilter === r.key}
+              className={`bk-chip ${kelasFilter === r.key ? 'on' : ''}`}
+              title={`Kelas ${r.key}`}
+            >
+              {r.label}
+            </button>
+          ))}
+        </div>
+      )}
 
       {/* Student Table - Desain Seragam Pilihan Karir */}
       <div className="bg-white border border-black rounded-none p-4 sm:p-5 shadow-sm text-black">
@@ -559,10 +631,12 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                       </td>
                       <td className="border border-black px-2 py-2 text-center whitespace-nowrap">
                         <span
-                          className={`inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-bold ${
+                          className={`inline-flex items-center px-2 py-0.5 rounded-full border text-[11px] font-bold ${
                             s.status === 'Aktif'
-                              ? 'bg-neutral-50 text-neutral-800'
-                              : 'bg-gray-100 text-gray-600'
+                              ? 'bg-[#D1FAE5] text-[#065F46] border-[#6EE7B7]'
+                              : s.status === 'Pindah'
+                                ? 'bg-[#FEF3C7] text-[#92400E] border-[#FCD34D]'
+                                : 'bg-[#E0E7FF] text-[#3730A3] border-[#A5B4FC]'
                           }`}
                         >
                           {s.status}
@@ -602,28 +676,82 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
           </table>
         </div>
 
-        {/* Pagination: sembunyikan bila hanya 1 halaman */}
+        {/* Pagination */}
         {totalPages > 1 && (
-          <div className="mt-4 flex items-center justify-center gap-2 print:hidden">
-            <button
-              type="button"
-              disabled={page <= 1}
-              onClick={() => setPage((p) => Math.max(1, p - 1))}
-              className="bk-btn ghost !min-h-[42px] !text-xs !px-4"
-            >
-              â€¹ Sebelumnya
-            </button>
-            <span className="px-3 py-1.5 rounded-full bg-neutral-100 text-neutral-800 text-xs font-bold whitespace-nowrap">
-              Halaman {page} dari {totalPages}
-            </span>
-            <button
-              type="button"
-              disabled={page >= totalPages}
-              onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
-              className="bk-btn ghost !min-h-[42px] !text-xs !px-4"
-            >
-              Berikutnya â€º
-            </button>
+          <div className="mt-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 print:hidden">
+            <p className="text-[11px] text-muted text-center sm:text-left">
+              Menampilkan{' '}
+              <span className="font-bold text-text">
+                {startIdx}–{endIdx}
+              </span>{' '}
+              dari <span className="font-bold text-text">{filtered.length}</span> siswa
+            </p>
+
+            <nav className="flex items-center justify-center gap-1.5" aria-label="Navigasi halaman">
+              <button
+                type="button"
+                onClick={() => setPage(1)}
+                disabled={page <= 1}
+                aria-label="Halaman pertama"
+                className="h-9 w-9 grid place-items-center rounded-[10px] border border-black/15 bg-white text-text hover:bg-gray-100 disabled:opacity-35 disabled:cursor-not-allowed disabled:hover:bg-white transition-colors"
+              >
+                <ChevronsLeft size={16} />
+              </button>
+              <button
+                type="button"
+                onClick={() => setPage((p) => Math.max(1, p - 1))}
+                disabled={page <= 1}
+                aria-label="Halaman sebelumnya"
+                className="h-9 w-9 grid place-items-center rounded-[10px] border border-black/15 bg-white text-text hover:bg-gray-100 disabled:opacity-35 disabled:cursor-not-allowed disabled:hover:bg-white transition-colors"
+              >
+                <ChevronLeft size={16} />
+              </button>
+
+              {pageNumbers.map((p, i) =>
+                p === 'gap' ? (
+                  <span
+                    key={`gap-${i}`}
+                    className="px-1 text-xs font-bold text-muted select-none"
+                    aria-hidden="true"
+                  >
+                    …
+                  </span>
+                ) : (
+                  <button
+                    key={p}
+                    type="button"
+                    onClick={() => setPage(p)}
+                    aria-current={p === page ? 'page' : undefined}
+                    className={`h-9 min-w-9 px-2 rounded-[10px] border text-[12px] font-bold tabular-nums transition-colors ${
+                      p === page
+                        ? 'bg-black text-white border-black shadow-sm'
+                        : 'bg-white text-text border-black/15 hover:bg-gray-100'
+                    }`}
+                  >
+                    {p}
+                  </button>
+                ),
+              )}
+
+              <button
+                type="button"
+                onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                disabled={page >= totalPages}
+                aria-label="Halaman berikutnya"
+                className="h-9 w-9 grid place-items-center rounded-[10px] border border-black/15 bg-white text-text hover:bg-gray-100 disabled:opacity-35 disabled:cursor-not-allowed disabled:hover:bg-white transition-colors"
+              >
+                <ChevronRight size={16} />
+              </button>
+              <button
+                type="button"
+                onClick={() => setPage(totalPages)}
+                disabled={page >= totalPages}
+                aria-label="Halaman terakhir"
+                className="h-9 w-9 grid place-items-center rounded-[10px] border border-black/15 bg-white text-text hover:bg-gray-100 disabled:opacity-35 disabled:cursor-not-allowed disabled:hover:bg-white transition-colors"
+              >
+                <ChevronsRight size={16} />
+              </button>
+            </nav>
           </div>
         )}
 
@@ -925,12 +1053,9 @@ export default function SiswaView({ onToast }: SiswaViewProps) {
                           </td>
                           <td className="border border-black px-2 py-2 text-center">
                             <span
-                              className={`px-2 py-0.5 rounded-full text-[11px] font-bold ${
-                                rec.status === 'Selesai'
-                                  ? 'bg-neutral-50 text-neutral-800'
-                                  : 'bg-alert-tint text-alert'
-                              }`}
+                              className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full border text-[11px] font-bold ${statusStyle(rec.status).soft}`}
                             >
+                              <span className={`w-1.5 h-1.5 rounded-full flex-none ${statusStyle(rec.status).dot}`} />
                               {rec.status}
                             </span>
                           </td>

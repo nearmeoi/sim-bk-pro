@@ -144,7 +144,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onSuccess, onToast }) => {
               type="button"
               onClick={handleReset}
               disabled={loading !== null}
-              className="text-primary hover:underline font-bold cursor-pointer disabled:opacity-50"
+              className="text-primary hover:underline font-bold cursor-pointer whitespace-nowrap disabled:opacity-50"
             >
               {loading === 'reset' ? 'Mengirim...' : 'Lupa sandi?'}
             </button>

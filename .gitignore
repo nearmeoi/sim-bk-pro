@@ -11,6 +11,10 @@ node_modules
 dist
 dist-ssr
 *.local
+shots
+
+# Artefak impor data siswa (berisi data pribadi) - jangan pernah di-commit
+supabase/import/
 
 # Editor directories and files
 .vscode/*

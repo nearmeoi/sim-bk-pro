@@ -1,4 +1,4 @@
-@tailwind base;
+﻿@tailwind base;
 @tailwind components;
 @tailwind utilities;
 :root {
@@ -14,13 +14,142 @@
   --border: #E8E8E8;
   --text: #2D3748;
   --muted: #666666;
+
+  /* Kanal RGB dipakai Tailwind (rgb(var(--x) / <alpha-value>)) */
+  --primary-rgb: 255 163 108;
+  --primary-2-rgb: 255 138 61;
+  --accent-rgb: 232 106 51;
+  --alert-rgb: 185 28 28;
+  --bg-rgb: 255 255 255;
+  --surface-rgb: 255 255 255;
+  --border-rgb: 232 232 232;
+  --text-rgb: 45 55 72;
+  --muted-rgb: 102 102 102;
+
   --shadow: 0 1px 2px rgb(0 0 0 / 0.03), 0 4px 12px rgb(0 0 0 / 0.06);
-  --shadow-hero: 0 8px 24px rgb(255 163 108 / 0.2);
-  --shadow-fab: 0 4px 12px rgb(255 163 108 / 0.3), 0 0 0 5px var(--bg);
+  --shadow-hero: 0 8px 24px rgb(var(--primary-rgb) / 0.2);
+  --shadow-fab: 0 4px 12px rgb(var(--primary-rgb) / 0.3), 0 0 0 5px var(--bg);
   --shadow-bnav: 0 -4px 16px rgb(0 0 0 / 0.04);
+  --hover-surface: #F2F3F4;
   --rc: 20px;
   --rx: 14px;
   --tap: 48px;
+}
+
+/* ======================================================== */
+/* TEMA DINAMIS (khusus aplikasi ponsel /m/)                */
+/* Warna aksen + mode terang/gelap. Atribut dipasang di      */
+/* <html> oleh ThemeProvider sehingga versi PC tidak         */
+/* terpengaruh.                                             */
+/* ======================================================== */
+html[data-m-app] {
+  color-scheme: light;
+}
+
+html[data-m-app][data-mode='dark'] {
+  color-scheme: dark;
+  --bg: #0E1116;
+  --bg-rgb: 14 17 22;
+  --surface: #171B22;
+  --surface-rgb: 23 27 34;
+  --border: #2A303B;
+  --border-rgb: 42 48 59;
+  --text: #E7EAF0;
+  --text-rgb: 231 234 240;
+  --muted: #98A1B2;
+  --muted-rgb: 152 161 178;
+  --primary-tint: #3C312E;
+  --accent-tint: #3D2925;
+  --alert-tint: #3B1B21;
+  --hover-surface: #23272E;
+  --shadow: 0 1px 2px rgb(0 0 0 / 0.45), 0 6px 18px rgb(0 0 0 / 0.35);
+  --shadow-hero: 0 10px 28px rgb(0 0 0 / 0.45);
+  --shadow-fab: 0 4px 12px rgb(0 0 0 / 0.5), 0 0 0 5px var(--bg);
+  --shadow-bnav: 0 -4px 16px rgb(0 0 0 / 0.35);
+}
+
+/* Palet aksen. Nilai RGB wajib sejalan dengan warna hex-nya. */
+html[data-m-app][data-theme='biru'] {
+  --primary: #60A5FA;
+  --primary-rgb: 96 165 250;
+  --primary-2: #3B82F6;
+  --primary-2-rgb: 59 130 246;
+  --accent: #2563EB;
+  --accent-rgb: 37 99 235;
+  --primary-tint: #EFF6FF;
+  --accent-tint: #DBEAFE;
+}
+
+html[data-m-app][data-theme='hijau'] {
+  --primary: #4ADE80;
+  --primary-rgb: 74 222 128;
+  --primary-2: #22C55E;
+  --primary-2-rgb: 34 197 94;
+  --accent: #15803D;
+  --accent-rgb: 21 128 61;
+  --primary-tint: #F0FDF4;
+  --accent-tint: #DCFCE7;
+}
+
+html[data-m-app][data-theme='ungu'] {
+  --primary: #A78BFA;
+  --primary-rgb: 167 139 250;
+  --primary-2: #8B5CF6;
+  --primary-2-rgb: 139 92 246;
+  --accent: #7C3AED;
+  --accent-rgb: 124 58 237;
+  --primary-tint: #F5F3FF;
+  --accent-tint: #EDE9FE;
+}
+
+html[data-m-app][data-theme='mawar'] {
+  --primary: #FB7185;
+  --primary-rgb: 251 113 133;
+  --primary-2: #F43F5E;
+  --primary-2-rgb: 244 63 94;
+  --accent: #BE123C;
+  --accent-rgb: 190 18 60;
+  --primary-tint: #FFF1F2;
+  --accent-tint: #FFE4E6;
+}
+
+html[data-m-app][data-theme='toska'] {
+  --primary: #2DD4BF;
+  --primary-rgb: 45 212 191;
+  --primary-2: #14B8A6;
+  --primary-2-rgb: 20 184 166;
+  --accent: #0F766E;
+  --accent-rgb: 15 118 110;
+  --primary-tint: #F0FDFA;
+  --accent-tint: #CCFBF1;
+}
+
+/* Saat gelap, tint per tema memakai nilai padat (hex), bukan color-mix().
+   Alasan: color-mix() menghasilkan color(srgb ...) yang tidak konsisten
+   antar-browser saat dipakai sebagai lapisan tint di atas permukaan gelap. */
+html[data-m-app][data-mode='dark'][data-theme='oranye'] {
+  --primary-tint: #3C312E;
+  --accent-tint: #3D2925;
+}
+html[data-m-app][data-mode='dark'][data-theme='biru'] {
+  --primary-tint: #233145;
+  --accent-tint: #1A2846;
+}
+html[data-m-app][data-mode='dark'][data-theme='hijau'] {
+  --primary-tint: #1F3A31;
+  --accent-tint: #172D27;
+}
+html[data-m-app][data-mode='dark'][data-theme='ungu'] {
+  --primary-tint: #2E2D45;
+  --accent-tint: #292147;
+}
+html[data-m-app][data-mode='dark'][data-theme='mawar'] {
+  --primary-tint: #3B2932;
+  --accent-tint: #351927;
+}
+html[data-m-app][data-mode='dark'][data-theme='toska'] {
+  --primary-tint: #1B393B;
+  --accent-tint: #162B30;
 }
 
 html {
@@ -72,7 +201,7 @@ body {
   border-radius: var(--rc);
   padding: 18px 20px;
   box-shadow: var(--shadow);
-  border: 1px solid rgb(232 235 243 / 0.6);
+  border: 1px solid rgb(var(--border-rgb) / 0.6);
 }
 
 .bk-row {
@@ -86,12 +215,12 @@ body {
   width: 100%;
   text-align: left;
   box-shadow: var(--shadow);
-  border: 1px solid rgb(232 235 243 / 0.5);
+  border: 1px solid rgb(var(--border-rgb) / 0.5);
   transition: transform 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
 }
 
 .bk-row:hover {
-  box-shadow: 0 4px 12px rgb(0 0 0 / 0.04), 0 8px 24px rgb(255 163 108 / 0.12);
+  box-shadow: 0 4px 12px rgb(0 0 0 / 0.04), 0 8px 24px rgb(var(--primary-rgb) / 0.12);
 }
 
 .bk-row:active {
@@ -143,7 +272,7 @@ body {
   display: grid;
   place-items: center;
   box-shadow: var(--shadow);
-  border: 1px solid rgb(232 235 243 / 0.5);
+  border: 1px solid rgb(var(--border-rgb) / 0.5);
   transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
@@ -210,7 +339,7 @@ body {
   justify-content: center;
   gap: 8px;
   font-size: 14px;
-  border: 1px solid rgb(232 235 243 / 0.5);
+  border: 1px solid rgb(var(--border-rgb) / 0.5);
   transition: all 0.15s ease;
 }
 
@@ -260,7 +389,7 @@ body {
 .bk-btn.primary {
   background: var(--primary);
   color: #fff;
-  box-shadow: 0 2px 10px rgb(57 73 171 / 0.25);
+  box-shadow: 0 2px 10px rgb(var(--primary-rgb) / 0.35);
 }
 
 .bk-btn.primary:hover {
@@ -279,7 +408,7 @@ body {
 
 .bk-btn.ghost:hover {
   color: var(--text);
-  background: #f7f8fc;
+  background: var(--hover-surface);
 }
 
 .bk-btn.danger {
@@ -291,7 +420,40 @@ body {
   filter: brightness(1.1);
 }
 
-/* Warna seragam dari satu config (:root) — ubah di satu tempat, berubah semua */
+/* Warna seragam dari satu config (:root) — ubah di satu tempat, berubah semua
+   Didefinisikan ulang memakai variabel CSS sehingga selalu ikut tema/mode gelap,
+   sekaligus tetap benar walau hasil build Tailwind masih memuat warna lama. */
+.bg-bg { background-color: var(--bg); }
+.bg-surface { background-color: var(--surface); }
+.border-border { border-color: var(--border); }
+.text-text { color: var(--text); }
+.text-muted { color: var(--muted); }
+.bg-surface\/95 { background-color: rgb(var(--surface-rgb) / 0.95); }
+.border-border\/70 { border-color: rgb(var(--border-rgb) / 0.7); }
+.border-border\/80 { border-color: rgb(var(--border-rgb) / 0.8); }
+.ring-primary\/10 { --tw-ring-color: rgb(var(--primary-rgb) / 0.1); }
+.ring-primary\/15 { --tw-ring-color: rgb(var(--primary-rgb) / 0.15); }
+.ring-primary\/25 { --tw-ring-color: rgb(var(--primary-rgb) / 0.25); }
+.text-muted\/5 { color: rgb(var(--muted-rgb) / 0.05); }
+.text-muted\/60 { color: rgb(var(--muted-rgb) / 0.6); }
+.text-muted\/70 { color: rgb(var(--muted-rgb) / 0.7); }
+.text-text\/80 { color: rgb(var(--text-rgb) / 0.8); }
+
+/* Varian interaksi (focus/hover/placeholder) juga memakai variabel */
+.focus\:border-primary:focus { border-color: var(--primary); }
+.focus\:ring-primary:focus { --tw-ring-color: rgb(var(--primary-rgb) / 1); }
+.focus\:ring-primary\/10:focus { --tw-ring-color: rgb(var(--primary-rgb) / 0.1); }
+.focus\:ring-primary\/15:focus { --tw-ring-color: rgb(var(--primary-rgb) / 0.15); }
+.group:hover .group-hover\:text-primary { color: var(--primary); }
+.group:hover .group-hover\:text-text { color: var(--text); }
+.active\:bg-bg:active { background-color: var(--bg); }
+.active\:text-text:active { color: var(--text); }
+.hover\:bg-primary-tint:hover { background: var(--primary-tint); }
+.hover\:text-alert:hover { color: var(--alert); }
+.hover\:text-text:hover { color: var(--text); }
+.placeholder\:text-muted\/60::placeholder { color: rgb(var(--muted-rgb) / 0.6); }
+.placeholder\:text-muted\/70::placeholder { color: rgb(var(--muted-rgb) / 0.7); }
+
 .bg-primary { background: var(--primary); }
 .text-primary { color: var(--primary); }
 .border-primary { border-color: var(--primary); }
@@ -336,12 +498,369 @@ body {
 }
 
 /* ======================================================== */
+/* MODE GELAP — kelas "kertas" (tabel & panel putih)         */
+/* Hanya berlaku di aplikasi ponsel (/m/). Pratinjau & cetak */
+/* dokumen berada di luar .m-app sehingga tetap putih.       */
+/* ======================================================== */
+html[data-m-app][data-mode='dark'] .m-app .bg-white {
+  background-color: var(--surface) !important;
+}
+html[data-m-app][data-mode='dark'] .m-app .bg-gray-50 {
+  background-color: #1c212b !important;
+}
+html[data-m-app][data-mode='dark'] .m-app .bg-gray-100 {
+  background-color: #222834 !important;
+}
+html[data-m-app][data-mode='dark'] .m-app .bg-neutral-50 {
+  background-color: #1c212b !important;
+}
+html[data-m-app][data-mode='dark'] .m-app .bg-neutral-200 {
+  background-color: #2a3140 !important;
+}
+html[data-m-app][data-mode='dark'] .m-app .text-black {
+  color: var(--text) !important;
+}
+html[data-m-app][data-mode='dark'] .m-app .text-neutral-800 {
+  color: var(--text) !important;
+}
+html[data-m-app][data-mode='dark'] .m-app .text-gray-500 {
+  color: var(--muted) !important;
+}
+html[data-m-app][data-mode='dark'] .m-app .text-gray-700 {
+  color: rgb(var(--text-rgb) / 0.85) !important;
+}
+html[data-m-app][data-mode='dark'] .m-app .border-black {
+  border-color: #3a424f !important;
+}
+html[data-m-app][data-mode='dark'] .m-app .text-black\/80 {
+  color: rgb(var(--text-rgb) / 0.8) !important;
+}
+html[data-m-app][data-mode='dark'] .m-app .text-black\/55 {
+  color: rgb(var(--text-rgb) / 0.55) !important;
+}
+html[data-m-app][data-mode='dark'] .m-app .border-black\/30 {
+  border-color: rgb(var(--text-rgb) / 0.22) !important;
+}
+html[data-m-app][data-mode='dark'] .m-app .border-black\/15 {
+  border-color: rgb(var(--text-rgb) / 0.15) !important;
+}
+html[data-m-app][data-mode='dark'] .m-app .hover\:bg-gray-50\/30:hover {
+  background-color: rgb(255 255 255 / 0.04) !important;
+}
+html[data-m-app][data-mode='dark'] .m-app .hover\:bg-gray-50:hover {
+  background-color: #222834 !important;
+}
+
+/* Navigasi bawah, tombol Catat, dan chip aktif memakai hitam pekat.
+   Di mode gelap diganti warna aksen agar tetap terlihat. */
+html[data-m-app][data-mode='dark'] .m-app .bg-neutral-900,
+html[data-m-app][data-mode='dark'] .m-app .bg-black {
+  background-color: var(--primary) !important;
+}
+html[data-m-app][data-mode='dark'] .m-app .text-neutral-900 {
+  color: var(--text) !important;
+}
+html[data-m-app][data-mode='dark'] .m-app .text-accent {
+  color: var(--primary) !important;
+}
+html[data-m-app][data-mode='dark'] .m-app .text-alert {
+  color: #F87171 !important;
+}
+html[data-m-app][data-mode='dark'] .m-app .bk-chip.on {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #fff;
+}
+
+/* Tombol aksi tengah pada navigasi pil mengambang */
+.m-app .m-fab {
+  background: var(--accent);
+  color: #fff;
+  box-shadow: 0 8px 20px rgb(var(--accent-rgb) / 0.4);
+}
+
+/* Elemen hitam pekat di aplikasi ponsel (chip terpilih, tombol aksi)
+   memakai warna aksen ikon-tema. Versi PC tetap memakai hitam. */
+.m-app .bk-chip.on {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+html[data-m-app][data-mode='dark'] .m-app .m-fab {
+  background: var(--primary);
+  color: #0E1116;
+  box-shadow: 0 8px 20px rgb(var(--primary-rgb) / 0.3);
+}
+
+/* ======================================================== */
+/* CHIP FILTER SISWA - KACA CAIR (live backdrop-filter)      */
+/* ======================================================== */
+/* Chip tingkat/rombel di bawah pencarian. Sama seperti nav:
+   tanpa snapshot, permukaan bening dengan kilau dan rim kaca. */
+.m-app .m-glass-chip {
+  border-color: rgb(255 255 255 / 0.58);
+  background:
+    linear-gradient(180deg, rgb(255 255 255 / 0.52), rgb(255 255 255 / 0.10) 38%, rgb(255 255 255 / 0.04)),
+    linear-gradient(115deg, transparent 30%, rgb(255 255 255 / 0.26) 46%, transparent 60%),
+    rgb(255 255 255 / 0.10);
+  -webkit-backdrop-filter: blur(10px) saturate(180%) brightness(1.04);
+  backdrop-filter: blur(10px) saturate(180%) brightness(1.04);
+  box-shadow:
+    0 6px 18px rgb(0 0 0 / 0.08),
+    inset 0 1px 0 rgb(255 255 255 / 0.92),
+    inset 0 -1px 0 rgb(255 255 255 / 0.16),
+    inset -1px 0 0 rgb(140 220 255 / 0.14);
+  color: var(--muted);
+}
+
+.m-app .m-glass-chip:hover {
+  color: var(--text);
+}
+
+/* Chip aktif: kaca berwarna aksen, tetap tembus pandang */
+.m-app .m-glass-chip.on {
+  border-color: rgb(255 255 255 / 0.36);
+  background:
+    linear-gradient(180deg, rgb(255 255 255 / 0.34), rgb(255 255 255 / 0.06) 42%, transparent 70%),
+    linear-gradient(115deg, transparent 30%, rgb(255 255 255 / 0.20) 46%, transparent 60%),
+    rgb(var(--accent-rgb) / 0.78);
+  color: #fff;
+  text-shadow: 0 1px 2px rgb(0 0 0 / 0.22);
+  box-shadow:
+    0 8px 22px rgb(var(--accent-rgb) / 0.30),
+    inset 0 1px 0 rgb(255 255 255 / 0.5),
+    inset 0 -1px 0 rgb(0 0 0 / 0.16);
+}
+
+html[data-m-app][data-mode='dark'] .m-app .m-glass-chip {
+  border-color: rgb(255 255 255 / 0.16);
+  background:
+    linear-gradient(180deg, rgb(255 255 255 / 0.16), rgb(255 255 255 / 0.03) 40%, rgb(255 255 255 / 0.01)),
+    linear-gradient(115deg, transparent 30%, rgb(255 255 255 / 0.10) 46%, transparent 60%),
+    rgb(255 255 255 / 0.02);
+  box-shadow:
+    0 6px 18px rgb(0 0 0 / 0.3),
+    inset 0 1px 0 rgb(255 255 255 / 0.28),
+    inset 0 -1px 0 rgb(0 0 0 / 0.3),
+    inset -1px 0 0 rgb(140 220 255 / 0.12);
+  color: var(--muted);
+}
+
+html[data-m-app][data-mode='dark'] .m-app .m-glass-chip.on {
+  border-color: rgb(255 255 255 / 0.22);
+  background:
+    linear-gradient(180deg, rgb(255 255 255 / 0.24), rgb(255 255 255 / 0.04) 42%, transparent 70%),
+    linear-gradient(115deg, transparent 30%, rgb(255 255 255 / 0.12) 46%, transparent 60%),
+    rgb(var(--primary-rgb) / 0.36);
+  color: #fff;
+  text-shadow: 0 1px 2px rgb(0 0 0 / 0.4);
+  box-shadow:
+    0 8px 22px rgb(0 0 0 / 0.4),
+    inset 0 1px 0 rgb(255 255 255 / 0.35),
+    inset 0 -1px 0 rgb(0 0 0 / 0.25);
+}
+
+/* ======================================================== */
+/* NAVIGASI PIL - KACA CAIR LIVE (CSS backdrop-filter)       */
+/* ======================================================== */
+/* Nav fixed di layer komposit sendiri. Tidak ada snapshot:
+   backdrop-filter membaca halaman di belakangnya secara live
+   setiap frame, termasuk saat rute, scroll, dan animasi. */
+.m-bottom-nav {
+  position: fixed;
+  left: 50%;
+  z-index: 40;
+  isolation: isolate;
+  transform: translate3d(-50%, 0, 0);
+  will-change: transform;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  border-color: rgb(255 255 255 / 0.55);
+  background: linear-gradient(180deg, rgb(255 255 255 / 0.14), rgb(255 255 255 / 0.03));
+  -webkit-backdrop-filter: blur(8px) saturate(195%) brightness(1.05);
+  backdrop-filter: blur(8px) saturate(195%) brightness(1.05);
+  box-shadow:
+    0 14px 40px rgb(0 0 0 / 0.14),
+    inset 0 1px 0 rgb(255 255 255 / 0.9),
+    inset 0 -1px 0 rgb(255 255 255 / 0.12);
+}
+
+/* Distorsi live + kilau specular. z-index negatif = di atas latar nav,
+   tetapi di bawah tombol dan lensa aktif. */
+.m-bottom-nav::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  border-radius: inherit;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgb(255 255 255 / 0.38) 0, rgb(255 255 255 / 0.08) 13%, transparent 34%),
+    linear-gradient(115deg, transparent 30%, rgb(255 255 255 / 0.20) 44%, transparent 56%);
+  -webkit-backdrop-filter: url(#lg-liquid-nav);
+  backdrop-filter: url(#lg-liquid-nav);
+  opacity: 0.7;
+  mix-blend-mode: overlay;
+}
+
+html[data-m-app][data-mode='dark'] .m-app .m-bottom-nav {
+  border-color: rgb(255 255 255 / 0.20);
+  background:
+    linear-gradient(180deg, rgb(255 255 255 / 0.10), rgb(255 255 255 / 0.02)),
+    rgb(15 19 26 / 0.22);
+  box-shadow:
+    0 14px 40px rgb(0 0 0 / 0.5),
+    inset 0 1px 0 rgb(255 255 255 / 0.3),
+    inset 0 -1px 0 rgb(0 0 0 / 0.3);
+}
+
+html[data-m-app][data-mode='dark'] .m-app .m-bottom-nav::after {
+  background:
+    linear-gradient(180deg, rgb(255 255 255 / 0.22) 0, rgb(255 255 255 / 0.05) 13%, transparent 34%),
+    linear-gradient(115deg, transparent 30%, rgb(255 255 255 / 0.10) 44%, transparent 56%);
+  opacity: 0.6;
+}
+
+/* Ketebalan kaca: rim kromatik tipis di tepi lensa */
+.m-bottom-nav::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  box-shadow:
+    inset 1.5px 1.5px 0 rgb(255 255 255 / 0.5),
+    inset -1.5px -1.5px 0 rgb(140 220 255 / 0.18),
+    inset -2.5px -2.5px 0 rgb(255 150 220 / 0.08);
+}
+
+/* Lensa tab aktif — kaca live dengan distorsi lebih kuat. */
+.m-nav-pill {
+  position: absolute;
+  top: 6px;
+  bottom: 6px;
+  left: 0;
+  z-index: 0;
+  overflow: hidden;
+  border-radius: 999px;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgb(255 255 255 / 0.08), rgb(255 255 255 / 0.01));
+  -webkit-backdrop-filter: blur(3px) saturate(210%) brightness(1.1);
+  backdrop-filter: blur(3px) saturate(210%) brightness(1.1);
+  box-shadow:
+    0 4px 16px rgb(0 0 0 / 0.14),
+    inset 0 1px 0 rgb(255 255 255 / 0.9),
+    inset 0 -1px 0 rgb(0 0 0 / 0.04);
+  transition: transform 440ms cubic-bezier(0.3, 1.42, 0.52, 1);
+  will-change: transform;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+.m-nav-pill::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  border-radius: inherit;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgb(255 255 255 / 0.55) 0, rgb(255 255 255 / 0.10) 15%, transparent 42%),
+    linear-gradient(120deg, transparent 30%, rgb(255 255 255 / 0.22) 46%, transparent 60%);
+  -webkit-backdrop-filter: url(#lg-liquid-pill);
+  backdrop-filter: url(#lg-liquid-pill);
+  opacity: 0.72;
+  mix-blend-mode: overlay;
+}
+
+/* Kilau tepi lensa — tetap ada agar bentuknya tegas di atas kaca */
+.m-nav-pill::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border-radius: inherit;
+  pointer-events: none;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.78),
+    inset 0 -1px 0 rgb(0 0 0 / 0.05),
+    inset 1px 0 0 rgb(255 255 255 / 0.35),
+    inset -1px 0 0 rgb(140 220 255 / 0.26),
+    inset 0 0 0 1px rgb(255 255 255 / 0.22);
+}
+
+html[data-m-app][data-mode='dark'] .m-app .m-nav-pill {
+  background: linear-gradient(180deg, rgb(255 255 255 / 0.07), rgb(255 255 255 / 0.015));
+  box-shadow:
+    0 4px 18px rgb(0 0 0 / 0.5),
+    inset 0 1px 0 rgb(255 255 255 / 0.45),
+    inset 0 -1px 0 rgb(0 0 0 / 0.2);
+}
+
+html[data-m-app][data-mode='dark'] .m-app .m-nav-pill::before {
+  background:
+    linear-gradient(180deg, rgb(255 255 255 / 0.32) 0, rgb(255 255 255 / 0.06) 15%, transparent 42%),
+    linear-gradient(120deg, transparent 30%, rgb(255 255 255 / 0.12) 46%, transparent 60%);
+  opacity: 0.6;
+}
+
+html[data-m-app][data-mode='dark'] .m-app .m-nav-pill::after {
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.28),
+    inset 0 -1px 0 rgb(0 0 0 / 0.35),
+    inset 1px 0 0 rgb(255 255 255 / 0.16),
+    inset -1px 0 0 rgb(140 220 255 / 0.16),
+    inset 0 0 0 1px rgb(255 255 255 / 0.08);
+}
+
+/* Label tab tetap terbaca di atas kaca yang bening */
+.m-bottom-nav button {
+  text-shadow:
+    0 1px 1px rgb(255 255 255 / 0.75),
+    0 0 5px rgb(255 255 255 / 0.35);
+}
+
+html[data-m-app][data-mode='dark'] .m-app .m-bottom-nav button {
+  text-shadow:
+    0 1px 1px rgb(0 0 0 / 0.8),
+    0 0 5px rgb(0 0 0 / 0.35);
+}
+
+/* Browser tanpa backdrop-filter: naikkan opasitas agar teks tetap terbaca */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .m-bottom-nav {
+    background: rgb(var(--surface-rgb) / 0.94);
+  }
+  .m-nav-pill {
+    background: rgb(255 255 255 / 0.5);
+  }
+}
+
+/* Peralihan halus saat tema/mode diganti */
+html[data-m-app] body,
+html[data-m-app] .bk-card,
+html[data-m-app] .bk-row,
+html[data-m-app] .bk-chip,
+html[data-m-app] .bk-btn {
+  transition:
+    background-color 0.25s ease,
+    color 0.25s ease,
+    border-color 0.25s ease;
+}
+
+/* ======================================================== */
 /* SISTEM CETAK BEBAS BUG & TERPOTONG (PRINT ENGINE A4)     */
 /* ======================================================== */
 @media print {
   @page {
     size: A4 portrait; /* Standar baku seluruh dokumen adalah Portrait (Tegak) */
-    margin: 0 !important; /* Menghilangkan tanggal, jam, dan judul bawaan browser di header/footer */
+    /* Jangan pakai !important di sini: Chrome memenangkan deklarasi margin
+       @page pertama yang !important, sehingga margin khusus dokumen (12 mm)
+       dari DocPreview tidak pernah terpakai. */
+    margin: 0;
   }
 
   html, body {
@@ -453,5 +972,90 @@ body {
   .fixed {
     position: static !important;
     inset: auto !important;
+  }
+}
+
+/* Tombol lebar penuh di ponsel: izinkan teks turun baris agar tidak meluber. */
+.m-app .bk-btn {
+  white-space: normal;
+  text-align: center;
+}
+
+/* Kop surat pada pratinjau ponsel: perkecil logo agar identitas sekolah
+   tidak terpecah terlalu banyak baris di layar sempit. */
+@media screen and (max-width: 480px) {
+  .m-doc-sheet .kop-logo {
+    width: 46px;
+    height: 56px;
+  }
+}
+
+/* ======================================================== */
+/* PRATINJAU & CETAK DOKUMEN VERSI PONSEL (/m/)             */
+/* Hanya lembar pratinjau yang dicetak — bukan seluruh app. */
+/* ======================================================== */
+@media print {
+  /* Margin kertas diatur lewat @page (lihat DocPreview), bukan padding body. */
+  html:has(body.m-doc-open),
+  body.m-doc-open {
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+  }
+
+  body.m-doc-open > #root {
+    display: none !important;
+  }
+
+  body.m-doc-open .m-doc-overlay {
+    position: static !important;
+    inset: auto !important;
+    display: block !important;
+    background: #ffffff !important;
+    padding: 0 !important;
+    backdrop-filter: none !important;
+  }
+
+  body.m-doc-open .m-doc-toolbar {
+    display: none !important;
+  }
+
+  body.m-doc-open .m-doc-scroll {
+    overflow: visible !important;
+    height: auto !important;
+    max-height: none !important;
+    padding: 0 !important;
+  }
+
+  body.m-doc-open .m-doc-sheet {
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    /* Margin fisik ditaruh sebagai padding lembar, bukan @page margin:
+       dengan @page margin 0 Chrome tidak mencetak tanggal/judul/URL di
+       kepala-kaki halaman. box-decoration-break: clone membuat padding
+       yang sama tetap ada di setiap halaman hasil pecahan. */
+    padding: 12mm 12mm 12mm 12mm !important;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  body.m-doc-open .m-doc-table-wrap {
+    overflow: visible !important;
+  }
+
+  body.m-doc-open table {
+    page-break-inside: auto;
+  }
+
+  body.m-doc-open tr {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  body.m-doc-open thead {
+    display: table-header-group;
   }
 }

@@ -12,14 +12,17 @@ export default {
         poppins: ['Poppins', 'sans-serif'],
       },
       colors: {
+        // Warna mengikuti variabel CSS supaya tema (aksen & mode gelap)
+        // bisa diganti saat aplikasi berjalan. Kanal RGB dipakai agar
+        // modifier opasitas Tailwind (mis. border-border/80) tetap jalan.
         primary: {
-          DEFAULT: '#FFA36C',
-          2: '#FF8A3D',
-          tint: '#FFF5ED',
+          DEFAULT: 'rgb(var(--primary-rgb) / <alpha-value>)',
+          2: 'rgb(var(--primary-2-rgb) / <alpha-value>)',
+          tint: 'var(--primary-tint)',
         },
         accent: {
-          DEFAULT: '#E86A33',
-          tint: '#FFE8D9',
+          DEFAULT: 'rgb(var(--accent-rgb) / <alpha-value>)',
+          tint: 'var(--accent-tint)',
           50: '#FFF7F0',
           100: '#FFF0E6',
           200: '#FFE1CC',
@@ -32,14 +35,14 @@ export default {
           900: '#47200C',
         },
         alert: {
-          DEFAULT: '#B91C1C',
-          tint: '#FCE9E9',
+          DEFAULT: 'rgb(var(--alert-rgb) / <alpha-value>)',
+          tint: 'var(--alert-tint)',
         },
-        bg: '#FFFFFF',
-        surface: '#FFFFFF',
-        border: '#E8E8E8',
-        text: '#2D3748',
-        muted: '#666666',
+        bg: 'var(--bg)',
+        surface: 'rgb(var(--surface-rgb) / <alpha-value>)',
+        border: 'rgb(var(--border-rgb) / <alpha-value>)',
+        text: 'rgb(var(--text-rgb) / <alpha-value>)',
+        muted: 'rgb(var(--muted-rgb) / <alpha-value>)',
       },
       borderRadius: {
         rc: '20px',
@@ -48,8 +51,8 @@ export default {
       },
       boxShadow: {
         card: '0 1px 2px rgb(0 0 0 / 0.03), 0 4px 12px rgb(0 0 0 / 0.06)',
-        hero: '0 8px 24px rgb(255 163 108 / 0.2)',
-        fab: '0 4px 12px rgb(255 163 108 / 0.3), 0 0 0 5px #FFFFFF',
+        hero: '0 8px 24px rgb(var(--primary-rgb) / 0.2)',
+        fab: '0 4px 12px rgb(var(--primary-rgb) / 0.3), 0 0 0 5px var(--bg)',
         bnav: '0 -4px 16px rgb(0 0 0 / 0.04)',
       },
       minHeight: {
