@@ -270,7 +270,7 @@ export default function TataTertibView({ onToast }: TataTertibViewProps) {
 
   return (
     <div className="space-y-4 fade-up">
-      <div className="flex flex-col gap-2 lg:flex-row lg:items-end lg:justify-between lg:gap-4">
+      <div className="flex flex-col gap-3 xl:flex-row xl:items-end xl:justify-between xl:gap-4">
         <div className="min-w-0">
           <h1 className="text-[24px] font-[750] leading-tight tracking-tight text-text sm:text-[28px]">
             Tata Tertib &amp; Poin Siswa
@@ -280,12 +280,12 @@ export default function TataTertibView({ onToast }: TataTertibViewProps) {
           </p>
         </div>
         {(available || canManage) && (
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2 xl:flex-nowrap xl:justify-end">
             {available && (
               <button
                 type="button"
                 onClick={() => setScanOpen(true)}
-                className="flex min-h-[40px] items-center gap-1.5 rounded-[12px] border border-border bg-white px-3.5 text-xs font-bold text-text shadow-sm transition-all hover:bg-gray-50 active:scale-[0.98]"
+                className="flex min-h-[40px] flex-none items-center gap-1.5 whitespace-nowrap rounded-[12px] border border-border bg-white px-3.5 text-xs font-bold text-text shadow-sm transition-all hover:bg-gray-50 active:scale-[0.98]"
               >
                 <ScanLine size={15} /> Scan Kartu
               </button>
@@ -295,14 +295,14 @@ export default function TataTertibView({ onToast }: TataTertibViewProps) {
                 <button
                   type="button"
                   onClick={() => setManualSpOpen(true)}
-                  className="flex min-h-[40px] items-center gap-1.5 rounded-[12px] border border-border bg-white px-3.5 text-xs font-bold text-text shadow-sm transition-all hover:bg-gray-50 active:scale-[0.98]"
+                  className="flex min-h-[40px] flex-none items-center gap-1.5 whitespace-nowrap rounded-[12px] border border-border bg-white px-3.5 text-xs font-bold text-text shadow-sm transition-all hover:bg-gray-50 active:scale-[0.98]"
                 >
                   <FileText size={15} /> SP Manual
                 </button>
                 <button
                   type="button"
                   onClick={() => openRecord()}
-                  className="flex min-h-[40px] items-center gap-1.5 rounded-[12px] bg-black px-4 text-xs font-bold text-white shadow-sm transition-all hover:bg-neutral-800 active:scale-[0.98]"
+                  className="flex min-h-[40px] flex-none items-center gap-1.5 whitespace-nowrap rounded-[12px] bg-black px-4 text-xs font-bold text-white shadow-sm transition-all hover:bg-neutral-800 active:scale-[0.98]"
                 >
                   <Plus size={16} strokeWidth={2.5} /> Catat Pelanggaran
                 </button>

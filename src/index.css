@@ -1099,10 +1099,27 @@ html[data-m-app] .bk-btn {
     padding: 0 !important;
   }
 
+  body.card-print-open .card-print-hide {
+    display: none !important;
+  }
+
+  body.card-print-open .card-print-shell {
+    max-width: none !important;
+    width: 100% !important;
+    flex: none !important;
+    border: none !important;
+    border-radius: 0 !important;
+    background: #ffffff !important;
+    box-shadow: none !important;
+    overflow: visible !important;
+  }
+
   body.card-print-open .card-print-sheet {
+    width: 85.6mm !important;
+    max-width: 85.6mm !important;
     box-shadow: none !important;
     border: none !important;
-    margin: 0 !important;
+    margin: 0 auto !important;
     padding: 0 !important;
     background: #ffffff !important;
   }

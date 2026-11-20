@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { AlertTriangle, Check, Copy, IdCard, Printer, X } from 'lucide-react';
 import QRCode from 'qrcode';
 import { useBK } from '../../context/BKContext';
@@ -80,13 +81,13 @@ export default function StudentCardModal({ student, onClose, onToast }: StudentC
     }
   };
 
-  return (
+  return createPortal(
     <div
       className="card-print-overlay fixed inset-0 z-[70] flex flex-col bg-black/55 p-3 backdrop-blur-[3px] sm:p-6"
       onClick={onClose}
     >
       <div
-        className="mx-auto flex w-full max-w-3xl flex-1 flex-col overflow-hidden rounded-[20px] border border-border bg-surface shadow-2xl"
+        className="card-print-shell mx-auto flex w-full max-w-3xl flex-1 flex-col overflow-hidden rounded-[20px] border border-border bg-surface shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="card-print-toolbar flex flex-none items-center justify-between gap-2 border-b border-border px-4 py-3">
@@ -162,7 +163,7 @@ export default function StudentCardModal({ student, onClose, onToast }: StudentC
             </div>
           ) : (
             <div className="space-y-4">
-              <div className="mx-auto w-full max-w-[560px] rounded-[16px] border border-emerald-300 bg-emerald-50 p-3 text-[11px] leading-relaxed text-emerald-900">
+              <div className="card-print-hide mx-auto w-full max-w-[560px] rounded-[16px] border border-emerald-300 bg-emerald-50 p-3 text-[11px] leading-relaxed text-emerald-900">
                 Kartu berhasil dibuat. Token dan PIN di bawah ini <b>tidak dapat ditampilkan lagi</b>{' '}
                 setelah modal ditutup.
               </div>
@@ -219,7 +220,7 @@ export default function StudentCardModal({ student, onClose, onToast }: StudentC
                 </div>
               </div>
 
-              <div className="mx-auto grid w-full max-w-[560px] gap-2 sm:grid-cols-2">
+              <div className="card-print-hide mx-auto grid w-full max-w-[560px] gap-2 sm:grid-cols-2">
                 <div className="rounded-[12px] border border-border bg-white p-3">
                   <p className="text-[10px] font-bold uppercase tracking-wide text-muted">PIN</p>
                   <div className="mt-1 flex items-center justify-between gap-2">
@@ -252,7 +253,7 @@ export default function StudentCardModal({ student, onClose, onToast }: StudentC
                 </div>
               </div>
 
-              <div className="flex justify-center">
+              <div className="card-print-hide flex justify-center">
                 <button
                   type="button"
                   onClick={onClose}
@@ -265,6 +266,7 @@ export default function StudentCardModal({ student, onClose, onToast }: StudentC
           )}
         </div>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }
