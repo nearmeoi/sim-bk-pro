@@ -166,6 +166,13 @@ File: `supabase/migrations/20261120140000_saas_foundation.sql`
 Kolom `owner_id` lama **dipertahankan sementara** agar aplikasi yang sekarang
 tidak rusak. RLS baru tidak lagi memakai `owner_id`.
 
+**Onboarding sekolah baru:** `claim_school` hanya menambahkan anggota BK
+pertama. Tahun ajaran, semester, dan aturan belum dibuat otomatis. Sebelum
+mencatat pelanggaran, isi minimal satu `academic_years` + `semesters` aktif dan
+salin 39 aturan default ke sekolah tersebut. Tanpa tahun ajaran,
+`record_violation` menolak dengan pesan “Tahun ajaran belum diatur untuk
+sekolah ini.”
+
 ### 4.2 Fase 2 — aturan, pelanggaran, poin
 
 | Tabel | Kolom penting |
