@@ -16,6 +16,26 @@ import type {
   IndividualKarirAngket,
 } from '../types';
 
+/**
+ * Sekolah aktif milik user yang sedang login.
+ * Satu user bisa menjadi anggota beberapa sekolah; untuk saat ini
+ * aplikasi memakai keanggotaan aktif pertama.
+ */
+async function getCurrentSchoolId(userId: string): Promise<string | null> {
+  if (!supabase) return null;
+  const { data, error } = await supabase
+    .from('school_members')
+    .select('school_id')
+    .eq('user_id', userId)
+    .eq('is_active', true)
+    .limit(1);
+  if (error) {
+    console.warn('Gagal memuat keanggotaan sekolah:', error.message);
+    return null;
+  }
+  return data?.[0]?.school_id ?? null;
+}
+
 export const studentService = {
   async getAll(): Promise<Student[] | null> {
     if (!isSupabaseConfigured() || !supabase) return null;
@@ -415,15 +435,19 @@ export const journalService = {
 // 5. SCHOOL SETTINGS SERVICE
 // ============================================================================
 export const settingsService = {
-  // Kunci baris = id akun Supabase (owner), bukan 'default_school' global
+  // Pengaturan melekat pada sekolah, bukan pada akun pembuatnya.
   async get(): Promise<SchoolSettings | null> {
     if (!isSupabaseConfigured() || !supabase) return null;
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return null;
+
+    const schoolId = await getCurrentSchoolId(user.id);
+    if (!schoolId) return null;
+
     const { data, error } = await supabase
       .from('school_settings')
       .select('*')
-      .eq('id', user.id)
+      .eq('school_id', schoolId)
       .maybeSingle();
     if (error || !data) return null;
     return {
@@ -448,8 +472,21 @@ export const settingsService = {
     if (!isSupabaseConfigured() || !supabase) return false;
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return false;
+
+    const schoolId = await getCurrentSchoolId(user.id);
+    if (!schoolId) return false;
+
+    // Pertahankan id lama bila sudah ada, supaya tidak membuat baris kedua
+    // untuk sekolah yang sama.
+    const { data: existing } = await supabase
+      .from('school_settings')
+      .select('id')
+      .eq('school_id', schoolId)
+      .maybeSingle();
+
     const { error } = await supabase.from('school_settings').upsert({
-      id: user.id,
+      id: existing?.id ?? schoolId,
+      school_id: schoolId,
       nama_sekolah: settings.namaSekolah,
       npsn: settings.npsn,
       alamat: settings.alamat,
@@ -465,7 +502,7 @@ export const settingsService = {
       logo_url: settings.logoUrl || null,
       logo_kanan_url: settings.logoKananUrl || null,
       updated_at: new Date().toISOString(),
-    });
+    }, { onConflict: 'id' });
     return !error;
   },
 };
