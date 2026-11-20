@@ -1,9 +1,10 @@
 ﻿import React, { useState } from 'react';
 import {
   Home, Users, FileText, Settings, Plus,
-  FileCheck2, Compass, ChevronDown, ChevronUp, Calendar, BookOpen, LogOut, ShieldAlert
+  FileCheck2, Compass, ChevronDown, ChevronUp, Calendar, BookOpen, LogOut, ShieldAlert, UserCog
 } from 'lucide-react';
 import { useBK } from '../../context/BKContext';
+import { useDiscipline } from '../../context/DisciplineContext';
 import { confirmDialog } from '../ui/ConfirmModal';
 import { NavView } from '../../types';
 interface SidebarProps {
@@ -14,6 +15,7 @@ interface SidebarProps {
 
 export default function Sidebar({ current, onNav, onCatat }: SidebarProps) {
   const { settings, activeDocTab, setActiveDocTab, logout } = useBK();
+  const { membership } = useDiscipline();
   const [dokumenCollapsed, setDokumenCollapsed] = useState(false);
   const isDokumenActive = current === 'dokumen' || current === 'akpd' || current === 'karir' || current === 'shinro';
   const isDokumenExpanded = !dokumenCollapsed;
@@ -70,6 +72,7 @@ export default function Sidebar({ current, onNav, onCatat }: SidebarProps) {
       <nav className="flex-1 space-y-1.5 overflow-y-auto no-scrollbar pt-1">
         {navBtn('beranda', 'Beranda', Home)}
         {navBtn('siswa', 'Data Siswa', Users)}
+        {membership?.role === 'bk' && navBtn('guru', 'Guru & Kelas', UserCog)}
         {navBtn('tata-tertib', 'Tata Tertib', ShieldAlert)}
         {/* Dokumen BK (Induk dengan Sub-menu Collapsible: AKPD & Karir) */}
         <div className="space-y-1">

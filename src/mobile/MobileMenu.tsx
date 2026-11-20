@@ -1,5 +1,6 @@
-import { LogOut, Settings, ShieldAlert, UserRound } from 'lucide-react';
+import { LogOut, Settings, ShieldAlert, UserCog, UserRound } from 'lucide-react';
 import { useBK } from '../context/BKContext';
+import { useDiscipline } from '../context/DisciplineContext';
 import { confirmDialog } from '../components/ui/ConfirmModal';
 import { Sheet } from './ui';
 import type { MobileRoute } from './MobileApp';
@@ -13,6 +14,7 @@ interface MobileMenuProps {
 
 export default function MobileMenu({ open, onClose, onNavigate, onToast }: MobileMenuProps) {
   const { logout } = useBK();
+  const { membership } = useDiscipline();
 
   const go = (route: MobileRoute) => {
     onClose();
@@ -57,6 +59,10 @@ export default function MobileMenu({ open, onClose, onNavigate, onToast }: Mobil
   return (
     <Sheet open={open} onClose={onClose} title="Menu Aplikasi">
       <div className="space-y-2.5">
+        {membership?.role === 'bk' &&
+          item('Guru & Kelas', 'Akun staf dan penugasan wali kelas', UserCog, () =>
+            go('guru'),
+          )}
         {item('Tata Tertib', 'Poin siswa, pelanggaran, dan surat peringatan', ShieldAlert, () =>
           go('tata-tertib'),
         )}

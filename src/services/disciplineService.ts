@@ -182,9 +182,14 @@ export const disciplineService = {
   async getMembership(): Promise<SchoolMembership | null> {
     const sb = client();
     if (!sb) return null;
+    // RLS mengizinkan BK membaca semua anggota sekolah. Tanpa filter user_id,
+    // limit(1) bisa mengembalikan anggota lain dan membuat BK dianggap wali.
+    const { data: authData, error: authError } = await sb.auth.getUser();
+    if (authError || !authData.user) return null;
     const { data, error } = await sb
       .from('school_members')
       .select('id, school_id, role, display_name')
+      .eq('user_id', authData.user.id)
       .eq('is_active', true)
       .limit(1);
     if (error) {

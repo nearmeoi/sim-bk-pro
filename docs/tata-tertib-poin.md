@@ -1,6 +1,6 @@
 # Rencana Tata Tertib & Sistem Poin — SIM BK PRO
 
-Status: **disetujui; Fase 1–3 selesai secara lokal, menunggu penerapan staging**
+Status: **disetujui; Fase 1–4 selesai secara lokal, menunggu penerapan staging**
 Branch: `feat/tata-tertib-poin`
 Baseline mobile: `dc9d3b4` di `main`
 Tanggal: 20 November 2026
@@ -413,6 +413,39 @@ Aturan:
   menghapus view tanpa menyentuh data Fase 1–3.
 - Verifikasi: `supabase/verify/phase4.sql`.
 
+### 8.3 Akun guru dan penugasan wali kelas
+
+- BK mengelola akun staf lewat menu **Guru & Kelas** (PC `GuruView`, mobile
+  `MobileGuru`). Menu ini hanya muncul dan hanya bisa dibuka oleh BK.
+- Pembuatan akun login memakai Edge Function `manage-staff` karena hanya
+  service role yang boleh memanggil Supabase Auth Admin API. Fungsi ini:
+  - memverifikasi JWT pemanggil dan memastikan ia BK aktif di sekolahnya,
+  - membuat akun dengan kata sandi sementara (tanpa bergantung SMTP),
+  - menghubungkan akun yang emailnya sudah ada tanpa mengubah sandinya,
+  - mengembalikan kata sandi sementara **sekali**; tidak ada email undangan.
+- `school_members.email` hanya salinan untuk tampilan BK. Sumber kebenaran
+  email login tetap `auth.users`.
+- RPC penugasan di migrasi `20261120180000_staff_management.sql`:
+  - `assign_homeroom(class_id, member_id)`: satu guru satu kelas per tahun
+    ajaran; penugasan baru menggantikan wali kelas sebelumnya.
+  - `clear_homeroom(class_id)`: melepas wali tanpa menghapus akun.
+  - `update_school_member(...)`: ubah nama, peran, email catatan; menolak
+    penurunan peran bila sekolah kehilangan BK aktif terakhir.
+  - `set_school_member_active(...)`: nonaktif melepas semua penugasan wali
+    kelas dan mencabut akses baca; menolak menonaktifkan akun sendiri dan BK
+    aktif terakhir.
+- Semua perubahan penting masuk `audit_log` (`staff.created`,
+  `staff.updated`, `staff.deactivated`, `staff.reactivated`,
+  `homeroom.assigned`, `homeroom.cleared`, `staff.password_reset`).
+- Akun nonaktif tidak dihapus sehingga riwayat dan audit tetap utuh.
+- Verifikasi: `supabase/verify/phase5.sql`; rollback
+  `supabase/rollback/20261120180000_staff_management_rollback.sql`.
+- Deploy Edge Function:
+  ```bash
+  supabase functions deploy manage-staff
+  ```
+  Fungsi ini memakai JWT pemanggil (bukan `--no-verify-jwt`).
+
 ---
 
 ## 9. Kasus vs Pelanggaran
@@ -513,10 +546,10 @@ where school_id = '00000000-0000-4000-8000-000000000034'
 | **1** | Schema SaaS, role, RLS, migrasi data lama | SQL + verifikasi selesai; belum diterapkan ke staging/production |
 | **2** | Master aturan, catat pelanggaran, ledger, tab siswa | Selesai; lolos harness PGlite |
 | **3** | SP1–3, berita acara, preview/cetak/Word, rekap | Selesai; cetak final perlu uji staging |
-| **4** | Manajemen user, portal wali, kartu QR + PIN, laporan periode | Kartu QR, portal siswa, dan laporan periode selesai; UI penugasan wali kelas belum |
+| **4** | Manajemen user, portal wali, kartu QR + PIN, laporan periode | Akun staf + penugasan wali kelas, kartu QR, portal siswa, dan laporan periode selesai; pemindai kartu guru belum |
 | **5** | Mobile parity, `wa.me`, audit, testing 320–430 | Parity mobile + audit selesai; `wa.me` ditunda |
 
-MVP yang layak dipakai: **Fase 1–3**.
+MVP yang layak dipakai: **Fase 1–4** (tanpa pemindai kartu guru).
 
 ---
 
@@ -556,7 +589,11 @@ MVP yang layak dipakai: **Fase 1–3**.
 - [ ] Login QR + PIN berhasil.
 - [ ] Kartu hilang bisa dicabut.
 - [ ] PIN salah berulang terkunci.
-- [ ] Scan guru membuka siswa yang benar.
+- [ ] Scan guru membuka siswa yang benar. **(belum: belum ada pemindai/RPC resolusi token)**
+- [x] BK dapat membuat akun guru dan mereset kata sandi sementara.
+- [x] BK dapat menugaskan satu guru ke satu kelas per tahun ajaran.
+- [x] Akun nonaktif kehilangan akses dan penugasan wali kelasnya dilepas.
+- [x] Sekolah tidak bisa kehilangan BK aktif terakhir.
 
 ---
 

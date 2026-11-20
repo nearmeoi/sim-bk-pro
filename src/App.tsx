@@ -7,6 +7,7 @@ import WelcomeOfferModal from './components/ui/WelcomeOfferModal';
 import ConfirmModal from './components/ui/ConfirmModal';
 import BerandaView from './components/views/BerandaView';
 import SiswaView from './components/views/SiswaView';
+import GuruView from './components/views/GuruView';
 import TataTertibView from './components/views/TataTertibView';
 import AKPDView from './components/views/AKPDView';
 import BimbinganKarirView from './components/views/BimbinganKarirView';
@@ -25,6 +26,7 @@ import { NavView } from './types';
 const VALID_VIEWS: NavView[] = [
   'beranda',
   'siswa',
+  'guru',
   'tata-tertib',
   'akpd',
   'karir',
@@ -146,6 +148,7 @@ function AppContent() {
             <BerandaView onNav={navigate} onCatat={() => setCatatOpen(true)} onToast={showToast} />
           )}
           {view === 'siswa' && <SiswaView onToast={showToast} />}
+          {view === 'guru' && <GuruView onToast={showToast} />}
           {view === 'tata-tertib' && <TataTertibView onToast={showToast} />}
           {view === 'akpd' && <AKPDView onNav={navigate} onToast={showToast} />}
           {(view === 'karir' || view === 'shinro') && (

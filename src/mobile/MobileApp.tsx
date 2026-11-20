@@ -5,6 +5,7 @@ import LoginView from '../components/views/LoginView';
 import Toast from '../components/ui/Toast';
 import MobileBeranda from './MobileBeranda';
 import MobileSiswa from './MobileSiswa';
+import MobileGuru from './MobileGuru';
 import MobileProfil from './MobileProfil';
 import MobileMenu from './MobileMenu';
 import MobileDokumen from './MobileDokumen';
@@ -26,6 +27,7 @@ import type { Student } from '../types';
 export type MobileRoute =
   | 'beranda'
   | 'siswa'
+  | 'guru'
   | 'tata-tertib'
   | 'dokumen'
   | 'akpd'
@@ -242,6 +244,8 @@ export default function MobileApp() {
         );
       case 'siswa':
         return <MobileSiswa onOpenStudent={setSelected} onCatat={(p) => setCatat(p ?? {})} />;
+      case 'guru':
+        return <MobileGuru onBack={() => navigate('beranda')} onToast={showToast} />;
       case 'tata-tertib':
         return <MobileTataTertib onBack={() => navigate('beranda')} onToast={showToast} />;
       case 'dokumen':

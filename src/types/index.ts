@@ -1,4 +1,4 @@
-export type NavView = 'beranda' | 'siswa' | 'tata-tertib' | 'akpd' | 'karir' | 'shinro' | 'dokumen' | 'pengaturan' | 'profil' | 'login' | '404';
+export type NavView = 'beranda' | 'siswa' | 'guru' | 'tata-tertib' | 'akpd' | 'karir' | 'shinro' | 'dokumen' | 'pengaturan' | 'profil' | 'login' | '404';
 
 export interface Student {
   id: string;
@@ -377,6 +377,36 @@ export interface SchoolMembership {
   schoolId: string;
   role: 'bk' | 'wali_kelas';
   displayName: string;
+}
+
+export interface StaffMember {
+  memberId: string;
+  schoolId: string;
+  userId: string;
+  role: 'bk' | 'wali_kelas';
+  displayName: string;
+  email: string | null;
+  isActive: boolean;
+  createdAt: string;
+}
+
+export interface SchoolClassOption {
+  id: string;
+  schoolId: string;
+  academicYearId: string;
+  name: string;
+  level: number | null;
+  homeroomMemberId: string | null;
+}
+
+export interface CreatedStaffAccount {
+  memberId: string;
+  userId: string;
+  displayName: string;
+  role: 'bk' | 'wali_kelas';
+  email: string;
+  temporaryPassword: string | null;
+  linked: boolean;
 }
 
 export interface StudentCard {
